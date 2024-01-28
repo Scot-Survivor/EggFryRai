@@ -1,0 +1,22 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Compiled Java bytecode
+*.jar
+
+# Compiled Java source files
+*.class
+
+# IntelliJ project files
+.idea/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# Maven build directory
+target/
