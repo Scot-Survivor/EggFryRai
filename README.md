@@ -22,6 +22,56 @@
 </div>
 
 <div>
+  <h2>📅 Deadlines</h2>
+  <table border=1px>
+    <tr>
+      <th>Set</th>
+      <th>Due</th>
+      <th>Grade</th>
+      <th>Task</th>
+    </tr>
+    <tr>
+      <td>22/01/2024</td>
+      <td>12/02/2024</td>
+      <td>10%</td>
+      <td>A1: Group Presentation (User Stories)</td>
+    </tr>
+    <tr>
+      <td>19/02/2024</td>
+      <td>11/03/2024</td>
+      <td>10%</td>
+      <td>A2: Group Project (Development in 3 Sprints) - Sprint #1</td>
+    </tr>
+    <tr>
+      <td>19/02/2024</td>
+      <td>22/03/2024</td>
+      <td>10%</td>
+      <td>A2: Group Project (Development in 3 Sprints) - Sprint #2</td>
+    </tr>
+    <tr>
+      <td>19/02/2024</td>
+      <td>05/04/2024</td>
+      <td>10%</td>
+      <td>A2: Group Project (Development in 3 Sprints) - Sprint #3</td>
+    </tr>
+    <tr>
+      <td>01/04/2024</td>
+      <td>10/05/2024</td>
+      <td>10%</td>
+      <td>A3: Individual Project Reports</td>
+    </tr>
+  </table>
+</div>
+
+## 🚧 Roadmap
+<em>Order: (Newest => Oldest)</em>
+- [] [] 
+- [] [] 
+- [] [] 
+- [] [] 
+- [x] [2024.01.28] Create README.md, add basic resources & gitignore file
+
+<div>
   <h2>🖼️ Gallery</h2>
   <p>Here you can find some screenshots of our project.</p>
   <img src="example1" alt="Screenshot 1">
