@@ -6,7 +6,7 @@
 <div>
   <h2>👥 Group Members</h2>
   <ul>
-    <li>👨‍💻 #Rhys Walker </li>
+    <li>👨‍💻 Rhys Walker </li>
     <li>👨‍💻 Scott Richards</li>
     <li>👨‍💻 Joshua Shiells</li>
     <li>👨‍💻 Vitalijs Strelcuks</li>
