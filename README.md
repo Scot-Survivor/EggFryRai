@@ -8,7 +8,7 @@
   <ul>
     <li>👨‍💻 [[[Insert name here]]]</li>
     <li>👨‍💻 [[[Insert name here]]]</li>
-    <li>👨‍💻 [[[Insert name here]]]</li>
+    <li>👨‍💻 Joshua Shiells</li>
     <li>👨‍💻 Vitalijs Strelcuks</li>
   </ul>
 </div>
