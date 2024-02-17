@@ -6,9 +6,10 @@
 <div>
   <h2>👥 Group Members</h2>
   <ul>
-    <li>👨‍💻 [[[Insert name here]]]</li>
-    <li>👨‍💻 [[[Insert name here]]]</li>
-    <li>👨‍💻 [[[Insert name here]]]</li>
+    <li>👨‍💻 Rhys Walker </li>
+    <li>👨‍💻 Edwin Clarke </li>
+    <li>👨‍💻 Scott Richards</li>
+    <li>👨‍💻 Joshua Shiells</li>
     <li>👨‍💻 Vitalijs Strelcuks</li>
   </ul>
 </div>
