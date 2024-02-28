@@ -4,6 +4,7 @@ package com.comp5590;
  * File responsible for loading and unloading of scenes
  */
 
+import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.SceneManager;
 import com.comp5590.scenes.Home;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
     private DatabaseManager db;
+    private AppConfig appConfig;
 // private PasswordManager pm; TODO: Fix password manager.
 
     private Stage primaryStage;
@@ -31,6 +33,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
+        appConfig = AppConfig.getInstance();
         SceneManager sceneManager = new SceneManager(primaryStage);
 
         db = DatabaseManager.getInstance();

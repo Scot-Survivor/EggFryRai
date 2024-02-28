@@ -34,6 +34,8 @@ dependencies {
 
     // Config file handler
     implementation 'org.apache.commons:commons-configuration2:2.9.0'
+    // Commons Beanutils
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
     // Reflections
     implementation 'org.reflections:reflections:0.9.12'
 }
