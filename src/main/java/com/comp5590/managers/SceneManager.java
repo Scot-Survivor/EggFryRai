@@ -6,12 +6,17 @@ package com.comp5590.managers;
  * @since 2024-02-28
  */
 
+import com.comp5590.scenes.AbstractScene;
 import com.comp5590.scenes.Home;
 import com.comp5590.scenes.Login;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.reflections.Reflections;
+
+import java.util.HashMap;
+import java.util.Set;
 
 public class SceneManager {
 
@@ -26,8 +31,12 @@ public class SceneManager {
     // default sizes for the screen
     private static final int height = 300;
     private static final int width = 300;
+
+    private final HashMap<Class<? extends AbstractScene>, AbstractScene> scenes;
+
     public SceneManager(Stage primary){
         this.primaryStage = primary;
+        this.scenes = new HashMap<>();
 
         // create all the scenes here
         createLoginScene();
@@ -43,6 +52,24 @@ public class SceneManager {
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());
         primaryStage.setHeight(bounds.getHeight());
+        setup();
+        System.out.println("SceneManager setup complete");
+    }
+
+    private void setup() {
+        scenes.put(Login.class, new Login(this));
+        scenes.put(Home.class, new Home(this));
+    }
+
+    public void showScene(Class<? extends AbstractScene> scene) {
+        if (scenes.containsKey(scene)) {
+            // TODO(Rhys): Add a check to see if the scene is already showing
+            // TODO(Rhys): Add the changing scene login
+        } else {
+            throw new RuntimeException("Scene has not been created in %s::setup"
+                    .formatted(this.getClass().getName() + ".java")
+            );
+        }
     }
 
     /**
