@@ -3,6 +3,8 @@ package com.comp5590.entities;
 import com.comp5590.enums.CommunicationPreference;
 import jakarta.persistence.*;
 
+@Entity
+@Table(name = "patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

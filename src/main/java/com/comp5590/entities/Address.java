@@ -2,6 +2,8 @@ package com.comp5590.entities;
 
 import jakarta.persistence.*;
 
+@Entity
+@Table(name = "address")
 public class Address{
 
     @Id
