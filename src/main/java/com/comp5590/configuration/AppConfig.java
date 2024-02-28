@@ -1,15 +1,18 @@
 package com.comp5590.configuration;
 
+import com.comp5590.managers.MasterLogger;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +33,7 @@ public class AppConfig {
     public static final String APP_NAME = "Patient Doctor Management System";
     public static final String ConfigFile = "config.properties";
     private static AppConfig instance;
+    private static final Logger logger = MasterLogger.getInstance().getLogger(AppConfig.class);
 
     // Configuration
 
@@ -49,11 +53,17 @@ public class AppConfig {
 
     private void setup() {
         boolean exists = configFile.exists() && !configFile.isDirectory();
+        boolean created = false;
         if (!exists) {
             try {
-                configFile.createNewFile();
+                created = configFile.createNewFile();
             } catch (Exception e) {
-                throw new RuntimeException(e);  // TODO: Change this to a logger
+                logger.error("Config File could not be created: " + e.getMessage());
+                logger.debug(Arrays.toString(e.getStackTrace()));
+            } finally {
+                if (!created) {
+                    logger.warn("Config file was not created, but no error throw");
+                }
             }
         }
         try {
@@ -62,11 +72,13 @@ public class AppConfig {
                              .setFile(configFile));
             config = builder.getConfiguration();
         } catch (Exception e) {
-            throw new RuntimeException(e);  // TODO: Change this to a logger
+            logger.error("File Configuration Object could not be created: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+            return;
         }
 
         if (config == null) {
-            throw new RuntimeException("Configuration is null");
+            logger.error("The config is null. This should not happen");
         }
 
         List<Field> fields = List.of(this.getClass().getDeclaredFields());
@@ -100,7 +112,8 @@ public class AppConfig {
                         }
                         field.set(this, val);
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);  // TODO: Change this to a logger
+                        logger.error("Error decoding a value in "+ ConfigFile + " config file: " + e.getMessage());
+                        logger.debug(Arrays.toString(e.getStackTrace()));
                     }
                 }
             }
@@ -113,14 +126,16 @@ public class AppConfig {
                     try {
                         config.setProperty(field.getName(), field.get(this));
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);  // TODO: Change this to a logger
+                        logger.error("Bad access modifier type on field(" + field.getName() + "): " + e.getMessage());
+                        logger.debug(Arrays.toString(e.getStackTrace()));
                     }
                 }
             }
             try {
                 builder.save();
             } catch (Exception e) {
-                throw new RuntimeException(e);  // TODO: Change this to a logger
+                logger.error("Failed to save the config " + ConfigFile + ": " + e.getMessage());
+                logger.debug(Arrays.toString(e.getStackTrace()));
             }
         }
         builder.setAutoSave(true);
