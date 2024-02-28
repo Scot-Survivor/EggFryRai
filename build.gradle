@@ -31,6 +31,9 @@ dependencies {
     implementation 'de.mkammerer:argon2-jvm:2.11'
     // Add H2 Driver
     implementation 'com.h2database:h2:2.2.222'
+
+    // Config file handler
+    implementation 'org.apache.commons:commons-configuration2:2.9.0'
 }
 
 javafx {
