@@ -28,7 +28,6 @@ public class AppConfig {
 
     Configuration config;
     private final Parameters params = new Parameters();
-    private FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
 
     public static final String APP_NAME = "Patient Doctor Management System";
     public static final String ConfigFile = "config.properties";
@@ -66,6 +65,7 @@ public class AppConfig {
                 }
             }
         }
+        FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
         try {
              builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
                      .configure(params.fileBased()
