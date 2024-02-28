@@ -33,7 +33,7 @@ public class MasterLogger {
     }
 
     public Logger getLogger() {
-        return loggers.get(MasterLogger.class);
+        return getLogger(App.class);
     }
 
     public Logger getLogger(Class<?> clazz) {
