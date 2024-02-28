@@ -79,6 +79,7 @@ public class AppConfig {
                     try {
                         Object val = config.getProperty(field.getName());
                         // Cast val to the type of field
+                        // TODO: Write this in a better way
                         Type type = field.getType();
                         if (type.equals(int.class)) {
                             val = Integer.parseInt((String) val);
