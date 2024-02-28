@@ -42,7 +42,7 @@ public class HelloFX extends Application {
         primaryStage.setHeight(bounds.getHeight());
 
         db = new Database();
-        //TODO: Fix password manager.
+        //TODO: Fix password manager
 //        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
     }
 
