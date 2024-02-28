@@ -1,6 +1,8 @@
 package com.comp5590;
 
 import com.comp5590.database.Database;
+import com.comp5590.secuirty.ArgonPasswordManager;
+import com.comp5590.secuirty.PasswordManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -9,6 +11,7 @@ import javafx.stage.Stage;
 
 public class HelloFX extends Application {
     private Database db;
+    private PasswordManager pm;
 
     @Override
     public void start(Stage stage) {
@@ -20,6 +23,7 @@ public class HelloFX extends Application {
         stage.show();
 
         db = new Database();
+        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
     }
 
     public static void main(String[] args) {
@@ -30,4 +34,7 @@ public class HelloFX extends Application {
         return db;
     }
 
+    public PasswordManager getPm() {
+        return pm;
+    }
 }
