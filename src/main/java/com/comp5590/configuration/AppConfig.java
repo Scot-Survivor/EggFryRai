@@ -1,6 +1,7 @@
 package com.comp5590.configuration;
 
 import com.comp5590.managers.MasterLogger;
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
@@ -93,25 +94,7 @@ public class AppConfig {
                     try {
                         Object val = config.getProperty(field.getName());
                         // Cast val to the type of field
-                        // TODO: Write this in a better way
-                        Type type = field.getType();
-                        if (type.equals(int.class)) {
-                            val = Integer.parseInt((String) val);
-                        } else if (type.equals(boolean.class)) {
-                            val = Boolean.parseBoolean((String) val);
-                        } else if (type.equals(double.class)) {
-                            val = Double.parseDouble((String) val);
-                        } else if (type.equals(float.class)) {
-                            val = Float.parseFloat((String) val);
-                        } else if (type.equals(long.class)) {
-                            val = Long.parseLong((String) val);
-                        } else if (type.equals(short.class)) {
-                            val = Short.parseShort((String) val);
-                        } else if (type.equals(byte.class)) {
-                            val = Byte.parseByte((String) val);
-                        } else if (type.equals(char.class)) {
-                            val = ((String) val).charAt(0);
-                        }
+                        val = ConvertUtils.convert(val, field.getType());
                         field.set(this, val);
                     } catch (IllegalAccessException e) {
                         logger.error("Error decoding a value in "+ ConfigFile + " config file: " + e.getMessage());
