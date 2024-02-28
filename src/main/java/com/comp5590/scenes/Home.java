@@ -4,7 +4,7 @@ package com.comp5590.scenes;
  * Temporary will act as a home
  */
 
-import com.comp5590.SceneManager;
+import com.comp5590.managers.SceneManager;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 

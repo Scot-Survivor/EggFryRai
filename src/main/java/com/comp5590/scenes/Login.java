@@ -1,6 +1,6 @@
 package com.comp5590.scenes;
 
-import com.comp5590.SceneManager;
+import com.comp5590.managers.SceneManager;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;

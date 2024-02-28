@@ -4,7 +4,8 @@ package com.comp5590;
  * File responsible for loading and unloading of scenes
  */
 
-import com.comp5590.database.Database;
+import com.comp5590.managers.DatabaseManager;
+import com.comp5590.managers.SceneManager;
 import com.comp5590.scenes.Home;
 import com.comp5590.scenes.Login;
 import javafx.application.Application;
@@ -12,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
-    private Database db;
+    private DatabaseManager db;
 // private PasswordManager pm; TODO: Fix password manager.
 
     private Stage primaryStage;
@@ -32,7 +33,7 @@ public class App extends Application {
         primaryStage = stage;
         SceneManager sceneManager = new SceneManager(primaryStage);
 
-        db = new Database();
+        db = new DatabaseManager();
         //TODO: Fix password manager
 //        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
     }
@@ -41,7 +42,7 @@ public class App extends Application {
         launch();
     }
 
-    public Database getDatabase() {
+    public DatabaseManager getDatabase() {
         return db;
     }
 

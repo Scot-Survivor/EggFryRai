@@ -1,4 +1,4 @@
-package com.comp5590;
+package com.comp5590.managers;
 
 /**
  * Will take in any scene and then take that and display it

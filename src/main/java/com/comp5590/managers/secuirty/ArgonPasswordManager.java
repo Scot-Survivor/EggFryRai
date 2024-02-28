@@ -1,4 +1,4 @@
-package com.comp5590.secuirty;
+package com.comp5590.managers.secuirty;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;

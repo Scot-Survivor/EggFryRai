@@ -1,4 +1,4 @@
-package com.comp5590.database;
+package com.comp5590.managers;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -10,11 +10,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Database {
+public class DatabaseManager {
     private SessionFactory sessionFactory;
     private ServiceRegistry serviceRegistry;
 
-    public Database() {
+    public DatabaseManager() {
         load();
     }
 
