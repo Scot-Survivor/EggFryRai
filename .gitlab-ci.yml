@@ -1,0 +1,28 @@
+image: java:17-jdk
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  #  - echo `pwd` # debug
+  #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+build:
+  stage: build
+  script:
+    - ./gradlew distZip
+    - ./gradlew distTar
+  artifacts:
+    paths:
+      - build/distributions/*.zip
+      - build/distributions/*.tar
+    expire_in: 1 week
+    only:
+      - master
