@@ -5,9 +5,9 @@
 
 package com.comp5590.managers;
 
-import com.comp5590.scenes.AbstractScene;
-import com.comp5590.scenes.Home;
-import com.comp5590.scenes.Login;
+import com.comp5590.screens.AbstractScreen;
+import com.comp5590.screens.Home;
+import com.comp5590.screens.Login;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -23,7 +23,7 @@ public class SceneManager {
     private static final int height = 300;
     private static final int width = 300;
 
-    private final HashMap<Class<? extends AbstractScene>, Scene> scenes;
+    private final HashMap<Class<? extends AbstractScreen>, Scene> scenes;
 
     public SceneManager(Stage primary){
         this.primaryStage = primary;
@@ -62,7 +62,7 @@ public class SceneManager {
      *  showScene(Login.class);
      * @param scene The scene to show
      */
-    public void showScene(Class<? extends AbstractScene> scene) {
+    public void showScene(Class<? extends AbstractScreen> scene) {
         if (scenes.containsKey(scene)) {
             Scene toShow = scenes.get(scene);
             // check scene is not currently showing

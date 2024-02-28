@@ -6,8 +6,8 @@ package com.comp5590;
 
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.SceneManager;
-import com.comp5590.scenes.Home;
-import com.comp5590.scenes.Login;
+import com.comp5590.screens.Home;
+import com.comp5590.screens.Login;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

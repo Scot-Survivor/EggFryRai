@@ -1,4 +1,4 @@
-package com.comp5590.scenes;
+package com.comp5590.screens;
 
 import com.comp5590.managers.SceneManager;
 import javafx.scene.control.Button;
@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
-public class Login extends AbstractScene {
+public class Login extends AbstractScreen {
 
     public Login(SceneManager main){ // exception needed for hashing
         super(main);
