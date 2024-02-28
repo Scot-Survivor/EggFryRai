@@ -1,6 +1,0 @@
-// * Git models & best practices:
-- A successful Git branching model: https://nvie.com/posts/a-successful-git-branching-model/
-- Semantic versioning 2.0.0: https://semver.org/
-- Conventional Commits: https://www.conventionalcommits.org/en/v1.0.0/#summary
-
-// * More
