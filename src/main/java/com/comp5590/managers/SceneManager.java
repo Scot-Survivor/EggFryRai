@@ -59,6 +59,12 @@ public class SceneManager {
         scenes.put(Home.class, new Home(this));
     }
 
+    /**
+     * Function that shows the scene
+     * Example:
+     *  showScene(Login.class);
+     * @param scene The scene to show
+     */
     public void showScene(Class<? extends AbstractScene> scene) {
         if (scenes.containsKey(scene)) {
             // TODO(Rhys): Add a check to see if the scene is already showing
