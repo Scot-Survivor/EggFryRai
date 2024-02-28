@@ -33,7 +33,7 @@ public class App extends Application {
         primaryStage = stage;
         SceneManager sceneManager = new SceneManager(primaryStage);
 
-        db = new DatabaseManager();
+        db = DatabaseManager.getInstance();
         //TODO: Fix password manager
 //        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
     }

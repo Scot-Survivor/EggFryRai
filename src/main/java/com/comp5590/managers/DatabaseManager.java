@@ -11,11 +11,19 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class DatabaseManager {
+    public static DatabaseManager INSTANCE;
     private SessionFactory sessionFactory;
     private ServiceRegistry serviceRegistry;
 
-    public DatabaseManager() {
+    private DatabaseManager() {
         load();
+    }
+
+    public static DatabaseManager getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new DatabaseManager();
+        }
+        return INSTANCE;
     }
 
     private void load() {
