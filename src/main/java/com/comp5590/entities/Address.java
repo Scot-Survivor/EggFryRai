@@ -2,6 +2,8 @@ package com.comp5590.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "address")
 public class Address{
@@ -26,4 +28,8 @@ public class Address{
 
     @Column(name="addressLineThree")
     private String addressLineThree;
+
+    @OneToMany(mappedBy="address")
+    @JoinColumn(name="patientId", nullable=false)
+    private List<Patient> patient;
 }

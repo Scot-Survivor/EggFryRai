@@ -35,4 +35,9 @@ public class Patient {
     private String email;
     @Column(name = "password")
     private String password;  // This will be base64 encoded hash
+
+    // Address
+    @ManyToOne
+    @JoinColumn(name="addressId", nullable=false)
+    private Address address;
 }
