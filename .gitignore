@@ -26,3 +26,6 @@ target/
 
 # Ignore Gradle build output directory
 build
+
+# Add hibernate.properties to the ignore list
+hibernate.properties
