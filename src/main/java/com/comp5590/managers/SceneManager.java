@@ -39,8 +39,8 @@ public class SceneManager {
      * Run any setup that is needed. i.e adding all of the scenes to the HashMap
      */
     private void setup() {
-        scenes.put(Login.class, createLoginScene());
-        scenes.put(Home.class, createHomeScene());
+        scenes.put(Login.class, createScene("/login.css", new Login(this)));
+        scenes.put(Home.class, createScene(null, new Home(this)));
     }
 
     /**
@@ -82,24 +82,10 @@ public class SceneManager {
         }
     }
 
-    /**
-     * Create the new login screen
-     */
-    private Scene createLoginScene() {
-        Login loginScreen = new Login(this);
-        Scene loginScene = new Scene(loginScreen.getRootPane(), width, height);
-        // apply css to the scene
-        loginScene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
-        return loginScene;
-    }
-
-    /**
-     * Create the new home screen
-     */
-    private Scene createHomeScene() {
-        Home homeScreen = new Home(this);
-        Scene homeScene = new Scene(homeScreen.getRootPane(), width, height);
-        // TODO: Add css.
-        return homeScene;
+    private Scene createScene(String cssPath, AbstractScreen screen){
+        Scene scene = new Scene(screen.getRootPane(), width, height);
+        if (cssPath != null)
+            scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+        return scene;
     }
 }
