@@ -1,5 +1,6 @@
 package com.comp5590;
 
+import com.comp5590.database.Database;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -7,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class HelloFX extends Application {
+    private Database db;
 
     @Override
     public void start(Stage stage) {
@@ -16,10 +18,16 @@ public class HelloFX extends Application {
         Scene scene = new Scene(new StackPane(l), 640, 480);
         stage.setScene(scene);
         stage.show();
+
+        db = new Database();
     }
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public Database getDatabase() {
+        return db;
     }
 
 }
