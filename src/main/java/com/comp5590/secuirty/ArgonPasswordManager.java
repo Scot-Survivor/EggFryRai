@@ -18,17 +18,23 @@ public class ArgonPasswordManager extends PasswordManager {
     private final int hashLength = 256 / 8; // 256 bits
     private final int parallelism = 1;
     private final int memoryInKb = 10 * 1024; // 10 MB
-    private final int iterations;
+    private int iterations;
 
     Argon2 argon2Factory;
 
     public ArgonPasswordManager() {
         argon2Factory = Argon2Factory.createAdvanced(saltLength, hashLength);
-        iterations =  Argon2Helper.findIterations(argon2Factory, 1000,
-                                                  memoryInKb, parallelism);
     }
+
     @Override
-    boolean passwordMatches(String storedPassword, String userPassword) {
+    public void initialise() {
+        iterations = Argon2Helper.findIterations(argon2Factory, 1000,
+                memoryInKb, parallelism);
+        available = true;
+    }
+
+    @Override
+    public boolean passwordMatches(String storedPassword, String userPassword) {
         byte[] arr = userPassword.getBytes();
          boolean val = argon2Factory.verify(Arrays.toString(Base64.getDecoder().decode(storedPassword)),
                  arr);
@@ -37,7 +43,7 @@ public class ArgonPasswordManager extends PasswordManager {
     }
 
     @Override
-    String hashPassword(String userPassword) {
+    public String hashPassword(String userPassword) {
         return Base64.getEncoder().encodeToString(
                 argon2Factory.hash(iterations, memoryInKb, parallelism, userPassword.getBytes())
                         .getBytes());
