@@ -12,7 +12,6 @@ import org.apache.logging.log4j.core.Logger;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,13 +26,17 @@ import java.util.List;
 public class AppConfig {
     private final File configFile = new File(ConfigFile);
 
-    Configuration config;
+    private Configuration config;
+
+    private FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
     private final Parameters params = new Parameters();
 
     public static final String APP_NAME = "Patient Doctor Management System";
     public static final String ConfigFile = "config.properties";
     private static AppConfig instance;
-    private static final Logger logger = MasterLogger.getInstance().getLogger(AppConfig.class);
+
+    // Hard code a DEBUG logger due to the fact that the configuration level can't load till this is complete.
+    private static final Logger logger = MasterLogger.getInstance().getLogger(AppConfig.class, "DEBUG");
 
     // Configuration
 
@@ -45,7 +48,7 @@ public class AppConfig {
     public final int HASH_SALT_LENGTH = 128 / 8; // 128 bits
     public final int HASH_LENGTH = 256 / 8; // 256 bits
 
-    public final String LOG_LEVEL = "DEBUG";
+    public String LOG_LEVEL = "DEBUG";
 
 
     // Methods
@@ -68,7 +71,6 @@ public class AppConfig {
                 }
             }
         }
-        FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
         try {
              builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
                      .configure(params.fileBased()
@@ -104,18 +106,7 @@ public class AppConfig {
             }
         } else {
             // If not exists then create and save with all default values
-            for (Field field : fields) {
-                if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()) &&
-                        !Modifier.isPrivate(field.getModifiers()) &&
-                        field.getName().toUpperCase().equals(field.getName())) {
-                    try {
-                        config.setProperty(field.getName(), field.get(this));
-                    } catch (IllegalAccessException e) {
-                        logger.error("Bad access modifier type on field(" + field.getName() + "): " + e.getMessage());
-                        logger.debug(Arrays.toString(e.getStackTrace()));
-                    }
-                }
-            }
+            updateConfig();
             try {
                 builder.save();
             } catch (Exception e) {
@@ -124,6 +115,23 @@ public class AppConfig {
             }
         }
         builder.setAutoSave(true);
+    }
+
+    public void updateConfig() {
+        // write all fields to the config file
+        for (Field field : this.getClass().getDeclaredFields()) {
+            if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()) &&
+                    !Modifier.isPrivate(field.getModifiers()) &&
+                    field.getName().toUpperCase().equals(field.getName())) {
+                try {
+                    if (config.containsKey(field.getName())) config.setProperty(field.getName(), field.get(this));
+                    else config.addProperty(field.getName(), field.get(this));
+                } catch (IllegalAccessException e) {
+                    logger.error("Bad access modifier type on field(" + field.getName() + "): " + e.getMessage());
+                    logger.debug(Arrays.toString(e.getStackTrace()));
+                }
+            }
+        }
     }
 
     public static AppConfig getInstance() {
