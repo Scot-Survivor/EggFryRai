@@ -1,36 +1,39 @@
 package com.comp5590;
 
-import com.comp5590.database.Database;
-import com.comp5590.secuirty.ArgonPasswordManager;
-import com.comp5590.secuirty.PasswordManager;
+/**
+ * Will take in any scene and then take that and display it
+ * @author Rhys Walker
+ * @since 2024-02-28
+ */
+
+import com.comp5590.scenes.Home;
 import com.comp5590.scenes.Login;
-import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class HelloFX extends Application {
-    private Database db;
-// private PasswordManager pm; TODO: Fix password manager.
+public class SceneManager {
 
     private Stage primaryStage;
-
-    // scenes and screen objects
+    // create screen objects
     private Login loginScreen;
+    private Home homeScreen;
+    // create scene objects
     private Scene loginScene;
+    private Scene homeScene;
 
     // default sizes for the screen
     private static final int height = 300;
     private static final int width = 300;
+    public SceneManager(Stage primary){
+        this.primaryStage = primary;
 
-    @Override
-    public void start(Stage stage) {
-        primaryStage = stage;
-
-        // create a new login screen with this object
-        loginScreen = new Login(this);
+        // create all the scenes here
         createLoginScene();
+        createHomeScene();
+
+        // by default show the login screen
         showLoginScreen();
 
         // get the screen and size and set to be full screen borderless
@@ -40,18 +43,24 @@ public class HelloFX extends Application {
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());
         primaryStage.setHeight(bounds.getHeight());
-
-        db = new Database();
-        //TODO: Fix password manager
-//        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
     }
 
     /**
      * Create the new login screen
      */
     private void createLoginScene() {
+        loginScreen = new Login(this);
         loginScene = new Scene(loginScreen.getRoot(), width, height);
+        // apply css to the scene
         loginScene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
+    }
+
+    /**
+     * Create the new home screen
+     */
+    private void createHomeScene() {
+        homeScreen = new Home(this);
+        homeScene = new Scene(homeScreen.getRoot(), width, height);
     }
 
     /**
@@ -63,17 +72,12 @@ public class HelloFX extends Application {
         primaryStage.show();
     }
 
-
-    public static void main(String[] args) {
-        launch();
+    /**
+     * Function that shows the home screen
+     */
+    public void showHomeScreen() {
+        primaryStage.setScene(homeScene);
+        primaryStage.setTitle("Home Screen");
+        primaryStage.show();
     }
-
-    public Database getDatabase() {
-        return db;
-    }
-
-    //TODO: Fix password manager.
-//    public PasswordManager getPm() {
-//        return pm;
-//    }
 }

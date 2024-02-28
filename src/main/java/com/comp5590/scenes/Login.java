@@ -1,6 +1,6 @@
 package com.comp5590.scenes;
 
-import com.comp5590.HelloFX;
+import com.comp5590.SceneManager;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -10,10 +10,10 @@ import javafx.scene.control.PasswordField;
 
 public class Login {
 
-    private HelloFX main;
+    private SceneManager main;
     private BorderPane mainPane;
 
-    public Login(HelloFX main){ // exception needed for hashing
+    public Login(SceneManager main){ // exception needed for hashing
         this.main = main;
 
         // create the border pane object and add the login to the center
@@ -34,7 +34,7 @@ public class Login {
 
         Button loginButton = new Button("Login");
         loginButton.setOnAction(e -> {
-            System.out.println("Login Clicked!");
+            main.showHomeScreen();
         });
 
         VBox vbox = new VBox(emailText, email, passwordText, password, loginButton);
