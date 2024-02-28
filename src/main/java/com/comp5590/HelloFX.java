@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 public class HelloFX extends Application {
 
+    private Database db;
     private Stage primaryStage;
 
     // scenes and screen objects
@@ -23,13 +24,15 @@ public class HelloFX extends Application {
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
+
+        // create a new login screen with this object
         loginScreen = new Login(this);
         createLoginScene();
         showLoginScreen();
 
+        // get the screen and size and set to be full screen borderless
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
-
         primaryStage.setX(bounds.getMinX());
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());
@@ -38,8 +41,12 @@ public class HelloFX extends Application {
         db = new Database();
     }
 
+    /**
+     * Create the new login screen
+     */
     private void createLoginScene() {
         loginScene = new Scene(loginScreen.getRoot(), width, height);
+        loginScene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
     }
 
     /**

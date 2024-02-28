@@ -16,9 +16,10 @@ public class Login {
     public Login(HelloFX main){ // exception needed for hashing
         this.main = main;
 
-        // create the border pane object and add our items to it
+        // create the border pane object and add the login to the center
         mainPane = new BorderPane();
         mainPane.setCenter(createLogin());
+        mainPane.setTop(createTitle());
     }
 
     /**
@@ -38,6 +39,14 @@ public class Login {
 
         VBox vbox = new VBox(emailText, email, passwordText, password, loginButton);
         return vbox;
+    }
+
+    private HBox createTitle(){
+        Text text = new Text("Please Login");
+        text.getStyleClass().add("title-text");
+        HBox titleBox = new HBox(text);
+        titleBox.getStyleClass().add("title");
+        return titleBox;
     }
 
     /**

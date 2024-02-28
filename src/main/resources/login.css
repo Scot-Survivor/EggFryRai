@@ -1,0 +1,9 @@
+.title {
+    -fx-alignment: center;
+}
+
+.title-text {
+    -fx-fill: grey;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
