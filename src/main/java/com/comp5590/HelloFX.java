@@ -14,7 +14,6 @@ public class HelloFX extends Application {
     private Database db;
     private PasswordManager pm;
 
-    private Database db;
     private Stage primaryStage;
 
     // scenes and screen objects
