@@ -2,8 +2,13 @@ package com.comp5590.managers;
 
 
 import com.comp5590.App;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.comp5590.configuration.AppConfig;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import java.util.HashMap;
 
 /**
@@ -15,13 +20,25 @@ public class MasterLogger {
     private static MasterLogger INSTANCE;
     private HashMap<Class<?>, Logger> loggers;
 
+    private AppConfig config = AppConfig.getInstance();
+
 
     private MasterLogger() {
         this.loggers = new HashMap<>();
+
+    }
+
+    private Appender getAppender(Class<?> clazz) {
+        String PATTERN = "%d [%p|%c|%C{1}] %m%n";
+        PatternLayout pattern = PatternLayout.newBuilder().withPattern(PATTERN).build();
+        return ConsoleAppender.createDefaultAppenderForLayout(pattern);
     }
 
     private void createLogger(Class<?> clazz) {
-        loggers.put(clazz, LoggerFactory.getLogger(clazz));
+        Logger logger = (Logger) LogManager.getLogger(clazz);
+        logger.addAppender(getAppender(clazz));
+        logger.setLevel(Level.getLevel(config.LOG_LEVEL));
+        loggers.put(clazz, logger);
     }
 
 

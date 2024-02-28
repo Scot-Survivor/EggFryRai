@@ -6,7 +6,7 @@ import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -43,6 +43,8 @@ public class AppConfig {
     public int HASH_PARALLELISM = 1;
     public final int HASH_SALT_LENGTH = 128 / 8; // 128 bits
     public final int HASH_LENGTH = 256 / 8; // 256 bits
+
+    public final String LOG_LEVEL = "DEBUG";
 
 
     // Methods
