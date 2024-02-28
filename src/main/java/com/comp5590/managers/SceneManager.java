@@ -6,8 +6,8 @@
 package com.comp5590.managers;
 
 import com.comp5590.screens.AbstractScreen;
-import com.comp5590.screens.Home;
-import com.comp5590.screens.Login;
+import com.comp5590.screens.HomeScreen;
+import com.comp5590.screens.LoginScreen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -31,7 +31,7 @@ public class SceneManager {
 
         // run any setup functions and then display the login scene
         setup();
-        showScene(Login.class);
+        showScene(LoginScreen.class);
         fullscreen();
     }
 
@@ -39,8 +39,8 @@ public class SceneManager {
      * Run any setup that is needed. i.e adding all of the scenes to the HashMap
      */
     private void setup() {
-        scenes.put(Login.class, createScene("/login.css", new Login(this)));
-        scenes.put(Home.class, createScene(null, new Home(this)));
+        scenes.put(LoginScreen.class, createScene("/login.css", new LoginScreen(this)));
+        scenes.put(HomeScreen.class, createScene(null, new HomeScreen(this)));
     }
 
     /**

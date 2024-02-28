@@ -7,8 +7,8 @@ package com.comp5590;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.SceneManager;
-import com.comp5590.screens.Home;
-import com.comp5590.screens.Login;
+import com.comp5590.screens.HomeScreen;
+import com.comp5590.screens.LoginScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,8 +21,8 @@ public class App extends Application {
     private Stage primaryStage;
 
     // scenes and screen objects
-    private Login loginScreen;
-    private Home homeScreen;
+    private LoginScreen loginScreen;
+    private HomeScreen homeScreen;
     private Scene loginScene;
     private Scene homeScene;
 

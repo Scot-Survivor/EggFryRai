@@ -8,10 +8,10 @@ import com.comp5590.managers.SceneManager;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
-public class Home extends AbstractScreen {
+public class HomeScreen extends AbstractScreen {
 
-    public Home (SceneManager main){
-        super(main);
+    public HomeScreen(SceneManager sceneManager){
+        super(sceneManager);
     }
 
     @Override
