@@ -30,3 +30,6 @@ build
 # Add hibernate.properties to the ignore list
 hibernate.properties
 *.db
+
+# Add config.properties to the ignore list
+config.properties
