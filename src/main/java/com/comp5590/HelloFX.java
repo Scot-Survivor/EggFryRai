@@ -1,5 +1,6 @@
 package com.comp5590;
 
+import com.comp5590.database.Database;
 import com.comp5590.scenes.Login;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -33,6 +34,8 @@ public class HelloFX extends Application {
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());
         primaryStage.setHeight(bounds.getHeight());
+
+        db = new Database();
     }
 
     private void createLoginScene() {
@@ -51,6 +54,10 @@ public class HelloFX extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public Database getDatabase() {
+        return db;
     }
 
 }
