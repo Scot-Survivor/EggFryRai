@@ -35,9 +35,18 @@ public class MasterLogger {
     }
 
     private void createLogger(Class<?> clazz) {
+        createLogger(clazz, config.LOG_LEVEL);
+    }
+
+    private void createLogger(Class<?> clazz, String log_level) {
+        if (log_level == null || log_level.isEmpty()) {
+            getLogger().error("Invalid log level given to createLogger");
+            return;
+        }
+
         Logger logger = (Logger) LogManager.getLogger(clazz);
         logger.addAppender(getAppender(clazz));
-        logger.setLevel(Level.getLevel(config.LOG_LEVEL));
+        logger.setLevel(Level.getLevel(log_level));
         loggers.put(clazz, logger);
     }
 
@@ -56,6 +65,12 @@ public class MasterLogger {
     public Logger getLogger(Class<?> clazz) {
         if (loggers.containsKey(clazz)) return loggers.get(clazz);
         createLogger(clazz);
+        return loggers.get(clazz);
+    }
+
+    public Logger getLogger(Class<?> clazz, String log_level) {
+        if (loggers.containsKey(clazz)) return loggers.get(clazz);
+        createLogger(clazz, log_level);
         return loggers.get(clazz);
     }
 }
