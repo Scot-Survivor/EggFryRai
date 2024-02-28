@@ -23,11 +23,11 @@ public class SceneManager {
     private static final int height = 300;
     private static final int width = 300;
 
-    private final HashMap<Class<? extends AbstractScreen>, Scene> scenes;
+    private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
 
     public SceneManager(Stage primary){
         this.primaryStage = primary;
-        this.scenes = new HashMap<>();
+        this.screens = new HashMap<>();
 
         // run any setup functions and then display the login scene
         setup();
@@ -39,8 +39,8 @@ public class SceneManager {
      * Run any setup that is needed. i.e adding all of the scenes to the HashMap
      */
     private void setup() {
-        scenes.put(LoginScreen.class, createScene("/login.css", new LoginScreen(this)));
-        scenes.put(HomeScreen.class, createScene(null, new HomeScreen(this)));
+        screens.put(LoginScreen.class, createScene("/login.css", new LoginScreen(this)));
+        screens.put(HomeScreen.class, createScene(null, new HomeScreen(this)));
     }
 
     /**
@@ -63,8 +63,8 @@ public class SceneManager {
      * @param scene The scene to show
      */
     public void showScene(Class<? extends AbstractScreen> scene) {
-        if (scenes.containsKey(scene)) {
-            Scene toShow = scenes.get(scene);
+        if (screens.containsKey(scene)) {
+            Scene toShow = screens.get(scene);
             // check scene is not currently showing
             if (primaryStage.getScene() == toShow){
                 System.out.println("Scene currently showing");
