@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class HelloFX extends Application {
     private Database db;
-    private PasswordManager pm;
+// private PasswordManager pm; TODO: Fix password manager.
 
     private Stage primaryStage;
 
@@ -42,7 +42,8 @@ public class HelloFX extends Application {
         primaryStage.setHeight(bounds.getHeight());
 
         db = new Database();
-        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
+        //TODO: Fix password manager.
+//        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
     }
 
     /**
@@ -71,7 +72,8 @@ public class HelloFX extends Application {
         return db;
     }
 
-    public PasswordManager getPm() {
-        return pm;
-    }
+    //TODO: Fix password manager.
+//    public PasswordManager getPm() {
+//        return pm;
+//    }
 }
