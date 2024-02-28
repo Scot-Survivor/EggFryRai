@@ -50,7 +50,7 @@ public class SceneManager {
      */
     private void createLoginScene() {
         loginScreen = new Login(this);
-        loginScene = new Scene(loginScreen.getRoot(), width, height);
+        loginScene = new Scene(loginScreen.getRootPane(), width, height);
         // apply css to the scene
         loginScene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
     }
@@ -60,7 +60,7 @@ public class SceneManager {
      */
     private void createHomeScene() {
         homeScreen = new Home(this);
-        homeScene = new Scene(homeScreen.getRoot(), width, height);
+        homeScene = new Scene(homeScreen.getRootPane(), width, height);
     }
 
     /**

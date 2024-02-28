@@ -8,29 +8,22 @@ import com.comp5590.managers.SceneManager;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
-public class Home {
-
-    private SceneManager main;
-    private BorderPane mainPane;
+public class Home extends AbstractScene {
 
     public Home (SceneManager main){
-        this.main = main;
+        super(main);
+    }
 
-        mainPane = new BorderPane();
-        mainPane.setCenter(center());
+    @Override
+    public void setup() {
+        setRootPane(new BorderPane());
+        // We know that root is always going to be a BorderPane so its safe to cast without checking.
+        ((BorderPane) getRootPane()).setCenter(center());
     }
 
     private VBox center(){
         Text welcome = new Text("Welcome");
         VBox central = new VBox(welcome);
         return central;
-    }
-
-    /**
-     * Gets the root node of the given interface
-     * @return BorderPane which is the root node
-     */
-    public BorderPane getRoot(){
-        return mainPane;
     }
 }

@@ -8,18 +8,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
-public class Login {
-
-    private SceneManager main;
-    private BorderPane mainPane;
+public class Login extends AbstractScene {
 
     public Login(SceneManager main){ // exception needed for hashing
-        this.main = main;
+        super(main);
+    }
 
+    @Override
+    public void setup() {
         // create the border pane object and add the login to the center
-        mainPane = new BorderPane();
-        mainPane.setCenter(createLogin());
-        mainPane.setTop(createTitle());
+        BorderPane pane = new BorderPane();
+        pane.setCenter(createLogin());
+        pane.setTop(createTitle());
+        setRootPane(pane);
     }
 
     /**
@@ -34,7 +35,7 @@ public class Login {
 
         Button loginButton = new Button("Login");
         loginButton.setOnAction(e -> {
-            main.showHomeScreen();
+            getSceneManager().showHomeScreen();
         });
 
         VBox vbox = new VBox(emailText, email, passwordText, password, loginButton);
@@ -47,13 +48,5 @@ public class Login {
         HBox titleBox = new HBox(text);
         titleBox.getStyleClass().add("title");
         return titleBox;
-    }
-
-    /**
-     * Gets the root node of the given interface
-     * @return BorderPane which is the root node
-     */
-    public BorderPane getRoot(){
-        return mainPane;
     }
 }
