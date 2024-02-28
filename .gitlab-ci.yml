@@ -25,4 +25,4 @@ build:
       - ./build/distributions/*.tar
     expire_in: 1 week
   only:
-    - master
+    - main
