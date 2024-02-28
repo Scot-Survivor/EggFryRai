@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id 'java'
+    id 'application'
 }
 
 apply plugin: 'org.openjfx.javafxplugin'
@@ -38,13 +38,15 @@ javafx {
     modules = ['javafx.controls', 'javafx.graphics']
 }
 
+mainClassName = 'com.comp5590.Main'
+
+application {
+    mainClassName = 'com.comp5590.Main'
+}
 
 jar {
     manifest {
-        attributes 'Main-Class': 'javafx11.Main'
-    }
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        attributes 'Main-Class': 'com.comp5590.Main'
     }
 }
 
