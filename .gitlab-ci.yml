@@ -21,8 +21,8 @@ build:
     - ./gradlew distTar
   artifacts:
     paths:
-      - build/distributions/*.zip
-      - build/distributions/*.tar
+      - ./build/distributions/*.zip
+      - ./build/distributions/*.tar
     expire_in: 1 week
     only:
       - master
