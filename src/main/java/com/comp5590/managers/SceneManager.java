@@ -12,9 +12,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.core.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class SceneManager {
@@ -26,6 +28,7 @@ public class SceneManager {
     private static final int width = 300;
 
     private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
+    private final Logger logger = MasterLogger.getInstance().getLogger(SceneManager.class);
 
     public SceneManager(Stage primary){
         this.primaryStage = primary;
@@ -49,10 +52,11 @@ public class SceneManager {
                 AbstractScreen instance = screen.getConstructor(SceneManager.class).newInstance(this);
                 screens.put(screen, createScene(instance));
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Error creating instance of screen: {}", screen.getName());
+                logger.debug(Arrays.toString(e.getStackTrace()));
             }
         }
-        MasterLogger.getInstance().getLogger().debug("All {} screens have been added to the scene manager", screens.size());
+        logger.debug("All {} screens have been added to the scene manager", screens.size());
     }
 
     /**
@@ -88,9 +92,8 @@ public class SceneManager {
                 primaryStage.show();
             }
         } else {
-            throw new RuntimeException("Scene has not been created in %s::setup"
-                    .formatted(this.getClass().getName() + ".java")
-            );
+            logger.error("Scene {} not found", scene.getName());
+            logger.debug("Available scenes: {}", screens.keySet());
         }
     }
 
