@@ -11,6 +11,7 @@ buildscript {
 
 plugins {
     id 'application'
+    id 'com.diffplug.spotless' version '5.14.0'
 }
 
 apply plugin: 'org.openjfx.javafxplugin'
@@ -67,4 +68,13 @@ test {
 
 java {
     modularity.inferModulePath.set(true)
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+        indentWithSpaces(4)
+    }
 }
