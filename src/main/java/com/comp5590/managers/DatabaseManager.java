@@ -57,4 +57,15 @@ public class DatabaseManager {
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+
+    public boolean testConnection() {
+        try {
+            sessionFactory.openSession();
+            return true;
+        } catch (Exception e) {
+            logger.error("Failed to connect to database: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+            return false;
+        }
+    }
 }

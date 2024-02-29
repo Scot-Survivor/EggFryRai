@@ -32,7 +32,7 @@ public class AppConfig {
     private final Parameters params = new Parameters();
 
     public static final String APP_NAME = "Patient Doctor Management System";
-    public static final String ConfigFile = "config.properties";
+    public static String ConfigFile = "config.properties";
     private static AppConfig instance;
 
     // Hard code a DEBUG logger due to the fact that the configuration level can't load till this is complete.
