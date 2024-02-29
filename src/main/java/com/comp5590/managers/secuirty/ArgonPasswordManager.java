@@ -5,6 +5,7 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import de.mkammerer.argon2.Argon2Helper;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -19,7 +20,7 @@ public class ArgonPasswordManager extends PasswordManager {
     private final int hashLength = appConfig.HASH_LENGTH;
     private final int parallelism = appConfig.HASH_PARALLELISM;
     private final int memoryInKb = appConfig.HASH_MEMORY;
-    private int iterations = appConfig.HASH_ITERATIONS;
+    private final int iterations = appConfig.HASH_ITERATIONS;
 
     Argon2 argon2Factory;
 
@@ -29,16 +30,16 @@ public class ArgonPasswordManager extends PasswordManager {
 
     @Override
     public void initialise() {
-        iterations = Argon2Helper.findIterations(argon2Factory, 1000,
-                memoryInKb, parallelism);
+        /* iterations = Argon2Helper.findIterations(argon2Factory, 1000,
+                memoryInKb, parallelism); */  // Removed due to iterations being set in AppConfig
         available = true;
     }
 
     @Override
     public boolean passwordMatches(String storedPassword, String userPassword) {
         byte[] arr = userPassword.getBytes();
-         boolean val = argon2Factory.verify(Arrays.toString(Base64.getDecoder().decode(storedPassword)),
-                 arr);
+         boolean val = argon2Factory.verify(new String(Base64.getDecoder().decode(storedPassword),
+                 StandardCharsets.UTF_8), arr);
          argon2Factory.wipeArray(arr);  // Securely wipe.
          return val;
     }
