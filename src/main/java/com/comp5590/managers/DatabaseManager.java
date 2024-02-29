@@ -4,12 +4,10 @@ import jakarta.persistence.Entity;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.reflections.Reflections;
-import org.reflections.scanners.TypeAnnotationsScanner;
 
 import java.io.File;
 import java.io.FileInputStream;

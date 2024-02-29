@@ -12,8 +12,7 @@ public class Address{
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "addressId")
     private int addressId;
-    
-    // whole lotta postcodes
+
     @Column(name="postCode")
     private String postCode;
 

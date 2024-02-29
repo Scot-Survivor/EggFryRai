@@ -3,10 +3,8 @@ package com.comp5590.managers.secuirty;
 import com.comp5590.configuration.AppConfig;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
-import de.mkammerer.argon2.Argon2Helper;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
 
 /**

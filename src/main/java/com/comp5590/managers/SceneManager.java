@@ -6,7 +6,6 @@
 package com.comp5590.managers;
 
 import com.comp5590.screens.AbstractScreen;
-import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
