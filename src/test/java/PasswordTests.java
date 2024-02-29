@@ -6,6 +6,19 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PasswordTests extends SetupTests {
+
+    @Test
+    public void testPasswordInstanceOf() {
+        PasswordManager pm = PasswordManager.getInstanceOf(AppConfig.getInstance().HASH_ALGORITHM);
+        assertInstanceOf(Argon2PasswordManager.class, pm);
+    }
+
+    @Test
+    public void testPasswordInstanceOfNull() {
+        PasswordManager pm = PasswordManager.getInstanceOf("THIS_IS_NOT_A_VALID_PASSWORD_MANAGER");
+        assertNull(pm);
+    }
+
     @Test
     public void testArgonPasswordValid() {
         PasswordManager argonPasswordManager = new Argon2PasswordManager();

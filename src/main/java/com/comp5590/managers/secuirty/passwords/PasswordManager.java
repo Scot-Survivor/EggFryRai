@@ -30,5 +30,10 @@ public abstract class PasswordManager {
         return available;
     }
 
-    // TODO: Write a factory function to be able to get the needed manager for a given hash. In the future
+    public static PasswordManager getInstanceOf(String passwordManager) {
+        if (Argon2PasswordManager.class.getName().contains(passwordManager)) {
+            return new Argon2PasswordManager();
+        }
+        return null;
+    }
 }
