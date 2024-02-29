@@ -31,4 +31,15 @@ public class Address{
 
     @OneToMany(mappedBy="address")
     private List<Patient> patient;
+
+    public Address() {
+    }
+
+    public Address(String postCode, String country, String addressLineOne, String addressLineTwo, String addressLineThree) {
+        this.postCode = postCode;
+        this.country = country;
+        this.addressLineOne = addressLineOne;
+        this.addressLineTwo = addressLineTwo;
+        this.addressLineThree = addressLineThree;
+    }
 }
