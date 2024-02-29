@@ -21,6 +21,7 @@ public class LoginScreen extends AbstractScreen {
         pane.setCenter(createLogin());
         pane.setTop(createTitle());
         setRootPane(pane);
+        this.cssPath = "/login.css";
     }
 
     /**

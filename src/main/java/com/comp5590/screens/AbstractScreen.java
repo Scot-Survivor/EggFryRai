@@ -4,8 +4,9 @@ import com.comp5590.managers.SceneManager;
 import javafx.scene.layout.Pane;
 
 public abstract class AbstractScreen {
-    SceneManager sceneManager;
-    Pane rootPane;
+    private final SceneManager sceneManager;
+    private Pane rootPane;
+    protected String cssPath;
     public AbstractScreen(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
         this.setup();
@@ -23,6 +24,10 @@ public abstract class AbstractScreen {
 
     public SceneManager getSceneManager() {
         return sceneManager;
+    }
+
+    public String getCssPath() {
+        return cssPath;
     }
 
 
