@@ -35,9 +35,9 @@ public class LoginScreen extends AbstractScreen {
         PasswordField password = new PasswordField();
 
         Button loginButton = new Button("Login");
-//        loginButton.setOnAction(e -> {
-//            getSceneManager().showHomeScreen();
-//        }); TODO: add this back
+        loginButton.setOnAction(e -> {
+            getSceneManager().showScene(HomeScreen.class);
+        });
 
         VBox vbox = new VBox(emailText, email, passwordText, password, loginButton);
         return vbox;
