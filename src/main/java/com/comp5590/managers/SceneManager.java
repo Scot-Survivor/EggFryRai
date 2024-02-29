@@ -12,6 +12,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import java.util.HashMap;
 
@@ -39,8 +41,18 @@ public class SceneManager {
      * Run any setup that is needed. i.e adding all of the scenes to the HashMap
      */
     private void setup() {
-        screens.put(LoginScreen.class, createScene("/login.css", new LoginScreen(this)));
-        screens.put(HomeScreen.class, createScene(null, new HomeScreen(this)));
+        // screens.put(LoginScreen.class, createScene("/login.css", new LoginScreen(this)));
+        // screens.put(HomeScreen.class, createScene(null, new HomeScreen(this)));
+        Reflections reflections = new Reflections("com.comp5590.screens", new SubTypesScanner(true));
+        for (Class<? extends AbstractScreen> screen : reflections.getSubTypesOf(AbstractScreen.class)) {
+            try {
+                AbstractScreen instance = screen.getConstructor(SceneManager.class).newInstance(this);
+                screens.put(screen, createScene(instance));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        MasterLogger.getInstance().getLogger().info("All {} scenes have been added to the scene manager", screens.size());
     }
 
     /**
@@ -82,8 +94,9 @@ public class SceneManager {
         }
     }
 
-    private Scene createScene(String cssPath, AbstractScreen screen){
+    private Scene createScene(AbstractScreen screen){
         Scene scene = new Scene(screen.getRootPane(), width, height);
+        String cssPath = screen.getCssPath();
         if (cssPath != null)
             scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
         return scene;
