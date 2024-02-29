@@ -12,7 +12,7 @@ import java.util.Base64;
  * <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP</a>
  * This is currently the standard hashing algorithm, and most recommended.
  */
-public class ArgonPasswordManager extends PasswordManager {
+public class Argon2PasswordManager extends PasswordManager {
     private final AppConfig appConfig = AppConfig.getInstance();
     private final int saltLength = appConfig.HASH_SALT_LENGTH;
     private final int hashLength = appConfig.HASH_LENGTH;
@@ -22,7 +22,7 @@ public class ArgonPasswordManager extends PasswordManager {
 
     Argon2 argon2Factory;
 
-    public ArgonPasswordManager() {
+    public Argon2PasswordManager() {
         argon2Factory = Argon2Factory.createAdvanced(saltLength, hashLength);
     }
 

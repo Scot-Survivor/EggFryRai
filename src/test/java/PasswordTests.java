@@ -1,15 +1,14 @@
-import com.comp5590.managers.secuirty.passwords.ArgonPasswordManager;
+import com.comp5590.configuration.AppConfig;
+import com.comp5590.managers.secuirty.passwords.Argon2PasswordManager;
 import com.comp5590.managers.secuirty.passwords.PasswordManager;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PasswordTests extends SetupTests {
-
     @Test
     public void testArgonPasswordValid() {
-        PasswordManager argonPasswordManager = new ArgonPasswordManager();
+        PasswordManager argonPasswordManager = new Argon2PasswordManager();
         argonPasswordManager.initialise();
         String password = "password";
         String hashedPassword = argonPasswordManager.hashPassword(password);
@@ -18,7 +17,7 @@ public class PasswordTests extends SetupTests {
 
     @Test
     public void testArgonPasswordInvalid() {
-        PasswordManager argonPasswordManager = new ArgonPasswordManager();
+        PasswordManager argonPasswordManager = new Argon2PasswordManager();
         argonPasswordManager.initialise();
         String password = "password";
         String hashedPassword = argonPasswordManager.hashPassword(password);
