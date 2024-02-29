@@ -1,15 +1,21 @@
 package com.comp5590.managers;
 
+import jakarta.persistence.Entity;
 import org.apache.logging.log4j.core.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.reflections.Reflections;
+import org.reflections.scanners.TypeAnnotationsScanner;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class DatabaseManager {
@@ -44,10 +50,16 @@ public class DatabaseManager {
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
         Configuration configuration = new Configuration();
+        getEntityClasses().forEach(configuration::addAnnotatedClass);
         configuration.setProperties(properties);
 
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    }
+
+    private List<Class<?>> getEntityClasses() {
+        Reflections reflections = new Reflections("com.comp5590.entities");
+        return reflections.getTypesAnnotatedWith(Entity.class).stream().toList();
     }
 
     /**
@@ -64,6 +76,21 @@ public class DatabaseManager {
             return true;
         } catch (Exception e) {
             logger.error("Failed to connect to database: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+            return false;
+        }
+    }
+
+    public boolean save(Object object) {
+        try {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(object);
+            session.getTransaction().commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            logger.error("Failed to save object: " + e.getMessage());
             logger.debug(Arrays.toString(e.getStackTrace()));
             return false;
         }
