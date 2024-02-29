@@ -28,6 +28,15 @@ public class MasterLogger {
 
     }
 
+    private String getLogLevel() {
+        if (config.LOG_LEVEL == null || config.LOG_LEVEL.isEmpty()) {
+            config.LOG_LEVEL = "ERROR";
+            return "ERROR";
+        } else {
+            return config.LOG_LEVEL;
+        }
+    }
+
     private Appender getAppender(Class<?> clazz) {
         String PATTERN = "%d [%p|%c|%C{1}] %m%n";
         PatternLayout pattern = PatternLayout.newBuilder().withPattern(PATTERN).build();
@@ -35,7 +44,7 @@ public class MasterLogger {
     }
 
     private void createLogger(Class<?> clazz) {
-        createLogger(clazz, config.LOG_LEVEL);
+        createLogger(clazz, getLogLevel());
     }
 
     private void createLogger(Class<?> clazz, String log_level) {
