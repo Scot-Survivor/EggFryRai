@@ -30,7 +30,7 @@ public class Address{
     private String addressLineThree;
 
     @OneToMany(mappedBy="address")
-    private List<Patient> patient;
+    private List<Patient> patients;
 
     public Address() {
     }
@@ -41,5 +41,61 @@ public class Address{
         this.addressLineOne = addressLineOne;
         this.addressLineTwo = addressLineTwo;
         this.addressLineThree = addressLineThree;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getAddressLineOne() {
+        return addressLineOne;
+    }
+
+    public void setAddressLineOne(String addressLineOne) {
+        this.addressLineOne = addressLineOne;
+    }
+
+    public String getAddressLineTwo() {
+        return addressLineTwo;
+    }
+
+    public void setAddressLineTwo(String addressLineTwo) {
+        this.addressLineTwo = addressLineTwo;
+    }
+
+    public String getAddressLineThree() {
+        return addressLineThree;
+    }
+
+    public void setAddressLineThree(String addressLineThree) {
+        this.addressLineThree = addressLineThree;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    public void addPatient(Patient patient) {
+        this.patients.add(patient);
     }
 }
