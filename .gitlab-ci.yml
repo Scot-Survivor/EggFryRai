@@ -9,6 +9,7 @@ before_script:
   #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x gradlew
+  - mv dev-hibernate.properties hibernate.properties
 
 cache:
   paths:
@@ -27,3 +28,8 @@ build:
     expire_in: 1 week
   only:
     - main
+
+test:
+  stage: test
+  script:
+    - ./gradlew check
