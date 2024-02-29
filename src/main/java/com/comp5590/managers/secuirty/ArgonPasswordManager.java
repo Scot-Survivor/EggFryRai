@@ -1,5 +1,6 @@
 package com.comp5590.managers.secuirty;
 
+import com.comp5590.configuration.AppConfig;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import de.mkammerer.argon2.Argon2Helper;
@@ -13,12 +14,12 @@ import java.util.Base64;
  * This is currently the standard hashing algorithm, and most recommended.
  */
 public class ArgonPasswordManager extends PasswordManager {
-    // TODO: Make this configure via a config class
-    private final int saltLength = 128 / 8; // 128 bits
-    private final int hashLength = 256 / 8; // 256 bits
-    private final int parallelism = 1;
-    private final int memoryInKb = 10 * 1024; // 10 MB
-    private int iterations;
+    private final AppConfig appConfig = AppConfig.getInstance();
+    private final int saltLength = appConfig.HASH_SALT_LENGTH;
+    private final int hashLength = appConfig.HASH_LENGTH;
+    private final int parallelism = appConfig.HASH_PARALLELISM;
+    private final int memoryInKb = appConfig.HASH_MEMORY;
+    private int iterations = appConfig.HASH_ITERATIONS;
 
     Argon2 argon2Factory;
 
