@@ -7,7 +7,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import java.util.HashMap;
 
@@ -38,8 +40,10 @@ public class MasterLogger {
     }
 
     private Appender getAppender(Class<?> clazz) {
-        String PATTERN = "%d [%p|%c|%C{1}] %m%n";
-        PatternLayout pattern = PatternLayout.newBuilder().withPattern(PATTERN).build();
+        PatternLayout pattern = PatternLayout.newBuilder()
+                .withDisableAnsi(false)
+                .withPattern("%highlight{%d{HH:mm:ss.SSS} %level %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=black, DEBUG=green bold, TRACE=blue}")
+                .build();
         return ConsoleAppender.createDefaultAppenderForLayout(pattern);
     }
 
@@ -54,6 +58,7 @@ public class MasterLogger {
         }
 
         Logger logger = (Logger) LogManager.getLogger(clazz);
+        logger.getAppenders().values().forEach(logger::removeAppender); // remove all appender
         logger.addAppender(getAppender(clazz));
         logger.setLevel(Level.getLevel(log_level));
         loggers.put(clazz, logger);
