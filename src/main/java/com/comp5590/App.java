@@ -7,6 +7,8 @@ package com.comp5590;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.SceneManager;
+import com.comp5590.managers.secuirty.ArgonPasswordManager;
+import com.comp5590.managers.secuirty.PasswordManager;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import javafx.application.Application;
@@ -16,7 +18,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     private DatabaseManager db;
     private AppConfig appConfig;
-// private PasswordManager pm; TODO: Fix password manager.
+    private PasswordManager pm;
 
     private Stage primaryStage;
 
@@ -37,8 +39,8 @@ public class App extends Application {
         SceneManager sceneManager = new SceneManager(primaryStage);
 
         db = DatabaseManager.getInstance();
-        //TODO: Fix password manager
-//        pm = new ArgonPasswordManager();  // TODO: Write a factory setup for password managers.
+
+        pm = new ArgonPasswordManager();
     }
 
     public static void main(String[] args) {
@@ -49,8 +51,7 @@ public class App extends Application {
         return db;
     }
 
-    //TODO: Fix password manager.
-//    public PasswordManager getPm() {
-//        return pm;
-//    }
+    public PasswordManager getPm() {
+        return pm;
+    }
 }
