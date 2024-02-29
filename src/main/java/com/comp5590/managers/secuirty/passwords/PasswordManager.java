@@ -1,4 +1,4 @@
-package com.comp5590.managers.secuirty;
+package com.comp5590.managers.secuirty.passwords;
 
 public abstract class PasswordManager {
     protected boolean available = false;

@@ -1,4 +1,4 @@
-package com.comp5590.managers.secuirty;
+package com.comp5590.managers.secuirty.passwords;
 
 import com.comp5590.configuration.AppConfig;
 import de.mkammerer.argon2.Argon2;

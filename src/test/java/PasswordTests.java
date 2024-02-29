@@ -1,5 +1,5 @@
-import com.comp5590.managers.secuirty.ArgonPasswordManager;
-import com.comp5590.managers.secuirty.PasswordManager;
+import com.comp5590.managers.secuirty.passwords.ArgonPasswordManager;
+import com.comp5590.managers.secuirty.passwords.PasswordManager;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
