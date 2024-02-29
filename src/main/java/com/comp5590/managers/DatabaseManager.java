@@ -48,7 +48,11 @@ public class DatabaseManager {
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
         Configuration configuration = new Configuration();
-        getEntityClasses().forEach(configuration::addAnnotatedClass);
+        getEntityClasses().forEach(c -> {
+            configuration.addAnnotatedClass(c);
+            logger.debug("Added entity class: " + c.getName());
+
+        });
         configuration.setProperties(properties);
 
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
@@ -81,6 +85,7 @@ public class DatabaseManager {
 
     public boolean save(Object object) {
         try {
+            logger.debug("Saving object: " + object.toString());
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(object);

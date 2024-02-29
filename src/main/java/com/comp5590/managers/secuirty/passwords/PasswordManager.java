@@ -1,5 +1,7 @@
 package com.comp5590.managers.secuirty.passwords;
 
+import com.comp5590.managers.MasterLogger;
+
 public abstract class PasswordManager {
     protected boolean available = false;
     /**
@@ -31,6 +33,8 @@ public abstract class PasswordManager {
     }
 
     public static PasswordManager getInstanceOf(String passwordManager) {
+        MasterLogger.getInstance().getLogger(PasswordManager.class)
+                .debug("Getting instance of password manager: " + passwordManager);
         if (Argon2PasswordManager.class.getName().contains(passwordManager)) {
             return new Argon2PasswordManager();
         }

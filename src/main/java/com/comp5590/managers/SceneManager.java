@@ -82,7 +82,7 @@ public class SceneManager {
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
             if (primaryStage.getScene() == toShow){
-                System.out.println("Scene currently showing");
+                logger.warn("Scene {} is already showing", scene.getName());
             }
             else{
                 // display the new scene.
