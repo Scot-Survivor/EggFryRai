@@ -23,13 +23,12 @@ public class Address{
     @Column(name="addressLineOne")
     private String addressLineOne;
 
-    @Column(name="addressLineThree")
+    @Column(name="addressLineTwo")
     private String addressLineTwo;
 
     @Column(name="addressLineThree")
     private String addressLineThree;
 
     @OneToMany(mappedBy="address")
-    @JoinColumn(name="patientId", nullable=false)
     private List<Patient> patient;
 }

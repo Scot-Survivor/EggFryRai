@@ -3,9 +3,11 @@ package com.comp5590.entities;
 import com.comp5590.enums.CommunicationPreference;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "doctor")
-public class Doctor {
+public class Doctor implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "doctorId")
@@ -29,4 +31,17 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     @Column(name = "communicationPreference")
     private CommunicationPreference communicationPreference;
+
+    public Doctor(String firstName, String surname, String phone, String fax, String email, CommunicationPreference communicationPreference) {
+        this.firstName = firstName;
+        this.surname = surname;
+        this.phone = phone;
+        this.fax = fax;
+        this.email = email;
+        this.communicationPreference = communicationPreference;
+    }
+
+    public Doctor() {
+
+    }
 }
