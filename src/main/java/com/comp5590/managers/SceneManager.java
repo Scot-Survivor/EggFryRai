@@ -52,7 +52,7 @@ public class SceneManager {
                 e.printStackTrace();
             }
         }
-        MasterLogger.getInstance().getLogger().info("All {} scenes have been added to the scene manager", screens.size());
+        MasterLogger.getInstance().getLogger().debug("All {} scenes have been added to the scene manager", screens.size());
     }
 
     /**
