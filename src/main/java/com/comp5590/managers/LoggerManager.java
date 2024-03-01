@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class LoggerManager {
     private static LoggerManager INSTANCE;
-    private HashMap<Class<?>, Logger> loggers;
+    private final HashMap<Class<?>, Logger> loggers;
 
     private AppConfig config;
 
