@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Application configuration
@@ -21,7 +22,7 @@ import java.util.Iterator;
  * Any field to save must be all uppercase, public, and not final
  * Any field to save must be of type int, boolean, double, float, long, short, byte, char, String
  * Any field to save must be initialized
- * Any field to save must be non-static
+ * Any field to save must be static
  */
 public class AppConfig {
     private final File configFile = new File(ConfigFile);
@@ -41,14 +42,14 @@ public class AppConfig {
     // Configuration
 
     // Password hashing configuration
-    public String HASH_ALGORITHM = "Argon2";
-    public int HASH_ITERATIONS = 1;
-    public int HASH_MEMORY = 10 * 1024; // 10 MB
-    public int HASH_PARALLELISM = 1;
-    public final int HASH_SALT_LENGTH = 128 / 8; // 128 bits
-    public final int HASH_LENGTH = 256 / 8; // 256 bits
+    public static String HASH_ALGORITHM = "Argon2";
+    public static int HASH_ITERATIONS = 1;
+    public static int HASH_MEMORY = 10 * 1024; // 10 MB
+    public static int HASH_PARALLELISM = 1;
+    public static final int HASH_SALT_LENGTH = 128 / 8; // 128 bits
+    public static final int HASH_LENGTH = 256 / 8; // 256 bits
 
-    public String LOG_LEVEL = "DEBUG";
+    public static String LOG_LEVEL = "DEBUG";
 
 
     // Methods
@@ -83,23 +84,19 @@ public class AppConfig {
                 logger.debug(key + " = " + config.getProperty(key));
             }
             // Get list of AppConfig fields
-            Field[] fields = this.getClass().getDeclaredFields();
+            List<Field> fields = getConfigFields();
             // Load all fields from the config file
             for (Field field : fields) {
-                if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()) &&
-                        !Modifier.isPrivate(field.getModifiers()) &&
-                        field.getName().toUpperCase().equals(field.getName())) {
-                    try {
-                        if (config.containsKey(field.getName())) {
-                            field.set(this, ConvertUtils.convert(config.getProperty(field.getName()), field.getType()));
-                        } else {
-                            config.addProperty(field.getName(), field.get(this));
-                            logger.debug("Added property to AppConfig: " + field.getName() + " = " + field.get(this));
-                        }
-                    } catch (IllegalAccessException e) {
-                        logger.error("Bad access modifier type on field(" + field.getName() + "): " + e.getMessage());
-                        logger.debug(Arrays.toString(e.getStackTrace()));
+                try {
+                    if (config.containsKey(field.getName())) {
+                        field.set(this, ConvertUtils.convert(config.getProperty(field.getName()), field.getType()));
+                    } else {
+                        config.addProperty(field.getName(), field.get(this));
+                        logger.debug("Added property to AppConfig: " + field.getName() + " = " + field.get(this));
                     }
+                } catch (IllegalAccessException e) {
+                    logger.error("Bad access modifier type on field(" + field.getName() + "): " + e.getMessage());
+                    logger.debug(Arrays.toString(e.getStackTrace()));
                 }
             }
             try {
@@ -114,10 +111,27 @@ public class AppConfig {
         }
     }
 
+    private boolean isValidField(Field field) {
+        return !Modifier.isFinal(field.getModifiers()) && Modifier.isStatic(field.getModifiers()) &&
+                !Modifier.isPrivate(field.getModifiers()) &&
+                // Check the field is all uppercase
+                field.getName().toUpperCase().equals(field.getName());
+
+    }
+
     public static AppConfig getInstance() {
         if (instance == null) {
             instance = new AppConfig();
         }
         return instance;
+    }
+
+    public void reload() {
+        logger.warn("Reloading configuration");
+        instance = new AppConfig();  // Force reload
+    }
+
+    public List<Field> getConfigFields() {
+        return Arrays.stream(this.getClass().getDeclaredFields()).filter(this::isValidField).toList();
     }
 }

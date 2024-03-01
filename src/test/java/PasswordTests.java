@@ -1,10 +1,12 @@
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.secuirty.passwords.Argon2PasswordManager;
 import com.comp5590.managers.secuirty.passwords.PasswordManager;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Order(3)
 public class PasswordTests extends SetupTests {
 
     @Test

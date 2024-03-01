@@ -3,12 +3,14 @@ import com.comp5590.entities.Doctor;
 import com.comp5590.entities.Patient;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.managers.DatabaseManager;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
+@Order(2)
 public class DatabaseTests extends SetupTests {
 
     @Test
