@@ -53,6 +53,9 @@ public class AppConfig {
     // General App Configuration
     public static String LOG_LEVEL = "DEBUG";
 
+    // Database Configuration
+    public static String DATABASE_PROPERTIES_FILE = "hibernate.properties";
+
 
     // Methods
     private AppConfig() {

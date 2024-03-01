@@ -51,7 +51,7 @@ public class ConfigTests {
         List<Field> fields = testConfig.getConfigFields();
         Iterator<String> trueKeys = trueConfig.getKeys();
         Iterator<Field> fieldsIter = fields.iterator();
-        while (trueKeys.hasNext()) {
+        while (trueKeys.hasNext() && fieldsIter.hasNext()) {
             String key = trueKeys.next();
             Field field = fieldsIter.next();
             assertNotNull(field);

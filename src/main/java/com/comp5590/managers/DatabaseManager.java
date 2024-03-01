@@ -1,5 +1,6 @@
 package com.comp5590.managers;
 
+import com.comp5590.configuration.AppConfig;
 import jakarta.persistence.Entity;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
@@ -36,15 +37,16 @@ public class DatabaseManager {
     private void load() {
         Properties properties = new Properties();
         // Check hibernate.properties is found
-        File file = new File("hibernate.properties");
+        logger.debug("Using database properties file: " + AppConfig.DATABASE_PROPERTIES_FILE);
+        File file = new File(AppConfig.DATABASE_PROPERTIES_FILE);
         if (!file.exists() || file.isDirectory()) {
-            logger.fatal("hibernate.properties not found");
-            throw new RuntimeException("hibernate.properties not found");
+            logger.fatal(AppConfig.DATABASE_PROPERTIES_FILE + " not found");
+            throw new RuntimeException(AppConfig.DATABASE_PROPERTIES_FILE + " not found");
         }
         try {
             properties.load(new FileInputStream(file));
         } catch (IOException e) {
-            logger.fatal("Failed to load hibernate.properties: " + e.getMessage());
+            logger.fatal("Failed to load " + AppConfig.DATABASE_PROPERTIES_FILE + " : " + e.getMessage());
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
         Configuration configuration = new Configuration();
