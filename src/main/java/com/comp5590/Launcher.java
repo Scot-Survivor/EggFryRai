@@ -6,7 +6,7 @@ package com.comp5590;
  *     This comment outlines the solution
  * </a>
  */
-public class Main {
+public class Launcher {
 
     public static void main(String[] args) {
         App.main(args);
