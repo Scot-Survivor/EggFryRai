@@ -76,7 +76,6 @@ public class AppConfig {
         try {
             builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
                     .configure(params.fileBased().setFile(configFile));
-            builder.setAutoSave(true);
             config = builder.getConfiguration();
             // logger debug output all the properties
             logger.debug("Loaded configuration: ");
@@ -134,5 +133,14 @@ public class AppConfig {
 
     public List<Field> getConfigFields() {
         return Arrays.stream(this.getClass().getDeclaredFields()).filter(this::isValidField).toList();
+    }
+
+    public void save() {
+        try {
+            builder.save();
+        } catch (Exception e) {
+            logger.error("Failed to save configuration: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+        }
     }
 }
