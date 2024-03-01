@@ -6,12 +6,16 @@ import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.FileHandler;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +64,41 @@ public class AppConfig {
     // Methods
     private AppConfig() {
         setup();
+    }
+
+    /**
+     * Clean the file of any properties that are not in the AppConfig class
+     * @return list of names of properties removed
+     */
+    public List<String> cleanConfig() {
+        logger.warn("Cleaning configuration");
+        List<String> removed = new ArrayList<>();
+        // Load a new config from file
+        Configurations configs = new Configurations();
+        File configFile = new File(ConfigFile);
+        PropertiesConfiguration propertiesConfig;
+        try {
+            propertiesConfig= configs.properties(configFile);
+        } catch (ConfigurationException e) {
+            logger.error("Failed to load configuration for cleaning: " + e.getMessage());
+            return removed;
+        }
+        // Load all fields from the config file
+        Iterator<String> itProperties = propertiesConfig.getKeys();
+        while (itProperties.hasNext()) {
+            String key = itProperties.next();
+            if (!config.containsKey(key)) {
+                propertiesConfig.clearProperty(key);
+                removed.add(key);
+            }
+        }
+        FileHandler handler = new FileHandler(propertiesConfig);
+        try {
+            handler.save(configFile);
+        } catch (ConfigurationException e) {
+            logger.error("Failed to save configuration after cleaning: " + e.getMessage());
+        }
+        return removed;
     }
 
     private void setup() {

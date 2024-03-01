@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Order(1) // Run this test first
-public class ConfigTests {
+public class ConfigTests extends SetupTests {
     private static AppConfig testConfig;
     private static FileBasedConfiguration trueConfig;
     @BeforeAll
@@ -71,5 +71,34 @@ public class ConfigTests {
         testConfig.setValue("LOG_LEVEL", "ERROR", false);  // We do not want to save. This is a test
         assertEquals("ERROR", AppConfig.LOG_LEVEL);
         testConfig.setValue("LOG_LEVEL", "DEBUG", false);  // There is no way to force order reliably in JUnit, so we have to reset the value
+    }
+
+    @Test
+    public void testCleanConfigMethod() {
+        // Write a temp value to the test.properties file and reload
+        File configFile = new File(AppConfig.ConfigFile);
+        String testLine = "INVALID_FIELD = 0\n";
+        // Append the line to file
+        try {
+            java.nio.file.Files.write(configFile.toPath(), testLine.getBytes(),
+                    java.nio.file.StandardOpenOption.APPEND);
+        } catch (Exception e) {
+            fail("Failed to write to file: " + e.getMessage());
+        }
+
+        // Ensure the line was written
+        try {
+            String fileContents = new String(java.nio.file.Files.readAllBytes(configFile.toPath()));
+            assertNotNull(fileContents);
+            assertFalse(fileContents.isEmpty());
+            assertTrue(fileContents.contains(testLine));
+        } catch (Exception e) {
+            fail("Failed to read from file: " + e.getMessage());
+        }
+
+        // Reload the config
+        testConfig.reload();
+        List<String> removed = testConfig.cleanConfig();
+        assertTrue(removed.contains("INVALID_FIELD"));
     }
 }
