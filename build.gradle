@@ -99,3 +99,10 @@ conventionalCommits {
             "  feat(login): add the 'remember me' button\n" +
             "More details at: https://www.conventionalcommits.org/en/v1.0.0/#summary"
 }
+
+tasks.register("addPreCommitGitHookOnBuild", Copy) {
+    from file(".scripts/pre-commit")
+    into file(".git/hooks")
+}
+check.dependsOn("addPreCommitGitHookOnBuild")
+compileJava.dependsOn("addPreCommitGitHookOnBuild")
