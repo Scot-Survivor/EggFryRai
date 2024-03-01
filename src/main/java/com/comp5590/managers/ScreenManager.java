@@ -18,7 +18,7 @@ import org.reflections.scanners.SubTypesScanner;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class SceneManager {
+public class ScreenManager {
 
     private Stage primaryStage;
 
@@ -27,9 +27,9 @@ public class SceneManager {
     private static final int width = 300;
 
     private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
-    private final Logger logger = MasterLogger.getInstance().getLogger(SceneManager.class);
+    private final Logger logger = MasterLogger.getInstance().getLogger(ScreenManager.class);
 
-    public SceneManager(Stage primary){
+    public ScreenManager(Stage primary){
         this.primaryStage = primary;
         this.screens = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class SceneManager {
         Reflections reflections = new Reflections("com.comp5590.screens", new SubTypesScanner(true));
         for (Class<? extends AbstractScreen> screen : reflections.getSubTypesOf(AbstractScreen.class)) {
             try {
-                AbstractScreen instance = screen.getConstructor(SceneManager.class).newInstance(this);
+                AbstractScreen instance = screen.getConstructor(ScreenManager.class).newInstance(this);
                 screens.put(screen, createScene(instance));
             } catch (Exception e) {
                 logger.error("Error creating instance of screen: {}", screen.getName());

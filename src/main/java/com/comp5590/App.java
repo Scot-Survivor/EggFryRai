@@ -6,7 +6,7 @@ package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.DatabaseManager;
-import com.comp5590.managers.SceneManager;
+import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.secuirty.passwords.Argon2PasswordManager;
 import com.comp5590.managers.secuirty.passwords.PasswordManager;
 import com.comp5590.screens.HomeScreen;
@@ -36,7 +36,7 @@ public class App extends Application {
     public void start(Stage stage) {
         primaryStage = stage;
         appConfig = AppConfig.getInstance();
-        SceneManager sceneManager = new SceneManager(primaryStage);
+        ScreenManager screenManager = new ScreenManager(primaryStage);
 
         db = DatabaseManager.getInstance();
 

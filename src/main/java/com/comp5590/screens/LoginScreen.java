@@ -1,6 +1,6 @@
 package com.comp5590.screens;
 
-import com.comp5590.managers.SceneManager;
+import com.comp5590.managers.ScreenManager;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -10,8 +10,8 @@ import javafx.scene.control.PasswordField;
 
 public class LoginScreen extends AbstractScreen {
 
-    public LoginScreen(SceneManager sceneManager){ // exception needed for hashing
-        super(sceneManager);
+    public LoginScreen(ScreenManager screenManager){ // exception needed for hashing
+        super(screenManager);
     }
 
     @Override

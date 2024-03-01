@@ -4,14 +4,14 @@ package com.comp5590.screens;
  * Temporary will act as a home
  */
 
-import com.comp5590.managers.SceneManager;
+import com.comp5590.managers.ScreenManager;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 public class HomeScreen extends AbstractScreen {
 
-    public HomeScreen(SceneManager sceneManager){
-        super(sceneManager);
+    public HomeScreen(ScreenManager screenManager){
+        super(screenManager);
     }
 
     @Override

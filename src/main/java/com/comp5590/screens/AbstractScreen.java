@@ -1,18 +1,18 @@
 package com.comp5590.screens;
 
 import com.comp5590.entities.Patient;
-import com.comp5590.managers.SceneManager;
+import com.comp5590.managers.ScreenManager;
 import javafx.scene.layout.Pane;
 
 public abstract class AbstractScreen {
-    private final SceneManager sceneManager;
+    private final ScreenManager screenManager;
     private Pane rootPane;
     /**
      * The path to the CSS file for the screen
      */
     protected String cssPath;
-    public AbstractScreen(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
+    public AbstractScreen(ScreenManager screenManager) {
+        this.screenManager = screenManager;
         this.setup();
     }
 
@@ -54,8 +54,8 @@ public abstract class AbstractScreen {
         return rootPane;
     }
 
-    public SceneManager getSceneManager() {
-        return sceneManager;
+    public ScreenManager getSceneManager() {
+        return screenManager;
     }
 
     public String getCssPath() {
