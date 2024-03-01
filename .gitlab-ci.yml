@@ -19,7 +19,7 @@ cache:
   paths:
   - ".gradle/wrapper"
   - ".gradle/caches"
-build:
+distribute:
   stage: distribute
   script:
   - "./gradlew distZip"
