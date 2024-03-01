@@ -11,14 +11,17 @@ stages:
   - test
   - deploy
   - distribute
+
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x gradlew
   - mv dev-hibernate.properties hibernate.properties
+
 cache:
   paths:
   - ".gradle/wrapper"
   - ".gradle/caches"
+
 distribute:
   stage: distribute
   script:
@@ -30,10 +33,12 @@ distribute:
     - "./build/distributions/*.tar"
     expire_in: 24 hours
   only:
-  - main
+    - main
+
 test:
   stage: test
   script:
   - "./gradlew check"
+
 include:
-- template: Auto-DevOps.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
