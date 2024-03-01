@@ -43,8 +43,6 @@ public class ScreenManager {
      * Run any setup that is needed. i.e adding all of the scenes to the HashMap
      */
     private void setup() {
-        // screens.put(LoginScreen.class, createScene("/login.css", new LoginScreen(this)));
-        // screens.put(HomeScreen.class, createScene(null, new HomeScreen(this)));
         Reflections reflections = new Reflections("com.comp5590.screens", new SubTypesScanner(true));
         for (Class<? extends AbstractScreen> screen : reflections.getSubTypesOf(AbstractScreen.class)) {
             try {
