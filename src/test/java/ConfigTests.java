@@ -39,12 +39,14 @@ public class ConfigTests {
 
     // Test that the configuration file is loaded
     @Test
+    @Order(1)
     public void testConfigFileLoaded() {
         assertNotNull(testConfig);
     }
 
     // Test that all the properties in trueConfig are in testConfig
     @Test
+    @Order(2)
     public void testAllPropertiesLoaded() {
         List<Field> fields = testConfig.getConfigFields();
         Iterator<String> trueKeys = trueConfig.getKeys();
@@ -68,5 +70,13 @@ public class ConfigTests {
             assertEquals(ConvertUtils.convert(trueValue, field.getType()),
                     ConvertUtils.convert(value, field.getType()));
         }
+    }
+
+    @Test
+    @Order(3)
+    public void testPropertySetViaMethod() {
+        testConfig.setValue("LOG_LEVEL", "ERROR", false);  // We do not want to save. This is a test
+        assertEquals("ERROR", AppConfig.LOG_LEVEL);
+        testConfig.setValue("LOG_LEVEL", "DEBUG", false);  // There is no way to force order reliably in JUnit, so we have to reset the value
     }
 }

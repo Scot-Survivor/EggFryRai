@@ -143,4 +143,41 @@ public class AppConfig {
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
     }
+
+    /**
+     * Get a value
+     * @param key The key of the field
+     */
+    public Object getValue(String key) {
+        return config.getProperty(key);
+    }
+
+    /**
+     * Set a value without saving.
+     * @param key The key of the field
+     * @param value The value to set
+     */
+    public void setValue(String key, Object value) {
+        setValue(key, value, false);
+    }
+
+    /**
+     * Set a value and optionally save
+     * @param key The key of the field
+     * @param value The value to set
+     * @param save Whether to save the configuration
+     */
+    public void setValue(String key, Object value, boolean save) {
+        try {
+            Field field = this.getClass().getDeclaredField(key);
+            field.set(this, value);
+            config.setProperty(key, value);
+            if (save) {
+                save();
+            }
+        } catch (Exception e) {
+            logger.error("Failed to set value: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+        }
+    }
 }
