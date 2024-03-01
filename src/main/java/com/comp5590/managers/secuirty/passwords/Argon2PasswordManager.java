@@ -4,9 +4,6 @@ import com.comp5590.configuration.AppConfig;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
 /**
  * Argon2(i by default) Hasher class. As per:
  * <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP</a>
