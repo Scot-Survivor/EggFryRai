@@ -56,14 +56,7 @@ public class ConfigTests {
             Field field = fieldsIter.next();
             assertNotNull(field);
             assertNotNull(key);
-            Object value;
-            try {
-                value = field.get(testConfig);
-                assertNotNull(value);  // If this fails, the field is not in the config
-            } catch (IllegalAccessException e) {
-                fail(e.getMessage());  // Fail if we can't access the field, since we should have filtered out private fields
-                return;
-            }
+            Object value = testConfig.getValue(key);
             // Next check the values are equal between testConfig or trueConfig
             Object trueValue = trueConfig.getProperty(key);
             assertNotNull(trueValue);
