@@ -1,7 +1,6 @@
 package com.comp5590.managers.security.passwords;
 
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.managers.security.passwords.PasswordManager;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 

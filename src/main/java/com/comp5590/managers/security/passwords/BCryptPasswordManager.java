@@ -1,7 +1,6 @@
 package com.comp5590.managers.security.passwords;
 
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.managers.security.passwords.PasswordManager;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class BCryptPasswordManager extends PasswordManager {
