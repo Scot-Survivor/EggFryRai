@@ -60,7 +60,9 @@ public class LoggerManager {
 
         Logger logger = (Logger) LogManager.getLogger(clazz);
         logger.getAppenders().values().forEach(logger::removeAppender); // remove all appender
-        logger.addAppender(getAppender(clazz));
+        ConsoleAppender appender = (ConsoleAppender) getAppender(clazz);
+        appender.start();  // Since we're creating the appender manually, we need to start it manually
+        logger.addAppender(appender);
         logger.setLevel(Level.getLevel(log_level));
         loggers.put(clazz, logger);
     }
