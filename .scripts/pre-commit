@@ -6,6 +6,12 @@ echo "*********************************************************"
 # Gather the staged files - to make sure changes are saved only for these files.
 stagedFiles=$(git diff --staged --name-only)
 
+# Check that *.java is in the list of staged files
+if [[ $stagedFiles != *".java"* ]]; then
+  echo "No java files are staged for commit. Exiting pre-commit hook."
+  exit 0
+fi
+
 # Clean gradle first
 ./gradlew clean
 
