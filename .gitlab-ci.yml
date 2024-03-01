@@ -25,12 +25,10 @@ cache:
 distribute:
   stage: distribute
   script:
-  - "./gradlew distZip"
-  - "./gradlew distTar"
+  - "./gradlew shadowJar"
   artifacts:
     paths:
-    - "./build/distributions/*.zip"
-    - "./build/distributions/*.tar"
+    - "./build/libs/*.jar"
     expire_in: 24 hours
   only:
     - main
