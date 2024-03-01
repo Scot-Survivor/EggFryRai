@@ -1,10 +1,16 @@
-package com.comp5590.managers.secuirty.passwords;
+package com.comp5590.managers.security.passwords;
 
 import com.comp5590.managers.LoggerManager;
+import org.apache.logging.log4j.core.Logger;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Set;
 
 public abstract class PasswordManager {
+    private static final Logger logger = LoggerManager.getInstance().getLogger(PasswordManager.class);
     protected boolean available = false;
     /**
      * Checks if two hashes are identical
@@ -35,11 +41,23 @@ public abstract class PasswordManager {
     }
 
     public static PasswordManager getInstanceOf(String passwordManager) {
-        LoggerManager.getInstance().getLogger(PasswordManager.class)
-                .debug("Getting instance of password manager: " + passwordManager);
-        if (Argon2PasswordManager.class.getName().contains(passwordManager)) {
-            return new Argon2PasswordManager();
+        Reflections reflections = new Reflections("com.comp5590.managers.security.passwords",
+                new SubTypesScanner(false));
+        Set<Class<? extends PasswordManager>> pms = reflections.getSubTypesOf(PasswordManager.class);
+        pms.forEach(pm -> {
+            logger.debug("Found PasswordManager: " + pm.getSimpleName());
+        });
+        for (Class<? extends PasswordManager> pm : pms) {
+            try {
+                if (pm.getSimpleName().contains(passwordManager)) {
+                    return pm.getConstructor().newInstance();
+                }
+            } catch (Exception e) {
+                logger.error("Valid to load PasswordManager instance: " + e.getMessage());
+                logger.debug(Arrays.toString(e.getStackTrace()));
+            }
         }
+        logger.warn("No password manager found for name: " + passwordManager);
         return null;
     }
 

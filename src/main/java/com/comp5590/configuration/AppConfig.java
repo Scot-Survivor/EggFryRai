@@ -44,6 +44,7 @@ public class AppConfig {
     // Password hashing configuration
     public static String HASH_ALGORITHM = "Argon2";
     public static int HASH_ITERATIONS = 1;
+    public static int BCRYPT_ROUNDS = 11;
     public static int HASH_MEMORY = 10 * 1024; // 10 MB
     public static int HASH_PARALLELISM = 1;
     public static final int HASH_SALT_LENGTH = 128 / 8; // 128 bits

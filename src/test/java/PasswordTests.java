@@ -1,6 +1,7 @@
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.managers.secuirty.passwords.Argon2PasswordManager;
-import com.comp5590.managers.secuirty.passwords.PasswordManager;
+import com.comp5590.managers.security.passwords.Argon2PasswordManager;
+import com.comp5590.managers.security.passwords.BCryptPasswordManager;
+import com.comp5590.managers.security.passwords.PasswordManager;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PasswordTests extends SetupTests {
 
     @Test
-    public void testPasswordInstanceOf() {
+    public void testPasswordInstanceOfArgon() {
         PasswordManager pm = PasswordManager.getInstanceOf(AppConfig.getInstance().HASH_ALGORITHM);
         assertInstanceOf(Argon2PasswordManager.class, pm);
+    }
+
+    @Test
+    public void testPasswordInstanceOfBcrypt() {
+        PasswordManager pm = PasswordManager.getInstanceOf("BCrypt");
+        assertInstanceOf(BCryptPasswordManager.class, pm);
     }
 
     @Test
@@ -37,6 +44,24 @@ public class PasswordTests extends SetupTests {
         String password = "password";
         String hashedPassword = argonPasswordManager.hashPassword(password);
         assertFalse(argonPasswordManager.passwordMatches(hashedPassword, "password1"));
+    }
+
+    @Test
+    public void testBCryptPasswordValid() {
+        PasswordManager bCryptPasswordManager = new BCryptPasswordManager();
+        bCryptPasswordManager.initialise();
+        String password = "password";
+        String hashedPassword = bCryptPasswordManager.hashPassword(password);
+        assertTrue(bCryptPasswordManager.passwordMatches(hashedPassword, password));
+    }
+
+    @Test
+    public void testBCryptPasswordInvalid() {
+        PasswordManager bCryptPasswordManager = new BCryptPasswordManager();
+        bCryptPasswordManager.initialise();
+        String password = "password";
+        String hashedPassword = bCryptPasswordManager.hashPassword(password);
+        assertFalse(bCryptPasswordManager.passwordMatches(hashedPassword, "password1"));
     }
 
 }

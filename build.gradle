@@ -23,6 +23,10 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        name "mvnrepository.com"
+        url "https://mvnrepository.com/artifact"
+    }
 }
 
 dependencies {
@@ -33,6 +37,7 @@ dependencies {
     implementation "jakarta.persistence:jakarta.persistence-api:3.1"
     // Password Hashers
     implementation 'de.mkammerer:argon2-jvm:2.11'
+    implementation 'org.mindrot:jbcrypt:0.4'
     // Add H2 Driver
     implementation 'com.h2database:h2:2.2.222'
 
