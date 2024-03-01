@@ -25,7 +25,7 @@ build:
     paths:
       - ./build/distributions/*.zip
       - ./build/distributions/*.tar
-    expire_in: 1 week
+    expire_in: 24 hours
   only:
     - main
 
