@@ -43,7 +43,7 @@ public class LoggerManager {
     private Appender getAppender(Class<?> clazz) {
         PatternLayout pattern = PatternLayout.newBuilder()
                 .withDisableAnsi(false)
-                .withPattern("%highlight{%d{HH:mm:ss.SSS} %level %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=black, DEBUG=green bold, TRACE=blue}")
+                .withPattern("%highlight{[%d{HH:mm:ss.SSS} %level | " + clazz.getSimpleName() + "] %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=black, DEBUG=green bold, TRACE=blue}")
                 .build();
         return ConsoleAppender.createDefaultAppenderForLayout(pattern);
     }
