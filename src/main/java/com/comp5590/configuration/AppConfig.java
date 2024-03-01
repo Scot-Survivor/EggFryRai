@@ -13,7 +13,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * Application configuration
@@ -71,66 +71,46 @@ public class AppConfig {
                 }
             }
         }
+
         try {
-             builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-                     .configure(params.fileBased()
-                             .setFile(configFile));
+            builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+                    .configure(params.fileBased().setFile(configFile));
             config = builder.getConfiguration();
-        } catch (Exception e) {
-            logger.error("File Configuration Object could not be created: " + e.getMessage());
-            logger.debug(Arrays.toString(e.getStackTrace()));
-            return;
-        }
-
-        if (config == null) {
-            logger.error("The config is null. This should not happen");
-        }
-
-        List<Field> fields = List.of(this.getClass().getDeclaredFields());
-        if (exists) {
-            // If exists then load the configuration
+            // logger debug output all the properties
+            logger.debug("Loaded configuration: ");
+            for (Iterator<String> it = config.getKeys(); it.hasNext(); ) {
+                String key = it.next();
+                logger.debug(key + " = " + config.getProperty(key));
+            }
+            // Get list of AppConfig fields
+            Field[] fields = this.getClass().getDeclaredFields();
+            // Load all fields from the config file
             for (Field field : fields) {
                 if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()) &&
                         !Modifier.isPrivate(field.getModifiers()) &&
                         field.getName().toUpperCase().equals(field.getName())) {
                     try {
-                        Object val = config.getProperty(field.getName());
-                        // Cast val to the type of field
-                        val = ConvertUtils.convert(val, field.getType());
-                        field.set(this, val);
+                        if (config.containsKey(field.getName())) {
+                            field.set(this, ConvertUtils.convert(config.getProperty(field.getName()), field.getType()));
+                        } else {
+                            config.addProperty(field.getName(), field.get(this));
+                            logger.debug("Added property to AppConfig: " + field.getName() + " = " + field.get(this));
+                        }
                     } catch (IllegalAccessException e) {
-                        logger.error("Error decoding a value in "+ ConfigFile + " config file: " + e.getMessage());
+                        logger.error("Bad access modifier type on field(" + field.getName() + "): " + e.getMessage());
                         logger.debug(Arrays.toString(e.getStackTrace()));
                     }
                 }
             }
-        } else {
-            // If not exists then create and save with all default values
-            updateConfig();
             try {
                 builder.save();
             } catch (Exception e) {
-                logger.error("Failed to save the config " + ConfigFile + ": " + e.getMessage());
+                logger.error("Failed to save configuration: " + e.getMessage());
                 logger.debug(Arrays.toString(e.getStackTrace()));
             }
-        }
-        builder.setAutoSave(true);
-    }
-
-    public void updateConfig() {
-        // write all fields to the config file
-        for (Field field : this.getClass().getDeclaredFields()) {
-            if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()) &&
-                    !Modifier.isPrivate(field.getModifiers()) &&
-                    field.getName().toUpperCase().equals(field.getName())) {
-                try {
-                    if (config.containsKey(field.getName())) config.setProperty(field.getName(), field.get(this));
-                    else config.addProperty(field.getName(), field.get(this));
-                } catch (IllegalAccessException e) {
-                    logger.error("Bad access modifier type on field(" + field.getName() + "): " + e.getMessage());
-                    logger.debug(Arrays.toString(e.getStackTrace()));
-                }
-            }
+        } catch (Exception e) {
+            logger.error("Failed to load configuration: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
         }
     }
 
