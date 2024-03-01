@@ -36,16 +36,15 @@ public class Argon2PasswordManager extends PasswordManager {
     @Override
     public boolean passwordMatches(String storedPassword, String userPassword) {
         byte[] arr = userPassword.getBytes();
-         boolean val = argon2Factory.verify(new String(Base64.getDecoder().decode(storedPassword),
-                 StandardCharsets.UTF_8), arr);
+         boolean val = argon2Factory.verify(decodeBase64(storedPassword), arr);
          argon2Factory.wipeArray(arr);  // Securely wipe.
          return val;
     }
 
     @Override
     public String hashPassword(String userPassword) {
-        return Base64.getEncoder().encodeToString(
-                argon2Factory.hash(iterations, memoryInKb, parallelism, userPassword.getBytes())
-                        .getBytes());
+        return this.encodeBase64(
+                argon2Factory.hash(iterations, memoryInKb, parallelism, userPassword.getBytes()
+                ));
     }
 }

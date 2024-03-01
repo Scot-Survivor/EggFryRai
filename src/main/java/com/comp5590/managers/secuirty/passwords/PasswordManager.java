@@ -2,6 +2,8 @@ package com.comp5590.managers.secuirty.passwords;
 
 import com.comp5590.managers.LoggerManager;
 
+import java.nio.charset.StandardCharsets;
+
 public abstract class PasswordManager {
     protected boolean available = false;
     /**
@@ -39,5 +41,13 @@ public abstract class PasswordManager {
             return new Argon2PasswordManager();
         }
         return null;
+    }
+
+    public String encodeBase64(String data) {
+        return java.util.Base64.getEncoder().encodeToString(data.getBytes());
+    }
+
+    public String decodeBase64(String data) {
+        return new String(java.util.Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
     }
 }
