@@ -76,6 +76,7 @@ public class AppConfig {
         try {
             builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
                     .configure(params.fileBased().setFile(configFile));
+            builder.setAutoSave(true);
             config = builder.getConfiguration();
             // logger debug output all the properties
             logger.debug("Loaded configuration: ");
