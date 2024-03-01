@@ -50,6 +50,7 @@ public class AppConfig {
     public static final int HASH_SALT_LENGTH = 128 / 8; // 128 bits
     public static final int HASH_LENGTH = 256 / 8; // 256 bits
 
+    // General App Configuration
     public static String LOG_LEVEL = "DEBUG";
 
 
