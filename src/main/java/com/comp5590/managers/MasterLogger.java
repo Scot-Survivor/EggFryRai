@@ -20,7 +20,7 @@ public class MasterLogger {
     private static MasterLogger INSTANCE;
     private HashMap<Class<?>, Logger> loggers;
 
-    private AppConfig config = AppConfig.getInstance();
+    private AppConfig config;
 
 
     private MasterLogger() {
@@ -29,6 +29,9 @@ public class MasterLogger {
     }
 
     private String getLogLevel() {
+        if (config == null) {
+            config = AppConfig.getInstance();
+        }
         if (config.LOG_LEVEL == null || config.LOG_LEVEL.isEmpty()) {
             config.LOG_LEVEL = "ERROR";
             return "ERROR";
