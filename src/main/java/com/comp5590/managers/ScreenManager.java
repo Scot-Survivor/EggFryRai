@@ -27,7 +27,7 @@ public class ScreenManager {
     private static final int width = 300;
 
     private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
-    private final Logger logger = MasterLogger.getInstance().getLogger(ScreenManager.class);
+    private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
 
     public ScreenManager(Stage primary){
         this.primaryStage = primary;

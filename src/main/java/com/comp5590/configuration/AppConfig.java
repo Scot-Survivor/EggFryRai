@@ -1,6 +1,6 @@
 package com.comp5590.configuration;
 
-import com.comp5590.managers.MasterLogger;
+import com.comp5590.managers.LoggerManager;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
@@ -36,7 +36,7 @@ public class AppConfig {
     private static AppConfig instance;
 
     // Hard code a DEBUG logger due to the fact that the configuration level can't load till this is complete.
-    private static final Logger logger = MasterLogger.getInstance().getLogger(AppConfig.class, "DEBUG");
+    private static final Logger logger = LoggerManager.getInstance().getLogger(AppConfig.class, "DEBUG");
 
     // Configuration
 

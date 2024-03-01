@@ -16,14 +16,14 @@ import java.util.HashMap;
  * but authentication issues should be handled by PasswordManager or similar.
  * This Singleton class makes this painless.
  */
-public class MasterLogger {
-    private static MasterLogger INSTANCE;
+public class LoggerManager {
+    private static LoggerManager INSTANCE;
     private HashMap<Class<?>, Logger> loggers;
 
     private AppConfig config;
 
 
-    private MasterLogger() {
+    private LoggerManager() {
         this.loggers = new HashMap<>();
 
     }
@@ -66,9 +66,9 @@ public class MasterLogger {
     }
 
 
-    public static MasterLogger getInstance() {
+    public static LoggerManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new MasterLogger();
+            INSTANCE = new LoggerManager();
         }
         return INSTANCE;
     }

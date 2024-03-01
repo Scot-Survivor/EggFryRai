@@ -20,7 +20,7 @@ public class DatabaseManager {
     public static DatabaseManager INSTANCE;
     private SessionFactory sessionFactory;
     private ServiceRegistry serviceRegistry;
-    private final Logger logger = MasterLogger.getInstance().getLogger(DatabaseManager.class);
+    private final Logger logger = LoggerManager.getInstance().getLogger(DatabaseManager.class);
 
     private DatabaseManager() {
         load();
