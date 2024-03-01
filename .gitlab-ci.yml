@@ -1,35 +1,38 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 image: openjdk:17-jdk-slim
 stages:
-  - build
-  - test
-  - deploy
-
+- build
+- test
+- deploy
 before_script:
-  #  - echo `pwd` # debug
-  #  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-  - chmod +x gradlew
-  - mv dev-hibernate.properties hibernate.properties
-
+- export GRADLE_USER_HOME=`pwd`/.gradle
+- chmod +x gradlew
+- mv dev-hibernate.properties hibernate.properties
 cache:
   paths:
-    - .gradle/wrapper
-    - .gradle/caches
-
+  - ".gradle/wrapper"
+  - ".gradle/caches"
 build:
   stage: build
   script:
-    - ./gradlew distZip
-    - ./gradlew distTar
+  - "./gradlew distZip"
+  - "./gradlew distTar"
   artifacts:
     paths:
-      - ./build/distributions/*.zip
-      - ./build/distributions/*.tar
+    - "./build/distributions/*.zip"
+    - "./build/distributions/*.tar"
     expire_in: 24 hours
   only:
-    - main
-
+  - main
 test:
   stage: test
   script:
-    - ./gradlew check
+  - "./gradlew check"
+include:
+- template: Auto-DevOps.gitlab-ci.yml
