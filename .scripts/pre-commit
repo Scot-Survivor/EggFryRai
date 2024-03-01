@@ -6,6 +6,9 @@ echo "*********************************************************"
 # Gather the staged files - to make sure changes are saved only for these files.
 stagedFiles=$(git diff --staged --name-only)
 
+# Clean gradle first
+./gradlew clean
+
 # run spotless apply
 ./gradlew check
 
