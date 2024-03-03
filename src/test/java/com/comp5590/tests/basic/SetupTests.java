@@ -1,3 +1,5 @@
+package com.comp5590.tests.basic;
+
 import com.comp5590.configuration.AppConfig;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -15,6 +17,5 @@ public class SetupTests {
         System.setProperty("prism.order", "sw");
         System.setProperty("prism.text", "t2k");
         System.setProperty("testfx.setup.timeout", "2500");
-
     }
 }

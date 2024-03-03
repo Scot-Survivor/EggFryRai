@@ -1,5 +1,8 @@
+package com.comp5590.tests.integration;
+
 import com.comp5590.App;
 import com.comp5590.screens.LoginScreen;
+import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;

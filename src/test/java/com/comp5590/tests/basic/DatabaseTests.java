@@ -1,3 +1,5 @@
+package com.comp5590.tests.basic;
+
 import com.comp5590.entities.Address;
 import com.comp5590.entities.Doctor;
 import com.comp5590.entities.Patient;

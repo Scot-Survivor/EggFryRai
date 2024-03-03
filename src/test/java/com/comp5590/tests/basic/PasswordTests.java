@@ -1,3 +1,5 @@
+package com.comp5590.tests.basic;
+
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.security.passwords.Argon2PasswordManager;
 import com.comp5590.managers.security.passwords.BCryptPasswordManager;

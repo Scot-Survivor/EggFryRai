@@ -1,3 +1,5 @@
+package com.comp5590.tests.basic;
+
 import com.comp5590.configuration.AppConfig;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.configuration2.FileBasedConfiguration;
