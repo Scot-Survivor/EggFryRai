@@ -13,9 +13,6 @@ stages:
   - distribute
 
 before_script:
-  - ls /builds/js2313/comp5590
-  - ls /builds/js2313/comp5590/.git/
-  - ls /builds/js2313/comp5590/.git/hooks
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x gradlew
   - mv dev-hibernate.properties hibernate.properties
