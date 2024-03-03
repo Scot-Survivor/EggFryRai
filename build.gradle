@@ -10,6 +10,7 @@ buildscript {
 }
 
 plugins {
+    id 'jacoco'
     id 'application'
     id 'com.diffplug.spotless' version '5.14.0'
     id 'com.github.johnrengelman.shadow' version '8.1.0'
@@ -123,6 +124,10 @@ run {
                 '--add-modules', 'javafx.controls,javafx.fxml'
         ]
     }
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }
 
 tasks.register("addPreCommitGitHookOnBuild", Copy) {

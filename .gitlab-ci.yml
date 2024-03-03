@@ -33,6 +33,17 @@ distribute:
   only:
     - main
 
+test:
+    stage: test
+    script:
+    - "./gradlew check"
+    - "./gradlew jacocoTestReport"
+    artifacts:
+        paths:
+        - "./build/reports/jacoco/test/html"
+    only:
+        - main
+
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
   - template: Jobs/Secret-Detection.gitlab-ci.yml
