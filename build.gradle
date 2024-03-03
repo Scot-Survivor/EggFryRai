@@ -12,7 +12,6 @@ buildscript {
 plugins {
     id 'application'
     id 'com.diffplug.spotless' version '5.14.0'
-    id "it.nicolasfarabegoli.conventional-commits" version "3.1.0"
     id 'com.github.johnrengelman.shadow' version '8.1.0'
 }
 
@@ -126,22 +125,15 @@ run {
     }
 }
 
-conventionalCommits {
-    warningIfNoGitRoot = true
-
-    // Valid Types:  build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test
-
-    successMessage = "Commit message meets Conventional Commit standards..."
-
-    failureMessage = "The commit message does not meet the Conventional Commit standard" +
-            "An example of a valid message is:\n" +
-            "  feat(login): add the 'remember me' button\n" +
-            "More details at: https://www.conventionalcommits.org/en/v1.0.0/#summary"
-}
-
 tasks.register("addPreCommitGitHookOnBuild", Copy) {
     from file(".scripts/pre-commit")
     into file(".git/hooks")
 }
+tasks.register("addCommitMsgGitHookOnBuild", Copy) {
+    from file(".scripts/commit-msg")
+    into file(".git/hooks")
+}
 check.dependsOn("addPreCommitGitHookOnBuild")
+check.dependsOn("addCommitMsgGitHookOnBuild")
 compileJava.dependsOn("addPreCommitGitHookOnBuild")
+compileJava.dependsOn("addCommitMsgGitHookOnBuild")
