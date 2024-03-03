@@ -33,6 +33,11 @@ distribute:
   only:
     - main
 
+test:
+  stage: test
+  script:
+    - 'JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw" ./gradlew test --stacktrace'
+
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
   - template: Jobs/Secret-Detection.gitlab-ci.yml
