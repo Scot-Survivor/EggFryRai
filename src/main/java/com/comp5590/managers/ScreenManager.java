@@ -27,11 +27,14 @@ public class ScreenManager {
     private static final int width = 300;
 
     private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
+    private final HashMap<Class<? extends AbstractScreen>, AbstractScreen> screenInstances;
     private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
+    private AbstractScreen currentScreen;
 
     public ScreenManager(Stage primary){
         this.primaryStage = primary;
         this.screens = new HashMap<>();
+        this.screenInstances = new HashMap<>();
 
         // run any setup functions and then display the login scene
         setup();
@@ -47,6 +50,7 @@ public class ScreenManager {
         for (Class<? extends AbstractScreen> screen : reflections.getSubTypesOf(AbstractScreen.class)) {
             try {
                 AbstractScreen instance = screen.getConstructor(ScreenManager.class).newInstance(this);
+                screenInstances.put(screen, instance);
                 screens.put(screen, createScene(instance));
             } catch (Exception e) {
                 logger.error("Error creating instance of screen: {}", screen.getName());
@@ -83,6 +87,7 @@ public class ScreenManager {
                 logger.warn("Scene {} is already showing", scene.getName());
             }
             else{
+                this.currentScreen = screenInstances.get(scene);
                 // display the new scene.
                 primaryStage.setScene(toShow);
                 primaryStage.setTitle("PDMS");
@@ -100,5 +105,17 @@ public class ScreenManager {
         if (cssPath != null)
             scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
         return scene;
+    }
+
+    public AbstractScreen getCurrentScreen() {
+        return currentScreen;
+    }
+
+    public HashMap<Class<? extends AbstractScreen>, Scene> getScreens() {
+        return screens;
+    }
+
+    public HashMap<Class<? extends AbstractScreen>, AbstractScreen> getScreenInstances() {
+        return screenInstances;
     }
 }

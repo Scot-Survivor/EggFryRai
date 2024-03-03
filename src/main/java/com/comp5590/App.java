@@ -16,9 +16,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
-    private DatabaseManager db;
+    private DatabaseManager databaseManager;
     private AppConfig appConfig;
-    private PasswordManager pm;
+    private PasswordManager passwordManager;
+    private ScreenManager screenManager;
 
     private Stage primaryStage;
 
@@ -36,11 +37,11 @@ public class App extends Application {
     public void start(Stage stage) {
         primaryStage = stage;
         appConfig = AppConfig.getInstance();
-        ScreenManager screenManager = new ScreenManager(primaryStage);
+        screenManager = new ScreenManager(primaryStage);
 
-        db = DatabaseManager.getInstance();
+        databaseManager = DatabaseManager.getInstance();
 
-        pm = new Argon2PasswordManager();
+        passwordManager = new Argon2PasswordManager();
     }
 
     public static void main(String[] args) {
@@ -48,10 +49,14 @@ public class App extends Application {
     }
 
     public DatabaseManager getDatabase() {
-        return db;
+        return databaseManager;
     }
 
-    public PasswordManager getPm() {
-        return pm;
+    public PasswordManager getPasswordManager() {
+        return passwordManager;
+    }
+
+    public ScreenManager getScreenManager() {
+        return screenManager;
     }
 }

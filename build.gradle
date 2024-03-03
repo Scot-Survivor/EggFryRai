@@ -45,6 +45,9 @@ System.out.println("Platform: " + platform)
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation "org.testfx:testfx-core:4.0.18"
+    testImplementation "org.testfx:testfx-junit5:4.0.18"
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
     // JavaFX
     implementation "org.openjfx:javafx-base:21.0.2:${platform}"
     implementation "org.openjfx:javafx-graphics:21.0.2:${platform}"
