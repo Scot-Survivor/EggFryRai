@@ -2,11 +2,13 @@ package com.comp5590.entities;
 
 import com.comp5590.enums.CommunicationPreference;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "doctor")
+@Data
 public class Doctor implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -43,57 +45,5 @@ public class Doctor implements Serializable {
 
     public Doctor() {
 
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public CommunicationPreference getCommunicationPreference() {
-        return communicationPreference;
-    }
-
-    public void setCommunicationPreference(CommunicationPreference communicationPreference) {
-        this.communicationPreference = communicationPreference;
     }
 }
