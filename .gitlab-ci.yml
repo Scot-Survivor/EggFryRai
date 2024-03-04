@@ -37,10 +37,6 @@ test:
     stage: test
     script:
     - "./gradlew test --tests com.comp5590.tests.basic*"
-    - "./gradlew jacocoTestReport"
-    artifacts:
-        paths:
-        - "./build/reports/jacoco/test/html"
     only:
         - main
 
