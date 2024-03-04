@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
+    private static App instance;
     private DatabaseManager databaseManager;
     private AppConfig appConfig;
     private PasswordManager passwordManager;
@@ -35,6 +36,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        instance = this;
         primaryStage = stage;
         appConfig = AppConfig.getInstance();
         screenManager = new ScreenManager(primaryStage);
@@ -58,5 +60,12 @@ public class App extends Application {
 
     public ScreenManager getScreenManager() {
         return screenManager;
+    }
+
+    public static App getInstance() {
+        if (instance == null) {
+            instance = new App();
+        }
+        return instance;
     }
 }

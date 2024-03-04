@@ -1,17 +1,36 @@
 package com.comp5590.screens;
 
+import com.comp5590.App;
+import com.comp5590.entities.Patient;
+import com.comp5590.managers.DatabaseManager;
+import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import org.apache.logging.log4j.core.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import java.util.List;
+
 
 public class LoginScreen extends AbstractScreen {
+    private final SessionFactory sessionFactory;
+    private final App app;
+    private TextField email;
+    private PasswordField password;
+    private Label error;
+    private final Logger logger = LoggerManager.getInstance().getLogger(LoginScreen.class);
 
     public LoginScreen(ScreenManager screenManager){ // exception needed for hashing
         super(screenManager);
+        this.sessionFactory = DatabaseManager.getInstance().getSessionFactory();
+        this.app = App.getInstance();
     }
 
     @Override
@@ -30,17 +49,43 @@ public class LoginScreen extends AbstractScreen {
      */
     private VBox createLogin(){
         Label emailText = new Label("Email:");
-        TextField email = new TextField();
+        this.email = new TextField();
+        this.email.setId("email");
         Label passwordText = new Label("Password:");
-        PasswordField password = new PasswordField();
+        this.password = new PasswordField();
+        this.password.setId("password");
+        this.error = new Label();
+        this.error.setId("error");
 
         Button loginButton = new Button("Login");
-        loginButton.setOnAction(e -> {
-            getSceneManager().showScene(HomeScreen.class);
-        });
+        loginButton.setId("login");
+        loginButton.setOnAction(this::login);
 
-        VBox vbox = new VBox(emailText, email, passwordText, password, loginButton);
+        VBox vbox = new VBox(emailText, email, passwordText, password, loginButton, this.error);
         return vbox;
+    }
+
+    private void login(ActionEvent event){
+        String email = this.email.getText();
+        String password = this.password.getText();
+        Session session = sessionFactory.openSession();
+        List<Patient> patients = session.createQuery("from Patient where email = :email", Patient.class)
+                .setParameter("email", email)
+                .list();
+        session.close();
+        if (patients.isEmpty()){
+            logger.error("Invalid Username({})", email);
+            this.error.setText("Invalid Username or Password");
+            return;
+        }
+        Patient patient = patients.get(0);
+        boolean passwordValid  = app.getPasswordManager().passwordMatches(patient.getPassword(), password);
+        if (passwordValid){
+            app.getScreenManager().showScene(HomeScreen.class);
+        } else {
+            logger.error("Invalid Password(*)");
+            this.error.setText("Invalid Username or Password");
+        }
     }
 
     private HBox createTitle(){

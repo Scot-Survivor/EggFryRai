@@ -48,7 +48,8 @@ dependencies {
     testImplementation "org.testfx:testfx-core:4.0.18"
     testImplementation "org.testfx:testfx-junit5:4.0.18"
     testImplementation "org.testfx:openjfx-monocle:17.0.10"
-    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.25.3'
+    testImplementation group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
     // JavaFX
     implementation "org.openjfx:javafx-base:21.0.2:${platform}"
     implementation "org.openjfx:javafx-graphics:21.0.2:${platform}"
