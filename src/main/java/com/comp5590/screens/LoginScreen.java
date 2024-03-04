@@ -61,8 +61,7 @@ public class LoginScreen extends AbstractScreen {
         loginButton.setId("login");
         loginButton.setOnAction(this::login);
 
-        VBox vbox = new VBox(emailText, email, passwordText, password, loginButton, this.error);
-        return vbox;
+        return new VBox(emailText, email, passwordText, password, loginButton, this.error);
     }
 
     private void login(ActionEvent event){

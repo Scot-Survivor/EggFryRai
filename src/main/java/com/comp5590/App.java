@@ -1,9 +1,5 @@
 package com.comp5590;
 
-/**
- * File responsible for loading and unloading of scenes
- */
-
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
@@ -14,12 +10,15 @@ import com.comp5590.screens.LoginScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 public class App extends Application {
     private static App instance;
     private DatabaseManager databaseManager;
     private AppConfig appConfig;
+    @Getter
     private PasswordManager passwordManager;
+    @Getter
     private ScreenManager screenManager;
 
     private Stage primaryStage;
@@ -52,14 +51,6 @@ public class App extends Application {
 
     public DatabaseManager getDatabase() {
         return databaseManager;
-    }
-
-    public PasswordManager getPasswordManager() {
-        return passwordManager;
-    }
-
-    public ScreenManager getScreenManager() {
-        return screenManager;
     }
 
     public static App getInstance() {

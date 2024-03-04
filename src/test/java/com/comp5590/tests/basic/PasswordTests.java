@@ -14,7 +14,7 @@ public class PasswordTests extends SetupTests {
 
     @Test
     public void testPasswordInstanceOfArgon() {
-        PasswordManager pm = PasswordManager.getInstanceOf(AppConfig.getInstance().HASH_ALGORITHM);
+        PasswordManager pm = PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM);
         assertInstanceOf(Argon2PasswordManager.class, pm);
     }
 
