@@ -58,7 +58,7 @@ public abstract class PasswordManager {
             }
         }
         logger.warn("No password manager found for name: " + passwordManager);
-        return null;
+        throw new IllegalArgumentException("No password manager found for name: " + passwordManager);
     }
 
     public String encodeBase64(String data) {

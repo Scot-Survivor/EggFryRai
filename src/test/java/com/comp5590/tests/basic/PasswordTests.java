@@ -25,9 +25,9 @@ public class PasswordTests extends SetupTests {
     }
 
     @Test
-    public void testPasswordInstanceOfNull() {
-        PasswordManager pm = PasswordManager.getInstanceOf("THIS_IS_NOT_A_VALID_PASSWORD_MANAGER");
-        assertNull(pm);
+    public void testPasswordThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> PasswordManager.getInstanceOf("INVALID PASSWORD MANAGER"));
     }
 
     @Test
