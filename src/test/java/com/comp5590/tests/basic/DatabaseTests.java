@@ -39,8 +39,8 @@ public class DatabaseTests extends SetupTests {
 
     @Test
     public void testAddressEntityCreation() {
-        Address address = new Address("1234 Example St", "Test", "AB",
-                "12345", "");
+        Address address = new Address("1234 Example St", "Test", "",
+                "GB", "AB23 1293");
         DatabaseManager db = DatabaseManager.getInstance();
         assertTrue(db.save(address));
     }

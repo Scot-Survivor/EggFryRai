@@ -1,13 +1,19 @@
 package com.comp5590.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "address")
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address{
 
     @Id
@@ -31,16 +37,30 @@ public class Address{
     private String addressLineThree;
 
     @OneToMany(mappedBy="address")
+    @ToString.Exclude
     private List<Patient> patients;
 
-    public Address() {
+    public Address(String lineOne, String lineTwo, String lineThree, String country, String postCode) {
+        this.addressLineOne = lineOne;
+        this.addressLineTwo = lineTwo;
+        this.country = country;
+        this.postCode = postCode;
+        this.addressLineThree = lineThree;
     }
 
-    public Address(String postCode, String country, String addressLineOne, String addressLineTwo, String addressLineThree) {
-        this.postCode = postCode;
-        this.country = country;
-        this.addressLineOne = addressLineOne;
-        this.addressLineTwo = addressLineTwo;
-        this.addressLineThree = addressLineThree;
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Address address = (Address) o;
+        return Objects.equals(getAddressId(), address.getAddressId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
