@@ -2,6 +2,7 @@ package com.comp5590.managers;
 
 import com.comp5590.configuration.AppConfig;
 import jakarta.persistence.Entity;
+import lombok.Getter;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,6 +20,9 @@ import java.util.Properties;
 
 public class DatabaseManager {
     public static DatabaseManager INSTANCE;
+
+    // This is a getter method for the sessionFactory field
+    @Getter
     private SessionFactory sessionFactory;
     private ServiceRegistry serviceRegistry;
     private final Logger logger = LoggerManager.getInstance().getLogger(DatabaseManager.class);
@@ -64,14 +68,6 @@ public class DatabaseManager {
     private List<Class<?>> getEntityClasses() {
         Reflections reflections = new Reflections("com.comp5590.entities");
         return reflections.getTypesAnnotatedWith(Entity.class).stream().toList();
-    }
-
-    /**
-     * Get the session factory
-     * @return the session factory
-     */
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
     }
 
     public boolean testConnection() {
