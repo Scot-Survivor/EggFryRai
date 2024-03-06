@@ -17,17 +17,21 @@ public class Booking {
     @Column(name = "bookingId")
     private int bookingId;
 
+    // 👩‍⚕️🧑‍⚕️👨‍⚕️
     @ManyToOne
     @JoinColumn(name="doctorId", nullable=false)
     private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name="patientId", nullable=true)
+    @JoinColumn(name="patientId", nullable=false)
     private Patient patient;
 
+    // reference the appt time through a DATETIME object
     @Column (name="apptTime")
     @Temporal(TemporalType.DATE)
     private Date apptTime;
 
-    // TODO: Add a new entity to store location
+    @ManyToOne
+    @JoinColumn (name="roomId", nullable=false)
+    private Room room;
 }

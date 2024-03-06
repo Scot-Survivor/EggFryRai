@@ -40,6 +40,10 @@ public class Address{
     @ToString.Exclude
     private List<Patient> patients;
 
+    @OneToMany(mappedBy="roomId")
+    @ToString.Exclude
+    private List<Room> rooms;
+
     public Address(String lineOne, String lineTwo, String lineThree, String country, String postCode) {
         this.addressLineOne = lineOne;
         this.addressLineTwo = lineTwo;
