@@ -87,7 +87,7 @@ public class LoginScreen extends AbstractScreen {
         }
     }
 
-    private HBox createTitle(){
+    private HBox createTitle(){ // Create title
         Text text = new Text("Please Login");
         text.getStyleClass().add("title-text");
         HBox titleBox = new HBox(text);
