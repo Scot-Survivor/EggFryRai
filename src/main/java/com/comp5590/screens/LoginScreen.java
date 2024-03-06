@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import org.apache.logging.log4j.core.Logger;
-import org.hibernate.Session;
 
 import java.util.List;
 
@@ -62,11 +61,7 @@ public class LoginScreen extends AbstractScreen {
     private void login(ActionEvent event){
         String email = this.email.getText();
         String password = this.password.getText();
-        Session session = getSessionFactory().openSession();
-        List<Patient> patients = session.createQuery("from Patient where email = :email", Patient.class)
-                .setParameter("email", email)
-                .list();
-        session.close();
+        List<Patient> patients = getDatabaseManager().getAll(Patient.class);
         if (patients.isEmpty()){
             logger.error("Invalid Username({})", email);
             this.error.setText("Invalid Username or Password");

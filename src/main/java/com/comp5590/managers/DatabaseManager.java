@@ -151,7 +151,7 @@ public class DatabaseManager {
     }
 
     public <T> List<T> getAll(final Class<T> type) {
-        final Session session = sessionFactory.getCurrentSession();
+        final Session session = sessionFactory.openSession();
         session.beginTransaction();
         // It's safe to use string append here as we are using a class object name
         final List<T> result = session.createQuery("from " + type.getName(), type).getResultList();
