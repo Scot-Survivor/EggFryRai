@@ -98,6 +98,22 @@ public class DatabaseManager {
         }
     }
 
+    public int saveGetId(Object object) {
+        try {
+            logger.debug("Saving object: " + object.toString());
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            int id = (int) session.save(object);
+            session.getTransaction().commit();
+            session.close();
+            return id;
+        } catch (Exception e) {
+            logger.error("Failed to save object: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+            return -1;
+        }
+    }
+
     /**
      * Execute a query against the database return list of results
      * @param query Hibernate Query to execute
