@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -49,6 +50,10 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name="addressId", nullable=false)
     private Address address;
+
+    @OneToMany(mappedBy="bookingId")
+    @ToString.Exclude
+    private List<Booking> bookings;
 
     @Override
     public final boolean equals(Object o) {

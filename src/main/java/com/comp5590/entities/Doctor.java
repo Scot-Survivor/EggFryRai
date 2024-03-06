@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -39,6 +40,10 @@ public class Doctor implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "communicationPreference")
     private CommunicationPreference communicationPreference;
+
+    @OneToMany(mappedBy="bookingId")
+    @ToString.Exclude
+    private List<Booking> bookings;
 
     public Doctor(String firstName, String surname, String phone, String fax, String mail,
                   CommunicationPreference communicationPreference) {
