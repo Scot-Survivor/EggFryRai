@@ -82,7 +82,12 @@ public class LoginScreen extends AbstractScreen {
         Patient patient = patients.get(0);
         boolean passwordValid  = app.getPasswordManager().passwordMatches(patient.getPassword(), password);
         if (passwordValid){
-            app.getScreenManager().showScene(HomeScreen.class);
+            if (!patient.isTwoFactorEnabled()) {
+                app.getScreenManager().showScene(HomeScreen.class);
+            } else {
+                app.getScreenManager().showScene(MFAScreen.class);
+            }
+            // Set the current user here, but only if the password is valids
             app.setCurrentUser(patient);
         } else {
             logger.error("Invalid Password(*)");
@@ -97,5 +102,9 @@ public class LoginScreen extends AbstractScreen {
         HBox titleBox = new HBox(text);
         titleBox.getStyleClass().add("title");
         return titleBox;
+    }
+
+    public void setErrorText(String txt) {
+        this.error.setText(txt);
     }
 }

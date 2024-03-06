@@ -79,6 +79,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     implementation 'org.reflections:reflections:0.9.12'
+
+    // 2FA
+    implementation 'dev.samstevens.totp:totp:1.7.1'
 }
 
 /* javafx {

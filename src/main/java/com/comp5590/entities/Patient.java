@@ -45,8 +45,19 @@ public class Patient {
     private String email;
     @Column(name = "password")
     private String password;  // This will be base64 encoded hash
+
+    @Column(name = "twoFactorEnabled")
+    private boolean twoFactorEnabled;
+
     @Column(name = "authenticationToken")
     private String authenticationToken;
+    /**
+     * The recovery codes are used to recover the account if the user loses access to their 2FA device
+     * They're split by a comma
+     */
+    @Column(name = "recoveryCodes")
+    @ToString.Exclude
+    private String recoveryCodes;
 
     // Address
     @ManyToOne
@@ -56,6 +67,26 @@ public class Patient {
     @OneToMany(mappedBy="bookingId")
     @ToString.Exclude
     private List<Booking> bookings;
+
+    /**
+     * Constructor for all required fields
+     */
+    public Patient(String firstName, String surName, String phone, String fax, String additionalNotes,
+                   CommunicationPreference communicationPreference, String email, String password,
+                   boolean twoFactorEnabled, String authenticationToken, String recoveryCodes, Address address) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.phone = phone;
+        this.fax = fax;
+        this.additionalNotes = additionalNotes;
+        this.communicationPreference = communicationPreference;
+        this.email = email;
+        this.password = password;
+        this.twoFactorEnabled = twoFactorEnabled;
+        this.authenticationToken = authenticationToken;
+        this.recoveryCodes = recoveryCodes;
+        this.address = address;
+    }
 
     @Override
     public final boolean equals(Object o) {

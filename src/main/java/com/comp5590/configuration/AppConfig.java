@@ -54,6 +54,14 @@ public class AppConfig {
     public static final int HASH_SALT_LENGTH = 128 / 8; // 128 bits
     public static final int HASH_LENGTH = 256 / 8; // 256 bits
 
+    // 2FA Settings
+    public static String TOTP_ISSUER_NAME = "Patient Doctor Management System";
+    public static String TOTP_ALGORITHM = "SHA256";
+    public static int TOTP_SECRET_CHARACTERS = 32;  // Length of secret
+    public static int TOTP_DIGITS = 6;
+    public static int TOTP_TIME_PERIOD = 30;
+    public static int TOTP_CODE_ROLL = 1;  // Number of codes to check either side of the current time
+
     // General App Configuration
     public static String LOG_LEVEL = "DEBUG";
 
