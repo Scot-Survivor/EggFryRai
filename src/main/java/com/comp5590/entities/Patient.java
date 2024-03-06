@@ -45,6 +45,8 @@ public class Patient {
     private String email;
     @Column(name = "password")
     private String password;  // This will be base64 encoded hash
+    @Column(name = "authenticationToken")
+    private String authenticationToken;
 
     // Address
     @ManyToOne
