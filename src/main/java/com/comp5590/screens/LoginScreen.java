@@ -18,7 +18,9 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-
+/**
+ * @author Rhys Walker
+ */
 public class LoginScreen extends AbstractScreen {
     private final SessionFactory sessionFactory;
     private final App app;
@@ -87,6 +89,7 @@ public class LoginScreen extends AbstractScreen {
         }
     }
 
+    // Create title
     private HBox createTitle(){
         Text text = new Text("Please Login");
         text.getStyleClass().add("title-text");
