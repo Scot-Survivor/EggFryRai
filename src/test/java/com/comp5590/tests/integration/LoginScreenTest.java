@@ -1,7 +1,6 @@
 package com.comp5590.tests.integration;
 
 import com.comp5590.App;
-import com.comp5590.entities.Address;
 import com.comp5590.entities.Patient;
 import com.comp5590.managers.security.mfa.TOTPManager;
 import com.comp5590.screens.HomeScreen;
@@ -28,7 +27,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class LoginScreenTest extends SetupTests {
     App app;
     TOTPManager totpManager;
-    Patient testUser;
 
     @Start  // This is similar to @BeforeAll it will run before all tests,
     // this is where we can get the stage and start the application
@@ -51,38 +49,6 @@ public class LoginScreenTest extends SetupTests {
             session.getTransaction().commit();
             return patients.get(0);
         }
-    }
-
-    private void addTestUserMFA() {
-        // Add a test user to the database
-        Address address = new Address("1234 Example St", "Test", "AB",
-                "12345", "");
-        testUser = new Patient();
-        testUser.setAddress(address);
-        testUser.setEmail("mfa@example.org");
-        testUser.setPassword(app.getPasswordManager().hashPassword("password"));
-        testUser.setTwoFactorEnabled(true);
-        testUser.setAuthenticationToken(totpManager.generateSecret());
-        testUser.setRecoveryCodes(totpManager.generateRecoveryCodes());
-        app.getDatabase().save(address);
-        app.getDatabase().save(testUser);
-
-        // Get the user back from database, this is due to ID being updated.
-        testUser = getUserFromDb("mfa@example.org");
-    }
-
-    private void addTestUserNoMFA() {
-        // Add a test user to the database
-        Address address = new Address("1234 Example St", "Test", "AB",
-                "12345", "");
-        testUser = new Patient();
-        testUser.setAddress(address);
-        testUser.setEmail("example@example.org");
-        testUser.setPassword(app.getPasswordManager().hashPassword("password"));
-        app.getDatabase().save(address);
-        app.getDatabase().save(testUser);
-
-        testUser = getUserFromDb("example@example.org");
     }
 
     private Pane getLoginScreen() {
@@ -123,7 +89,7 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginNoMFA(FxRobot robot) {
-        this.addTestUserNoMFA();
+        Patient p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
@@ -145,11 +111,12 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
-            assertThat(app.getCurrentUser().getId()).isEqualTo(testUser.getId());
+            assertThat(app.getCurrentUser().getId()).isEqualTo(p.getId());
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
             app.setCurrentUser(null);
         });
+        SetupTests.remove(p.getClass(), p.getId());
     }
 
     /**
@@ -158,7 +125,8 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginMFARecoveryCode(FxRobot robot) {
-        this.addTestUserMFA();
+        Patient p = SetupTests.createPatient("mfa@example.org", "password", true, totpManager.generateSecret(),
+                totpManager.generateRecoveryCodes());
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
@@ -182,7 +150,7 @@ public class LoginScreenTest extends SetupTests {
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(MFAScreen.class);
 
             // Write in MFA codes
-            String recoveryCode = testUser.getRecoveryCodes().split(",")[0];
+            String recoveryCode = p.getRecoveryCodes().split(",")[0];
             robot.lookup("#code").queryAs(javafx.scene.control.TextField.class)
                     .setText(recoveryCode);
 
@@ -190,12 +158,13 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
-            assertThat(app.getCurrentUser().getId()).isEqualTo(testUser.getId());
+            assertThat(app.getCurrentUser().getId()).isEqualTo(p.getId());
 
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
             app.setCurrentUser(null);
         });
+        SetupTests.remove(p.getClass(), p.getId());
     }
 
     /**
@@ -204,7 +173,8 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginMFAInvalidRecoveryCode(FxRobot robot) {
-        this.addTestUserMFA();
+        Patient p = SetupTests.createPatient("mfa@example.org", "password", true, totpManager.generateSecret(),
+                totpManager.generateRecoveryCodes());
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
@@ -242,11 +212,12 @@ public class LoginScreenTest extends SetupTests {
             app.getScreenManager().showScene(LoginScreen.class);
             app.setCurrentUser(null);
         });
+        SetupTests.remove(p.getClass(), p.getId());
     }
 
     @Test
     public void testFailedLogin(FxRobot robot) {
-        this.addTestUserNoMFA();
+        Patient p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
@@ -273,5 +244,6 @@ public class LoginScreenTest extends SetupTests {
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
         });
+        SetupTests.remove(p.getClass(), p.getId());
     }
 }
