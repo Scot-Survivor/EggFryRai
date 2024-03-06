@@ -89,7 +89,6 @@ public class LoginScreen extends AbstractScreen {
         }
     }
 
-
     // Create title
     private HBox createTitle(){
         Text text = new Text("Please Login");

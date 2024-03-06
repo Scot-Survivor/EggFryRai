@@ -17,6 +17,7 @@ public class Insurance {
     @Column(name = "patientId")
     private int insuranceId;
 
+    // Join patient table to insurance table
     @OneToOne
     @JoinColumn(name="patientId")
     private Patient patientId;
@@ -24,9 +25,11 @@ public class Insurance {
     @Column(name="insuranceProvider")
     private String insuranceProvider;
 
+    @Temporal(TemporalType.DATE)
     @Column(name="startDate")
     private Date startDate;
 
+    @Temporal(TemporalType.DATE)
     @Column(name="endDate")
     private Date endDate;
 }
