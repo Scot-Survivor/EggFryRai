@@ -2,7 +2,7 @@ package com.comp5590.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.Date;
 
 @Entity
 @Table(name = "insurance")
@@ -17,15 +17,16 @@ public class Insurance {
     @Column(name = "patientId")
     private int insuranceId;
 
-    @Column(name="patientIdd")
-    private String patientIdd;
+    @OneToOne
+    @JoinColumn(name="patientId")
+    private Patient patientId;
 
     @Column(name="insuranceProvider")
     private String insuranceProvider;
 
     @Column(name="startDate")
-    private String startDate;
+    private Date startDate;
 
     @Column(name="endDate")
-    private String endDate;
+    private Date endDate;
 }
