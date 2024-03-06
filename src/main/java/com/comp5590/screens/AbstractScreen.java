@@ -1,18 +1,33 @@
 package com.comp5590.screens;
 
+import com.comp5590.App;
 import com.comp5590.entities.Patient;
+import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
 import javafx.scene.layout.Pane;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.SessionFactory;
 
+@Getter
 public abstract class AbstractScreen {
+    private final App app;
+    private final DatabaseManager databaseManager;
     private final ScreenManager screenManager;
+    private final SessionFactory sessionFactory;
+
+    @Setter
     private Pane rootPane;
+
     /**
      * The path to the CSS file for the screen
      */
     protected String cssPath;
     public AbstractScreen(ScreenManager screenManager) {
         this.screenManager = screenManager;
+        this.app = App.getInstance();
+        this.databaseManager = DatabaseManager.getInstance();
+        this.sessionFactory = this.databaseManager.getSessionFactory();
         this.setup();
     }
 
@@ -37,30 +52,6 @@ public abstract class AbstractScreen {
     public boolean canAccess(Patient patient) {
         return true;
     };
-
-    /**
-     * Set the root pane for the screen
-     * @param root the root pane
-     */
-    public void setRootPane(Pane root) {
-        this.rootPane = root;
-    }
-
-    /**
-     * Get the root pane for the screen
-     * @return the root pane
-     */
-    public Pane getRootPane() {
-        return rootPane;
-    }
-
-    public ScreenManager getSceneManager() {
-        return screenManager;
-    }
-
-    public String getCssPath() {
-        return cssPath;
-    }
 
 
 }
