@@ -1,5 +1,9 @@
 package com.comp5590.screens;
 
+/**
+ * @author Rhys Walker
+ */
+
 import com.comp5590.App;
 import com.comp5590.entities.Patient;
 import com.comp5590.managers.DatabaseManager;
