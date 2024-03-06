@@ -1,5 +1,6 @@
 package com.comp5590.tests.basic;
 
+import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.entities.Address;
 import com.comp5590.entities.Patient;
@@ -58,7 +59,7 @@ public class SetupTests {
     public static Patient createPatient(String email, String password) {
         Patient patient = createPatient();
         patient.setEmail(email);
-        patient.setPassword(password);
+        patient.setPassword(App.getInstance().getPasswordManager().hashPassword(password));
         // update
         getDbManager().update(patient);
         patient = getDbManager().get(Patient.class, patient.getId());
@@ -83,5 +84,12 @@ public class SetupTests {
         getDbManager().update(patient);
         patient = getDbManager().get(Patient.class, patient.getId());
         return patient;
+    }
+
+    /**
+     * Remove an object from the database by id
+     */
+    public static <T> void remove(final Class<T> type, int id) {
+        getDbManager().delete(getDbManager().get(type, id));
     }
 }

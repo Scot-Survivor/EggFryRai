@@ -167,10 +167,11 @@ public class DatabaseManager {
      * @param <T> The type of object to get
      */
     public <T> T get(final Class<T> type, final int id) {
-        final Session session = sessionFactory.getCurrentSession();
+        final Session session = sessionFactory.openSession();
         session.beginTransaction();
         final T result = session.get(type, id);
         session.getTransaction().commit();
+        session.close();
         return result;
     }
 
@@ -183,11 +184,12 @@ public class DatabaseManager {
      * @param <T> The type of object to get
      */
     public <T> T getByProperty(final Class<T> type, final String property, final Object value) {
-        final Session session = sessionFactory.getCurrentSession();
+        final Session session = sessionFactory.openSession();
         session.beginTransaction();
         final T result = (T) session.createQuery("from " + type.getName() + " where " + property + " = :value")
                 .setParameter("value", value).uniqueResult();
         session.getTransaction().commit();
+        session.close();
         return result;
     }
 
