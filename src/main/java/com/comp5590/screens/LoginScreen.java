@@ -83,6 +83,7 @@ public class LoginScreen extends AbstractScreen {
         boolean passwordValid  = app.getPasswordManager().passwordMatches(patient.getPassword(), password);
         if (passwordValid){
             app.getScreenManager().showScene(HomeScreen.class);
+            app.setCurrentUser(patient);
         } else {
             logger.error("Invalid Password(*)");
             this.error.setText("Invalid Username or Password");

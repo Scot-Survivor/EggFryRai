@@ -1,6 +1,7 @@
 package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
+import com.comp5590.entities.Patient;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.security.passwords.Argon2PasswordManager;
@@ -11,6 +12,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 
 public class App extends Application {
     private static App instance;
@@ -20,6 +22,10 @@ public class App extends Application {
     private PasswordManager passwordManager;
     @Getter
     private ScreenManager screenManager;
+
+    @Setter
+    @Getter
+    private Patient currentUser;
 
     private Stage primaryStage;
 

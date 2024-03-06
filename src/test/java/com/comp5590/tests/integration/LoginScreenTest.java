@@ -9,12 +9,15 @@ import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.testfx.api.FxRobot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -22,6 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(ApplicationExtension.class)  // TestFX Extension)
 public class LoginScreenTest extends SetupTests {
     App app;
+    Patient testUser;
 
     @Start  // This is similar to @BeforeAll it will run before all tests,
     // this is where we can get the stage and start the application
@@ -32,16 +36,28 @@ public class LoginScreenTest extends SetupTests {
         stage.show();
     }
 
-    private void addTestUser() {
+    private void addTestUserNoMFA() {
         // Add a test user to the database
         Address address = new Address("1234 Example St", "Test", "AB",
                 "12345", "");
-        Patient patient = new Patient();
-        patient.setAddress(address);
-        patient.setEmail("example@example.org");
-        patient.setPassword(app.getPasswordManager().hashPassword("password"));
+        testUser = new Patient();
+        testUser.setAddress(address);
+        testUser.setEmail("example@example.org");
+        testUser.setPassword(app.getPasswordManager().hashPassword("password"));
         app.getDatabase().save(address);
-        app.getDatabase().save(patient);
+        app.getDatabase().save(testUser);
+
+        // Get the user back from database, this is due to ID being updated.
+        SessionFactory sessionFactory = app.getDatabase().getSessionFactory();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            List<Patient> patients = session.createQuery("from Patient where email = :email", Patient.class)
+                    .setMaxResults(1)
+                    .setParameter("email", "example@example.org")
+                    .list();
+            session.getTransaction().commit();
+            testUser = patients.get(0);
+        }
     }
 
     private Pane getLoginScreen() {
@@ -82,7 +98,7 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLogin(FxRobot robot) {
-        this.addTestUser();
+        this.addTestUserNoMFA();
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
@@ -104,6 +120,7 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
+            assertThat(app.getCurrentUser().getId()).isEqualTo(testUser.getId());
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
         });
@@ -111,7 +128,7 @@ public class LoginScreenTest extends SetupTests {
 
     @Test
     public void testFailedLogin(FxRobot robot) {
-        this.addTestUser();
+        this.addTestUserNoMFA();
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
