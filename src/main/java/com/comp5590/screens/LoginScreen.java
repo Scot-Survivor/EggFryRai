@@ -1,8 +1,6 @@
 package com.comp5590.screens;
 
-import com.comp5590.App;
 import com.comp5590.entities.Patient;
-import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import javafx.event.ActionEvent;
@@ -14,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import java.util.List;
 
@@ -22,8 +19,6 @@ import java.util.List;
  * @author Rhys Walker
  */
 public class LoginScreen extends AbstractScreen {
-    private final SessionFactory sessionFactory;
-    private final App app;
     private TextField email;
     private PasswordField password;
     private Label error;
@@ -31,8 +26,6 @@ public class LoginScreen extends AbstractScreen {
 
     public LoginScreen(ScreenManager screenManager){ // exception needed for hashing
         super(screenManager);
-        this.sessionFactory = DatabaseManager.getInstance().getSessionFactory();
-        this.app = App.getInstance();
     }
 
     @Override
@@ -69,7 +62,7 @@ public class LoginScreen extends AbstractScreen {
     private void login(ActionEvent event){
         String email = this.email.getText();
         String password = this.password.getText();
-        Session session = sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         List<Patient> patients = session.createQuery("from Patient where email = :email", Patient.class)
                 .setParameter("email", email)
                 .list();
@@ -80,15 +73,15 @@ public class LoginScreen extends AbstractScreen {
             return;
         }
         Patient patient = patients.get(0);
-        boolean passwordValid  = app.getPasswordManager().passwordMatches(patient.getPassword(), password);
+        boolean passwordValid  = getApp().getPasswordManager().passwordMatches(patient.getPassword(), password);
         if (passwordValid){
             if (!patient.isTwoFactorEnabled()) {
-                app.getScreenManager().showScene(HomeScreen.class);
+                getApp().getScreenManager().showScene(HomeScreen.class);
             } else {
-                app.getScreenManager().showScene(MFAScreen.class);
+                getApp().getScreenManager().showScene(MFAScreen.class);
             }
             // Set the current user here, but only if the password is valids
-            app.setCurrentUser(patient);
+            getApp().setCurrentUser(patient);
         } else {
             logger.error("Invalid Password(*)");
             this.error.setText("Invalid Username or Password");
