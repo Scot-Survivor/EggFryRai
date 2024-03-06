@@ -1,8 +1,10 @@
 package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
+import com.comp5590.entities.Patient;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.security.mfa.TOTPManager;
 import com.comp5590.managers.security.passwords.Argon2PasswordManager;
 import com.comp5590.managers.security.passwords.PasswordManager;
 import com.comp5590.screens.HomeScreen;
@@ -11,6 +13,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 
 public class App extends Application {
     private static App instance;
@@ -20,6 +23,12 @@ public class App extends Application {
     private PasswordManager passwordManager;
     @Getter
     private ScreenManager screenManager;
+    @Getter
+    private TOTPManager totpManager;
+
+    @Setter
+    @Getter
+    private Patient currentUser;
 
     private Stage primaryStage;
 
@@ -39,6 +48,7 @@ public class App extends Application {
         primaryStage = stage;
         appConfig = AppConfig.getInstance();
         screenManager = new ScreenManager(primaryStage);
+        totpManager = TOTPManager.getInstance();
 
         databaseManager = DatabaseManager.getInstance();
 
