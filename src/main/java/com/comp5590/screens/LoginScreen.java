@@ -1,9 +1,5 @@
 package com.comp5590.screens;
 
-/**
- * @author Rhys Walker
- */
-
 import com.comp5590.App;
 import com.comp5590.entities.Patient;
 import com.comp5590.managers.DatabaseManager;
@@ -22,7 +18,9 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-
+/**
+ * @author Rhys Walker
+ */
 public class LoginScreen extends AbstractScreen {
     private final SessionFactory sessionFactory;
     private final App app;
@@ -91,7 +89,9 @@ public class LoginScreen extends AbstractScreen {
         }
     }
 
-    private HBox createTitle(){ // Create title
+
+    // Create title
+    private HBox createTitle(){
         Text text = new Text("Please Login");
         text.getStyleClass().add("title-text");
         HBox titleBox = new HBox(text);
