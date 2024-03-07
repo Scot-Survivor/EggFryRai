@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.Date;
 import lombok.*;
 
+import com.comp5590.validators.annontations.ChronologicalDates;
+
 @Entity
 @Table(name = "insurance")
 @Getter
@@ -11,6 +13,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@ChronologicalDates
 public class Insurance {
 
     @Id
