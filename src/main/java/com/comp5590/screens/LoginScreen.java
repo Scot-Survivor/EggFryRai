@@ -1,5 +1,9 @@
 package com.comp5590.screens;
 
+import com.comp5590.components.LoginScreen.BigIcon;
+import com.comp5590.components.LoginScreen.Paragraph;
+// import title component
+import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
@@ -7,22 +11,17 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.*;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
 import org.apache.logging.log4j.core.Logger;
-
-
-import com.comp5590.components.LoginScreen.BigIcon;
-import com.comp5590.components.LoginScreen.Paragraph;
-// import title component
-import com.comp5590.components.LoginScreen.Title;
 
 /**
  * @author Rhys Walker
  */
 public class LoginScreen extends AbstractScreen {
+
     private TextField email;
     private PasswordField password;
     private Label error;
@@ -108,7 +107,9 @@ public class LoginScreen extends AbstractScreen {
             this.error.setText("Invalid Username or Password");
             return;
         }
-        boolean passwordValid = getApp().getPasswordManager().passwordMatches(user.getAuthenticationDetails().getPassword(), password);
+        boolean passwordValid = getApp()
+            .getPasswordManager()
+            .passwordMatches(user.getAuthenticationDetails().getPassword(), password);
         if (passwordValid) {
             if (!user.getAuthenticationDetails().isTwoFactorEnabled()) {
                 getApp().getScreenManager().showScene(HomeScreen.class);

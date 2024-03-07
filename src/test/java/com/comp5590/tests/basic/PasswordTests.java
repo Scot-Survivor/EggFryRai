@@ -1,13 +1,13 @@
 package com.comp5590.tests.basic;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.security.passwords.Argon2PasswordManager;
 import com.comp5590.managers.security.passwords.BCryptPasswordManager;
 import com.comp5590.managers.security.passwords.PasswordManager;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Order(3)
 public class PasswordTests extends SetupTests {
@@ -26,8 +26,7 @@ public class PasswordTests extends SetupTests {
 
     @Test
     public void testPasswordThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> PasswordManager.getInstanceOf("INVALID PASSWORD MANAGER"));
+        assertThrows(IllegalArgumentException.class, () -> PasswordManager.getInstanceOf("INVALID PASSWORD MANAGER"));
     }
 
     @Test

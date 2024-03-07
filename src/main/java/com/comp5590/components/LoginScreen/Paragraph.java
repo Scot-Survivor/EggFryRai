@@ -7,10 +7,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class Paragraph extends HBox {
-  public Paragraph(String paragraph) {
-    Text text = new Text(paragraph);
-    text.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-    text.setFill(Color.BLACK);
-    getChildren().add(text);
-  }
+
+    public Paragraph(String paragraph) {
+        Text text = new Text(paragraph);
+        text.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        text.setFill(Color.BLACK);
+        getChildren().add(text);
+    }
 }

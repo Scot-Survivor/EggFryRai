@@ -1,17 +1,18 @@
 package com.comp5590.managers.security.passwords;
 
 import com.comp5590.managers.LoggerManager;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Set;
 import org.apache.logging.log4j.core.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Set;
-
 public abstract class PasswordManager {
+
     private static final Logger logger = LoggerManager.getInstance().getLogger(PasswordManager.class);
     protected boolean available = false;
+
     /**
      * Checks if two hashes are identical
      * @param storedPassword The base64 encoded hash from the database.
@@ -41,8 +42,7 @@ public abstract class PasswordManager {
     }
 
     public static PasswordManager getInstanceOf(String passwordManager) {
-        Reflections reflections = new Reflections("com.comp5590.managers.security.passwords",
-                Scanners.SubTypes);
+        Reflections reflections = new Reflections("com.comp5590.managers.security.passwords", Scanners.SubTypes);
         Set<Class<? extends PasswordManager>> pms = reflections.getSubTypesOf(PasswordManager.class);
         pms.forEach(pm -> {
             logger.debug("Found PasswordManager: " + pm.getSimpleName());

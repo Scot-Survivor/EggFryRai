@@ -12,11 +12,11 @@ import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import dev.samstevens.totp.time.SystemTimeProvider;
 import dev.samstevens.totp.time.TimeProvider;
+import java.util.Arrays;
 import org.apache.logging.log4j.core.Logger;
 
-import java.util.Arrays;
-
 public class TOTPManager {
+
     private static TOTPManager instance;
     private final SecretGenerator secretGenerator;
     private final QrGenerator qrGenerator;
@@ -62,15 +62,14 @@ public class TOTPManager {
      */
     public QrData generateRawQRData(String secret) {
         return new QrData.Builder()
-                .label(AppConfig.APP_NAME)
-                .issuer(AppConfig.TOTP_ISSUER_NAME)
-                .secret(secret)
-                .algorithm(getHashAlgorithm())
-                .digits(AppConfig.TOTP_DIGITS)
-                .period(AppConfig.TOTP_TIME_PERIOD)
-                .build();
+            .label(AppConfig.APP_NAME)
+            .issuer(AppConfig.TOTP_ISSUER_NAME)
+            .secret(secret)
+            .algorithm(getHashAlgorithm())
+            .digits(AppConfig.TOTP_DIGITS)
+            .period(AppConfig.TOTP_TIME_PERIOD)
+            .build();
     }
-
 
     /**
      * Generate a PNG image of the QR code

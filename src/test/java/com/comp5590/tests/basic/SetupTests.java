@@ -11,6 +11,7 @@ import com.comp5590.managers.security.passwords.PasswordManager;
 import org.junit.jupiter.api.BeforeAll;
 
 public class SetupTests {
+
     @BeforeAll
     public static void setup() {
         // Set up the logger
@@ -58,8 +59,12 @@ public class SetupTests {
      * Create authentication details with mfa
      * @return AuthenticationDetails
      */
-    public static AuthenticationDetails createAuthenticationDetails(String email, String password,
-                                                                    String authenticationToken, String recoveryCodes) {
+    public static AuthenticationDetails createAuthenticationDetails(
+        String email,
+        String password,
+        String authenticationToken,
+        String recoveryCodes
+    ) {
         AuthenticationDetails authenticationDetails = createAuthenticationDetails(email, password);
         authenticationDetails.setTwoFactorEnabled(true);
         authenticationDetails.setAuthenticationToken(authenticationToken);
@@ -76,8 +81,15 @@ public class SetupTests {
      */
     public static User createPatient(AuthenticationDetails authenticationDetails) {
         Address address = createAddress();
-        User user = new User("Test", "User", "0123456789", "0123456789",
-                "Test Notes", CommunicationPreference.EMAIL, address);
+        User user = new User(
+            "Test",
+            "User",
+            "0123456789",
+            "0123456789",
+            "Test Notes",
+            CommunicationPreference.EMAIL,
+            address
+        );
         user.setRole(UserRole.PATIENT);
         user.setAuthenticationDetails(authenticationDetails);
         int id = getDbManager().saveGetId(user);
@@ -104,7 +116,7 @@ public class SetupTests {
      * @return User
      */
     public static User createPatient(String email, String password, String authenticationToken, String recoveryCodes) {
-        return createPatient( createAuthenticationDetails(email, password, authenticationToken, recoveryCodes));
+        return createPatient(createAuthenticationDetails(email, password, authenticationToken, recoveryCodes));
     }
 
     /**

@@ -1,23 +1,22 @@
 package com.comp5590.tests.basic;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.comp5590.entities.Address;
-import com.comp5590.entities.User;
 import com.comp5590.entities.Insurance;
+import com.comp5590.entities.User;
 import com.comp5590.managers.DatabaseManager;
 import java.text.ParseException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class InsuranceTests extends SetupTests {
+
     @Test
     public void testInsuranceEntityCreation() throws ParseException {
         // Make address for patient object
-        Address address = new Address("1234 Example St", "Test", "AB",
-                "12345", "");
+        Address address = new Address("1234 Example St", "Test", "AB", "12345", "");
 
         // Create patient object
         User testUser = new User();

@@ -17,13 +17,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class App extends Application {
+
     private static App instance;
     private DatabaseManager databaseManager;
     private AppConfig appConfig;
+
     @Getter
     private PasswordManager passwordManager;
+
     @Getter
     private ScreenManager screenManager;
+
     @Getter
     private TOTPManager totpManager;
 

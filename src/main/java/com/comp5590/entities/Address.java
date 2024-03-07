@@ -1,11 +1,10 @@
 package com.comp5590.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
-
 import java.util.List;
 import java.util.Objects;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 @Entity
 @Table(name = "address")
@@ -14,33 +13,33 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address{
+public class Address {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "addressId")
     private int addressId;
 
-    @Column(name="postCode")
+    @Column(name = "postCode")
     private String postCode;
 
-    @Column(name="country")
+    @Column(name = "country")
     private String country;
 
-    @Column(name="addressLineOne")
+    @Column(name = "addressLineOne")
     private String addressLineOne;
 
-    @Column(name="addressLineTwo")
+    @Column(name = "addressLineTwo")
     private String addressLineTwo;
 
-    @Column(name="addressLineThree")
+    @Column(name = "addressLineThree")
     private String addressLineThree;
 
-    @OneToMany(mappedBy="address")
+    @OneToMany(mappedBy = "address")
     @ToString.Exclude
     private List<User> users;
 
-    @OneToMany(mappedBy="roomId")
+    @OneToMany(mappedBy = "roomId")
     @ToString.Exclude
     private List<Room> rooms;
 
@@ -56,8 +55,12 @@ public class Address{
     public final boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+            ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+            : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+            ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+            : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         Address address = (Address) o;
         return Objects.equals(getAddressId(), address.getAddressId());
@@ -65,6 +68,8 @@ public class Address{
 
     @Override
     public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+        return this instanceof HibernateProxy
+            ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+            : getClass().hashCode();
     }
 }

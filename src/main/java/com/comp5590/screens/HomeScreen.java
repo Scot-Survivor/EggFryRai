@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 
 public class HomeScreen extends AbstractScreen {
 
-    public HomeScreen(ScreenManager screenManager){
+    public HomeScreen(ScreenManager screenManager) {
         super(screenManager);
     }
 
@@ -21,7 +21,7 @@ public class HomeScreen extends AbstractScreen {
         ((BorderPane) getRootPane()).setCenter(center());
     }
 
-    private VBox center(){
+    private VBox center() {
         Text welcome = new Text("Welcome");
         VBox central = new VBox(welcome);
         return central;

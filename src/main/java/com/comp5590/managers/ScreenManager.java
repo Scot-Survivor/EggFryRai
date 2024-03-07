@@ -7,6 +7,8 @@ package com.comp5590.managers;
 
 import com.comp5590.screens.AbstractScreen;
 import com.comp5590.screens.LoginScreen;
+import java.util.Arrays;
+import java.util.HashMap;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -14,9 +16,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.core.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
-
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class ScreenManager {
 
@@ -31,7 +30,7 @@ public class ScreenManager {
     private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
     private AbstractScreen currentScreen;
 
-    public ScreenManager(Stage primary){
+    public ScreenManager(Stage primary) {
         this.primaryStage = primary;
         this.screens = new HashMap<>();
         this.screenInstances = new HashMap<>();
@@ -63,7 +62,7 @@ public class ScreenManager {
     /**
      * Set the screen to be full screen
      */
-    public void fullscreen(){
+    public void fullscreen() {
         // get the screen and size and set to be full screen borderless
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
@@ -83,10 +82,9 @@ public class ScreenManager {
         if (screens.containsKey(scene)) {
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
-            if (primaryStage.getScene() == toShow){
+            if (primaryStage.getScene() == toShow) {
                 logger.warn("Scene {} is already showing", scene.getName());
-            }
-            else{
+            } else {
                 this.currentScreen = screenInstances.get(scene);
                 // display the new scene.
                 primaryStage.setScene(toShow);
@@ -99,11 +97,10 @@ public class ScreenManager {
         }
     }
 
-    private Scene createScene(AbstractScreen screen){
+    private Scene createScene(AbstractScreen screen) {
         Scene scene = new Scene(screen.getRootPane(), width, height);
         String cssPath = screen.getCssPath();
-        if (cssPath != null)
-            scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+        if (cssPath != null) scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
         return scene;
     }
 

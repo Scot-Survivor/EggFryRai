@@ -1,6 +1,13 @@
 package com.comp5590.configuration;
 
 import com.comp5590.managers.LoggerManager;
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
@@ -12,14 +19,6 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.FileHandler;
 import org.apache.logging.log4j.core.Logger;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Application configuration
  * This class is a singleton
@@ -29,6 +28,7 @@ import java.util.List;
  * Any field to save must be static
  */
 public class AppConfig {
+
     private final File configFile = new File(ConfigFile);
 
     private Configuration config;
@@ -57,17 +57,16 @@ public class AppConfig {
     // 2FA Settings
     public static String TOTP_ISSUER_NAME = "User Doctor Management System";
     public static String TOTP_ALGORITHM = "SHA256";
-    public static int TOTP_SECRET_CHARACTERS = 32;  // Length of secret
+    public static int TOTP_SECRET_CHARACTERS = 32; // Length of secret
     public static int TOTP_DIGITS = 6;
     public static int TOTP_TIME_PERIOD = 30;
-    public static int TOTP_CODE_ROLL = 1;  // Number of codes to check either side of the current time
+    public static int TOTP_CODE_ROLL = 1; // Number of codes to check either side of the current time
 
     // General App Configuration
     public static String LOG_LEVEL = "DEBUG";
 
     // Database Configuration
     public static String DATABASE_PROPERTIES_FILE = "hibernate.properties";
-
 
     // Methods
     private AppConfig() {
@@ -86,7 +85,7 @@ public class AppConfig {
         File configFile = new File(ConfigFile);
         PropertiesConfiguration propertiesConfig;
         try {
-            propertiesConfig= configs.properties(configFile);
+            propertiesConfig = configs.properties(configFile);
         } catch (ConfigurationException e) {
             logger.error("Failed to load configuration for cleaning: " + e.getMessage());
             return removed;
@@ -126,12 +125,13 @@ public class AppConfig {
         }
 
         try {
-            builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-                    .configure(params.fileBased().setFile(configFile));
+            builder =
+            new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+                .configure(params.fileBased().setFile(configFile));
             config = builder.getConfiguration();
             // logger debug output all the properties
             logger.debug("Loaded configuration: ");
-            for (Iterator<String> it = config.getKeys(); it.hasNext(); ) {
+            for (Iterator<String> it = config.getKeys(); it.hasNext();) {
                 String key = it.next();
                 logger.debug(key + " = " + config.getProperty(key));
             }
@@ -164,10 +164,13 @@ public class AppConfig {
     }
 
     private boolean isValidField(Field field) {
-        return !Modifier.isFinal(field.getModifiers()) && Modifier.isStatic(field.getModifiers()) &&
-                !Modifier.isPrivate(field.getModifiers()) &&
-                // Check the field is all uppercase
-                field.getName().toUpperCase().equals(field.getName());
+        return (
+            !Modifier.isFinal(field.getModifiers()) &&
+            Modifier.isStatic(field.getModifiers()) &&
+            !Modifier.isPrivate(field.getModifiers()) &&
+            // Check the field is all uppercase
+            field.getName().toUpperCase().equals(field.getName())
+        );
     }
 
     public static AppConfig getInstance() {
@@ -179,7 +182,7 @@ public class AppConfig {
 
     public void reload() {
         logger.warn("Reloading configuration");
-        instance = new AppConfig();  // Force reload
+        instance = new AppConfig(); // Force reload
     }
 
     public List<Field> getConfigFields() {

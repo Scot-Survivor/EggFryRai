@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 
 @Getter
 public abstract class AbstractScreen {
+
     private final App app;
     private final DatabaseManager databaseManager;
     private final ScreenManager screenManager;
@@ -23,6 +24,7 @@ public abstract class AbstractScreen {
      * The path to the CSS file for the screen
      */
     protected String cssPath;
+
     public AbstractScreen(ScreenManager screenManager) {
         this.screenManager = screenManager;
         this.app = App.getInstance();
@@ -42,7 +44,7 @@ public abstract class AbstractScreen {
      */
     public boolean canAccess() {
         return true;
-    };
+    }
 
     /**
      * This method is called when the screen is shown, to ensure that the logged in user has access to the screen
@@ -51,5 +53,5 @@ public abstract class AbstractScreen {
      */
     public boolean canAccess(User user) {
         return true;
-    };
+    }
 }

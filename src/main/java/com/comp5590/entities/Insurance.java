@@ -1,8 +1,8 @@
 package com.comp5590.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.util.Date;
+import lombok.*;
 
 @Entity
 @Table(name = "insurance")
@@ -12,24 +12,25 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Insurance {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "patientId")
     private int insuranceId;
 
     // Join patient table to insurance table
     @OneToOne
-    @JoinColumn(name="patientId")
+    @JoinColumn(name = "patientId")
     private User userId;
 
-    @Column(name="insuranceProvider")
+    @Column(name = "insuranceProvider")
     private String insuranceProvider;
 
     @Temporal(TemporalType.DATE)
-    @Column(name="startDate")
+    @Column(name = "startDate")
     private Date startDate;
 
     @Temporal(TemporalType.DATE)
-    @Column(name="endDate")
+    @Column(name = "endDate")
     private Date endDate;
 }

@@ -1,5 +1,7 @@
 package com.comp5590.tests.integration;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import com.comp5590.App;
 import com.comp5590.entities.User;
 import com.comp5590.managers.security.mfa.TOTPManager;
@@ -7,25 +9,23 @@ import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.MFAScreen;
 import com.comp5590.tests.basic.SetupTests;
+import java.util.Set;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.testfx.api.FxRobot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import java.util.Set;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-@ExtendWith(ApplicationExtension.class)  // TestFX Extension)
+@ExtendWith(ApplicationExtension.class) // TestFX Extension)
 public class LoginScreenTest extends SetupTests {
+
     App app;
     TOTPManager totpManager;
 
-    @Start  // This is similar to @BeforeAll it will run before all tests,
+    @Start // This is similar to @BeforeAll it will run before all tests,
     // this is where we can get the stage and start the application
     public void start(Stage stage) {
         app = new App();
@@ -46,7 +46,7 @@ public class LoginScreenTest extends SetupTests {
     public void testScreenHasLoginButton(FxRobot robot) {
         robot.interact(() -> {
             // new test ends up in an async race condition so we should sleep for a full second to ensure it doesn't occur
-            robot.sleep(1000);  // Sleep for a second to ensure the screen is loaded
+            robot.sleep(1000); // Sleep for a second to ensure the screen is loaded
             Pane loginScreen = getLoginScreen();
             Set<Node> loginButtons = loginScreen.lookupAll(".button");
             assertThat(loginButtons).isNotNull();
@@ -80,18 +80,16 @@ public class LoginScreenTest extends SetupTests {
             assertThat(emailFields).isNotNull();
             assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
-            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class)
-                    .setText("example@example.org");
+            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("example@example.org");
 
-            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class)
-                    .setText("password");
+            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).setText("password");
 
             assertThat(robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).getText())
-                    .isEqualTo("example@example.org");
+                .isEqualTo("example@example.org");
             assertThat(robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).getText())
-                    .isEqualTo("password");
+                .isEqualTo("password");
 
-            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire();  // robot.clickOn isn't working rn
+            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire(); // robot.clickOn isn't working rn
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
@@ -109,36 +107,37 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginMFARecoveryCode(FxRobot robot) {
-        User u = SetupTests.createPatient("mfa@example.org", "password", totpManager.generateSecret(),
-                totpManager.generateRecoveryCodes());
+        User u = SetupTests.createPatient(
+            "mfa@example.org",
+            "password",
+            totpManager.generateSecret(),
+            totpManager.generateRecoveryCodes()
+        );
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
             assertThat(emailFields).isNotNull();
             assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
-            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class)
-                    .setText("mfa@example.org");
+            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("mfa@example.org");
 
-            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class)
-                    .setText("password");
+            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).setText("password");
 
             assertThat(robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).getText())
-                    .isEqualTo("mfa@example.org");
+                .isEqualTo("mfa@example.org");
             assertThat(robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).getText())
-                    .isEqualTo("password");
+                .isEqualTo("password");
 
-            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire();  // robot.clickOn isn't working rn
+            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire(); // robot.clickOn isn't working rn
 
             // Check that the MFA screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(MFAScreen.class);
 
             // Write in MFA codes
             String recoveryCode = u.getAuthenticationDetails().getRecoveryCodes().split(",")[0];
-            robot.lookup("#code").queryAs(javafx.scene.control.TextField.class)
-                    .setText(recoveryCode);
+            robot.lookup("#code").queryAs(javafx.scene.control.TextField.class).setText(recoveryCode);
 
-            robot.lookup("#submit").queryAs(javafx.scene.control.Button.class).fire();  // robot.clickOn isn't working rn
+            robot.lookup("#submit").queryAs(javafx.scene.control.Button.class).fire(); // robot.clickOn isn't working rn
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
@@ -157,36 +156,37 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginMFAInvalidRecoveryCode(FxRobot robot) {
-        User p = SetupTests.createPatient("mfa@example.org", "password", totpManager.generateSecret(),
-                totpManager.generateRecoveryCodes());
+        User p = SetupTests.createPatient(
+            "mfa@example.org",
+            "password",
+            totpManager.generateSecret(),
+            totpManager.generateRecoveryCodes()
+        );
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
             assertThat(emailFields).isNotNull();
             assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
-            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class)
-                    .setText("mfa@example.org");
+            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("mfa@example.org");
 
-            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class)
-                    .setText("password");
+            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).setText("password");
 
             assertThat(robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).getText())
-                    .isEqualTo("mfa@example.org");
+                .isEqualTo("mfa@example.org");
             assertThat(robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).getText())
-                    .isEqualTo("password");
+                .isEqualTo("password");
 
-            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire();  // robot.clickOn isn't working rn
+            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire(); // robot.clickOn isn't working rn
 
             // Check that the MFA screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(MFAScreen.class);
 
             // Write in MFA codes
             String recoveryCode = "THIS WILL BE AN ALWAYS INVALID CODE";
-            robot.lookup("#code").queryAs(javafx.scene.control.TextField.class)
-                    .setText(recoveryCode);
+            robot.lookup("#code").queryAs(javafx.scene.control.TextField.class).setText(recoveryCode);
 
-            robot.lookup("#submit").queryAs(javafx.scene.control.Button.class).fire();  // robot.clickOn isn't working rn
+            robot.lookup("#submit").queryAs(javafx.scene.control.Button.class).fire(); // robot.clickOn isn't working rn
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
@@ -208,23 +208,20 @@ public class LoginScreenTest extends SetupTests {
             assertThat(emailFields).isNotNull();
             assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
-            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class)
-                    .setText("example@example.org");
+            robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("example@example.org");
 
-            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class)
-                    .setText("INVALID_PASSWORD");
+            robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).setText("INVALID_PASSWORD");
 
             assertThat(robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).getText())
-                    .isEqualTo("example@example.org");
+                .isEqualTo("example@example.org");
             assertThat(robot.lookup("#password").queryAs(javafx.scene.control.PasswordField.class).getText())
-                    .isEqualTo("INVALID_PASSWORD");
+                .isEqualTo("INVALID_PASSWORD");
 
-            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire();  // robot.clickOn isn't working rn
+            robot.lookup("#login").queryAs(javafx.scene.control.Button.class).fire(); // robot.clickOn isn't working rn
 
             // Check that the login screen is still showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
-            assertThat(robot.lookup("#error").queryAs(javafx.scene.control.Label.class).getText())
-                    .isNotEmpty();
+            assertThat(robot.lookup("#error").queryAs(javafx.scene.control.Label.class).getText()).isNotEmpty();
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
         });

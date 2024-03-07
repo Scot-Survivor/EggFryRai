@@ -12,12 +12,13 @@ import org.reflections.scanners.Scanners;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-@ExtendWith(ApplicationExtension.class)  // TestFX Extension
+@ExtendWith(ApplicationExtension.class) // TestFX Extension
 public class ScreenTests extends SetupTests {
+
     App app;
 
-    @Start  // This is similar to @BeforeAll it will run before all tests,
-            // this is where we can get the stage and start the application
+    @Start // This is similar to @BeforeAll it will run before all tests,
+    // this is where we can get the stage and start the application
     public void start(Stage stage) {
         app = new App();
         app.start(stage);
