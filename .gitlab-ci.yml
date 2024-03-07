@@ -41,11 +41,6 @@ package:
     expire_in: 24 hours
   script:
     - "./gradlew jpackage"
-  parallel:
-    matrix:
-      - PLATFORM: [linux, macos, windows]
-  tags:
-    - ${PLATFORM}
   allow_failure: true
 
 
