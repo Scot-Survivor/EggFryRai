@@ -1,4 +1,5 @@
 package com.comp5590.entities;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,18 +11,19 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingNotes {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "bookingId")
     private int bookingnotesId;
 
     @OneToOne
-    @JoinColumn(name="bookingId")
+    @JoinColumn(name = "bookingId")
     private Booking bookingId;
 
-    @Column(name="notes")
+    @Column(name = "notes")
     private String notes;
 
-    @Column(name="prescription")
+    @Column(name = "prescription")
     private String prescription;
 }

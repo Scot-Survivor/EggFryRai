@@ -1,15 +1,14 @@
 package com.comp5590.managers;
 
-
 import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
+import java.util.HashMap;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
 import org.apache.logging.log4j.core.layout.PatternLayout;
-import java.util.HashMap;
 
 /**
  * Different parts of the program, should have different dedicated loggers I.E Errors on GUI should be AppLogger
@@ -17,15 +16,14 @@ import java.util.HashMap;
  * This Singleton class makes this painless.
  */
 public class LoggerManager {
+
     private static LoggerManager INSTANCE;
     private final HashMap<Class<?>, Logger> loggers;
 
     private AppConfig config;
 
-
     private LoggerManager() {
         this.loggers = new HashMap<>();
-
     }
 
     private String getLogLevel() {
@@ -41,10 +39,15 @@ public class LoggerManager {
     }
 
     private Appender getAppender(Class<?> clazz) {
-        PatternLayout pattern = PatternLayout.newBuilder()
-                .withDisableAnsi(false)
-                .withPattern("%highlight{[%d{HH:mm:ss.SSS} %level | " + clazz.getSimpleName() + "] %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=black, DEBUG=green bold, TRACE=blue}")
-                .build();
+        PatternLayout pattern = PatternLayout
+            .newBuilder()
+            .withDisableAnsi(false)
+            .withPattern(
+                "%highlight{[%d{HH:mm:ss.SSS} %level | " +
+                clazz.getSimpleName() +
+                "] %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=black, DEBUG=green bold, TRACE=blue}"
+            )
+            .build();
         return ConsoleAppender.createDefaultAppenderForLayout(pattern);
     }
 
@@ -61,12 +64,11 @@ public class LoggerManager {
         Logger logger = (Logger) LogManager.getLogger(clazz);
         logger.getAppenders().values().forEach(logger::removeAppender); // remove all appender
         ConsoleAppender appender = (ConsoleAppender) getAppender(clazz);
-        appender.start();  // Since we're creating the appender manually, we need to start it manually
+        appender.start(); // Since we're creating the appender manually, we need to start it manually
         logger.addAppender(appender);
         logger.setLevel(Level.getLevel(log_level));
         loggers.put(clazz, logger);
     }
-
 
     public static LoggerManager getInstance() {
         if (INSTANCE == null) {

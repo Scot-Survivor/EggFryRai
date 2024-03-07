@@ -7,11 +7,13 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class CheckRoleValidator implements ConstraintValidator<RequiredRole, User> {
+
     private UserRole role;
 
     public void initialize(RequiredRole role) {
         this.role = role.value();
     }
+
     @Override
     public boolean isValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user == null) {

@@ -3,11 +3,12 @@ package com.comp5590.screens;
 import com.comp5590.entities.User;
 import com.comp5590.managers.ScreenManager;
 import javafx.event.ActionEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.scene.control.*;
 
-public class MFAScreen extends AbstractScreen{
+public class MFAScreen extends AbstractScreen {
+
     private TextField code;
     private Label error;
 
@@ -45,8 +46,10 @@ public class MFAScreen extends AbstractScreen{
             getApp().getScreenManager().showScene(HomeScreen.class);
             getApp().setCurrentUser(user);
         } else {
-            LoginScreen loginScreen = (LoginScreen)
-                    getApp().getScreenManager().getScreenInstances().get(LoginScreen.class);
+            LoginScreen loginScreen = (LoginScreen) getApp()
+                .getScreenManager()
+                .getScreenInstances()
+                .get(LoginScreen.class);
             loginScreen.setErrorText("Invalid 2FA code");
             getApp().getScreenManager().showScene(LoginScreen.class);
             getApp().setCurrentUser(null); // clear the current user
@@ -54,8 +57,10 @@ public class MFAScreen extends AbstractScreen{
     }
 
     private boolean verify(String code, User user) {
-        return getApp().getTotpManager().verifyRecoveryCode(user.getAuthenticationDetails().getRecoveryCodes(), code) ||
-                getApp().getTotpManager().verifyCode(user.getAuthenticationDetails().getAuthenticationToken(), code);
+        return (
+            getApp().getTotpManager().verifyRecoveryCode(user.getAuthenticationDetails().getRecoveryCodes(), code) ||
+            getApp().getTotpManager().verifyCode(user.getAuthenticationDetails().getAuthenticationToken(), code)
+        );
     }
 
     private HBox createTitle() {

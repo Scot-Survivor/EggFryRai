@@ -1,5 +1,8 @@
 package com.comp5590.tests.validators;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.comp5590.entities.AuthenticationDetails;
 import com.comp5590.tests.basic.SetupTests;
 import jakarta.validation.Validation;
@@ -7,17 +10,15 @@ import jakarta.validation.Validator;
 import org.hibernate.validator.HibernateValidator;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class MFAValidatorTests extends SetupTests {
 
     @Test
     public void test2FAFailsOnMissingValues() {
-        Validator validator = Validation.byProvider( HibernateValidator.class )
-                .configure()
-                .buildValidatorFactory()
-                .getValidator();
+        Validator validator = Validation
+            .byProvider(HibernateValidator.class)
+            .configure()
+            .buildValidatorFactory()
+            .getValidator();
 
         AuthenticationDetails authenticationDetails = new AuthenticationDetails();
         authenticationDetails.setEmail("example@example.org");
@@ -35,10 +36,11 @@ public class MFAValidatorTests extends SetupTests {
 
     @Test
     public void test2FAPassesWith2FA() {
-        Validator validator = Validation.byProvider( HibernateValidator.class )
-                .configure()
-                .buildValidatorFactory()
-                .getValidator();
+        Validator validator = Validation
+            .byProvider(HibernateValidator.class)
+            .configure()
+            .buildValidatorFactory()
+            .getValidator();
 
         AuthenticationDetails authenticationDetails = new AuthenticationDetails();
         authenticationDetails.setEmail("example@example.org");
@@ -51,10 +53,11 @@ public class MFAValidatorTests extends SetupTests {
 
     @Test
     public void test2FAPassesWithout2FA() {
-        Validator validator = Validation.byProvider(HibernateValidator.class)
-                .configure()
-                .buildValidatorFactory()
-                .getValidator();
+        Validator validator = Validation
+            .byProvider(HibernateValidator.class)
+            .configure()
+            .buildValidatorFactory()
+            .getValidator();
 
         AuthenticationDetails authenticationDetails = new AuthenticationDetails();
         authenticationDetails.setEmail("example@example.org");

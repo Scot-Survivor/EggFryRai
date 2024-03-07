@@ -4,8 +4,8 @@ import com.comp5590.enums.UserRole;
 import com.comp5590.validators.annontations.InFuture;
 import com.comp5590.validators.annontations.RequiredRole;
 import jakarta.persistence.*;
-import lombok.*;
 import java.util.Date;
+import lombok.*;
 
 @Entity
 @Table(name = "booking")
@@ -15,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Booking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "bookingId")

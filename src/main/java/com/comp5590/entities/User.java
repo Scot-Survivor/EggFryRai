@@ -3,11 +3,10 @@ package com.comp5590.entities;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
-
 import java.util.List;
 import java.util.Objects;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 @Entity
 @Table(name = "patient")
@@ -17,24 +16,26 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "userId")
     private int id;
 
     // Personal details
-    @Column(name="firstName")
+    @Column(name = "firstName")
     private String firstName;
-    @Column(name="surName")
+
+    @Column(name = "surName")
     private String surName;
 
-    @Column(name="phone")
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name="fax")
+    @Column(name = "fax")
     private String fax;
 
-    @Column(name="additionalNotes")
+    @Column(name = "additionalNotes")
     private String additionalNotes;
 
     @Enumerated(EnumType.STRING)
@@ -46,23 +47,30 @@ public class User {
     private UserRole role;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="authenticationId", nullable=false)
+    @JoinColumn(name = "authenticationId", nullable = false)
     private AuthenticationDetails authenticationDetails;
 
     // Address
     @ManyToOne
-    @JoinColumn(name="addressId", nullable=false)
+    @JoinColumn(name = "addressId", nullable = false)
     private Address address;
 
-    @OneToMany(mappedBy="bookingId")
+    @OneToMany(mappedBy = "bookingId")
     @ToString.Exclude
     private List<Booking> bookings;
 
     /**
      * Constructor for all required fields
      */
-    public User(String firstName, String surName, String phone, String fax, String additionalNotes,
-                CommunicationPreference communicationPreference, Address address) {
+    public User(
+        String firstName,
+        String surName,
+        String phone,
+        String fax,
+        String additionalNotes,
+        CommunicationPreference communicationPreference,
+        Address address
+    ) {
         this.firstName = firstName;
         this.surName = surName;
         this.phone = phone;
@@ -76,8 +84,12 @@ public class User {
     public final boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+            ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+            : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+            ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+            : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         User user = (User) o;
         return Objects.equals(getId(), user.getId());
@@ -85,6 +97,8 @@ public class User {
 
     @Override
     public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+        return this instanceof HibernateProxy
+            ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+            : getClass().hashCode();
     }
 }

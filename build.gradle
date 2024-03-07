@@ -13,6 +13,7 @@ plugins {
     id 'jacoco'
     id 'application'
     id 'com.diffplug.spotless' version '6.25.0'
+    id 'com.github.node-gradle.node' version '3.5.1' // Auto handle NPM
     id 'com.github.johnrengelman.shadow' version '8.1.0'
     id 'org.beryx.runtime' version '1.12.5'  // Allow for runtime package installer
 }
@@ -87,10 +88,14 @@ dependencies {
     implementation 'dev.samstevens.totp:totp:1.7.1'
 }
 
-/* javafx {
-    version = "16"
-    modules = ['javafx.controls', 'javafx.graphics']
-} */
+node {
+    download = true
+    version = '18.16.1'
+    npmVersion = '9.5.1'
+    // when setting both these directories, npm and node will be in separate directories
+    workDir = file("${buildDir}/nodejs")
+    npmWorkDir = file("${buildDir}/npm")
+}
 
 mainClassName = 'com.comp5590.Launcher'
 
@@ -116,12 +121,35 @@ java {
     modularity.inferModulePath.set(true)
 }
 
+def npmExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/npm.cmd' : '/bin/npm'
+def nodeExec = System.getProperty('os.name').toLowerCase().contains('windows') ? '/node.exe' : '/bin/node'
+
 spotless {
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*.gradle', '.gitattributes', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
     java {
+        cleanthat()
+
+        prettier(['prettier': '3.0.3', 'prettier-plugin-java': '2.3.0'])
+                .npmExecutable("${tasks.named('npmSetup').get().npmDir.get()}${npmExec}")
+                .nodeExecutable("${tasks.named('nodeSetup').get().nodeDir.get()}${nodeExec}")
+                .config(['parser': 'java', 'tabWidth': 4, 'plugins': ['prettier-plugin-java'], 'printWidth': 120])
+                .npmInstallCache()
+
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
         indentWithSpaces(4)
+
+        replaceRegex 'Remove empty lines before end of block', '\\n[\\n]+(\\s*})(?=\\n)', '\n$1'
+        replaceRegex 'Remove trailing empty comment lines.', '\n\\s*\\*(\n\\s*\\*/\n)', '$1'
     }
 }
 
@@ -192,3 +220,21 @@ check.dependsOn("addPreCommitGitHookOnBuild")
 check.dependsOn("addCommitMsgGitHookOnBuild")
 compileJava.dependsOn("addPreCommitGitHookOnBuild")
 compileJava.dependsOn("addCommitMsgGitHookOnBuild")
+
+tasks.named('spotlessApply').configure {
+    dependsOn ('nodeSetup', 'npmSetup')
+    dependsOn 'addPreCommitGitHookOnBuild'
+    dependsOn 'addCommitMsgGitHookOnBuild'
+}
+
+tasks.named('spotlessCheck').configure {
+    dependsOn ('nodeSetup', 'npmSetup')
+    dependsOn 'addPreCommitGitHookOnBuild'
+    dependsOn 'addCommitMsgGitHookOnBuild'
+}
+
+tasks.named('spotlessDiagnose').configure {
+    dependsOn ('nodeSetup', 'npmSetup')
+    dependsOn 'addPreCommitGitHookOnBuild'
+    dependsOn 'addCommitMsgGitHookOnBuild'
+}

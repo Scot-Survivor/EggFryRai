@@ -4,7 +4,9 @@ import com.comp5590.configuration.AppConfig;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class BCryptPasswordManager extends PasswordManager {
+
     private final int rounds = AppConfig.BCRYPT_ROUNDS;
+
     @Override
     public boolean passwordMatches(String storedPassword, String userPassword) {
         String hashed = decodeBase64(storedPassword);

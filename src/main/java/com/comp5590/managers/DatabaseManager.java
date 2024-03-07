@@ -6,6 +6,13 @@ import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 import lombok.Getter;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
@@ -15,20 +22,14 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.reflections.Reflections;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
 public class DatabaseManager {
+
     public static DatabaseManager INSTANCE;
 
     // This is a getter method for the sessionFactory field
     @Getter
     private SessionFactory sessionFactory;
+
     private ServiceRegistry serviceRegistry;
     private ValidatorFactory validatorFactory;
     private final Logger logger = LoggerManager.getInstance().getLogger(DatabaseManager.class);
@@ -60,11 +61,11 @@ public class DatabaseManager {
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
         Configuration configuration = new Configuration();
-        getEntityClasses().forEach(c -> {
-            configuration.addAnnotatedClass(c);
-            logger.debug("Added entity class: " + c.getName());
-
-        });
+        getEntityClasses()
+            .forEach(c -> {
+                configuration.addAnnotatedClass(c);
+                logger.debug("Added entity class: " + c.getName());
+            });
         configuration.setProperties(properties);
 
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
@@ -215,8 +216,10 @@ public class DatabaseManager {
     public <T> T getByProperty(final Class<T> type, final String property, final Object value) {
         final Session session = sessionFactory.openSession();
         session.beginTransaction();
-        final T result = (T) session.createQuery("from " + type.getName() + " where " + property + " = :value")
-                .setParameter("value", value).uniqueResult();
+        final T result = (T) session
+            .createQuery("from " + type.getName() + " where " + property + " = :value")
+            .setParameter("value", value)
+            .uniqueResult();
         session.getTransaction().commit();
         session.close();
         return result;

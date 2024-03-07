@@ -7,12 +7,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class Title extends HBox {
-  public Title(String title) {
-    Text text = new Text(title);
-    text.setFont(Font.font("Arial", FontWeight.BOLD, 30));
-    // set fill to hex 575dfb
-    text.setFill(Color.web("#575dfb"));
-    ;
-    getChildren().add(text);
-  }
+
+    public Title(String title) {
+        Text text = new Text(title);
+        text.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        // set fill to hex 575dfb
+        text.setFill(Color.web("#575dfb"));
+        getChildren().add(text);
+    }
 }
