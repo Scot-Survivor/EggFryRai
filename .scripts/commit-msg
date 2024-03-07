@@ -16,6 +16,12 @@ if [[ "$commit_message" =~ $exclude ]]; then
     exit 0
 fi
 
+# Check if message starts with "Merge" if so then return
+if [[ "$commit_message" =~ ^Merge ]]; then
+    echo -e 'Commit message meets Conventional Commit standards...'
+    exit 0
+fi
+
 # Check the message, if we match, all good baby.
 if [[ "$commit_message" =~ $conventional_commits_regex ]]; then
    echo -e 'Commit message meets Conventional Commit standards...'
