@@ -33,3 +33,6 @@ hibernate.properties
 
 # Add config.properties to the ignore list
 config.properties
+
+# Ignore vscode config folder
+.vscode
