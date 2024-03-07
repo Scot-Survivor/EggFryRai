@@ -1,6 +1,5 @@
 package com.comp5590.tests.basic;
 
-import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.entities.Address;
 import com.comp5590.entities.AuthenticationDetails;
@@ -8,6 +7,7 @@ import com.comp5590.entities.User;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.DatabaseManager;
+import com.comp5590.managers.security.passwords.PasswordManager;
 import org.junit.jupiter.api.BeforeAll;
 
 public class SetupTests {
@@ -45,7 +45,7 @@ public class SetupTests {
     public static AuthenticationDetails createAuthenticationDetails(String email, String password) {
         AuthenticationDetails authenticationDetails = new AuthenticationDetails();
         authenticationDetails.setEmail(email);
-        authenticationDetails.setPassword(App.getInstance().getPasswordManager().hashPassword(password));
+        authenticationDetails.setPassword(PasswordManager.getInstanceOf("Argon2").hashPassword(password));
         authenticationDetails.setTwoFactorEnabled(false);
         authenticationDetails.setAuthenticationToken("");
         authenticationDetails.setRecoveryCodes("");
