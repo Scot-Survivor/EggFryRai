@@ -38,7 +38,7 @@ public class Address{
 
     @OneToMany(mappedBy="address")
     @ToString.Exclude
-    private List<Patient> patients;
+    private List<User> users;
 
     @OneToMany(mappedBy="roomId")
     @ToString.Exclude

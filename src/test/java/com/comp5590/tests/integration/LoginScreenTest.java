@@ -1,7 +1,7 @@
 package com.comp5590.tests.integration;
 
 import com.comp5590.App;
-import com.comp5590.entities.Patient;
+import com.comp5590.entities.User;
 import com.comp5590.managers.security.mfa.TOTPManager;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
@@ -10,15 +10,12 @@ import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.testfx.api.FxRobot;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -36,19 +33,6 @@ public class LoginScreenTest extends SetupTests {
         app.getScreenManager().showScene(LoginScreen.class); // Force LoginScreen to show.
         totpManager = app.getTotpManager();
         stage.show();
-    }
-
-    private Patient getUserFromDb(String email) {
-        SessionFactory sessionFactory = app.getDatabase().getSessionFactory();
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            List<Patient> patients = session.createQuery("from Patient where email = :email", Patient.class)
-                    .setMaxResults(1)
-                    .setParameter("email", email)
-                    .list();
-            session.getTransaction().commit();
-            return patients.get(0);
-        }
     }
 
     private Pane getLoginScreen() {
@@ -89,7 +73,7 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginNoMFA(FxRobot robot) {
-        Patient p = SetupTests.createPatient("example@example.org", "password");
+        User p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");
@@ -125,7 +109,7 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginMFARecoveryCode(FxRobot robot) {
-        Patient p = SetupTests.createPatient("mfa@example.org", "password", true, totpManager.generateSecret(),
+        User u = SetupTests.createPatient("mfa@example.org", "password", totpManager.generateSecret(),
                 totpManager.generateRecoveryCodes());
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
@@ -150,7 +134,7 @@ public class LoginScreenTest extends SetupTests {
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(MFAScreen.class);
 
             // Write in MFA codes
-            String recoveryCode = p.getRecoveryCodes().split(",")[0];
+            String recoveryCode = u.getAuthenticationDetails().getRecoveryCodes().split(",")[0];
             robot.lookup("#code").queryAs(javafx.scene.control.TextField.class)
                     .setText(recoveryCode);
 
@@ -158,13 +142,13 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
-            assertThat(app.getCurrentUser().getId()).isEqualTo(p.getId());
+            assertThat(app.getCurrentUser().getId()).isEqualTo(u.getId());
 
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
             app.setCurrentUser(null);
         });
-        SetupTests.remove(p.getClass(), p.getId());
+        SetupTests.remove(u.getClass(), u.getId());
     }
 
     /**
@@ -173,7 +157,7 @@ public class LoginScreenTest extends SetupTests {
      */
     @Test
     public void testSuccessfulLoginMFAInvalidRecoveryCode(FxRobot robot) {
-        Patient p = SetupTests.createPatient("mfa@example.org", "password", true, totpManager.generateSecret(),
+        User p = SetupTests.createPatient("mfa@example.org", "password", totpManager.generateSecret(),
                 totpManager.generateRecoveryCodes());
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
@@ -217,7 +201,7 @@ public class LoginScreenTest extends SetupTests {
 
     @Test
     public void testFailedLogin(FxRobot robot) {
-        Patient p = SetupTests.createPatient("example@example.org", "password");
+        User p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
             Pane loginScreen = getLoginScreen();
             Set<Node> emailFields = loginScreen.lookupAll("#email");

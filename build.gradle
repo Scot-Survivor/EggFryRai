@@ -60,6 +60,8 @@ dependencies {
     // ORM
     implementation "org.hibernate.orm:hibernate-core:6.4.4.Final"
     implementation "jakarta.persistence:jakarta.persistence-api:3.1"
+    implementation "org.hibernate.validator:hibernate-validator:8.0.1.Final"
+    implementation "org.glassfish.expressly:expressly:5.0.0"
     // Password Hashers
     implementation 'de.mkammerer:argon2-jvm:2.11'
     implementation 'org.mindrot:jbcrypt:0.4'
@@ -78,7 +80,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    implementation 'org.reflections:reflections:0.9.12'
+    implementation 'org.reflections:reflections:0.10'
 
     // 2FA
     implementation 'dev.samstevens.totp:totp:1.7.1'

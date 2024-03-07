@@ -1,7 +1,7 @@
 package com.comp5590.screens;
 
 import com.comp5590.App;
-import com.comp5590.entities.Patient;
+import com.comp5590.entities.User;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
 import javafx.scene.layout.Pane;
@@ -46,10 +46,10 @@ public abstract class AbstractScreen {
 
     /**
      * This method is called when the screen is shown, to ensure that the logged in user has access to the screen
-     * @param patient object
+     * @param user object
      * @return true if the user has access to the screen
      */
-    public boolean canAccess(Patient patient) {
+    public boolean canAccess(User user) {
         return true;
     };
 

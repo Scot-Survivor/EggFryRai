@@ -3,6 +3,9 @@ package com.comp5590.managers;
 import com.comp5590.configuration.AppConfig;
 import jakarta.persistence.Entity;
 import jakarta.persistence.TypedQuery;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidatorFactory;
 import lombok.Getter;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 public class DatabaseManager {
     public static DatabaseManager INSTANCE;
@@ -26,6 +30,7 @@ public class DatabaseManager {
     @Getter
     private SessionFactory sessionFactory;
     private ServiceRegistry serviceRegistry;
+    private ValidatorFactory validatorFactory;
     private final Logger logger = LoggerManager.getInstance().getLogger(DatabaseManager.class);
 
     private DatabaseManager() {
@@ -64,6 +69,7 @@ public class DatabaseManager {
 
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        validatorFactory = Validation.buildDefaultValidatorFactory();
     }
 
     private List<Class<?>> getEntityClasses() {
@@ -82,9 +88,22 @@ public class DatabaseManager {
         }
     }
 
+    public boolean validate(Object object) {
+        return validatorFactory.getValidator().validate(object).isEmpty();
+    }
+
+    public Set<ConstraintViolation<Object>> validateWithViolations(Object object) {
+        return validatorFactory.getValidator().validate(object);
+    }
+
     public boolean save(Object object) {
         try {
             logger.debug("Saving object: " + object.toString());
+            if (!validateWithViolations(object).isEmpty()) {
+                logger.error("Failed to save object: Validation failed");
+                logger.debug("Validation errors: " + validateWithViolations(object));
+                return false;
+            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(object);
@@ -101,6 +120,11 @@ public class DatabaseManager {
     public int saveGetId(Object object) {
         try {
             logger.debug("Saving object: " + object.toString());
+            if (!validateWithViolations(object).isEmpty()) {
+                logger.error("Failed to save object: Validation failed");
+                logger.debug("Validation errors: " + validateWithViolations(object));
+                return -1;
+            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             int id = (int) session.save(object);
@@ -137,6 +161,11 @@ public class DatabaseManager {
     public boolean update(Object object) {
         try {
             logger.debug("Updating object: " + object.toString());
+            if (!validateWithViolations(object).isEmpty()) {
+                logger.error("Failed to update object: Validation failed");
+                logger.debug("Validation errors: " + validateWithViolations(object));
+                return false;
+            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.merge(object);

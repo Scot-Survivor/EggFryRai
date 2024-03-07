@@ -1,6 +1,6 @@
 package com.comp5590.screens;
 
-import com.comp5590.entities.Patient;
+import com.comp5590.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import javafx.event.ActionEvent;
@@ -12,9 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import org.apache.logging.log4j.core.Logger;
-import org.hibernate.Session;
 
-import java.util.List;
 
 import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.Paragraph;
@@ -104,26 +102,21 @@ public class LoginScreen extends AbstractScreen {
     private void login(ActionEvent event) {
         String email = this.email.getText();
         String password = this.password.getText();
-        Session session = getSessionFactory().openSession();
-        List<Patient> patients = session.createQuery("from Patient where email = :email", Patient.class)
-                .setParameter("email", email)
-                .list();
-        session.close();
-        if (patients.isEmpty()) {
+        User user = getDatabaseManager().getByProperty(User.class, "authenticationDetails.email", email);
+        if (user == null) {
             logger.error("Invalid Username({})", email);
             this.error.setText("Invalid Username or Password");
             return;
         }
-        Patient patient = patients.get(0);
-        boolean passwordValid = getApp().getPasswordManager().passwordMatches(patient.getPassword(), password);
+        boolean passwordValid = getApp().getPasswordManager().passwordMatches(user.getAuthenticationDetails().getPassword(), password);
         if (passwordValid) {
-            if (!patient.isTwoFactorEnabled()) {
+            if (!user.getAuthenticationDetails().isTwoFactorEnabled()) {
                 getApp().getScreenManager().showScene(HomeScreen.class);
             } else {
                 getApp().getScreenManager().showScene(MFAScreen.class);
             }
             // Set the current user here, but only if the password is valids
-            getApp().setCurrentUser(patient);
+            getApp().setCurrentUser(user);
         } else {
             logger.error("Invalid Password(*)");
             this.error.setText("Invalid Username or Password");

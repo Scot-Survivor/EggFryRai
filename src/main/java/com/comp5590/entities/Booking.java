@@ -18,12 +18,12 @@ public class Booking {
     private int bookingId;
 
     @ManyToOne
-    @JoinColumn(name="doctorId", nullable=false)
-    private Doctor doctor;
+    @JoinColumn(name="doctorId")
+    private User doctor;
 
     @ManyToOne
     @JoinColumn(name="patientId", nullable=false)
-    private Patient patient;
+    private User patient;
 
     // reference the appt time through a DATETIME object
     @Column (name="apptTime")

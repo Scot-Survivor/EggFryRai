@@ -36,7 +36,7 @@ public class AppConfig {
     private FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
     private final Parameters params = new Parameters();
 
-    public static final String APP_NAME = "Patient Doctor Management System";
+    public static final String APP_NAME = "User Doctor Management System";
     public static String ConfigFile = "config.properties";
     private static AppConfig instance;
 
@@ -55,7 +55,7 @@ public class AppConfig {
     public static final int HASH_LENGTH = 256 / 8; // 256 bits
 
     // 2FA Settings
-    public static String TOTP_ISSUER_NAME = "Patient Doctor Management System";
+    public static String TOTP_ISSUER_NAME = "User Doctor Management System";
     public static String TOTP_ALGORITHM = "SHA256";
     public static int TOTP_SECRET_CHARACTERS = 32;  // Length of secret
     public static int TOTP_DIGITS = 6;
