@@ -3,3 +3,6 @@
 
 // * Before committing & pushing:
 ./gradlew spotlessApply
+
+// * Run tests:
+./gradlew test
