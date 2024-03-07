@@ -1,5 +1,7 @@
 package com.comp5590.entities;
 
+import com.comp5590.enums.UserRole;
+import com.comp5590.validators.annontations.RequiredRole;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
@@ -19,10 +21,12 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name="doctorId")
+    @RequiredRole(UserRole.DOCTOR)
     private User doctor;
 
     @ManyToOne
     @JoinColumn(name="patientId", nullable=false)
+    @RequiredRole(UserRole.PATIENT)
     private User patient;
 
     // reference the appt time through a DATETIME object
