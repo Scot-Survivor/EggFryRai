@@ -13,7 +13,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.core.Logger;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.Scanners;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class ScreenManager {
      * Run any setup that is needed. i.e adding all of the scenes to the HashMap
      */
     private void setup() {
-        Reflections reflections = new Reflections("com.comp5590.screens", new SubTypesScanner(true));
+        Reflections reflections = new Reflections("com.comp5590.screens", Scanners.SubTypes);
         for (Class<? extends AbstractScreen> screen : reflections.getSubTypesOf(AbstractScreen.class)) {
             try {
                 AbstractScreen instance = screen.getConstructor(ScreenManager.class).newInstance(this);

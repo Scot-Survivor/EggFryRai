@@ -20,7 +20,7 @@ public class Insurance {
     // Join patient table to insurance table
     @OneToOne
     @JoinColumn(name="patientId")
-    private Patient patientId;
+    private User userId;
 
     @Column(name="insuranceProvider")
     private String insuranceProvider;

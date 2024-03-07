@@ -3,8 +3,10 @@ package com.comp5590.tests.basic;
 import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.entities.Address;
-import com.comp5590.entities.Patient;
+import com.comp5590.entities.AuthenticationDetails;
+import com.comp5590.entities.User;
 import com.comp5590.enums.CommunicationPreference;
+import com.comp5590.enums.UserRole;
 import com.comp5590.managers.DatabaseManager;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -37,17 +39,50 @@ public class SetupTests {
     }
 
     /**
-     * Create a patient user with all filled values,
-     * @return Patient
+     * Create authentication details without mfa
+     * @return AuthenticationDetails
      */
-    public static Patient createPatient() {
+    public static AuthenticationDetails createAuthenticationDetails(String email, String password) {
+        AuthenticationDetails authenticationDetails = new AuthenticationDetails();
+        authenticationDetails.setEmail(email);
+        authenticationDetails.setPassword(App.getInstance().getPasswordManager().hashPassword(password));
+        authenticationDetails.setTwoFactorEnabled(false);
+        authenticationDetails.setAuthenticationToken("");
+        authenticationDetails.setRecoveryCodes("");
+        int id = getDbManager().saveGetId(authenticationDetails);
+        authenticationDetails = getDbManager().get(AuthenticationDetails.class, id);
+        return authenticationDetails;
+    }
+
+    /**
+     * Create authentication details with mfa
+     * @return AuthenticationDetails
+     */
+    public static AuthenticationDetails createAuthenticationDetails(String email, String password,
+                                                                    String authenticationToken, String recoveryCodes) {
+        AuthenticationDetails authenticationDetails = createAuthenticationDetails(email, password);
+        authenticationDetails.setTwoFactorEnabled(true);
+        authenticationDetails.setAuthenticationToken(authenticationToken);
+        authenticationDetails.setRecoveryCodes(recoveryCodes);
+        // update
+        getDbManager().update(authenticationDetails);
+        authenticationDetails = getDbManager().get(AuthenticationDetails.class, authenticationDetails.getId());
+        return authenticationDetails;
+    }
+
+    /**
+     * Create a patient user with all filled values,
+     * @return User
+     */
+    public static User createPatient(AuthenticationDetails authenticationDetails) {
         Address address = createAddress();
-        Patient patient = new Patient("Test", "User", "0123456789", "0123456789",
-                "Test Notes", CommunicationPreference.EMAIL, "example@example.org",
-                "password", false, null, null, address);
-        int id = getDbManager().saveGetId(patient);
-        patient = getDbManager().get(Patient.class, id);
-        return patient;
+        User user = new User("Test", "User", "0123456789", "0123456789",
+                "Test Notes", CommunicationPreference.EMAIL, address);
+        user.setRole(UserRole.PATIENT);
+        user.setAuthenticationDetails(authenticationDetails);
+        int id = getDbManager().saveGetId(user);
+        user = getDbManager().get(User.class, id);
+        return user;
     }
 
     /**
@@ -56,34 +91,20 @@ public class SetupTests {
      * @param password the password of the user
      * @return User
      */
-    public static Patient createPatient(String email, String password) {
-        Patient patient = createPatient();
-        patient.setEmail(email);
-        patient.setPassword(App.getInstance().getPasswordManager().hashPassword(password));
-        // update
-        getDbManager().update(patient);
-        patient = getDbManager().get(Patient.class, patient.getId());
-        return patient;
+    public static User createPatient(String email, String password) {
+        return createPatient(createAuthenticationDetails(email, password));
     }
 
     /**
      * Create a user object with the email and password specified.
      * @param email the email of the user
      * @param password the password of the user
-     * @param twoFactorEnabled if two factor authentication is enabled
      * @param authenticationToken the authentication token
      * @param recoveryCodes the recovery codes
      * @return User
      */
-    public static Patient createPatient(String email, String password, boolean twoFactorEnabled, String authenticationToken, String recoveryCodes) {
-        Patient patient = createPatient(email, password);
-        patient.setTwoFactorEnabled(twoFactorEnabled);
-        patient.setAuthenticationToken(authenticationToken);
-        patient.setRecoveryCodes(recoveryCodes);
-        // update
-        getDbManager().update(patient);
-        patient = getDbManager().get(Patient.class, patient.getId());
-        return patient;
+    public static User createPatient(String email, String password, String authenticationToken, String recoveryCodes) {
+        return createPatient( createAuthenticationDetails(email, password, authenticationToken, recoveryCodes));
     }
 
     /**

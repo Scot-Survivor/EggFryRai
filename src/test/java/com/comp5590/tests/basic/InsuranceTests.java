@@ -1,7 +1,7 @@
 package com.comp5590.tests.basic;
 
 import com.comp5590.entities.Address;
-import com.comp5590.entities.Patient;
+import com.comp5590.entities.User;
 import com.comp5590.entities.Insurance;
 import com.comp5590.managers.DatabaseManager;
 import java.text.ParseException;
@@ -20,8 +20,8 @@ public class InsuranceTests extends SetupTests {
                 "12345", "");
 
         // Create patient object
-        Patient testPatient = new Patient();
-        testPatient.setAddress(address);
+        User testUser = new User();
+        testUser.setAddress(address);
 
         // Create dates
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -30,7 +30,7 @@ public class InsuranceTests extends SetupTests {
 
         // Create insurance object
         Insurance insurance = new Insurance();
-        insurance.setPatientId(testPatient);
+        insurance.setUserId(testUser);
         insurance.setInsuranceProvider("Test provider");
         insurance.setStartDate(startDate);
         insurance.setEndDate(endDate);

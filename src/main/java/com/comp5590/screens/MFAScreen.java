@@ -1,6 +1,6 @@
 package com.comp5590.screens;
 
-import com.comp5590.entities.Patient;
+import com.comp5590.entities.User;
 import com.comp5590.managers.ScreenManager;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.*;
@@ -39,7 +39,7 @@ public class MFAScreen extends AbstractScreen{
 
     private void submitCode(ActionEvent e) {
         String code = this.code.getText();
-        Patient user = getApp().getCurrentUser();
+        User user = getApp().getCurrentUser();
         boolean valid = this.verify(code, user);
         if (valid) {
             getApp().getScreenManager().showScene(HomeScreen.class);
@@ -53,9 +53,9 @@ public class MFAScreen extends AbstractScreen{
         }
     }
 
-    private boolean verify(String code, Patient user) {
-        return getApp().getTotpManager().verifyRecoveryCode(user.getRecoveryCodes(), code) ||
-                getApp().getTotpManager().verifyCode(user.getAuthenticationToken(), code);
+    private boolean verify(String code, User user) {
+        return getApp().getTotpManager().verifyRecoveryCode(user.getAuthenticationDetails().getRecoveryCodes(), code) ||
+                getApp().getTotpManager().verifyCode(user.getAuthenticationDetails().getAuthenticationToken(), code);
     }
 
     private HBox createTitle() {

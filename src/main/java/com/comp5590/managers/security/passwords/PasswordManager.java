@@ -3,7 +3,7 @@ package com.comp5590.managers.security.passwords;
 import com.comp5590.managers.LoggerManager;
 import org.apache.logging.log4j.core.Logger;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.Scanners;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public abstract class PasswordManager {
 
     public static PasswordManager getInstanceOf(String passwordManager) {
         Reflections reflections = new Reflections("com.comp5590.managers.security.passwords",
-                new SubTypesScanner(false));
+                Scanners.SubTypes);
         Set<Class<? extends PasswordManager>> pms = reflections.getSubTypesOf(PasswordManager.class);
         pms.forEach(pm -> {
             logger.debug("Found PasswordManager: " + pm.getSimpleName());

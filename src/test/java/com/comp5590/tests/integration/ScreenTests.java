@@ -8,7 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.Scanners;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
@@ -25,7 +25,7 @@ public class ScreenTests extends SetupTests {
     }
 
     private Reflections getScreenList() {
-        return new Reflections("com.comp5590.screens", new SubTypesScanner(true));
+        return new Reflections("com.comp5590.screens", Scanners.SubTypes);
     }
 
     @Test

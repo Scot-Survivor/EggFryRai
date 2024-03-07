@@ -1,7 +1,7 @@
 package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.entities.Patient;
+import com.comp5590.entities.User;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.security.mfa.TOTPManager;
@@ -28,7 +28,7 @@ public class App extends Application {
 
     @Setter
     @Getter
-    private Patient currentUser;
+    private User currentUser;
 
     private Stage primaryStage;
 
