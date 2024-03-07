@@ -168,7 +168,6 @@ public class AppConfig {
                 !Modifier.isPrivate(field.getModifiers()) &&
                 // Check the field is all uppercase
                 field.getName().toUpperCase().equals(field.getName());
-
     }
 
     public static AppConfig getInstance() {

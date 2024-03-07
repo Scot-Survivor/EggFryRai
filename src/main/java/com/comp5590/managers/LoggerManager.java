@@ -25,7 +25,6 @@ public class LoggerManager {
 
     private LoggerManager() {
         this.loggers = new HashMap<>();
-
     }
 
     private String getLogLevel() {

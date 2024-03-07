@@ -65,5 +65,4 @@ public class PasswordTests extends SetupTests {
         String hashedPassword = bCryptPasswordManager.hashPassword(password);
         assertFalse(bCryptPasswordManager.passwordMatches(hashedPassword, "password1"));
     }
-
 }

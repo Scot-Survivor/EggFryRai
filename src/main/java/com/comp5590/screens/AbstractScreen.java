@@ -52,6 +52,4 @@ public abstract class AbstractScreen {
     public boolean canAccess(User user) {
         return true;
     };
-
-
 }
