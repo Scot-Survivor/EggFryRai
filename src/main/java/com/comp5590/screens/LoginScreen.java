@@ -30,7 +30,7 @@ public class LoginScreen extends AbstractScreen {
     private Label error;
     private final Logger logger = LoggerManager.getInstance().getLogger(LoginScreen.class);
 
-    public LoginScreen(ScreenManager screenManager) { // exception needed for hashing
+    public LoginScreen(ScreenManager screenManager) {
         super(screenManager);
     }
 
