@@ -1,0 +1,2 @@
+// * Run gradle continuous build for development purposes (note: must close GUI before saving code for it to run again):
+./gradlew -t run
