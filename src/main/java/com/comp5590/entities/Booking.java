@@ -17,7 +17,6 @@ public class Booking {
     @Column(name = "bookingId")
     private int bookingId;
 
-    // 👩‍⚕️🧑‍⚕️👨‍⚕️
     @ManyToOne
     @JoinColumn(name="doctorId", nullable=false)
     private Doctor doctor;

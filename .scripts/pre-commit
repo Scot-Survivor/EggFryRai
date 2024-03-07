@@ -13,7 +13,7 @@ if [[ $stagedFiles != *".java"* ]]; then
 fi
 
 # Clean gradle first
-./gradlew clean
+# ./gradlew clean
 
 # run spotless apply
 ./gradlew check
