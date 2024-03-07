@@ -11,6 +11,7 @@ import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +47,7 @@ public class App extends Application {
     public void start(Stage stage) {
         instance = this;
         primaryStage = stage;
+        stage.getIcons().add(new Image("/healthcare.png"));
         appConfig = AppConfig.getInstance();
         screenManager = new ScreenManager(primaryStage);
         totpManager = TOTPManager.getInstance();
