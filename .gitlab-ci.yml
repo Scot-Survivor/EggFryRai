@@ -19,26 +19,42 @@ before_script:
 
 cache:
   paths:
-  - ".gradle/wrapper"
-  - ".gradle/caches"
+    - ".gradle/wrapper"
+    - ".gradle/caches"
 
 distribute:
   stage: distribute
   script:
-  - "./gradlew shadowJar"
+    - "./gradlew shadowJar"
   artifacts:
     paths:
-    - "./build/libs/*.jar"
+      - "./build/libs/*.jar"
     expire_in: 24 hours
   only:
     - main
 
+package:
+  stage: distribute
+  artifacts:
+    paths:
+      - "./build/jpackage/*"
+    expire_in: 24 hours
+  script:
+    - "./gradlew jpackage"
+  parallel:
+    matrix:
+      - PLATFORM: [linux, macos, windows]
+  tags:
+    - ${PLATFORM}
+  allow_failure: true
+
+
 test:
-    stage: test
-    script:
+  stage: test
+  script:
     - "./gradlew test --tests com.comp5590.tests.basic*"
-    only:
-        - main
+  only:
+    - main
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
