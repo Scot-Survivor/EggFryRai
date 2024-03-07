@@ -1,9 +1,8 @@
-.title {
-    -fx-alignment: center;
-}
-
-.title-text {
-    -fx-fill: grey;
-    -fx-font-size: 30px;
-    -fx-font-weight: bold;
+.custom-pane {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #575dfb;
+    -fx-border-width: 3;
+    -fx-border-radius: 20;
+    -fx-background-radius: 5;
+    -fx-padding: 20;
 }
