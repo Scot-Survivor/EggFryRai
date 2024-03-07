@@ -52,7 +52,7 @@ public class LoginScreen extends AbstractScreen {
         // create child components, imported from the components folder
         HBox titleBox = new Title("Login");
         HBox paragraph = new Paragraph("Please login to track your appointments, prescriptions, and more.");
-        VBox icon = new BigIcon("src/main/public/healthcare.png"); // goddamn disgusting image path took ages to fix
+        VBox icon = new BigIcon("/healthcare.png"); // create the image
         VBox loginBox = createLogin();
 
         // add child components to our grid pane
