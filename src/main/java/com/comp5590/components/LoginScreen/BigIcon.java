@@ -13,8 +13,8 @@ public class BigIcon extends VBox {
 
         // set the size of the image
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(60);
-        imageView.setFitWidth(60);
+        imageView.setFitHeight(80);
+        imageView.setFitWidth(80);
 
         // add the image to the VBox
         this.getChildren().add(imageView);
