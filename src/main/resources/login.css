@@ -6,3 +6,61 @@
     -fx-background-radius: 5;
     -fx-padding: 20;
 }
+
+.login-field{
+    -fx-font-size: 20;
+    -fx-border-color: #575dfb;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 10;
+}
+
+.big-button{
+    -fx-background-color: #575dfb;
+    -fx-text-fill: white;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 20 1;
+
+    /* SET WIDTH TO MAX, and item to center */
+    -fx-max-width: Infinity;
+    -fx-alignment: center;
+
+}
+
+.big-button:hover{
+    -fx-background-color: #3f45f4;
+}
+
+.big-button:pressed{
+    -fx-background-color: #2f35f4;
+    -fx-opacity: 0.8;
+}
+
+.forgot-password-button{
+    -fx-font-size: 15;
+    -fx-text-fill: #575dfb;
+    -fx-font-weight: bold;
+
+    /* underline */
+    -fx-underline: true;
+
+    /* colour */
+    -fx-text-fill: #575dfb;
+
+    /* remove button border */
+    -fx-background-color: transparent;
+
+    /* align to left */
+    -fx-alignment: center-left;
+}
+
+.line{
+    -fx-stroke: #000000;
+    -fx-stroke-width: 2;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
