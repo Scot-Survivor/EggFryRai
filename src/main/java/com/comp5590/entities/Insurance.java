@@ -1,10 +1,9 @@
 package com.comp5590.entities;
 
+import com.comp5590.validators.annontations.ChronologicalDates;
 import jakarta.persistence.*;
 import java.util.Date;
 import lombok.*;
-
-import com.comp5590.validators.annontations.ChronologicalDates;
 
 @Entity
 @Table(name = "insurance")
