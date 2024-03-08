@@ -45,10 +45,11 @@ public class LoginScreenTest extends SetupTests {
     @Test
     public void testScreenHasLoginButton(FxRobot robot) {
         robot.interact(() -> {
-            // new test ends up in an async race condition so we should sleep for a full second to ensure it doesn't occur
+            // new test ends up in an async race condition so we should sleep for a full
+            // second to ensure it doesn't occur
             robot.sleep(1000); // Sleep for a second to ensure the screen is loaded
             Pane loginScreen = getLoginScreen();
-            Set<Node> loginButtons = loginScreen.lookupAll(".button");
+            Set<Node> loginButtons = loginScreen.lookupAll(".big-button");
             assertThat(loginButtons).isNotNull();
             assertThat(loginButtons.size()).isEqualTo(1);
         });
@@ -69,6 +70,7 @@ public class LoginScreenTest extends SetupTests {
 
     /**
      * Test the login functionality
+     *
      * @param robot Will be injected via test runner
      */
     @Test
@@ -103,6 +105,7 @@ public class LoginScreenTest extends SetupTests {
 
     /**
      * Test login functionality with MFA
+     *
      * @param robot Will be injected via test runner
      */
     @Test
@@ -152,6 +155,7 @@ public class LoginScreenTest extends SetupTests {
 
     /**
      * Test login functionality with MFA
+     *
      * @param robot Will be injected via test runner
      */
     @Test
