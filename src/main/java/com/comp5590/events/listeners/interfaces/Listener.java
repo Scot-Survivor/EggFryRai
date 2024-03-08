@@ -6,11 +6,13 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.Arrays;
+import java.util.HashMap;
 import org.apache.logging.log4j.core.Logger;
 
 // Inspired by: net.dv8tion.jda.api.hooks.ListenerAdapter.java
 public interface Listener {
     Logger eventLogger = LoggerManager.getInstance().getLogger(Listener.class);
+    HashMap<Class<?>, MethodHandle> methodHandles = new HashMap<>();
 
     default GenericEvent onGenericEvent(GenericEvent event) {
         return event;
@@ -24,7 +26,7 @@ public interface Listener {
         for (Class<?> clazz : this.getClass().getInterfaces()) {
             // Iterate through the children of the Listener classes
             if (clazz != Listener.class) {
-                MethodHandle method = getMethod(event.getClass());
+                MethodHandle method = methodHandles.computeIfAbsent(event.getClass(), this::getMethod);
                 if (method != null) {
                     try {
                         return (GenericEvent) method.invoke(this, event);
