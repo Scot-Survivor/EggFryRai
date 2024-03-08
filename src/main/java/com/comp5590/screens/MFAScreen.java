@@ -46,10 +46,7 @@ public class MFAScreen extends AbstractScreen {
             getApp().getScreenManager().showScene(HomeScreen.class);
             getApp().setCurrentUser(user);
         } else {
-            LoginScreen loginScreen = (LoginScreen) getApp()
-                .getScreenManager()
-                .getScreenInstances()
-                .get(LoginScreen.class);
+            LoginScreen loginScreen = (LoginScreen) getApp().getScreenManager().getScreenInstance(LoginScreen.class);
             loginScreen.setErrorText("Invalid 2FA code");
             getApp().getScreenManager().showScene(LoginScreen.class);
             getApp().setCurrentUser(null); // clear the current user

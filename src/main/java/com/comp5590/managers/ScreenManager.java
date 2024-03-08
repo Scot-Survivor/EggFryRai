@@ -115,4 +115,8 @@ public class ScreenManager {
     public HashMap<Class<? extends AbstractScreen>, AbstractScreen> getScreenInstances() {
         return screenInstances;
     }
+
+    public AbstractScreen getScreenInstance(Class<? extends AbstractScreen> screen) {
+        return screenInstances.get(screen);
+    }
 }
