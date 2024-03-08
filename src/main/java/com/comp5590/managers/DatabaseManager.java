@@ -1,6 +1,12 @@
 package com.comp5590.managers;
 
+import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
+import com.comp5590.events.eventtypes.CancellableEvent;
+import com.comp5590.events.eventtypes.database.EntityDeleteEvent;
+import com.comp5590.events.eventtypes.database.EntitySaveEvent;
+import com.comp5590.events.eventtypes.database.EntityUpdateEvent;
+import com.comp5590.events.managers.EventManager;
 import jakarta.persistence.Entity;
 import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintViolation;
@@ -33,6 +39,8 @@ public class DatabaseManager {
     private ServiceRegistry serviceRegistry;
     private ValidatorFactory validatorFactory;
     private final Logger logger = LoggerManager.getInstance().getLogger(DatabaseManager.class);
+    private EventManager eventManager;
+    private App app;
 
     private DatabaseManager() {
         load();
@@ -71,6 +79,8 @@ public class DatabaseManager {
         serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         validatorFactory = Validation.buildDefaultValidatorFactory();
+        eventManager = EventManager.getInstance();
+        app = App.getInstance();
     }
 
     private List<Class<?>> getEntityClasses() {
@@ -97,7 +107,15 @@ public class DatabaseManager {
         return validatorFactory.getValidator().validate(object);
     }
 
+    private boolean shouldCancel(CancellableEvent event) {
+        return event.isCancelled();
+    }
+
     public boolean save(Object object) {
+        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), app)))) {
+            logger.debug("Save event cancelled");
+            return false;
+        }
         try {
             logger.debug("Saving object: " + object.toString());
             if (!validateWithViolations(object).isEmpty()) {
@@ -119,6 +137,10 @@ public class DatabaseManager {
     }
 
     public int saveGetId(Object object) {
+        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), app)))) {
+            logger.debug("Save event cancelled");
+            return -1;
+        }
         try {
             logger.debug("Saving object: " + object.toString());
             if (!validateWithViolations(object).isEmpty()) {
@@ -160,6 +182,10 @@ public class DatabaseManager {
     }
 
     public boolean update(Object object) {
+        if (shouldCancel(eventManager.callEvent(new EntityUpdateEvent(object.getClass(), app)))) {
+            logger.debug("Update event cancelled");
+            return false;
+        }
         try {
             logger.debug("Updating object: " + object.toString());
             if (!validateWithViolations(object).isEmpty()) {
@@ -229,6 +255,10 @@ public class DatabaseManager {
      * Delete an object from the database
      */
     public boolean delete(Object object) {
+        if (shouldCancel(eventManager.callEvent(new EntityDeleteEvent(object.getClass(), app)))) {
+            logger.debug("Delete event cancelled");
+            return false;
+        }
         try {
             logger.debug("Deleting object: " + object.toString());
             Session session = sessionFactory.openSession();

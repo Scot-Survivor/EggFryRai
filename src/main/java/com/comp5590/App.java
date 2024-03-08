@@ -2,6 +2,7 @@ package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.entities.User;
+import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.security.mfa.TOTPManager;
@@ -21,6 +22,9 @@ public class App extends Application {
     private static App instance;
     private DatabaseManager databaseManager;
     private AppConfig appConfig;
+
+    @Getter
+    private EventManager eventManager;
 
     @Getter
     private PasswordManager passwordManager;
@@ -55,6 +59,7 @@ public class App extends Application {
         appConfig = AppConfig.getInstance();
         screenManager = new ScreenManager(primaryStage);
         totpManager = TOTPManager.getInstance();
+        eventManager = EventManager.getInstance();
 
         databaseManager = DatabaseManager.getInstance();
 
