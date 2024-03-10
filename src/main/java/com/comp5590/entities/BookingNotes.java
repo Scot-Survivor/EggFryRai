@@ -21,9 +21,9 @@ public class BookingNotes {
     @JoinColumn(name = "bookingId")
     private Booking bookingId;
 
-    @Column(name = "notes")
+    @Column(name = "notes", length = 1024, nullable = false)
     private String notes;
 
-    @Column(name = "prescription")
+    @Column(name = "prescription", length = 1024, nullable = false)
     private String prescription;
 }

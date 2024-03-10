@@ -20,19 +20,19 @@ public class Address {
     @Column(name = "addressId")
     private int addressId;
 
-    @Column(name = "postCode")
+    @Column(name = "postCode", nullable = false)
     private String postCode;
 
-    @Column(name = "country")
+    @Column(name = "country", nullable = false)
     private String country;
 
-    @Column(name = "addressLineOne")
+    @Column(name = "addressLineOne", nullable = false, length = 1024)
     private String addressLineOne;
 
-    @Column(name = "addressLineTwo")
+    @Column(name = "addressLineTwo", length = 1024)
     private String addressLineTwo;
 
-    @Column(name = "addressLineThree")
+    @Column(name = "addressLineThree", length = 1024)
     private String addressLineThree;
 
     @OneToMany(mappedBy = "address")

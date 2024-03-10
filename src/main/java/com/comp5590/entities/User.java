@@ -23,23 +23,23 @@ public class User {
     private int id;
 
     // Personal details
-    @Column(name = "firstName")
+    @Column(name = "firstName", length = 50, nullable = false)
     private String firstName;
 
-    @Column(name = "surName")
+    @Column(name = "surName", length = 50, nullable = false)
     private String surName;
 
-    @Column(name = "phone")
+    @Column(name = "phone", length = 20, nullable = false)
     private String phone;
 
-    @Column(name = "fax")
+    @Column(name = "fax", length = 20, nullable = false)
     private String fax;
 
-    @Column(name = "additionalNotes")
+    @Column(name = "additionalNotes", length = 1024, nullable = false)
     private String additionalNotes;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "communicationPreference")
+    @Column(name = "communicationPreference", nullable = false)
     private CommunicationPreference communicationPreference;
 
     @Enumerated(EnumType.STRING)

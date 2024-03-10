@@ -22,11 +22,11 @@ public class AuthenticationDetails {
 
     // Authentication Details
     @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
     @NotNull
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 1024)
     @ToString.Exclude
     private String password; // This will be base64 encoded hash
 

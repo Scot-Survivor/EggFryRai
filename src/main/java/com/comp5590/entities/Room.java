@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.*;
 
 @Entity
-@Table(name = "room")
+@Table(name = "room", uniqueConstraints = { @UniqueConstraint(columnNames = "roomNumber") })
 @Getter
 @Setter
 @ToString
@@ -27,6 +27,6 @@ public class Room {
     private List<Booking> bookings;
 
     // Stored as string for room name "001"
-    @Column(name = "roomNumber")
+    @Column(name = "roomNumber", length = 25, nullable = false, unique = true)
     private String roomNumber;
 }
