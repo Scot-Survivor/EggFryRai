@@ -10,6 +10,9 @@ import com.comp5590.events.listeners.interfaces.Listener;
 import com.comp5590.events.listeners.interfaces.UserListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.LoggerManager;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -112,5 +115,47 @@ public class EventTests extends SetupTests {
         for (Class<? extends GenericEvent> event : events) {
             assertTrue(listener.getCalledEvents().stream().anyMatch(e -> e.getClass().equals(event)));
         }
+    }
+
+    /**
+     * This test tests that all events have a method in one of the listener interfaces
+     * found at com.comp5590.events.listeners.interfaces
+     */
+    @Test
+    public void testAllEventsHaveAppropriateListenerMethods() {
+        Set<Class<? extends GenericEvent>> events = getEvents();
+        Reflections reflections = new Reflections("com.comp5590.events.listeners.interfaces", Scanners.SubTypes);
+        Set<Class<? extends Listener>> listeners = new HashSet<>(reflections.getSubTypesOf(Listener.class));
+        for (Class<? extends GenericEvent> event : events) {
+            boolean found = isFound(event, listeners);
+            assertTrue(found, "Event " + event.getName() + " does not have a listener method");
+        }
+    }
+
+    private boolean isFound(Class<? extends GenericEvent> event, Set<Class<? extends Listener>> listeners) {
+        boolean found = false;
+        for (Class<? extends Listener> listener : listeners) {
+            MethodHandle method = getMethod(event, listener);
+            if (method != null) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    // Rewrite from Listener.java:getMethod()
+    private static MethodHandle getMethod(Class<?> clazz, Class<?> listenerClazz) {
+        String name = clazz.getSimpleName();
+        MethodType type = MethodType.methodType(clazz, clazz);
+        try {
+            name = "on" + name.substring(0, name.length() - "Event".length());
+            return MethodHandles.lookup().findVirtual(listenerClazz, name, type);
+        } catch (NoSuchMethodException e) {
+            return null;
+        } catch (IllegalAccessException e) {
+            fail("Method(" + name + ") is not accessible: " + e.getMessage());
+        }
+        return null;
     }
 }

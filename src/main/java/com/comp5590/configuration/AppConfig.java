@@ -67,6 +67,7 @@ public class AppConfig {
 
     // Database Configuration
     public static String DATABASE_PROPERTIES_FILE = "hibernate.properties";
+    public static boolean DO_ENTITY_VALIDATION = true;
 
     // Methods
     private AppConfig() {

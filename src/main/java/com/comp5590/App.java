@@ -2,6 +2,7 @@ package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.entities.User;
+import com.comp5590.events.listeners.implementations.EntityValidatorListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
@@ -60,6 +61,9 @@ public class App extends Application {
         screenManager = new ScreenManager(primaryStage);
         totpManager = TOTPManager.getInstance();
         eventManager = EventManager.getInstance();
+        if (AppConfig.DO_ENTITY_VALIDATION) {
+            eventManager.addListener(new EntityValidatorListener());
+        }
 
         databaseManager = DatabaseManager.getInstance();
 

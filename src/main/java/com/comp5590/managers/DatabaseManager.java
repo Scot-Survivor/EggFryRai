@@ -3,9 +3,7 @@ package com.comp5590.managers;
 import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.events.eventtypes.CancellableEvent;
-import com.comp5590.events.eventtypes.database.EntityDeleteEvent;
-import com.comp5590.events.eventtypes.database.EntitySaveEvent;
-import com.comp5590.events.eventtypes.database.EntityUpdateEvent;
+import com.comp5590.events.eventtypes.database.*;
 import com.comp5590.events.managers.EventManager;
 import jakarta.persistence.Entity;
 import jakarta.persistence.TypedQuery;
@@ -112,17 +110,12 @@ public class DatabaseManager {
     }
 
     public boolean save(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), object, app)))) {
             logger.debug("Save event cancelled");
             return false;
         }
         try {
             logger.debug("Saving object: " + object.toString());
-            if (!validateWithViolations(object).isEmpty()) {
-                logger.error("Failed to save object: Validation failed");
-                logger.debug("Validation errors: " + validateWithViolations(object));
-                return false;
-            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(object);
@@ -137,17 +130,12 @@ public class DatabaseManager {
     }
 
     public int saveGetId(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), object, app)))) {
             logger.debug("Save event cancelled");
             return -1;
         }
         try {
             logger.debug("Saving object: " + object.toString());
-            if (!validateWithViolations(object).isEmpty()) {
-                logger.error("Failed to save object: Validation failed");
-                logger.debug("Validation errors: " + validateWithViolations(object));
-                return -1;
-            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             int id = (int) session.save(object);
@@ -167,6 +155,10 @@ public class DatabaseManager {
      * @return List of results
      */
     public List<?> query(String query) {
+        if (shouldCancel(eventManager.callEvent(new EntityQueryEvent(query, app)))) {
+            logger.debug("Query event cancelled");
+            return null;
+        }
         try {
             logger.debug("Executing query: " + query);
             Session session = sessionFactory.openSession();
@@ -182,17 +174,12 @@ public class DatabaseManager {
     }
 
     public boolean update(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntityUpdateEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntityUpdateEvent(object.getClass(), object, app)))) {
             logger.debug("Update event cancelled");
             return false;
         }
         try {
             logger.debug("Updating object: " + object.toString());
-            if (!validateWithViolations(object).isEmpty()) {
-                logger.error("Failed to update object: Validation failed");
-                logger.debug("Validation errors: " + validateWithViolations(object));
-                return false;
-            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.merge(object);
@@ -207,6 +194,10 @@ public class DatabaseManager {
     }
 
     public <T> List<T> getAll(final Class<T> type) {
+        if (shouldCancel(eventManager.callEvent(new EntityQueryAllEvent(type, app)))) {
+            logger.debug("Get all event cancelled");
+            return null;
+        }
         final Session session = sessionFactory.openSession();
         session.beginTransaction();
         // It's safe to use string append here as we are using a class object name
@@ -223,6 +214,10 @@ public class DatabaseManager {
      * @param <T> The type of object to get
      */
     public <T> T get(final Class<T> type, final int id) {
+        if (shouldCancel(eventManager.callEvent(new EntityQueryOneEvent(type, id, app)))) {
+            logger.debug("Get event cancelled");
+            return null;
+        }
         final Session session = sessionFactory.openSession();
         session.beginTransaction();
         final T result = session.get(type, id);
@@ -240,6 +235,10 @@ public class DatabaseManager {
      * @param <T> The type of object to get
      */
     public <T> T getByProperty(final Class<T> type, final String property, final Object value) {
+        if (shouldCancel(eventManager.callEvent(new EntityQueryByPropertyEvent(type, property, value, app)))) {
+            logger.debug("Get by property event cancelled");
+            return null;
+        }
         final Session session = sessionFactory.openSession();
         session.beginTransaction();
         final T result = (T) session
@@ -255,7 +254,7 @@ public class DatabaseManager {
      * Delete an object from the database
      */
     public boolean delete(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntityDeleteEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntityDeleteEvent(object.getClass(), object, app)))) {
             logger.debug("Delete event cancelled");
             return false;
         }
