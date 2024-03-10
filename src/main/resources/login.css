@@ -64,3 +64,9 @@
     -fx-border-radius: 20;
     -fx-background-radius: 20;
 }
+
+/* Error message box */
+#error {
+    -fx-text-fill: #ff0000;
+    -fx-font-size: 15;
+}
