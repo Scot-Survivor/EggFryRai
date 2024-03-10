@@ -3,12 +3,15 @@ package com.comp5590.events.eventtypes;
 import com.comp5590.App;
 import com.comp5590.managers.LoggerManager;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.core.Logger;
 
 @Getter
 public class GenericEvent {
 
-    private final String message;
+    @Setter
+    private String message;
+
     private final App app;
     private final Logger logger;
 
