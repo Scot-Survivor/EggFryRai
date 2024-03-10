@@ -5,6 +5,10 @@
 
 package com.comp5590.managers;
 
+import com.comp5590.App;
+import com.comp5590.events.eventtypes.CancellableEvent;
+import com.comp5590.events.eventtypes.screens.ScreenChangeEvent;
+import com.comp5590.events.managers.EventManager;
 import com.comp5590.screens.AbstractScreen;
 import com.comp5590.screens.LoginScreen;
 import java.util.Arrays;
@@ -29,16 +33,24 @@ public class ScreenManager {
     private final HashMap<Class<? extends AbstractScreen>, AbstractScreen> screenInstances;
     private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
     private AbstractScreen currentScreen;
+    private EventManager eventManager;
+    private App app;
 
     public ScreenManager(Stage primary) {
         this.primaryStage = primary;
         this.screens = new HashMap<>();
         this.screenInstances = new HashMap<>();
+        this.eventManager = EventManager.getInstance();
+        this.app = App.getInstance();
 
         // run any setup functions and then display the login scene
         setup();
         showScene(LoginScreen.class);
         fullscreen();
+    }
+
+    private boolean shouldCancel(CancellableEvent event) {
+        return event.isCancelled();
     }
 
     /**
@@ -79,6 +91,10 @@ public class ScreenManager {
      * @param scene The scene to show
      */
     public void showScene(Class<? extends AbstractScreen> scene) {
+        if (shouldCancel(eventManager.callEvent(new ScreenChangeEvent(screenInstances.get(scene), app)))) {
+            logger.debug("ScreenChangeEvent was cancelled for: " + scene.getName());
+            return;
+        }
         if (screens.containsKey(scene)) {
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
