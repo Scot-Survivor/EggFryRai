@@ -3,6 +3,10 @@ package com.comp5590.events.listeners.interfaces;
 import com.comp5590.events.eventtypes.database.*;
 
 public interface DatabaseListener extends Listener {
+    default DatabaseInteractionEvent onDatabaseInteraction(DatabaseInteractionEvent event) {
+        return event;
+    }
+
     default EntitySaveEvent onEntitySave(EntitySaveEvent event) {
         return event;
     }

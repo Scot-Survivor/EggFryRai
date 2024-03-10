@@ -1,12 +1,11 @@
 package com.comp5590.events.eventtypes.database;
 
 import com.comp5590.App;
-import com.comp5590.events.eventtypes.CancellableEvent;
 
-public class EntityDeleteEvent extends CancellableEvent {
+public class EntityDeleteEvent extends DatabaseInteractionEvent {
 
-    public EntityDeleteEvent(Class<?> clazz, App app) {
-        super("Deleting Entity: " + clazz.getSimpleName(), app, false);
+    public EntityDeleteEvent(Class<?> clazz, Object entity, App app) {
+        super("Deleting Entity: " + clazz.getSimpleName(), entity, app);
     }
 
     public EntityDeleteEvent() {}

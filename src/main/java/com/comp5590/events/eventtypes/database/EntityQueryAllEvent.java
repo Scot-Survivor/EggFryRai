@@ -1,12 +1,11 @@
 package com.comp5590.events.eventtypes.database;
 
 import com.comp5590.App;
-import com.comp5590.events.eventtypes.CancellableEvent;
 
-public class EntityQueryAllEvent extends CancellableEvent {
+public class EntityQueryAllEvent extends DatabaseInteractionEvent {
 
     public EntityQueryAllEvent(Class<?> clazz, App app) {
-        super("Querying All Entities: " + clazz.getSimpleName(), null, false);
+        super("Querying All Entities: " + clazz.getSimpleName(), null, app);
     }
 
     public EntityQueryAllEvent() {}

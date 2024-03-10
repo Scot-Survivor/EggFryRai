@@ -110,7 +110,7 @@ public class DatabaseManager {
     }
 
     public boolean save(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), object, app)))) {
             logger.debug("Save event cancelled");
             return false;
         }
@@ -135,7 +135,7 @@ public class DatabaseManager {
     }
 
     public int saveGetId(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), object, app)))) {
             logger.debug("Save event cancelled");
             return -1;
         }
@@ -184,7 +184,7 @@ public class DatabaseManager {
     }
 
     public boolean update(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntityUpdateEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntityUpdateEvent(object.getClass(), object, app)))) {
             logger.debug("Update event cancelled");
             return false;
         }
@@ -269,7 +269,7 @@ public class DatabaseManager {
      * Delete an object from the database
      */
     public boolean delete(Object object) {
-        if (shouldCancel(eventManager.callEvent(new EntityDeleteEvent(object.getClass(), app)))) {
+        if (shouldCancel(eventManager.callEvent(new EntityDeleteEvent(object.getClass(), object, app)))) {
             logger.debug("Delete event cancelled");
             return false;
         }
