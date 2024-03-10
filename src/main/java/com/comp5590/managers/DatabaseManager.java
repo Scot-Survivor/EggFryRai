@@ -116,11 +116,6 @@ public class DatabaseManager {
         }
         try {
             logger.debug("Saving object: " + object.toString());
-            if (!validateWithViolations(object).isEmpty()) {
-                logger.error("Failed to save object: Validation failed");
-                logger.debug("Validation errors: " + validateWithViolations(object));
-                return false;
-            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(object);
@@ -141,11 +136,6 @@ public class DatabaseManager {
         }
         try {
             logger.debug("Saving object: " + object.toString());
-            if (!validateWithViolations(object).isEmpty()) {
-                logger.error("Failed to save object: Validation failed");
-                logger.debug("Validation errors: " + validateWithViolations(object));
-                return -1;
-            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             int id = (int) session.save(object);
@@ -190,11 +180,6 @@ public class DatabaseManager {
         }
         try {
             logger.debug("Updating object: " + object.toString());
-            if (!validateWithViolations(object).isEmpty()) {
-                logger.error("Failed to update object: Validation failed");
-                logger.debug("Validation errors: " + validateWithViolations(object));
-                return false;
-            }
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.merge(object);
