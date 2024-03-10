@@ -11,7 +11,7 @@ public interface UserListener extends Listener {
         return event;
     }
 
-    default LoginEvent onLogout(LogoutEvent event) {
+    default LogoutEvent onLogout(LogoutEvent event) {
         return event;
     }
 }
