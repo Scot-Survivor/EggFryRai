@@ -1,4 +1,4 @@
-package com.comp5590.managers.security.passwords;
+package com.comp5590.security.managers.passwords;
 
 import com.comp5590.configuration.AppConfig;
 import org.mindrot.jbcrypt.BCrypt;

@@ -3,7 +3,7 @@ package com.comp5590.tests.validators;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.comp5590.entities.Booking;
+import com.comp5590.database.entities.Booking;
 import com.comp5590.tests.basic.SetupTests;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

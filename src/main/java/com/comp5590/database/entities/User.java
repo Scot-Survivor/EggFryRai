@@ -1,4 +1,4 @@
-package com.comp5590.entities;
+package com.comp5590.database.entities;
 
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;

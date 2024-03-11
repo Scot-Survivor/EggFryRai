@@ -1,6 +1,6 @@
 package com.comp5590.screens;
 
-import com.comp5590.entities.User;
+import com.comp5590.database.entities.User;
 import com.comp5590.managers.ScreenManager;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;

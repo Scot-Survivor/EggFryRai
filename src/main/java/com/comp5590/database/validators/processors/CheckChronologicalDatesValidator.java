@@ -1,7 +1,7 @@
-package com.comp5590.validators.processors;
+package com.comp5590.database.validators.processors;
 
-import com.comp5590.entities.Insurance;
-import com.comp5590.validators.annontations.ChronologicalDates;
+import com.comp5590.database.entities.Insurance;
+import com.comp5590.database.validators.annontations.ChronologicalDates;
 import jakarta.validation.ConstraintValidator;
 
 public class CheckChronologicalDatesValidator implements ConstraintValidator<ChronologicalDates, Insurance> {

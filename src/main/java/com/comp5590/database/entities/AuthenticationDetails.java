@@ -1,6 +1,6 @@
-package com.comp5590.entities;
+package com.comp5590.database.entities;
 
-import com.comp5590.validators.annontations.ValidMFA;
+import com.comp5590.database.validators.annontations.ValidMFA;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

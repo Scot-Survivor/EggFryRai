@@ -1,10 +1,11 @@
-package com.comp5590.managers;
+package com.comp5590.database.managers;
 
 import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.events.eventtypes.CancellableEvent;
 import com.comp5590.events.eventtypes.database.*;
 import com.comp5590.events.managers.EventManager;
+import com.comp5590.managers.LoggerManager;
 import jakarta.persistence.Entity;
 import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintViolation;
@@ -82,7 +83,7 @@ public class DatabaseManager {
     }
 
     private List<Class<?>> getEntityClasses() {
-        Reflections reflections = new Reflections("com.comp5590.entities");
+        Reflections reflections = new Reflections("com.comp5590.database.entities");
         return reflections.getTypesAnnotatedWith(Entity.class).stream().toList();
     }
 

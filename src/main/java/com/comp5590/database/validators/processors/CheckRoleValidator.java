@@ -1,8 +1,8 @@
-package com.comp5590.validators.processors;
+package com.comp5590.database.validators.processors;
 
-import com.comp5590.entities.User;
+import com.comp5590.database.entities.User;
+import com.comp5590.database.validators.annontations.RequiredRole;
 import com.comp5590.enums.UserRole;
-import com.comp5590.validators.annontations.RequiredRole;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

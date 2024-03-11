@@ -1,4 +1,4 @@
-package com.comp5590.entities;
+package com.comp5590.database.entities;
 
 import jakarta.persistence.*;
 import java.util.List;

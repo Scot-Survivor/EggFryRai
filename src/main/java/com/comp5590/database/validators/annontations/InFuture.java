@@ -1,26 +1,23 @@
-package com.comp5590.validators.annontations;
+package com.comp5590.database.validators.annontations;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.comp5590.enums.UserRole;
-import com.comp5590.validators.processors.CheckRoleValidator;
+import com.comp5590.database.validators.processors.CheckInFutureValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Target({ METHOD, FIELD, ANNOTATION_TYPE })
+@Target({ FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = CheckRoleValidator.class)
+@Constraint(validatedBy = CheckInFutureValidator.class)
 @Documented
-public @interface RequiredRole {
-    String message() default "{com.comp5590.validators.annontations.RequiredRole.message}";
+public @interface InFuture {
+    String message() default "{com.comp5590.validators.annontations.InFuture.message}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
-    UserRole value();
 }

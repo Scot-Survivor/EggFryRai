@@ -1,8 +1,8 @@
-package com.comp5590.entities;
+package com.comp5590.database.entities;
 
+import com.comp5590.database.validators.annontations.InFuture;
+import com.comp5590.database.validators.annontations.RequiredRole;
 import com.comp5590.enums.UserRole;
-import com.comp5590.validators.annontations.InFuture;
-import com.comp5590.validators.annontations.RequiredRole;
 import jakarta.persistence.*;
 import java.util.Date;
 import lombok.*;

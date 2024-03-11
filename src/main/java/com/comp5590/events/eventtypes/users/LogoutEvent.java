@@ -1,7 +1,7 @@
 package com.comp5590.events.eventtypes.users;
 
 import com.comp5590.App;
-import com.comp5590.entities.User;
+import com.comp5590.database.entities.User;
 
 /**
  * Event for when a user logs out, the same as a login event but with a different message

@@ -1,13 +1,13 @@
 package com.comp5590.tests.basic;
 
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.entities.Address;
-import com.comp5590.entities.AuthenticationDetails;
-import com.comp5590.entities.User;
+import com.comp5590.database.entities.Address;
+import com.comp5590.database.entities.AuthenticationDetails;
+import com.comp5590.database.entities.User;
+import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
-import com.comp5590.managers.DatabaseManager;
-import com.comp5590.managers.security.passwords.PasswordManager;
+import com.comp5590.security.managers.passwords.PasswordManager;
 import org.junit.jupiter.api.BeforeAll;
 
 public class SetupTests {

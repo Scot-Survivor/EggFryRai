@@ -1,4 +1,4 @@
-package com.comp5590.managers.security.mfa;
+package com.comp5590.security.managers.mfa;
 
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.LoggerManager;
