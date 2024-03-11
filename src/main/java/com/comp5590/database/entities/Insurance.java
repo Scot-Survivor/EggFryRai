@@ -1,6 +1,6 @@
-package com.comp5590.entities;
+package com.comp5590.database.entities;
 
-import com.comp5590.validators.annontations.ChronologicalDates;
+import com.comp5590.database.validators.annontations.ChronologicalDates;
 import jakarta.persistence.*;
 import java.util.Date;
 import lombok.*;

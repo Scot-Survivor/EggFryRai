@@ -1,4 +1,4 @@
-package com.comp5590.managers.security.passwords;
+package com.comp5590.security.managers.passwords;
 
 import com.comp5590.managers.LoggerManager;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +42,7 @@ public abstract class PasswordManager {
     }
 
     public static PasswordManager getInstanceOf(String passwordManager) {
-        Reflections reflections = new Reflections("com.comp5590.managers.security.passwords", Scanners.SubTypes);
+        Reflections reflections = new Reflections("com.comp5590.security.managers.passwords", Scanners.SubTypes);
         Set<Class<? extends PasswordManager>> pms = reflections.getSubTypesOf(PasswordManager.class);
         pms.forEach(pm -> {
             logger.debug("Found PasswordManager: " + pm.getSimpleName());

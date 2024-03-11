@@ -1,21 +1,21 @@
-package com.comp5590.validators.annontations;
+package com.comp5590.database.validators.annontations;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.comp5590.validators.processors.CheckInFutureValidator;
+import com.comp5590.database.validators.processors.CheckChronologicalDatesValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Target({ FIELD, ANNOTATION_TYPE })
+@Target({ TYPE, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = CheckInFutureValidator.class)
+@Constraint(validatedBy = CheckChronologicalDatesValidator.class)
 @Documented
-public @interface InFuture {
-    String message() default "{com.comp5590.validators.annontations.InFuture.message}";
+public @interface ChronologicalDates {
+    String message() default "{com.comp5590.validators.annontations.ChronologicalDates.message}";
 
     Class<?>[] groups() default {};
 

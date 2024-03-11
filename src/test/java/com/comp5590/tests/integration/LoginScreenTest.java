@@ -3,11 +3,11 @@ package com.comp5590.tests.integration;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.comp5590.App;
-import com.comp5590.entities.User;
-import com.comp5590.managers.security.mfa.TOTPManager;
+import com.comp5590.database.entities.User;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.MFAScreen;
+import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
 import java.util.Set;
 import javafx.scene.Node;

@@ -7,7 +7,7 @@ import com.comp5590.components.LoginScreen.LoginField;
 import com.comp5590.components.LoginScreen.Paragraph;
 // import title component
 import com.comp5590.components.LoginScreen.Title;
-import com.comp5590.entities.User;
+import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import javafx.event.ActionEvent;

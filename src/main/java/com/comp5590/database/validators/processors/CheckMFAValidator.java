@@ -1,7 +1,7 @@
-package com.comp5590.validators.processors;
+package com.comp5590.database.validators.processors;
 
-import com.comp5590.entities.AuthenticationDetails;
-import com.comp5590.validators.annontations.ValidMFA;
+import com.comp5590.database.entities.AuthenticationDetails;
+import com.comp5590.database.validators.annontations.ValidMFA;
 import jakarta.validation.ConstraintValidator;
 
 public class CheckMFAValidator implements ConstraintValidator<ValidMFA, AuthenticationDetails> {

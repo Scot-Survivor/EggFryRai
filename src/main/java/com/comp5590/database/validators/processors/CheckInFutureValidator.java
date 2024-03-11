@@ -1,6 +1,6 @@
-package com.comp5590.validators.processors;
+package com.comp5590.database.validators.processors;
 
-import com.comp5590.validators.annontations.InFuture;
+import com.comp5590.database.validators.annontations.InFuture;
 import jakarta.validation.ConstraintValidator;
 import java.util.Date;
 
