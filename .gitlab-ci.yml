@@ -16,7 +16,6 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x gradlew
   - mv dev-hibernate.properties hibernate.properties
-  - apk add --no-cache binutils
 
 cache:
   paths:
