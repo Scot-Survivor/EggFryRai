@@ -5,7 +5,7 @@
 # Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
-image: openjdk:17-jdk-alpine3.14
+image: openjdk:17-jdk-slim
 stages:
   - build
   - test
