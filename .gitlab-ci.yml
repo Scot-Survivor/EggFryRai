@@ -29,7 +29,7 @@ distribute:
   artifacts:
     paths:
       - "./build/libs/*.jar"
-    expire_in: 24 hours
+    expire_in: 7 days
   only:
     - main
 
