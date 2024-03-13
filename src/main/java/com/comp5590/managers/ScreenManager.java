@@ -11,12 +11,15 @@ import com.comp5590.events.eventtypes.screens.ScreenChangeEvent;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.screens.AbstractScreen;
 import com.comp5590.screens.LoginScreen;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.apache.logging.log4j.core.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -32,6 +35,10 @@ public class ScreenManager {
     private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
     private final HashMap<Class<? extends AbstractScreen>, AbstractScreen> screenInstances;
     private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
+
+    @Getter
+    private final List<Class<? extends AbstractScreen>> accessedScreens;
+
     private AbstractScreen currentScreen;
     private EventManager eventManager;
     private App app;
@@ -42,6 +49,7 @@ public class ScreenManager {
         this.screenInstances = new HashMap<>();
         this.eventManager = EventManager.getInstance();
         this.app = App.getInstance();
+        this.accessedScreens = new ArrayList<>();
 
         // run any setup functions and then display the login scene
         setup();
@@ -95,6 +103,7 @@ public class ScreenManager {
             logger.debug("ScreenChangeEvent was cancelled for: " + scene.getName());
             return;
         }
+        addScreenToHistory(scene);
         if (screens.containsKey(scene)) {
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
@@ -118,6 +127,29 @@ public class ScreenManager {
         String cssPath = screen.getCssPath();
         if (cssPath != null) scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
         return scene;
+    }
+
+    /**
+     * Add the screen to the history
+     * @param clazz The class of the screen to add
+     */
+    private void addScreenToHistory(Class<? extends AbstractScreen> clazz) {
+        if (accessedScreens.size() >= 5) {
+            accessedScreens.remove(0);
+        }
+        accessedScreens.add(clazz);
+    }
+
+    /**
+     * Go back to the previous screen
+     * If there is no previous screen, do nothing
+     */
+    public void goBack() {
+        if (accessedScreens.size() > 1) {
+            Class<? extends AbstractScreen> lastScreen = accessedScreens.get(accessedScreens.size() - 2);
+            showScene(lastScreen);
+            accessedScreens.remove(accessedScreens.size() - 1);
+        }
     }
 
     public AbstractScreen getCurrentScreen() {

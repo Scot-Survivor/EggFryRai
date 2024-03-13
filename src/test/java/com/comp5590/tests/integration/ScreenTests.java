@@ -2,6 +2,8 @@ package com.comp5590.tests.integration;
 
 import com.comp5590.App;
 import com.comp5590.screens.AbstractScreen;
+import com.comp5590.screens.HomeScreen;
+import com.comp5590.screens.LoginScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.stage.Stage;
 import org.assertj.core.api.Assertions;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
+import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
@@ -34,5 +37,17 @@ public class ScreenTests extends SetupTests {
         Reflections reflections = getScreenList();
         long screenCount = reflections.getSubTypesOf(AbstractScreen.class).size();
         Assertions.assertThat(app.getScreenManager().getScreens().size()).isEqualTo(screenCount);
+    }
+
+    @Test
+    public void testScreenGoBack(FxRobot robot) {
+        // Robot is needed to run on JavaFX thread.
+        robot.interact(() -> {
+            app.getScreenManager().showScene(LoginScreen.class);
+            app.getScreenManager().showScene(HomeScreen.class);
+            app.getScreenManager().goBack();
+        });
+
+        Assertions.assertThat(app.getScreenManager().getCurrentScreen().getClass()).isEqualTo(LoginScreen.class);
     }
 }
