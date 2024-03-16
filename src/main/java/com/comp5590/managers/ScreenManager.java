@@ -95,7 +95,8 @@ public class ScreenManager {
     /**
      * Function that shows the scene
      * Example:
-     *  showScene(Login.class);
+     * showScene(Login.class);
+     *
      * @param scene The scene to show
      */
     public void showScene(Class<? extends AbstractScreen> scene) {
@@ -104,6 +105,12 @@ public class ScreenManager {
             return;
         }
         addScreenToHistory(scene);
+
+        // for every scene, print out all their simple names
+        for (Class<? extends AbstractScreen> key : screens.keySet()) {
+            System.out.println(key.getSimpleName());
+        }
+
         if (screens.containsKey(scene)) {
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
@@ -131,6 +138,7 @@ public class ScreenManager {
 
     /**
      * Add the screen to the history
+     *
      * @param clazz The class of the screen to add
      */
     private void addScreenToHistory(Class<? extends AbstractScreen> clazz) {

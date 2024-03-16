@@ -151,8 +151,8 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void login(ActionEvent event) {
-        String email = this.email.getText();
-        String password = this.password.getText();
+        String email = this.email.getText().trim();
+        String password = this.password.getText().trim();
         User user = getDatabaseManager().getByProperty(User.class, "authenticationDetails.email", email);
         if (user == null) {
             logger.error("Invalid Username({})", email);
@@ -164,7 +164,13 @@ public class LoginScreen extends AbstractScreen {
             .passwordMatches(user.getAuthenticationDetails().getPassword(), password);
         if (passwordValid) {
             if (!user.getAuthenticationDetails().isTwoFactorEnabled()) {
+                // show the user the home screen (successfully logged in)
                 getApp().getScreenManager().showScene(HomeScreen.class);
+                // set the user as authenticated in session manager
+                getApp().getSessionManager().setAuthenticated(true);
+                // unauthenticate user after 2 hours, forcing them to re-login
+                getApp().getSessionManager().unauthenticateAfter(2);
+                logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
             } else {
                 getApp().getScreenManager().showScene(MFAScreen.class);
             }
@@ -172,7 +178,7 @@ public class LoginScreen extends AbstractScreen {
             getApp().setCurrentUser(user);
         } else {
             logger.error("Invalid Password(*)");
-            this.error.setText("Invalid Username or Password");
+            this.error.setText("Invalid password. Please try again.");
         }
     }
 
