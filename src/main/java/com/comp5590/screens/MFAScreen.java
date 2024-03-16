@@ -1,16 +1,20 @@
 package com.comp5590.screens;
 
 import com.comp5590.database.entities.User;
+import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import org.apache.logging.log4j.core.Logger;
 
 public class MFAScreen extends AbstractScreen {
 
     private TextField code;
     private Label error;
+
+    private final Logger logger = LoggerManager.getInstance().getLogger(LoginScreen.class);
 
     public MFAScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -43,8 +47,14 @@ public class MFAScreen extends AbstractScreen {
         User user = getApp().getCurrentUser();
         boolean valid = this.verify(code, user);
         if (valid) {
+            // show the home screen
             getApp().getScreenManager().showScene(HomeScreen.class);
             getApp().setCurrentUser(user);
+            // set the user as authenticated in session manager
+            getApp().getSessionManager().setAuthenticated(true);
+            // unauthenticate user after 2 hours, forcing them to re-login
+            getApp().getSessionManager().unauthenticateAfter(2);
+            logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
         } else {
             LoginScreen loginScreen = (LoginScreen) getApp().getScreenManager().getScreenInstance(LoginScreen.class);
             loginScreen.setErrorText("Invalid 2FA code");

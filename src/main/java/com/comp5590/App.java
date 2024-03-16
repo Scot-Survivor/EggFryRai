@@ -6,6 +6,7 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.events.listeners.implementations.EntityValidatorListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.security.managers.mfa.TOTPManager;
@@ -36,6 +37,9 @@ public class App extends Application {
     @Getter
     private TOTPManager totpManager;
 
+    @Getter
+    private SessionManager sessionManager;
+
     @Setter
     @Getter
     private User currentUser;
@@ -54,6 +58,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        sessionManager = SessionManager.getInstance();
+        databaseManager = DatabaseManager.getInstance();
+        passwordManager = new Argon2PasswordManager();
+
         instance = this;
         primaryStage = stage;
         stage.getIcons().add(new Image("/healthcare.png"));
@@ -64,10 +72,6 @@ public class App extends Application {
         if (AppConfig.DO_ENTITY_VALIDATION) {
             eventManager.addListener(new EntityValidatorListener());
         }
-
-        databaseManager = DatabaseManager.getInstance();
-
-        passwordManager = new Argon2PasswordManager();
     }
 
     public static void main(String[] args) {
@@ -76,6 +80,14 @@ public class App extends Application {
 
     public DatabaseManager getDatabase() {
         return databaseManager;
+    }
+
+    public AppConfig getAppConfig() {
+        return appConfig;
+    }
+
+    public SessionManager getSessionManager() {
+        return sessionManager;
     }
 
     public static App getInstance() {
