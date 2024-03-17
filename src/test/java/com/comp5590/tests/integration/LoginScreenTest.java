@@ -231,4 +231,12 @@ public class LoginScreenTest extends SetupTests {
         });
         SetupTests.remove(p.getClass(), p.getId());
     }
+
+    @Test
+    public void checkScreenAuthenticationListenerPreventsAccessToHomeWithoutAuth(FxRobot robot) {
+        robot.interact(() -> {
+            app.getScreenManager().showScene(HomeScreen.class);
+            assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
+        });
+    }
 }

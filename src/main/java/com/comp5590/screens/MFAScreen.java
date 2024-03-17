@@ -47,13 +47,13 @@ public class MFAScreen extends AbstractScreen {
         User user = getApp().getCurrentUser();
         boolean valid = this.verify(code, user);
         if (valid) {
-            // show the home screen
-            getApp().getScreenManager().showScene(HomeScreen.class);
             getApp().setCurrentUser(user);
             // set the user as authenticated in session manager
             getApp().getSessionManager().setAuthenticated(true);
             // unauthenticate user after 2 hours, forcing them to re-login
             getApp().getSessionManager().unauthenticateAfter(2);
+            // show the home screen
+            getApp().getScreenManager().showScene(HomeScreen.class);
             logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
         } else {
             LoginScreen loginScreen = (LoginScreen) getApp().getScreenManager().getScreenInstance(LoginScreen.class);

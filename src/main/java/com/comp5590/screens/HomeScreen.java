@@ -5,9 +5,11 @@ package com.comp5590.screens;
  */
 
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+@AuthRequired
 public class HomeScreen extends AbstractScreen {
 
     public HomeScreen(ScreenManager screenManager) {

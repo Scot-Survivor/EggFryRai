@@ -164,12 +164,12 @@ public class LoginScreen extends AbstractScreen {
             .passwordMatches(user.getAuthenticationDetails().getPassword(), password);
         if (passwordValid) {
             if (!user.getAuthenticationDetails().isTwoFactorEnabled()) {
-                // show the user the home screen (successfully logged in)
-                getApp().getScreenManager().showScene(HomeScreen.class);
                 // set the user as authenticated in session manager
                 getApp().getSessionManager().setAuthenticated(true);
                 // unauthenticate user after 2 hours, forcing them to re-login
                 getApp().getSessionManager().unauthenticateAfter(2);
+                // show the user the home screen (successfully logged in)
+                getApp().getScreenManager().showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
             } else {
                 getApp().getScreenManager().showScene(MFAScreen.class);
