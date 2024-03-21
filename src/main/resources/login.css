@@ -1,3 +1,4 @@
+/* duplicate css styles for custom-pange located in: [login.css, register.css] */
 .custom-pane {
     -fx-background-color: #f4f4f4;
     -fx-border-color: #575dfb;
@@ -69,4 +70,36 @@
 #error {
     -fx-text-fill: #ff0000;
     -fx-font-size: 15;
+}
+
+/* register text & link styles */
+.register-text {
+    -fx-font-size: 15;
+    -fx-text-fill: #000000;
+}
+
+.register-link {
+    -fx-font-size: 15;
+    -fx-text-fill: #575dfb;
+    -fx-font-weight: bold;
+}
+
+.register-text:hover {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.register-link:hover {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.register-text:pressed {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.register-link:pressed {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
 }

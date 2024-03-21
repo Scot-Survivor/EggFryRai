@@ -5,6 +5,7 @@ import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.ForgotPasswordButton;
 import com.comp5590.components.LoginScreen.LoginField;
 import com.comp5590.components.LoginScreen.Paragraph;
+import com.comp5590.components.LoginScreen.RegisterBox;
 // import title component
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.database.entities.User;
@@ -36,7 +37,7 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     public void setup() {
-        // load custom CSS
+        // load custom CSS, from 2 files (global.css & login.css)
         this.cssPath = "/login.css";
 
         // create the grid pane object, apply styling & properties to it
@@ -119,6 +120,12 @@ public class LoginScreen extends AbstractScreen {
                 line.setEndX(newVal.doubleValue() - 10);
             });
 
+        // create button for registering new account
+        HBox registerBox = new RegisterBox();
+
+        // add event listener to register box
+        registerBox.setOnMouseClicked(EventHandler -> this.register());
+
         // create vboxes for margin
         VBox padding1 = new VBox();
         padding1.setPrefHeight(20);
@@ -140,6 +147,7 @@ public class LoginScreen extends AbstractScreen {
                 finalLoginBtn,
                 padding3,
                 line,
+                registerBox,
                 error
             );
 
@@ -180,6 +188,10 @@ public class LoginScreen extends AbstractScreen {
             logger.error("Invalid Password(*)");
             this.error.setText("Invalid password. Please try again.");
         }
+    }
+
+    private void register() {
+        getApp().getScreenManager().showScene(RegisterScreen.class);
     }
 
     public void setErrorText(String txt) {
