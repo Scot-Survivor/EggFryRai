@@ -6,6 +6,17 @@
     -fx-border-radius: 20;
     -fx-background-radius: 5;
     -fx-padding: 20;
+
+    -fx-pref-width: 250;
+    -fx-pref-height: 400;
+    -fx-max-width: 250;
+    -fx-max-height: 600;
+
+    -fx-alignment: center;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+
+    -fx-font-size: 16;
 }
 
 .login-field{
@@ -18,7 +29,7 @@
 }
 
 .big-button{
-    -fx-background-color: #575dfb;
+    -fx-background-color: #2f35f4;
     -fx-text-fill: white;
     -fx-font-size: 20;
     -fx-font-weight: bold;
@@ -37,7 +48,6 @@
 }
 
 .big-button:pressed{
-    -fx-background-color: #2f35f4;
     -fx-opacity: 0.8;
 }
 
@@ -57,13 +67,6 @@
 
     /* align to left */
     -fx-alignment: center-left;
-}
-
-.line{
-    -fx-stroke: #000000;
-    -fx-stroke-width: 2;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
 }
 
 /* Error message box */
