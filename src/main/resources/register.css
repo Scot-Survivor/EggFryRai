@@ -1,0 +1,52 @@
+/* duplicate css styles for custom-pange located in: [login.css, register.css] */
+.custom-pane {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #575dfb;
+    -fx-border-width: 3;
+    -fx-border-radius: 20;
+    -fx-background-radius: 5;
+    -fx-padding: 20;
+    
+    -fx-pref-width: 250;
+    -fx-pref-height: 400;
+    -fx-max-width: 250;
+    -fx-max-height: 600;
+
+    -fx-alignment: center;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+
+    -fx-font-size: 16;
+}
+
+/* back to login page text & link styles */
+.login-text {
+    -fx-font-size: 15;
+    -fx-text-fill: #000000;
+}
+
+.login-link {
+    -fx-font-size: 15;
+    -fx-text-fill: #575dfb;
+    -fx-font-weight: bold;
+}
+
+.login-text:hover {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.login-link:hover {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.login-text:pressed {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.login-link:pressed {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
