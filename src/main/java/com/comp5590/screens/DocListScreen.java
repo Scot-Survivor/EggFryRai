@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +28,9 @@ public class DocListScreen extends AbstractScreen {
 
     @Override
     public void setup() {
+        // Load custom css
+        this.cssPath = "/docList.css";
+
         setRootPane(new BorderPane());
         doctorTable = new TableView<>(); // Initialize table
         ((BorderPane) getRootPane()).setCenter(center());
@@ -37,10 +41,19 @@ public class DocListScreen extends AbstractScreen {
         doctorTable.setId("doctorTable");
         // Create title
         HBox titleBox = new Title("Select a doctor");
+        titleBox.setId("title");
 
         // Create button
         Button switchButton = new Button("Change doctor");
-        return new VBox(titleBox, doctorTable, switchButton);
+        switchButton.setId("switchButton");
+        VBox center = new VBox(titleBox, doctorTable, switchButton);
+        center.setId("center");
+        center.getStyleClass().add("custom-pane");
+        center.setPrefSize(600, 400);
+        // set max width to 250, and max height to fit content
+        center.setMaxSize(600, 600);
+        center.setAlignment(Pos.CENTER);
+        return center;
     }
 
     /**
@@ -75,7 +88,7 @@ public class DocListScreen extends AbstractScreen {
 
     /**
      * Create table and input data into it
-     * @param data
+     * @param data The results of the query
      */
     private void createTable(List<User> data) {
         doctorTable.getColumns().clear();
@@ -83,14 +96,17 @@ public class DocListScreen extends AbstractScreen {
         // Create and map first name column
         TableColumn<User, String> firstNameColumn = new TableColumn<>("First name");
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        firstNameColumn.setPrefWidth(180);
 
         // Create and map last name column
         TableColumn<User, String> lastNameColumn = new TableColumn<>("Last name");
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("surName"));
+        lastNameColumn.setPrefWidth(180);
 
         // Create and map phone number column
         TableColumn<User, String> phoneColumn = new TableColumn<>("Phone number");
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        phoneColumn.setPrefWidth(180);
 
         // Add columns to table
         doctorTable.getColumns().add(firstNameColumn);
