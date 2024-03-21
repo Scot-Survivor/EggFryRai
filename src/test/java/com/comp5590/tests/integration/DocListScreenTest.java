@@ -4,12 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.comp5590.App;
-import com.comp5590.database.entities.Address;
-import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.User;
-import com.comp5590.database.managers.DatabaseManager;
-import com.comp5590.enums.CommunicationPreference;
-import com.comp5590.enums.UserRole;
 import com.comp5590.screens.DocListScreen;
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
@@ -17,13 +12,16 @@ import java.util.Set;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.util.WaitForAsyncUtils;
 
 @ExtendWith(ApplicationExtension.class) // TestFX Extension)
@@ -62,47 +60,33 @@ public class DocListScreenTest extends SetupTests {
     }
 
     /**
-     * Test that the table is populated
+     * Test that the doctor list screen has a button
+     */
+    @Test
+    public void testScreenHasButton(FxRobot robot) {
+        robot.interact(() -> {
+            // new test ends up in an async race condition, so we should sleep for a full
+            // second to ensure it doesn't occur
+            robot.sleep(1000); // Sleep for a second to ensure the screen is loaded
+            Pane docListScreenPane = getDocListScreen();
+            Set<Node> switchButton = docListScreenPane.lookupAll("#switchButton");
+            assertThat(switchButton).isNotNull();
+        });
+    }
+
+    /**
+     * Test that the table is populated with correct users
      */
     @Test
     public void testPopulatedTable() {
-        // Make address for doctors
-        Address address = createAddress();
+        // Setup for doctor 1
+        createDoctor("email1@example.com", "pa321321");
 
-        // Setup for user 1
-        AuthenticationDetails authenticationDetails1 = createAuthenticationDetails("email4@example.com", "pa23121");
-        User testUser = new User();
-        testUser.setFirstName("ta");
-        testUser.setSurName("bd");
-        testUser.setPhone("999");
-        testUser.setAddress(address);
-        testUser.setFax("3211");
-        testUser.setAdditionalNotes("note");
-        testUser.setCommunicationPreference(CommunicationPreference.NONE);
-        testUser.setRole(UserRole.DOCTOR);
-        testUser.setAuthenticationDetails(authenticationDetails1);
+        // Setup for doctor 2
+        createDoctor("email2@example.com", "pa321321");
 
-        // Setup for user 2
-        AuthenticationDetails authenticationDetails2 = createAuthenticationDetails("email1@example.com", "pa23121");
-        User testUser2 = new User();
-        testUser2.setFirstName("ata");
-        testUser2.setSurName("bdd");
-        testUser2.setPhone("998");
-        testUser2.setAddress(address);
-        testUser2.setFax("3211");
-        testUser2.setAdditionalNotes("note");
-        testUser2.setCommunicationPreference(CommunicationPreference.NONE);
-        testUser2.setRole(UserRole.DOCTOR);
-        testUser2.setAuthenticationDetails(authenticationDetails2);
-
-        // Save users to database
-        DatabaseManager db = DatabaseManager.getInstance();
-        boolean saveResult1 = db.save(testUser);
-        boolean saveResult2 = db.save(testUser2);
-
-        // Check that users saved correctly
-        assertTrue(saveResult1);
-        assertTrue(saveResult2);
+        // Create patient 1 (saved to DB in method)
+        createPatient("email3@example.com", "pa42131");
 
         // Create DocListScreen instance and run fillTable on that instance
         DocListScreen docListScreenInstance = (DocListScreen) app
@@ -113,8 +97,44 @@ public class DocListScreenTest extends SetupTests {
         WaitForAsyncUtils.waitForFxEvents(); // Wait for fillTable before proceeding
 
         // Check rows of table
-        ObservableList<User> items = docListScreenInstance.getDoctorTable().getItems();
-        assertThat(items).isNotNull();
-        assertThat(items.size()).isEqualTo(2);
+        ObservableList<User> rows = docListScreenInstance.getDoctorTable().getItems();
+        assertThat(rows).isNotNull();
+        assertThat(rows.size()).isEqualTo(2);
+    }
+
+    /**
+     * Test to check if warning box pops up when trying to select with no table selection
+     * @param robot Will be injected via test runner
+     */
+    @Test
+    public void testChangeDoctorButtonNoSelect(FxRobot robot) {
+        robot.interact(() -> {
+            robot.clickOn("#switchButton");
+        });
+        FxAssert.verifyThat("#noSelect", NodeMatchers.isVisible());
+    }
+
+    /**
+     * Test to check if warning box pops up when trying to select with no table selection
+     * @param robot Will be injected via test runner
+     */
+    @Test
+    public void testChangeDoctorButtonSelect(FxRobot robot) {
+        robot.sleep(1000);
+        // Create row on table
+        createDoctor("email1@example.com", "pa321321");
+        DocListScreen docListScreenInstance = (DocListScreen) app
+            .getScreenManager()
+            .getScreenInstance(DocListScreen.class);
+        Platform.runLater(docListScreenInstance::fillTable);
+
+        // Select row and click button
+        TableView doctorTable = robot.lookup("#doctorTable").queryAs(TableView.class);
+        robot.interact(() -> {
+            doctorTable.getSelectionModel().selectFirst();
+            robot.clickOn("#switchButton");
+        });
+        Node doctorSelectedNode = robot.lookup("#doctorSelected").query();
+        assertTrue(doctorSelectedNode.isVisible());
     }
 }

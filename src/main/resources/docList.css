@@ -26,6 +26,9 @@
 #doctorTable {
     -fx-max-width: 541px; /* 1 more px than total width of columns to remove scroll bar*/
     -fx-font-size: 14;
+    -fx-padding: 0;
+    -fx-margin: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 0);
 }
 .table-row-cell:odd {
     -fx-background-color: #f2f2f2;
@@ -42,5 +45,8 @@
 }
 .table-row-cell:selected {
     -fx-background-color: #575dfb;
+}
+.table-view:focused {
+    -fx-focus-color: transparent;
 }
 
