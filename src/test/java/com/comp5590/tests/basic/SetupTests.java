@@ -3,6 +3,7 @@ package com.comp5590.tests.basic;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.AuthenticationDetails;
+import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
@@ -117,6 +118,19 @@ public class SetupTests {
      */
     public static User createPatient(String email, String password, String authenticationToken, String recoveryCodes) {
         return createPatient(createAuthenticationDetails(email, password, authenticationToken, recoveryCodes));
+    }
+
+    /**
+     * Create a Room object using roomNum and address
+     * @param roomNum The number of the room
+     * @param address The address of the room
+     * @return The room
+     */
+    public Room makeRoom(String roomNum, Address address) {
+        Room room = new Room();
+        room.setAddress(address);
+        room.setRoomNumber(roomNum);
+        return room;
     }
 
     /**
