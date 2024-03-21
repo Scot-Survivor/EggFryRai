@@ -45,5 +45,19 @@ public class SessionManager {
         // } catch (InterruptedException e) {
         // e.printStackTrace();
         // }
+
+        // Create thread to handle timeout
+        new Thread(() -> {
+            try {
+                // sleep for this amount of hours
+                Thread.sleep(hours * 60 * 60 * 1000);
+                // after sleep set authenticated to false
+                    this.authenticated = false;
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
     }
-}
+
