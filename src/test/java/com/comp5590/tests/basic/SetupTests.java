@@ -121,6 +121,38 @@ public class SetupTests {
     }
 
     /**
+     * Create a doctor user with all filled values,
+     * @return User
+     */
+    public static User createDoctor(AuthenticationDetails authenticationDetails) {
+        Address address = createAddress();
+        User user = new User(
+            "Test",
+            "User",
+            "0123456789",
+            "0123456789",
+            "Test Notes",
+            CommunicationPreference.EMAIL,
+            address
+        );
+        user.setRole(UserRole.DOCTOR);
+        user.setAuthenticationDetails(authenticationDetails);
+        int id = getDbManager().saveGetId(user);
+        user = getDbManager().get(User.class, id);
+        return user;
+    }
+
+    /**
+     * Create a user object with the email and password specified.
+     * @param email the email of the user
+     * @param password the password of the user
+     * @return User
+     */
+    public static User createDoctor(String email, String password) {
+        return createDoctor(createAuthenticationDetails(email, password));
+    }
+
+    /**
      * Create a Room object using roomNum and address
      * @param roomNum The number of the room
      * @param address The address of the room
