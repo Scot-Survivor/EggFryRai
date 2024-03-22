@@ -1,0 +1,20 @@
+.custom-pane{
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #575dfb;
+    -fx-border-width: 10;
+    -fx-border-radius: 20;
+    -fx-background-radius: 5;
+    
+    -fx-pref-width: 400;
+    -fx-pref-height: 200;
+    -fx-max-width: 400;
+    -fx-max-height: 600;
+
+    -fx-alignment: center;
+}
+
+.message{
+    -fx-font-size: 50;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+}

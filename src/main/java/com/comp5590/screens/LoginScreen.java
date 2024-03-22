@@ -3,15 +3,18 @@ package com.comp5590.screens;
 import com.comp5590.components.LoginScreen.BigButton;
 import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.ForgotPasswordButton;
-import com.comp5590.components.LoginScreen.LoginField;
 import com.comp5590.components.LoginScreen.Paragraph;
+import com.comp5590.components.LoginScreen.RegisterBox;
 // import title component
 import com.comp5590.components.LoginScreen.Title;
+import com.comp5590.components.global.LineHorizontal;
+import com.comp5590.components.global.LoginField;
+import com.comp5590.components.global.SpaceVertical;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -42,19 +45,12 @@ public class LoginScreen extends AbstractScreen {
         // create the grid pane object, apply styling & properties to it
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
-        pane.setPrefSize(250, 400);
-        // set max width to 250, and max height to fit content
-        pane.setMaxSize(250, 600);
-        pane.setAlignment(Pos.CENTER);
-        pane.setPadding(new Insets(20, 20, 20, 20)); // set the padding around the grid pane
-        pane.setHgap(10); // set the horizontal gap between columns
-        pane.setVgap(10); // set the vertical gap between rows
 
         // create child components, imported from the components folder
         HBox titleBox = new Title("Login");
         HBox paragraph = new Paragraph("Please login to track your appointments, prescriptions, and more.");
         VBox icon = new BigIcon("/healthcare.png"); // create the image
-        VBox loginBox = createLogin();
+        VBox loginBox = createLoginBox();
 
         // add child components to our grid pane
         pane.add(titleBox, 0, 0);
@@ -67,6 +63,11 @@ public class LoginScreen extends AbstractScreen {
         // align the grid pane's contents to the center of the screen
         GridPane.setHalignment(titleBox, javafx.geometry.HPos.LEFT);
         GridPane.setHalignment(loginBox, javafx.geometry.HPos.CENTER);
+
+        // add the column constraints, so icon will always be fixed to right of screen
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setHgrow(Priority.ALWAYS); // Allow column 1 to grow to fill the available space
+        pane.getColumnConstraints().add(column1);
 
         // create the border pane (which will serve as root pane)
         // set grid pane as child of border pane
@@ -83,18 +84,19 @@ public class LoginScreen extends AbstractScreen {
      *
      * @return The button
      */
-    private VBox createLogin() {
+    private VBox createLoginBox() {
         // create email & password fields, binding them to this class's object instance
         this.email = new TextField();
-        this.email.setId("email");
         this.password = new PasswordField();
-        this.password.setId("password");
         this.error = new Label();
-        this.error.setId("error");
+        this.error.getStyleClass().add("error-label");
+        email.setId("email");
+        password.setId("password");
+        error.setId("error");
 
         // create login & password field objects, passing in some basic info
-        LoginField emailField = new LoginField("Email", email, "E.g. johndoe@gmail.com", "/at.png");
-        LoginField passwordField = new LoginField("Password", password, "***************", "/lock.png");
+        LoginField emailField = new LoginField("Email", this.email, "E.g. johndoe@gmail.com", "/at.png");
+        LoginField passwordField = new LoginField("Password", this.password, "***************", "/lock.png");
 
         // forgot password box
         ForgotPasswordButton forgotPasswordButton = new ForgotPasswordButton("Forgot Password?");
@@ -111,21 +113,20 @@ public class LoginScreen extends AbstractScreen {
         finalLoginBtn.getChildren().add(loginButton);
 
         // create horizontal line, the same length as loginButton
-        Line line = new Line(10, 0, loginButton.getWidth(), 0);
-        line.getStyleClass().add("line");
-        loginButton
-            .widthProperty()
-            .addListener((obs, oldVal, newVal) -> {
-                line.setEndX(newVal.doubleValue() - 10);
-            });
+        Line line = new LineHorizontal(loginButton, 20, 3);
+
+        // create button for registering new account
+        HBox backToLoginScreenBox = new RegisterBox();
+
+        // add event listener to register box
+        backToLoginScreenBox.setOnMouseClicked(event -> this.gotoRegisterPage());
 
         // create vboxes for margin
-        VBox padding1 = new VBox();
-        padding1.setPrefHeight(20);
-        VBox padding2 = new VBox();
-        padding2.setPrefHeight(10);
-        VBox padding3 = new VBox();
-        padding3.setPrefHeight(10);
+        SpaceVertical padding1 = new SpaceVertical(20);
+        SpaceVertical padding2 = new SpaceVertical(10);
+        SpaceVertical padding3 = new SpaceVertical(10);
+        SpaceVertical padding4 = new SpaceVertical(7);
+        SpaceVertical padding5 = new SpaceVertical(0);
 
         // add children nodes to the vbox this file will return
         VBox box = new VBox();
@@ -139,9 +140,16 @@ public class LoginScreen extends AbstractScreen {
                 padding2,
                 finalLoginBtn,
                 padding3,
-                line,
+                padding4,
+                backToLoginScreenBox,
+                padding5,
                 error
             );
+
+        // set line to be added LATER, inserted vertically beneath the padding3 box
+        Platform.runLater(() -> {
+            box.getChildren().add(box.getChildren().indexOf(padding3) + 1, line);
+        });
 
         // set box properties cos why not
         box.setAlignment(Pos.CENTER);
@@ -171,6 +179,7 @@ public class LoginScreen extends AbstractScreen {
                 // show the user the home screen (successfully logged in)
                 getApp().getScreenManager().showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
+                unsetErrorText();
             } else {
                 getApp().getScreenManager().showScene(MFAScreen.class);
             }
@@ -182,7 +191,16 @@ public class LoginScreen extends AbstractScreen {
         }
     }
 
+    private void gotoRegisterPage() {
+        getApp().getScreenManager().showScene(RegisterScreen.class);
+        unsetErrorText();
+    }
+
     public void setErrorText(String txt) {
         this.error.setText(txt);
+    }
+
+    public void unsetErrorText() {
+        this.error.setText("");
     }
 }

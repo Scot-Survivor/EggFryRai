@@ -26,6 +26,7 @@ public class SetupTests {
 
     /**
      * Create an address object with default values.
+     *
      * @return Address
      */
     public static Address createAddress() {
@@ -42,6 +43,7 @@ public class SetupTests {
 
     /**
      * Create authentication details without mfa
+     *
      * @return AuthenticationDetails
      */
     public static AuthenticationDetails createAuthenticationDetails(String email, String password) {
@@ -58,6 +60,7 @@ public class SetupTests {
 
     /**
      * Create authentication details with mfa
+     *
      * @return AuthenticationDetails
      */
     public static AuthenticationDetails createAuthenticationDetails(
@@ -78,6 +81,7 @@ public class SetupTests {
 
     /**
      * Create a patient user with all filled values,
+     *
      * @return User
      */
     public static User createPatient(AuthenticationDetails authenticationDetails) {
@@ -89,6 +93,7 @@ public class SetupTests {
             "0123456789",
             "Test Notes",
             CommunicationPreference.EMAIL,
+            UserRole.PATIENT,
             address
         );
         user.setRole(UserRole.PATIENT);
@@ -100,7 +105,8 @@ public class SetupTests {
 
     /**
      * Create a user object with the email and password specified.
-     * @param email the email of the user
+     *
+     * @param email    the email of the user
      * @param password the password of the user
      * @return User
      */
@@ -110,10 +116,11 @@ public class SetupTests {
 
     /**
      * Create a user object with the email and password specified.
-     * @param email the email of the user
-     * @param password the password of the user
+     *
+     * @param email               the email of the user
+     * @param password            the password of the user
      * @param authenticationToken the authentication token
-     * @param recoveryCodes the recovery codes
+     * @param recoveryCodes       the recovery codes
      * @return User
      */
     public static User createPatient(String email, String password, String authenticationToken, String recoveryCodes) {

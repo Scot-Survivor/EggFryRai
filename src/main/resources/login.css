@@ -1,3 +1,4 @@
+/* duplicate css styles for custom-pange located in: [login.css, register.css] */
 .custom-pane {
     -fx-background-color: #f4f4f4;
     -fx-border-color: #575dfb;
@@ -5,6 +6,17 @@
     -fx-border-radius: 20;
     -fx-background-radius: 5;
     -fx-padding: 20;
+
+    -fx-pref-width: 250;
+    -fx-pref-height: 400;
+    -fx-max-width: 250;
+    -fx-max-height: 600;
+
+    -fx-alignment: center;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+
+    -fx-font-size: 16;
 }
 
 .login-field{
@@ -17,7 +29,7 @@
 }
 
 .big-button{
-    -fx-background-color: #575dfb;
+    -fx-background-color: #2f35f4;
     -fx-text-fill: white;
     -fx-font-size: 20;
     -fx-font-weight: bold;
@@ -36,7 +48,6 @@
 }
 
 .big-button:pressed{
-    -fx-background-color: #2f35f4;
     -fx-opacity: 0.8;
 }
 
@@ -58,15 +69,40 @@
     -fx-alignment: center-left;
 }
 
-.line{
-    -fx-stroke: #000000;
-    -fx-stroke-width: 2;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
+/* register text & link styles */
+.register-text {
+    -fx-font-size: 15;
+    -fx-text-fill: #000000;
 }
 
-/* Error message box */
-#error {
-    -fx-text-fill: #ff0000;
+.register-link {
     -fx-font-size: 15;
+    -fx-text-fill: #575dfb;
+    -fx-font-weight: bold;
+}
+
+.register-text:hover {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.register-link:hover {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.register-text:pressed {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.register-link:pressed {
+    -fx-text-fill: #575dfb;
+    -fx-underline: true;
+}
+
+.error-label{
+    -fx-font-size: 15;
+    -fx-text-fill: #ff0000;
+    -fx-font-weight: bold;
 }
