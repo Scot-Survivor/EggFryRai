@@ -35,6 +35,9 @@ public class DocListScreen extends AbstractScreen {
         doctorTable = new TableView<>(); // Initialize table
         ((BorderPane) getRootPane()).setCenter(center());
         fillTable(); // Fill table with data
+
+        // add navigation buttons
+        addBackAndHomeButtons(getRootPane());
     }
 
     private VBox center() {
@@ -69,6 +72,7 @@ public class DocListScreen extends AbstractScreen {
 
     /**
      * Method to call query on database to retrieve list of doctors
+     *
      * @return list of doctors with parameters: firstName, surName, phone
      */
     private List<User> getDoctors() {
@@ -96,6 +100,7 @@ public class DocListScreen extends AbstractScreen {
 
     /**
      * Create table and input data into it
+     *
      * @param data The results of the query
      */
     private void createTable(List<User> data) {
@@ -132,6 +137,7 @@ public class DocListScreen extends AbstractScreen {
 
     /**
      * Notify user about switch result, get id of doctor
+     *
      * @param event on button click
      */
     private void docSwitch(ActionEvent event) {

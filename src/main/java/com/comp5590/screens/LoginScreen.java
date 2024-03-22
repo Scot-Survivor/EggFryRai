@@ -163,8 +163,8 @@ public class LoginScreen extends AbstractScreen {
         String password = this.password.getText().trim();
         User user = getDatabaseManager().getByProperty(User.class, "authenticationDetails.email", email);
         if (user == null) {
-            logger.error("Invalid Username({})", email);
-            this.error.setText("Invalid Username or Password");
+            logger.error("Invalid Email({})", email);
+            this.error.setText("Invalid Email or Password");
             return;
         }
         boolean passwordValid = getApp()
@@ -174,12 +174,11 @@ public class LoginScreen extends AbstractScreen {
             if (!user.getAuthenticationDetails().isTwoFactorEnabled()) {
                 // set the user as authenticated in session manager
                 getApp().getSessionManager().setAuthenticated(true);
-                // unauthenticate user after 2 hours, forcing them to re-login
-                getApp().getSessionManager().unauthenticateAfter(2);
                 // show the user the home screen (successfully logged in)
                 getApp().getScreenManager().showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
                 unsetErrorText();
+                clearFields();
             } else {
                 getApp().getScreenManager().showScene(MFAScreen.class);
             }
@@ -192,8 +191,9 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void gotoRegisterPage() {
-        getApp().getScreenManager().showScene(RegisterScreen.class);
-        unsetErrorText();
+        getApp().getScreenManager().showScene(RegisterScreen.class); // show the register page
+        unsetErrorText(); // clear the error text when we go to the register page
+        clearFields(); // clear the fields when we go to the register page
     }
 
     public void setErrorText(String txt) {
@@ -202,5 +202,10 @@ public class LoginScreen extends AbstractScreen {
 
     public void unsetErrorText() {
         this.error.setText("");
+    }
+
+    public void clearFields() {
+        this.email.clear();
+        this.password.clear();
     }
 }

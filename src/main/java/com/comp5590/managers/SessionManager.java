@@ -41,7 +41,10 @@ public class SessionManager {
 
     // Set the authenticated status of the user
     public void setAuthenticated(boolean authenticated) {
+        // set user as authenticated
         this.authenticated = authenticated;
+        // run the unauthenticateAfter method
+        unauthenticateAfter(2);
     }
 
     // Unauthenticate the user after a certain amount of time
