@@ -1,5 +1,6 @@
 package com.comp5590.tests.basic.unit;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.comp5590.database.entities.*;
@@ -19,10 +20,10 @@ public class BookingTests extends SetupTests {
         DatabaseManager db = DatabaseManager.getInstance();
 
         // create user entity
-        User patient = createPatient("test2@gmail.com", "password");
+        User patient = createPatient("example@example.com", "password");
 
         // create doctor entity
-        User doctor = createPatient("test3@gmail.com", "password");
+        User doctor = createPatient("example1@example.com", "password");
         doctor.setRole(UserRole.DOCTOR);
 
         // create a date and time for the appt
@@ -31,7 +32,7 @@ public class BookingTests extends SetupTests {
 
         // make and save room
         Room room = makeRoom("1", createAddress());
-        db.save(room);
+        assertNotNull(room);
 
         // create booking object
         Booking booking = new Booking();
@@ -40,7 +41,9 @@ public class BookingTests extends SetupTests {
         booking.setApptTime(apptTime);
         booking.setRoom(room);
 
-        // check saving of booking was successfull
+        // check saving of booking was successfully
         assertTrue(db.save(booking));
+        SetupTests.remove(patient);
+        SetupTests.remove(doctor);
     }
 }

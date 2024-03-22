@@ -1,18 +1,17 @@
 package com.comp5590.tests.basic;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.BookingNotes;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.UserRole;
-import org.junit.jupiter.api.Test;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 public class BookingNotesTests extends SetupTests {
 
@@ -33,7 +32,7 @@ public class BookingNotesTests extends SetupTests {
         Date apptTime = formatDate.parse("2025-01-05 00:00:00");
 
         // Make and save a room
-        Room room = makeRoom("1", createAddress());
+        Room room = makeRoom("3 ", createAddress());
         db.save(room);
 
         // Create a booking object
@@ -52,5 +51,7 @@ public class BookingNotesTests extends SetupTests {
 
         // Check saving of booking notes was successful
         assertTrue(db.save(bookingNotes));
+        SetupTests.remove(patient);
+        SetupTests.remove(doctor);
     }
 }

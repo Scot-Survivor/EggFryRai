@@ -284,4 +284,19 @@ public class DatabaseManager {
             return false;
         }
     }
+
+    /**
+     * Wipe the database STRICTLY TESTING
+     */
+    public void wipe() {
+        logger.warn("Wiping database this should only happen during tests.");
+        // Use reflections to find every entity
+        getEntityClasses()
+            .forEach(c -> {
+                List<?> entities = getAll(c);
+                if (entities != null) {
+                    entities.forEach(this::delete);
+                }
+            });
+    }
 }
