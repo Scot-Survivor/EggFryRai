@@ -106,11 +106,6 @@ public class ScreenManager {
         }
         addScreenToHistory(scene);
 
-        // for every scene, print out all their simple names
-        for (Class<? extends AbstractScreen> key : screens.keySet()) {
-            System.out.println(key.getSimpleName());
-        }
-
         if (screens.containsKey(scene)) {
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
