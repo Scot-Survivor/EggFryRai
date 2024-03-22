@@ -120,7 +120,6 @@ public class DocListScreenTest extends SetupTests {
      */
     @Test
     public void testChangeDoctorButtonSelect(FxRobot robot) {
-        robot.sleep(1000);
         // Create row on table
         createDoctor("email1@example.com", "pa321321");
         DocListScreen docListScreenInstance = (DocListScreen) app
