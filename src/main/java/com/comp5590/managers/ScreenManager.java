@@ -11,10 +11,7 @@ import com.comp5590.events.eventtypes.screens.ScreenChangeEvent;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.screens.AbstractScreen;
 import com.comp5590.screens.LoginScreen;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -32,15 +29,24 @@ public class ScreenManager {
     private static final int height = 300;
     private static final int width = 300;
 
+    @Getter
     private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
+
+    @Getter
     private final HashMap<Class<? extends AbstractScreen>, AbstractScreen> screenInstances;
+
     private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
 
     @Getter
     private final List<Class<? extends AbstractScreen>> accessedScreens;
 
+    @Getter
     private AbstractScreen currentScreen;
+
+    @Getter
     private EventManager eventManager;
+
+    @Getter
     private App app;
 
     public ScreenManager(Stage primary) {
@@ -72,7 +78,7 @@ public class ScreenManager {
                 screenInstances.put(screen, instance);
                 screens.put(screen, createScene(instance));
             } catch (Exception e) {
-                logger.error("Error creating instance of screen: {}", screen.getName());
+                logger.error("Error creating instance of screen: {} | Reason: {}", screen.getName(), e.getMessage());
                 logger.debug(Arrays.toString(e.getStackTrace()));
             }
         }
@@ -100,18 +106,13 @@ public class ScreenManager {
      * @param scene The scene to show
      */
     public void showScene(Class<? extends AbstractScreen> scene) {
-        if (shouldCancel(eventManager.callEvent(new ScreenChangeEvent(screenInstances.get(scene), app)))) {
-            logger.debug("ScreenChangeEvent was cancelled for: " + scene.getName());
-            return;
-        }
-        addScreenToHistory(scene);
-
-        // for every scene, print out all their simple names
-        for (Class<? extends AbstractScreen> key : screens.keySet()) {
-            System.out.println(key.getSimpleName());
-        }
-
         if (screens.containsKey(scene)) {
+            if (shouldCancel(eventManager.callEvent(new ScreenChangeEvent(screenInstances.get(scene), app)))) {
+                logger.debug("ScreenChangeEvent was cancelled for: " + scene.getName());
+                return;
+            }
+            addScreenToHistory(scene);
+
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
             if (primaryStage.getScene() == toShow) {
@@ -131,8 +132,9 @@ public class ScreenManager {
 
     private Scene createScene(AbstractScreen screen) {
         Scene scene = new Scene(screen.getRootPane(), width, height);
-        String cssPath = screen.getCssPath();
-        if (cssPath != null) scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+        for (String path : screen.getCssPaths()) {
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource(path)).toExternalForm());
+        }
         return scene;
     }
 
@@ -158,18 +160,6 @@ public class ScreenManager {
             showScene(lastScreen);
             accessedScreens.remove(accessedScreens.size() - 1);
         }
-    }
-
-    public AbstractScreen getCurrentScreen() {
-        return currentScreen;
-    }
-
-    public HashMap<Class<? extends AbstractScreen>, Scene> getScreens() {
-        return screens;
-    }
-
-    public HashMap<Class<? extends AbstractScreen>, AbstractScreen> getScreenInstances() {
-        return screenInstances;
     }
 
     public AbstractScreen getScreenInstance(Class<? extends AbstractScreen> screen) {

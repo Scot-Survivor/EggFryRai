@@ -33,6 +33,11 @@ public class ScreenTests extends SetupTests {
     }
 
     @Test
+    public void testThatLoginScreenDisplaysFirst() {
+        Assertions.assertThat(app.getScreenManager().getCurrentScreen().getClass()).isEqualTo(LoginScreen.class);
+    }
+
+    @Test
     public void testAllScreensWereRegistered() {
         Reflections reflections = getScreenList();
         long screenCount = reflections.getSubTypesOf(AbstractScreen.class).size();

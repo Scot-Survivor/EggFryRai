@@ -1,4 +1,4 @@
-package com.comp5590.components.LoginScreen;
+package com.comp5590.components.global;
 
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;

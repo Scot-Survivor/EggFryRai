@@ -1,0 +1,52 @@
+#title {
+    -fx-alignment: center;
+}
+#switchButton {
+    -fx-background-color: #575dfb;
+    -fx-text-fill: white;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+#center {
+    -fx-alignment: center top;
+    -fx-spacing: 20px;
+    -fx-border-color: #575dfb;
+    -fx-background-color: #f4f4f4;
+    -fx-border-width: 3;
+    -fx-border-radius: 20;
+    -fx-background-radius: 5;
+    -fx-padding: 20;
+}
+#doctorTable {
+    -fx-max-width: 541px; /* 1 more px than total width of columns to remove scroll bar*/
+    -fx-font-size: 14;
+    -fx-padding: 0;
+    -fx-margin: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 0);
+}
+.table-row-cell:odd {
+    -fx-background-color: #f2f2f2;
+}
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+.column-header {
+    -fx-background-color: #ededed;
+    -fx-alignment: center;
+}
+.table-column {
+    -fx-alignment: center;
+}
+.table-row-cell:selected {
+    -fx-background-color: #575dfb;
+}
+.table-view:focused {
+    -fx-focus-color: transparent;
+}
+

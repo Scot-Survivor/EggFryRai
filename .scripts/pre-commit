@@ -7,8 +7,8 @@ echo "*********************************************************"
 stagedFiles=$(git diff --staged --name-only)
 
 # Check that *.java OR *.pdf is in the list of staged files
-if [[ $stagedFiles != *".java"* && $stagedFiles != *".pdf"* ]]; then
-  echo "No Java or PDF files are staged for commit. Exiting pre-commit hook."
+if [[ $stagedFiles != *".java"* && $stagedFiles != *".pdf"* && $stagedFiles != *".png"* && $stagedFiles != *".css"* ]]; then
+  echo "No Java, PDF, PNG, or CSS files are staged for commit. Exiting pre-commit hook."
   exit 0
 fi
 

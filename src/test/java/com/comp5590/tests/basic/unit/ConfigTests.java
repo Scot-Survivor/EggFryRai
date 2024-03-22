@@ -1,8 +1,9 @@
-package com.comp5590.tests.basic;
+package com.comp5590.tests.basic.unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.comp5590.configuration.AppConfig;
+import com.comp5590.tests.basic.SetupTests;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Iterator;

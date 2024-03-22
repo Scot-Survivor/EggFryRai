@@ -32,7 +32,7 @@ public class User {
     @Column(name = "phone", length = 20, nullable = false)
     private String phone;
 
-    @Column(name = "fax", length = 20, nullable = false)
+    @Column(name = "fax", length = 20)
     private String fax;
 
     @Column(name = "additionalNotes", length = 1024, nullable = false)
@@ -43,7 +43,7 @@ public class User {
     private CommunicationPreference communicationPreference;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private UserRole role;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -77,6 +77,29 @@ public class User {
         this.fax = fax;
         this.additionalNotes = additionalNotes;
         this.communicationPreference = communicationPreference;
+        this.address = address;
+    }
+
+    /**
+     * Constructor for all required fields
+     */
+    public User(
+        String firstName,
+        String surName,
+        String phone,
+        String fax,
+        String additionalNotes,
+        CommunicationPreference communicationPreference,
+        UserRole role,
+        Address address
+    ) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.phone = phone;
+        this.fax = fax;
+        this.additionalNotes = additionalNotes;
+        this.communicationPreference = communicationPreference;
+        this.role = role;
         this.address = address;
     }
 

@@ -26,6 +26,7 @@ public class SetupTests {
 
     /**
      * Create an address object with default values.
+     *
      * @return Address
      */
     public static Address createAddress() {
@@ -35,13 +36,13 @@ public class SetupTests {
         address.setAddressLineOne("1 Test Street");
         address.setAddressLineTwo("Test Town");
         address.setAddressLineThree("Test County");
-        int id = getDbManager().saveGetId(address);
-        address = getDbManager().get(Address.class, id);
+        address = getDbManager().saveGet(address);
         return address;
     }
 
     /**
      * Create authentication details without mfa
+     *
      * @return AuthenticationDetails
      */
     public static AuthenticationDetails createAuthenticationDetails(String email, String password) {
@@ -51,13 +52,13 @@ public class SetupTests {
         authenticationDetails.setTwoFactorEnabled(false);
         authenticationDetails.setAuthenticationToken("");
         authenticationDetails.setRecoveryCodes("");
-        int id = getDbManager().saveGetId(authenticationDetails);
-        authenticationDetails = getDbManager().get(AuthenticationDetails.class, id);
+        authenticationDetails = getDbManager().saveGet(authenticationDetails);
         return authenticationDetails;
     }
 
     /**
      * Create authentication details with mfa
+     *
      * @return AuthenticationDetails
      */
     public static AuthenticationDetails createAuthenticationDetails(
@@ -78,6 +79,7 @@ public class SetupTests {
 
     /**
      * Create a patient user with all filled values,
+     *
      * @return User
      */
     public static User createPatient(AuthenticationDetails authenticationDetails) {
@@ -89,18 +91,19 @@ public class SetupTests {
             "0123456789",
             "Test Notes",
             CommunicationPreference.EMAIL,
+            UserRole.PATIENT,
             address
         );
         user.setRole(UserRole.PATIENT);
         user.setAuthenticationDetails(authenticationDetails);
-        int id = getDbManager().saveGetId(user);
-        user = getDbManager().get(User.class, id);
+        user = getDbManager().saveGet(user);
         return user;
     }
 
     /**
      * Create a user object with the email and password specified.
-     * @param email the email of the user
+     *
+     * @param email    the email of the user
      * @param password the password of the user
      * @return User
      */
@@ -110,10 +113,11 @@ public class SetupTests {
 
     /**
      * Create a user object with the email and password specified.
-     * @param email the email of the user
-     * @param password the password of the user
+     *
+     * @param email               the email of the user
+     * @param password            the password of the user
      * @param authenticationToken the authentication token
-     * @param recoveryCodes the recovery codes
+     * @param recoveryCodes       the recovery codes
      * @return User
      */
     public static User createPatient(String email, String password, String authenticationToken, String recoveryCodes) {
@@ -121,7 +125,43 @@ public class SetupTests {
     }
 
     /**
+     * Create a doctor user with all filled values,
+     *
+     * @return User
+     */
+    public static User createDoctor(AuthenticationDetails authenticationDetails) {
+        Address address = createAddress();
+        User user = new User(
+            "Test",
+            "User",
+            "0123456789",
+            "0123456789",
+            "Test Notes",
+            CommunicationPreference.EMAIL,
+            UserRole.DOCTOR,
+            address
+        );
+        user.setRole(UserRole.DOCTOR);
+        user.setAuthenticationDetails(authenticationDetails);
+        int id = getDbManager().saveGetId(user);
+        user = getDbManager().get(User.class, id);
+        return user;
+    }
+
+    /**
+     * Create a user object with the email and password specified.
+     *
+     * @param email    the email of the user
+     * @param password the password of the user
+     * @return User
+     */
+    public static User createDoctor(String email, String password) {
+        return createDoctor(createAuthenticationDetails(email, password));
+    }
+
+    /**
      * Create a Room object using roomNum and address
+     *
      * @param roomNum The number of the room
      * @param address The address of the room
      * @return The room

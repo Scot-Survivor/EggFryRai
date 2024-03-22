@@ -14,10 +14,7 @@ import jakarta.validation.ValidatorFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import lombok.Getter;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
@@ -57,6 +54,12 @@ public class DatabaseManager {
         // Check hibernate.properties is found
         logger.debug("Using database properties file: " + AppConfig.DATABASE_PROPERTIES_FILE);
         File file = new File(AppConfig.DATABASE_PROPERTIES_FILE);
+        // Check if file is in resource path
+        if (getClass().getResource(AppConfig.DATABASE_PROPERTIES_FILE) != null) {
+            logger.debug("Found " + AppConfig.DATABASE_PROPERTIES_FILE + " in resources");
+            file =
+            new File(Objects.requireNonNull(getClass().getResource(AppConfig.DATABASE_PROPERTIES_FILE)).getFile());
+        }
         if (!file.exists() || file.isDirectory()) {
             logger.fatal(AppConfig.DATABASE_PROPERTIES_FILE + " not found");
             throw new RuntimeException(AppConfig.DATABASE_PROPERTIES_FILE + " not found");
@@ -148,6 +151,14 @@ public class DatabaseManager {
             logger.debug(Arrays.toString(e.getStackTrace()));
             return -1;
         }
+    }
+
+    public <T> T saveGet(Object object) {
+        int id = this.saveGetId(object);
+        if (id == -1) {
+            return null;
+        }
+        return this.get((Class<T>) object.getClass(), id);
     }
 
     /**

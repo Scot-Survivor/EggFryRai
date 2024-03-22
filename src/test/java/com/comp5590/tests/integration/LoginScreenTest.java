@@ -235,6 +235,8 @@ public class LoginScreenTest extends SetupTests {
     @Test
     public void checkScreenAuthenticationListenerPreventsAccessToHomeWithoutAuth(FxRobot robot) {
         robot.interact(() -> {
+            app.setCurrentUser(null); // Ensure no user is authenticated
+            app.getSessionManager().setAuthenticated(false); // Force de-authentication
             app.getScreenManager().showScene(HomeScreen.class);
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
         });

@@ -20,7 +20,7 @@ public class BookingNotes {
     @OneToOne
     @JoinColumn(name = "bookingId")
     private Booking bookingId;
-
+    
     @Column(name = "notes", length = 1024, nullable = false)
     private String notes;
 

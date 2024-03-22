@@ -1,5 +1,8 @@
 package com.comp5590.managers;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /* Session manager stores a boolean field to indicate whether or not the user is autheticated.
  * To be used in conjunction with a ScreenManager event listener (on screen change) and the decorator that will go before every DB call, to ensure user is authenticated before changing screens or fetching data from the DB.
  */
@@ -11,6 +14,12 @@ public class SessionManager {
 
     // Boolean to indicate whether or not the user is authenticated
     private boolean authenticated;
+
+    // state message for transitory screens, with getter for it automatically
+    // generated using Lombok :)
+    @Getter
+    @Setter
+    private String stateMessage;
 
     // Private constructor
     private SessionManager() {
@@ -45,5 +54,8 @@ public class SessionManager {
         // } catch (InterruptedException e) {
         // e.printStackTrace();
         // }
+
+        
+        }
     }
-}
+
