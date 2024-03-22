@@ -7,12 +7,15 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.Arrays;
 import java.util.HashMap;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.core.Logger;
 
 // Inspired by: net.dv8tion.jda.api.hooks.ListenerAdapter.java
 public interface Listener {
     Logger eventLogger = LoggerManager.getInstance().getLogger(Listener.class);
-    HashMap<Class<?>, MethodHandle> methodHandles = new HashMap<>();
+
+    // Store the Event and Listener Class that was found
+    HashMap<ImmutablePair<Class<?>, Class<?>>, MethodHandle> methodHandles = new HashMap<>();
 
     default GenericEvent onGenericEvent(GenericEvent event) {
         return event;
@@ -20,20 +23,21 @@ public interface Listener {
 
     default GenericEvent onEvent(GenericEvent event) {
         onGenericEvent(event);
-
+        Class<?> eventClass = event.getClass();
         // use reflections to find implementations of listeners, since getInterfaces(),
         // does not return anything
-        for (Class<?> clazz : this.getClass().getInterfaces()) {
+        for (Class<?> listenerClass : this.getClass().getInterfaces()) {
             // Iterate through the children of the Listener classes
-            if (clazz != Listener.class) {
-                MethodHandle method = methodHandles.computeIfAbsent(event.getClass(), this::getMethod);
+            if (listenerClass != Listener.class) {
+                ImmutablePair<Class<?>, Class<?>> pair = new ImmutablePair<>(eventClass, listenerClass);
+                MethodHandle method = methodHandles.computeIfAbsent(pair, this::getMethod);
                 if (method != null) {
                     try {
                         return (GenericEvent) method.invoke(this, event);
                     } catch (Throwable e) {
                         eventLogger.error(
                             "An error occurred while trying to invoke the method({}) for event: {}",
-                            clazz.getSimpleName(),
+                            listenerClass.getSimpleName(),
                             e.getMessage()
                         );
                         eventLogger.debug(Arrays.toString(e.getStackTrace()));
@@ -47,18 +51,19 @@ public interface Listener {
     /**
      * Get the method that should be called for the given event
      *
-     * @param clazz The class of the event
+     * @param classPair ImmutablePair of (eventClass, listenerClass)
      * @return The method that should be called
      */
-    private MethodHandle getMethod(Class<?> clazz) {
-        String name = clazz.getSimpleName();
-        MethodType type = MethodType.methodType(clazz, clazz);
+    private MethodHandle getMethod(ImmutablePair<Class<?>, Class<?>> classPair) {
+        Class<?> eventClass = classPair.getKey();
+        Class<?> listenerClass = classPair.getValue();
+        String name = eventClass.getSimpleName();
+        MethodType type = MethodType.methodType(eventClass, eventClass);
         try {
             name = "on" + name.substring(0, name.length() - "Event".length());
-            return MethodHandles.lookup().findVirtual(getClass(), name, type);
+            return MethodHandles.lookup().findVirtual(listenerClass, name, type);
         } catch (NoSuchMethodException e) {
-            eventLogger.error("No method found for event " + clazz.getSimpleName());
-            eventLogger.debug(Arrays.toString(e.getStackTrace()));
+            // If no method is found for this listener that's fine, just go to next one.
             return null;
         } catch (IllegalAccessException e) {
             eventLogger.error("Method({}) is not accessible: {}", name, e.getMessage());
@@ -67,7 +72,7 @@ public interface Listener {
         } catch (Throwable e) {
             eventLogger.error(
                 "An error occurred while trying to get the method({}) for event: {}",
-                clazz.getSimpleName(),
+                eventClass.getSimpleName(),
                 e.getMessage()
             );
             eventLogger.debug(Arrays.toString(e.getStackTrace()));
