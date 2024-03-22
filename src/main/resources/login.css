@@ -69,12 +69,6 @@
     -fx-alignment: center-left;
 }
 
-/* Error message box */
-#error {
-    -fx-text-fill: #ff0000;
-    -fx-font-size: 15;
-}
-
 /* register text & link styles */
 .register-text {
     -fx-font-size: 15;
@@ -105,4 +99,10 @@
 .register-link:pressed {
     -fx-text-fill: #575dfb;
     -fx-underline: true;
+}
+
+.error-label{
+    -fx-font-size: 15;
+    -fx-text-fill: #ff0000;
+    -fx-font-weight: bold;
 }

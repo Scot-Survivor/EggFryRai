@@ -39,7 +39,7 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     public void setup() {
-        // load custom CSS, from 2 files (global.css & login.css)
+        // load custom CSS
         this.cssPath = "/login.css";
 
         // create the grid pane object, apply styling & properties to it
@@ -87,15 +87,16 @@ public class LoginScreen extends AbstractScreen {
     private VBox createLoginBox() {
         // create email & password fields, binding them to this class's object instance
         this.email = new TextField();
-        this.email.setId("email");
         this.password = new PasswordField();
-        this.password.setId("password");
         this.error = new Label();
-        this.error.setId("error");
+        this.error.getStyleClass().add("error-label");
+        email.setId("email");
+        password.setId("password");
+        error.setId("error");
 
         // create login & password field objects, passing in some basic info
-        LoginField emailField = new LoginField("Email", email, "E.g. johndoe@gmail.com", "/at.png");
-        LoginField passwordField = new LoginField("Password", password, "***************", "/lock.png");
+        LoginField emailField = new LoginField("Email", this.email, "E.g. johndoe@gmail.com", "/at.png");
+        LoginField passwordField = new LoginField("Password", this.password, "***************", "/lock.png");
 
         // forgot password box
         ForgotPasswordButton forgotPasswordButton = new ForgotPasswordButton("Forgot Password?");
@@ -125,7 +126,7 @@ public class LoginScreen extends AbstractScreen {
         SpaceVertical padding2 = new SpaceVertical(10);
         SpaceVertical padding3 = new SpaceVertical(10);
         SpaceVertical padding4 = new SpaceVertical(7);
-        SpaceVertical padding5 = new SpaceVertical(3);
+        SpaceVertical padding5 = new SpaceVertical(0);
 
         // add children nodes to the vbox this file will return
         VBox box = new VBox();
@@ -178,6 +179,7 @@ public class LoginScreen extends AbstractScreen {
                 // show the user the home screen (successfully logged in)
                 getApp().getScreenManager().showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
+                unsetErrorText();
             } else {
                 getApp().getScreenManager().showScene(MFAScreen.class);
             }
@@ -191,9 +193,14 @@ public class LoginScreen extends AbstractScreen {
 
     private void gotoRegisterPage() {
         getApp().getScreenManager().showScene(RegisterScreen.class);
+        unsetErrorText();
     }
 
     public void setErrorText(String txt) {
         this.error.setText(txt);
+    }
+
+    public void unsetErrorText() {
+        this.error.setText("");
     }
 }
