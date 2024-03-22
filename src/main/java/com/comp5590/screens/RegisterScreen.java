@@ -112,19 +112,33 @@ public class RegisterScreen extends AbstractScreen {
     private VBox createRegisterBox() {
         // create the fields
         this.email = new TextField();
+        this.email.setId("email");
         this.password = new PasswordField();
+        this.password.setId("password");
         this.firstName = new TextField();
+        this.firstName.setId("firstName");
         this.surName = new TextField();
+        this.surName.setId("surName");
         this.phone = new TextField();
+        this.phone.setId("phone");
         this.fax = new TextField();
+        this.fax.setId("fax");
         this.additionalNotes = new TextField();
+        this.additionalNotes.setId("additionalNotes");
         this.addressLine1 = new TextField();
+        this.addressLine1.setId("addressLine1");
         this.addressLine2 = new TextField();
+        this.addressLine2.setId("addressLine2");
         this.addressLine3 = new TextField();
+        this.addressLine3.setId("addressLine3");
         this.country = new TextField();
+        this.country.setId("country");
         this.postcode = new TextField();
+        this.postcode.setId("postcode");
         this.role = new ComboBox();
+        this.role.setId("role");
         this.communicationPreference = new ComboBox();
+        this.communicationPreference.setId("communicationPreference");
         this.error = new Label();
         this.error.getStyleClass().add("error-label");
 
@@ -172,6 +186,7 @@ public class RegisterScreen extends AbstractScreen {
 
         // attach event listener to button, which runs register method
         registerButton.setOnAction(this::register);
+        registerButton.setId("registerButton");
 
         // create horizontal line
         LineHorizontal line = new LineHorizontal(registerButton, 20, 3);
