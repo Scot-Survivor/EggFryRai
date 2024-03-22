@@ -1,4 +1,4 @@
-package com.comp5590.tests.basic;
+package com.comp5590.tests.basic.unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,6 +6,7 @@ import com.comp5590.configuration.AppConfig;
 import com.comp5590.security.managers.passwords.Argon2PasswordManager;
 import com.comp5590.security.managers.passwords.BCryptPasswordManager;
 import com.comp5590.security.managers.passwords.PasswordManager;
+import com.comp5590.tests.basic.SetupTests;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 

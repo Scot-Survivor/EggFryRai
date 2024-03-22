@@ -1,4 +1,4 @@
-package com.comp5590.tests.validators;
+package com.comp5590.tests.basic.validators;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
