@@ -259,6 +259,7 @@ public class RegisterScreen extends AbstractScreen {
 
     private void goToLoginPage() {
         getApp().getScreenManager().showScene(LoginScreen.class);
+        clearFields();
         unsetErrorText();
     }
 
@@ -486,7 +487,35 @@ public class RegisterScreen extends AbstractScreen {
         // log creation of new user
         logger.info("New user registered: {}", email);
 
-        // clear all fields
+        // grab session manager to store message in for temporary screen
+        SessionManager sessionManager = SessionManager.getInstance();
+        sessionManager.setStateMessage("✅ You have successfully registered. Redirecting to login page...");
+
+        // redirect user to InBetweenScreensScreen after successful registration, with
+        // success message
+        this.getApp().getScreenManager().showScene(ScreenBetweenScreens.class);
+        // run the functionality after setup
+        ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
+        screenBetweenScreens.runFunctionalityAfterSetup(
+            "✅ You have successfully registered. Redirecting to login page...",
+            3,
+            LoginScreen.class
+        );
+
+        // [cleanup] clear all fields & unset error text
+        clearFields();
+        unsetErrorText();
+    }
+
+    public void setErrorText(String txt) {
+        this.error.setText(txt);
+    }
+
+    public void unsetErrorText() {
+        this.error.setText("");
+    }
+
+    public void clearFields() {
         this.email.clear();
         this.password.clear();
         this.firstName.clear();
@@ -501,28 +530,5 @@ public class RegisterScreen extends AbstractScreen {
         this.postcode.clear();
         this.role.getSelectionModel().clearSelection();
         this.communicationPreference.getSelectionModel().clearSelection();
-        this.error.setText("");
-
-        // grab session manager to store message in for temporary screen
-        SessionManager sessionManager = SessionManager.getInstance();
-        sessionManager.setStateMessage("✅ You have successfully registered. Redirecting to login page...");
-
-        // redirect user to InBetweenScreensScreen after successful registration, with
-        // success message
-        this.getApp().getScreenManager().showScene(ScreenBetweenScreens.class);
-        // run the functionality after setup
-        ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) this.getApp()
-            .getScreenManager()
-            .getScreenInstances()
-            .get(ScreenBetweenScreens.class);
-        screenBetweenScreens.runFunctionalityAfterSetup();
-    }
-
-    public void setErrorText(String txt) {
-        this.error.setText(txt);
-    }
-
-    public void unsetErrorText() {
-        this.error.setText("");
     }
 }
