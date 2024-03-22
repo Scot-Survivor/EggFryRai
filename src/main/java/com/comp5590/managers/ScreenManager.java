@@ -100,13 +100,13 @@ public class ScreenManager {
      * @param scene The scene to show
      */
     public void showScene(Class<? extends AbstractScreen> scene) {
-        if (shouldCancel(eventManager.callEvent(new ScreenChangeEvent(screenInstances.get(scene), app)))) {
-            logger.debug("ScreenChangeEvent was cancelled for: " + scene.getName());
-            return;
-        }
-        addScreenToHistory(scene);
-
         if (screens.containsKey(scene)) {
+            if (shouldCancel(eventManager.callEvent(new ScreenChangeEvent(screenInstances.get(scene), app)))) {
+                logger.debug("ScreenChangeEvent was cancelled for: " + scene.getName());
+                return;
+            }
+            addScreenToHistory(scene);
+
             Scene toShow = screens.get(scene);
             // check scene is not currently showing
             if (primaryStage.getScene() == toShow) {
