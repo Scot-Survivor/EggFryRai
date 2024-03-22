@@ -16,7 +16,7 @@ public class InsuranceTests extends SetupTests {
     @Test
     public void testInsuranceEntityCreation() throws ParseException {
         // Create patient object
-        User testUser = SetupTests.createPatient("example@example.org", "password");
+        User testUser = SetupTests.createPatient("e1@example.org", "password");
 
         // Create dates
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
