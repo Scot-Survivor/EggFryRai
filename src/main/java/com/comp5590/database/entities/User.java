@@ -69,6 +69,7 @@ public class User {
         String fax,
         String additionalNotes,
         CommunicationPreference communicationPreference,
+        UserRole role,
         Address address
     ) {
         this.firstName = firstName;
