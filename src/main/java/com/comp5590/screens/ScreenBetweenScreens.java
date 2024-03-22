@@ -18,7 +18,7 @@ public class ScreenBetweenScreens extends AbstractScreen {
     @Override
     public void setup() {
         // load css
-        this.cssPath = "/screenBetweenScreens.css";
+        this.addCss("/screenBetweenScreens.css");
 
         // otherwise, display the message
         GridPane pane = new GridPane();

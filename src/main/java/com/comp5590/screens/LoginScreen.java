@@ -40,7 +40,7 @@ public class LoginScreen extends AbstractScreen {
     @Override
     public void setup() {
         // load custom CSS
-        this.cssPath = "/login.css";
+        this.addCss("/login.css");
 
         // create the grid pane object, apply styling & properties to it
         GridPane pane = new GridPane();

@@ -29,7 +29,7 @@ public class DocListScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.cssPath = "/docList.css";
+        this.addCss("/docList.css");
 
         setRootPane(new BorderPane());
         doctorTable = new TableView<>(); // Initialize table

@@ -11,10 +11,7 @@ import com.comp5590.events.eventtypes.screens.ScreenChangeEvent;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.screens.AbstractScreen;
 import com.comp5590.screens.LoginScreen;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -135,8 +132,9 @@ public class ScreenManager {
 
     private Scene createScene(AbstractScreen screen) {
         Scene scene = new Scene(screen.getRootPane(), width, height);
-        String cssPath = screen.getCssPath();
-        if (cssPath != null) scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+        for (String path : screen.getCssPaths()) {
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource(path)).toExternalForm());
+        }
         return scene;
     }
 

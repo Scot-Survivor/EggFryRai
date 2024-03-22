@@ -3,10 +3,14 @@ package com.comp5590.screens;
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
+import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.core.Logger;
 import org.hibernate.SessionFactory;
 
 @Getter
@@ -16,20 +20,23 @@ public abstract class AbstractScreen {
     private final DatabaseManager databaseManager;
     private final ScreenManager screenManager;
     private final SessionFactory sessionFactory;
+    private final Logger logger = LoggerManager.getInstance().getLogger(AbstractScreen.class, "DEBUG");
 
     @Setter
     private Pane rootPane;
 
     /**
-     * The path to the CSS file for the screen
+     * The paths to the CSS file for the screen
      */
-    protected String cssPath;
+    @Getter
+    private final List<String> cssPaths;
 
     public AbstractScreen(ScreenManager screenManager) {
         this.screenManager = screenManager;
         this.app = App.getInstance();
         this.databaseManager = DatabaseManager.getInstance();
         this.sessionFactory = this.databaseManager.getSessionFactory();
+        this.cssPaths = new ArrayList<>();
         this.setup();
     }
 
@@ -53,5 +60,28 @@ public abstract class AbstractScreen {
      */
     public boolean canAccess(User user) {
         return true;
+    }
+
+    /**
+     * Add new CSS file to list
+     */
+    public void addCss(String cssPath) {
+        // Check CSS Path exists first
+        if (cssPath == null || cssPath.isEmpty()) {
+            logger.warn("CSS Path is empty or null");
+            return;
+        }
+        if (getClass().getResource(cssPath) == null) {
+            logger.warn("CSS Path does not exist in resource: " + cssPath);
+            return;
+        }
+        cssPaths.add(cssPath);
+    }
+
+    /**
+     * Remove CSS File from list
+     */
+    public void removeCss(String cssPath) {
+        cssPaths.remove(cssPath);
     }
 }
