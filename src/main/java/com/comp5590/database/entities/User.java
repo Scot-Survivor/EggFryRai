@@ -32,7 +32,7 @@ public class User {
     @Column(name = "phone", length = 20, nullable = false)
     private String phone;
 
-    @Column(name = "fax", length = 20, nullable = false)
+    @Column(name = "fax", length = 20)
     private String fax;
 
     @Column(name = "additionalNotes", length = 1024, nullable = false)
@@ -43,7 +43,7 @@ public class User {
     private CommunicationPreference communicationPreference;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private UserRole role;
 
     @OneToOne(cascade = CascadeType.ALL)
