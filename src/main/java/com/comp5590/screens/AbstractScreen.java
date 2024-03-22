@@ -7,7 +7,12 @@ import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.core.Logger;
@@ -46,7 +51,9 @@ public abstract class AbstractScreen {
     public abstract void setup();
 
     /**
-     * This method is called when the screen is shown, to ensure that the logged in user has access to the screen
+     * This method is called when the screen is shown, to ensure that the logged in
+     * user has access to the screen
+     *
      * @return true if the user has access to the screen
      */
     public boolean canAccess() {
@@ -54,7 +61,9 @@ public abstract class AbstractScreen {
     }
 
     /**
-     * This method is called when the screen is shown, to ensure that the logged in user has access to the screen
+     * This method is called when the screen is shown, to ensure that the logged in
+     * user has access to the screen
+     *
      * @param user object
      * @return true if the user has access to the screen
      */
@@ -83,5 +92,80 @@ public abstract class AbstractScreen {
      */
     public void removeCss(String cssPath) {
         cssPaths.remove(cssPath);
+    }
+
+    protected void addBackAndHomeButtons(Pane previousRootPane) {
+        // Create a StackPane to layer the button on top of the BorderPane
+        StackPane stackPane = new StackPane();
+        // make stack pane the root pane
+        setRootPane(stackPane);
+        // add border pane to stack pane
+        stackPane.getChildren().add(previousRootPane);
+
+        // Add back button
+        addBackButton(stackPane);
+        // Add home button
+        addHomeButton(stackPane);
+
+        // add CSS to stackpane
+        this.addCss("/abstract.css");
+        stackPane.getStyleClass().add("stackpane");
+    }
+
+    // method that adds a back button to the screen
+    protected void addBackButton(StackPane stackPane) {
+        // Make icon button
+        ImageView img = new ImageView(new Image("/back.png"));
+        img.preserveRatioProperty().set(true);
+        img.setFitHeight(100);
+        img.setFitWidth(100);
+
+        // Make box for storing the image
+        HBox box = new HBox(img);
+
+        // on click, go back to the previous screen
+        box.setOnMouseClicked(e -> {
+            getScreenManager().goBack();
+            logger.info("Back button clicked");
+        });
+
+        // Add it to the top left of the StackPane with absolute positioning (the latest
+        // children are placed on top sequentially, back to front)
+        StackPane.setAlignment(box, Pos.TOP_LEFT);
+        stackPane.getChildren().add(box);
+
+        // Load & Apply CSS
+        this.addCss("/abstract.css");
+        img.getStyleClass().add("back-button");
+        box.getStyleClass().add("back-button-box");
+    }
+
+    // method that adds a home button to the screen
+    protected void addHomeButton(StackPane stackPane) {
+        // Make icon button
+        ImageView img = new ImageView(new Image("/home.png"));
+        img.preserveRatioProperty().set(true);
+        img.setFitHeight(100);
+        img.setFitWidth(100);
+
+        // Make box for storing the image
+        HBox box = new HBox(img);
+
+        // on click, go back to the home screen
+        box.setOnMouseClicked(e -> {
+            getScreenManager().showScene(HomeScreen.class);
+            logger.info("Home button clicked");
+        });
+
+        // Add it to the top right of the StackPane with absolute positioning (the
+        // latest
+        // children are placed on top sequentially, back to front)
+        StackPane.setAlignment(box, Pos.TOP_RIGHT);
+        stackPane.getChildren().add(box);
+
+        // Load & Apply CSS
+        this.addCss("/abstract.css");
+        img.getStyleClass().add("home-button");
+        box.getStyleClass().add("home-button-box");
     }
 }

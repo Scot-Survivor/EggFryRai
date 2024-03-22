@@ -1,0 +1,62 @@
+.stackpane{
+    -fx-padding: 10px;
+}
+
+.back-button{
+    -fx-max-width: 50px; /* Set maximum width */
+    -fx-max-height: 50px; /* Set maximum height */
+}
+
+.home-button{
+    -fx-max-width: 50px; /* Set maximum width */
+    -fx-max-height: 50px; /* Set maximum height */
+}
+
+.back-button-box{
+    -fx-background-color: #2c91d4;
+    -fx-text-fill: white;
+    -fx-border-color: #000000;
+    -fx-border-radius: 30px;
+    -fx-border-width: 3px;
+    -fx-background-radius: 30px;
+    -fx-padding: 10px 10px;
+    -fx-alignment: center;
+    -fx-text-decoration: none;
+    -fx-font-size: 16px;
+    -fx-margin: 4px;
+
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-preferred-width: 50px;
+    -fx-preferred-height: 50px;
+}
+
+.home-button-box{
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-border-color: #000000;
+    -fx-border-radius: 30px;
+    -fx-border-width: 3px;
+    -fx-background-radius: 30px;
+    -fx-padding: 10px 10px;
+    -fx-alignment: center;
+    -fx-text-decoration: none;
+    -fx-font-size: 16px;
+    -fx-margin: 4px;
+
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-preferred-width: 50px;
+    -fx-preferred-height: 50px;
+}
+
+/* On hover over back-button-box or home-button-box, add shiny glow */
+.back-button:hover, .home-button:hover{
+    -fx-effect: dropshadow(three-pass-box, #ffffff, 10, 0, 0, 0);
+}
+
+/* On click of back-button-box or home-button-box, add pressed effect
+    * by changing the background color to a darker shade */
+.back-button:pressed, .home-button:pressed{
+    -fx-background-color: #1e6b9b;
+}
