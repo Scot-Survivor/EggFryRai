@@ -150,6 +150,14 @@ public class DatabaseManager {
         }
     }
 
+    public <T> T saveGet(Object object) {
+        int id = this.saveGetId(object);
+        if (id == -1) {
+            return null;
+        }
+        return this.get((Class<T>) object.getClass(), id);
+    }
+
     /**
      * Execute a query against the database return list of results
      * @param query Hibernate Query to execute
