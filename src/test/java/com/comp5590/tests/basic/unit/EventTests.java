@@ -1,4 +1,4 @@
-package com.comp5590.tests.basic;
+package com.comp5590.tests.basic.unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,6 +10,7 @@ import com.comp5590.events.listeners.interfaces.Listener;
 import com.comp5590.events.listeners.interfaces.UserListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.LoggerManager;
+import com.comp5590.tests.basic.SetupTests;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;

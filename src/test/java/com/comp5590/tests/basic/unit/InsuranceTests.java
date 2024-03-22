@@ -1,4 +1,4 @@
-package com.comp5590.tests.basic;
+package com.comp5590.tests.basic.unit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -6,6 +6,7 @@ import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.Insurance;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
+import com.comp5590.tests.basic.SetupTests;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
