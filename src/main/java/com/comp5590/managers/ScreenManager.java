@@ -72,7 +72,7 @@ public class ScreenManager {
                 screenInstances.put(screen, instance);
                 screens.put(screen, createScene(instance));
             } catch (Exception e) {
-                logger.error("Error creating instance of screen: {}", screen.getName());
+                logger.error("Error creating instance of screen: {} | Reason: {}", screen.getName(), e.getMessage());
                 logger.debug(Arrays.toString(e.getStackTrace()));
             }
         }
