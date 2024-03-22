@@ -68,7 +68,7 @@ public class RegisterScreen extends AbstractScreen {
     @Override
     public void setup() {
         // load css
-        this.cssPath = "/register.css";
+        this.addCss("/register.css");
 
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
