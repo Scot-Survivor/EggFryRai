@@ -434,22 +434,37 @@ public class RegisterScreen extends AbstractScreen {
             address
         );
 
+        int savedAddressId = getDatabaseManager().saveGetId(address);
+        Address savedAddress = getDatabaseManager().get(Address.class, savedAddressId);
+        if (savedAddress == null) {
+            logger.error("Failed to save address to database.");
+            this.error.setText("Failed to save address to database.");
+            return;
+        }
+
+        // save auth entity
+        int savedAuthDetailsId = getDatabaseManager().saveGetId(authDetails);
+        AuthenticationDetails savedAuthDetails = getDatabaseManager()
+            .get(AuthenticationDetails.class, savedAuthDetailsId);
+        if (savedAuthDetails == null) {
+            logger.error("Failed to save auth details to database.");
+            this.error.setText("Failed to save auth details to database.");
+            return;
+        }
+
         // set the auth details and address to the user entity (one <-> one
         // relationship)
         user.setAuthenticationDetails(authDetails);
         user.setAddress(address);
 
-        // save the address to the database, as apparently "@OneToOne(cascade =
-        // CascadeType.ALL)" doesn't work.
-        boolean savedAddress = getDatabaseManager().save(address);
-
         // save the user to the database
-        boolean savedUser = getDatabaseManager().save(user);
+        int savedUserId = getDatabaseManager().saveGetId(user);
 
-        // if user is not saved, log it and return
-        if (!savedAddress || !savedUser) {
-            logger.error("Failed to save user or user's address: {}", email);
-            this.error.setText("Failed to save user. Report to administrator.");
+        user = getDatabaseManager().get(User.class, savedUserId);
+
+        if (user == null) {
+            logger.error("Failed to save user to database.");
+            this.error.setText("Failed to save user to database.");
             return;
         }
 
