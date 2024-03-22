@@ -100,7 +100,7 @@ public class LoginScreenTest extends SetupTests {
             app.getScreenManager().showScene(LoginScreen.class);
             app.setCurrentUser(null);
         });
-        SetupTests.remove(p.getClass(), p.getId());
+        SetupTests.remove(p);
     }
 
     /**
@@ -150,7 +150,7 @@ public class LoginScreenTest extends SetupTests {
             app.getScreenManager().showScene(LoginScreen.class);
             app.setCurrentUser(null);
         });
-        SetupTests.remove(u.getClass(), u.getId());
+        SetupTests.remove(u);
     }
 
     /**
@@ -200,7 +200,7 @@ public class LoginScreenTest extends SetupTests {
             app.getScreenManager().showScene(LoginScreen.class);
             app.setCurrentUser(null);
         });
-        SetupTests.remove(p.getClass(), p.getId());
+        SetupTests.remove(p);
     }
 
     @Test
@@ -229,7 +229,7 @@ public class LoginScreenTest extends SetupTests {
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
         });
-        SetupTests.remove(p.getClass(), p.getId());
+        SetupTests.remove(p);
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.comp5590.tests.basic.unit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.Insurance;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
@@ -16,12 +15,8 @@ public class InsuranceTests extends SetupTests {
 
     @Test
     public void testInsuranceEntityCreation() throws ParseException {
-        // Make address for patient object
-        Address address = new Address("1234 Example St", "Test", "AB", "12345", "");
-
         // Create patient object
-        User testUser = new User();
-        testUser.setAddress(address);
+        User testUser = SetupTests.createPatient("example@example.org", "password");
 
         // Create dates
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -37,5 +32,6 @@ public class InsuranceTests extends SetupTests {
 
         DatabaseManager db = DatabaseManager.getInstance();
         assertTrue(db.save(insurance));
+        SetupTests.remove(testUser);
     }
 }

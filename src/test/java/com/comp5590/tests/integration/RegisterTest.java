@@ -83,6 +83,7 @@ public class RegisterTest extends SetupTests {
             int userId = getDbManager().getByProperty(User.class, "authenticationDetails.email", TEST_EMAIL).getId();
             SetupTests.remove(User.class, userId);
             app.setCurrentUser(null);
+            app.getSessionManager().setAuthenticated(false);
             assertNull(getDbManager().get(User.class, userId));
         });
     }

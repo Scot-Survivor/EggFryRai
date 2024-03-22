@@ -170,6 +170,7 @@ public class SetupTests {
         Room room = new Room();
         room.setAddress(address);
         room.setRoomNumber(roomNum);
+        room = getDbManager().saveGet(room);
         return room;
     }
 
@@ -178,5 +179,13 @@ public class SetupTests {
      */
     public static <T> void remove(final Class<T> type, int id) {
         getDbManager().delete(getDbManager().get(type, id));
+    }
+
+    /**
+     * Complete remove a user object
+     */
+    public static void remove(User user) {
+        remove(AuthenticationDetails.class, user.getAuthenticationDetails().getId());
+        remove(User.class, user.getId());
     }
 }
