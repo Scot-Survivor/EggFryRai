@@ -32,15 +32,24 @@ public class ScreenManager {
     private static final int height = 300;
     private static final int width = 300;
 
+    @Getter
     private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
+
+    @Getter
     private final HashMap<Class<? extends AbstractScreen>, AbstractScreen> screenInstances;
+
     private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
 
     @Getter
     private final List<Class<? extends AbstractScreen>> accessedScreens;
 
+    @Getter
     private AbstractScreen currentScreen;
+
+    @Getter
     private EventManager eventManager;
+
+    @Getter
     private App app;
 
     public ScreenManager(Stage primary) {
@@ -153,18 +162,6 @@ public class ScreenManager {
             showScene(lastScreen);
             accessedScreens.remove(accessedScreens.size() - 1);
         }
-    }
-
-    public AbstractScreen getCurrentScreen() {
-        return currentScreen;
-    }
-
-    public HashMap<Class<? extends AbstractScreen>, Scene> getScreens() {
-        return screens;
-    }
-
-    public HashMap<Class<? extends AbstractScreen>, AbstractScreen> getScreenInstances() {
-        return screenInstances;
     }
 
     public AbstractScreen getScreenInstance(Class<? extends AbstractScreen> screen) {
