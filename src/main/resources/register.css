@@ -7,10 +7,11 @@
     -fx-background-radius: 5;
     -fx-padding: 20;
     
-    -fx-pref-width: 250;
-    -fx-pref-height: 400;
-    -fx-max-width: 250;
-    -fx-max-height: 600;
+    -fx-min-width: 500;
+    -fx-pref-width: 1000;
+    -fx-pref-height: 600;
+    -fx-max-width: 1600;
+    -fx-max-height: 1000;
 
     -fx-alignment: center;
     -fx-hgap: 10;
@@ -49,4 +50,27 @@
 .login-link:pressed {
     -fx-text-fill: #575dfb;
     -fx-underline: true;
+}
+
+.error-label{
+    -fx-font-size: 15;
+    -fx-text-fill: #ff0000;
+    -fx-font-weight: bold;
+}
+
+.patientInfoCols{
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}
+
+.patientInfoFields{
+    -fx-font-size: 15;
+    -fx-border-color: #575dfb;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 20;
+    
+    /* set hgap, but no vgap because we don't have more than 1 row in our parent hbox */
+    -fx-spacing: 20;
 }
