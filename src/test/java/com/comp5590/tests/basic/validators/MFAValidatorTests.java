@@ -21,7 +21,7 @@ public class MFAValidatorTests extends SetupTests {
             .getValidator();
 
         AuthenticationDetails authenticationDetails = new AuthenticationDetails();
-        authenticationDetails.setEmail("example@example.org");
+        authenticationDetails.setEmail("e2@example.org");
         authenticationDetails.setPassword("password");
         authenticationDetails.setTwoFactorEnabled(true);
         assertFalse(validator.validate(authenticationDetails).isEmpty());
@@ -43,7 +43,7 @@ public class MFAValidatorTests extends SetupTests {
             .getValidator();
 
         AuthenticationDetails authenticationDetails = new AuthenticationDetails();
-        authenticationDetails.setEmail("example@example.org");
+        authenticationDetails.setEmail("e3@example.org");
         authenticationDetails.setPassword("password");
         authenticationDetails.setTwoFactorEnabled(true);
         authenticationDetails.setAuthenticationToken("authenticationToken");
@@ -60,7 +60,7 @@ public class MFAValidatorTests extends SetupTests {
             .getValidator();
 
         AuthenticationDetails authenticationDetails = new AuthenticationDetails();
-        authenticationDetails.setEmail("example@example.org");
+        authenticationDetails.setEmail("e4@example.org");
         authenticationDetails.setPassword("password");
         authenticationDetails.setTwoFactorEnabled(false);
         assertTrue(validator.validate(authenticationDetails).isEmpty());

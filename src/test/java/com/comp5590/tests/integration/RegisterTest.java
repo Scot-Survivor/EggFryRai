@@ -21,7 +21,7 @@ import org.testfx.framework.junit5.Start;
 public class RegisterTest extends SetupTests {
 
     App app;
-    private static String TEST_EMAIL = "example@example.com";
+    private static String TEST_EMAIL = "e9@example.com";
     private static final String TEST_PASSWORD = "password";
     private static final String TEST_FIRST_NAME = "John";
     private static final String TEST_LAST_NAME = "Doe";
