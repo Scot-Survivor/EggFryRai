@@ -118,6 +118,8 @@ application {
 
 test {
     useJUnitPlatform()
+    testLogging.showStackTraces = true
+    testLogging.showStandardStreams = true
 }
 
 java {
