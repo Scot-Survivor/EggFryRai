@@ -23,7 +23,6 @@ public interface Listener {
 
     default GenericEvent onEvent(GenericEvent event) {
         onGenericEvent(event);
-        boolean found = false;
         Class<?> eventClass = event.getClass();
         // use reflections to find implementations of listeners, since getInterfaces(),
         // does not return anything
@@ -33,7 +32,6 @@ public interface Listener {
                 ImmutablePair<Class<?>, Class<?>> pair = new ImmutablePair<>(eventClass, listenerClass);
                 MethodHandle method = methodHandles.computeIfAbsent(pair, this::getMethod);
                 if (method != null) {
-                    found = true;
                     try {
                         return (GenericEvent) method.invoke(this, event);
                     } catch (Throwable e) {
@@ -47,9 +45,6 @@ public interface Listener {
                 }
             }
         }
-        if (!found) {
-            eventLogger.warn("No implemented method was found for the event: {}", event.getClass().getSimpleName());
-        }
         return event;
     }
 
@@ -61,11 +56,12 @@ public interface Listener {
      */
     private MethodHandle getMethod(ImmutablePair<Class<?>, Class<?>> classPair) {
         Class<?> eventClass = classPair.getKey();
+        Class<?> listenerClass = classPair.getValue();
         String name = eventClass.getSimpleName();
         MethodType type = MethodType.methodType(eventClass, eventClass);
         try {
             name = "on" + name.substring(0, name.length() - "Event".length());
-            return MethodHandles.lookup().findVirtual(getClass(), name, type);
+            return MethodHandles.lookup().findVirtual(listenerClass, name, type);
         } catch (NoSuchMethodException e) {
             // If no method is found for this listener that's fine, just go to next one.
             return null;
