@@ -36,8 +36,7 @@ public class SetupTests {
         address.setAddressLineOne("1 Test Street");
         address.setAddressLineTwo("Test Town");
         address.setAddressLineThree("Test County");
-        int id = getDbManager().saveGetId(address);
-        address = getDbManager().get(Address.class, id);
+        address = getDbManager().saveGet(address);
         return address;
     }
 
@@ -53,8 +52,7 @@ public class SetupTests {
         authenticationDetails.setTwoFactorEnabled(false);
         authenticationDetails.setAuthenticationToken("");
         authenticationDetails.setRecoveryCodes("");
-        int id = getDbManager().saveGetId(authenticationDetails);
-        authenticationDetails = getDbManager().get(AuthenticationDetails.class, id);
+        authenticationDetails = getDbManager().saveGet(authenticationDetails);
         return authenticationDetails;
     }
 
@@ -98,8 +96,7 @@ public class SetupTests {
         );
         user.setRole(UserRole.PATIENT);
         user.setAuthenticationDetails(authenticationDetails);
-        int id = getDbManager().saveGetId(user);
-        user = getDbManager().get(User.class, id);
+        user = getDbManager().saveGet(user);
         return user;
     }
 
