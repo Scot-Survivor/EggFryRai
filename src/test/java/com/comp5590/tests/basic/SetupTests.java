@@ -129,6 +129,7 @@ public class SetupTests {
 
     /**
      * Create a doctor user with all filled values,
+     *
      * @return User
      */
     public static User createDoctor(AuthenticationDetails authenticationDetails) {
@@ -140,6 +141,7 @@ public class SetupTests {
             "0123456789",
             "Test Notes",
             CommunicationPreference.EMAIL,
+            UserRole.DOCTOR,
             address
         );
         user.setRole(UserRole.DOCTOR);
@@ -151,7 +153,8 @@ public class SetupTests {
 
     /**
      * Create a user object with the email and password specified.
-     * @param email the email of the user
+     *
+     * @param email    the email of the user
      * @param password the password of the user
      * @return User
      */
@@ -161,6 +164,7 @@ public class SetupTests {
 
     /**
      * Create a Room object using roomNum and address
+     *
      * @param roomNum The number of the room
      * @param address The address of the room
      * @return The room
