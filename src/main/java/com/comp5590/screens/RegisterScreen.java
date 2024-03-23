@@ -16,6 +16,10 @@ import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.utils.AddressUtils;
+import com.comp5590.utils.NameUtils;
+import com.comp5590.utils.NumberUtils;
+import com.comp5590.utils.StringUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -194,12 +198,30 @@ public class RegisterScreen extends AbstractScreen {
         BigButton registerButton = new BigButton();
         registerButton.setText("Register");
 
-        // attach event listener to button, which runs register method
+        // create generate random user button
+        BigButton generateRandomUserButton = new BigButton();
+        generateRandomUserButton.setText("Generate Random User");
+
+        // create hbox for above buttons, and add them to it
+        HBox buttonBox = new HBox();
+        buttonBox.getChildren().addAll(registerButton, generateRandomUserButton);
+        // apply styling to the button box
+        buttonBox.getStyleClass().add("button-box");
+
+        // set register button length to 75% of parent node
+        registerButton.prefWidthProperty().bind(buttonBox.widthProperty().multiply(0.75));
+
+        // attach event listener to register button, which runs register method
         registerButton.setOnAction(this::register);
         registerButton.setId("registerButton");
 
+        // attach event listener to generate random user button, which runs
+        // generateRandomUser method
+        generateRandomUserButton.setOnAction(this::generateRandomUser);
+        generateRandomUserButton.setId("generateRandomUserButton");
+
         // create horizontal line
-        LineHorizontal line = new LineHorizontal(registerButton, 20, 3);
+        LineHorizontal line = new LineHorizontal(buttonBox, 20, 3);
 
         // create back to login box button
         HBox backToRegisterScreenBox = new BackToLoginBox();
@@ -247,7 +269,7 @@ public class RegisterScreen extends AbstractScreen {
                 padding1,
                 patientInfoFields,
                 padding2,
-                registerButton,
+                buttonBox,
                 padding3,
                 padding4,
                 backToRegisterScreenBox,
@@ -524,5 +546,43 @@ public class RegisterScreen extends AbstractScreen {
         this.postcode.clear();
         this.role.getSelectionModel().clearSelection();
         this.communicationPreference.getSelectionModel().clearSelection();
+    }
+
+    private void generateRandomUser(ActionEvent event) {
+        String firstName = NameUtils.getRandomFirstName();
+        String surName = NameUtils.getRandomLastName();
+        String email = String.format(
+            "%s.%s_%s@%s",
+            firstName.toLowerCase(),
+            surName.toLowerCase(),
+            StringUtils.randomString(5, 10),
+            NameUtils.getRandomEmailDomain()
+        );
+        String password = StringUtils.randomPassword(8, 64);
+        String phone = NumberUtils.randomPhoneNumber();
+        String fax = NumberUtils.randomFaxNumber();
+        String additionalNotes = StringUtils.randomHealthCondition(NumberUtils.randomInt(2, 12));
+        String addressLine1 = AddressUtils.getRandomAddress1();
+        String addressLine2 = AddressUtils.getRandomTown();
+        String addressLine3 = AddressUtils.getRandomCounty();
+        String country = AddressUtils.getRandomCountry();
+        String postcode = AddressUtils.getRandomPostalCode();
+        String role = UserRole.values()[NumberUtils.randomInt(0, 1)].name();
+        String communicationPreference = CommunicationPreference.values()[NumberUtils.randomInt(0, 3)].name();
+
+        this.firstName.setText(firstName);
+        this.surName.setText(surName);
+        this.email.setText(email);
+        this.password.setText(password);
+        this.phone.setText(phone);
+        this.fax.setText(fax);
+        this.additionalNotes.setText(additionalNotes);
+        this.addressLine1.setText(addressLine1);
+        this.addressLine2.setText(addressLine2);
+        this.addressLine3.setText(addressLine3);
+        this.country.setText(country);
+        this.postcode.setText(postcode);
+        this.role.setValue(UserRole.valueOf(role));
+        this.communicationPreference.setValue(CommunicationPreference.valueOf(communicationPreference));
     }
 }
