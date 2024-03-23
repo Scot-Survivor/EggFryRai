@@ -116,10 +116,10 @@ public class LoginScreen extends AbstractScreen {
         Line line = new LineHorizontal(loginButton, 20, 3);
 
         // create button for registering new account
-        HBox backToLoginScreenBox = new RegisterBox();
-
+        HBox backToRegisterScreenBox = new RegisterBox();
+        backToRegisterScreenBox.setId("backToRegisterScreenBox");
         // add event listener to register box
-        backToLoginScreenBox.setOnMouseClicked(event -> this.gotoRegisterPage());
+        backToRegisterScreenBox.setOnMouseClicked(event -> this.gotoRegisterPage());
 
         // create vboxes for margin
         SpaceVertical padding1 = new SpaceVertical(20);
@@ -141,7 +141,7 @@ public class LoginScreen extends AbstractScreen {
                 finalLoginBtn,
                 padding3,
                 padding4,
-                backToLoginScreenBox,
+                backToRegisterScreenBox,
                 padding5,
                 error
             );
