@@ -5,6 +5,7 @@ import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.Paragraph;
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.components.RegisterScreen.BackToLoginBox;
+import com.comp5590.components.RegisterScreen.ComboBoxField;
 import com.comp5590.components.global.LineHorizontal;
 import com.comp5590.components.global.LoginField;
 import com.comp5590.components.global.SpaceVertical;
@@ -179,6 +180,15 @@ public class RegisterScreen extends AbstractScreen {
         this.role.getItems().addAll(UserRole.values());
         this.communicationPreference.getItems().addAll(CommunicationPreference.values());
 
+        // create more potent roleand communicationPreference variables using reusable
+        // component
+        ComboBoxField role = new ComboBoxField("Role", this.role, "Select Role", "/role.png");
+        ComboBoxField communicationPreference = new ComboBoxField(
+            "Communication Preference",
+            this.communicationPreference,
+            "Select Communication Preference",
+            "/communication.png"
+        );
 
         // create the register button
         BigButton registerButton = new BigButton();
