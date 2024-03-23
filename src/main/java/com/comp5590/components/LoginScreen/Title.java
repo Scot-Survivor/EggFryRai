@@ -15,4 +15,13 @@ public class Title extends HBox {
         text.setFill(Color.web("#575dfb"));
         getChildren().add(text);
     }
+
+    public void setNewText(String title) {
+        getChildren().clear();
+        Text text = new Text(title);
+        text.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 40));
+        // set fill to hex 575dfb
+        text.setFill(Color.web("#575dfb"));
+        getChildren().add(text);
+    }
 }

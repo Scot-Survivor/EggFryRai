@@ -7,12 +7,14 @@ import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.core.Logger;
@@ -186,14 +188,14 @@ public abstract class AbstractScreen {
         int waitTimeInSecs,
         Class<? extends AbstractScreen> nextScreenClass
     ) {
-        // grab instance of ScreenBetweenScreens
-        ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager()
-            .getScreenInstance(ScreenBetweenScreens.class);
-        // run functionality after setup
-        screenBetweenScreens.runFunctionalityBeforeDisplayingScene(msg);
+        try {
+            // show the ScreenBetweenScreens screen
+            this.showScene(ScreenBetweenScreens.class);
 
-        // show the ScreenBetweenScreens screen
-        this.showScene(ScreenBetweenScreens.class);
+            // grab instance of ScreenBetweenScreens
+            ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
+            // run functionality after setup
+            screenBetweenScreens.runFunctionalityAfterDisplayingScene(msg);
 
             // after N seconds of forced waiting on main thread (nothing happens), redirect
             // to whatever screen is specified
@@ -202,6 +204,10 @@ public abstract class AbstractScreen {
                 showScene(nextScreenClass);
             });
             pause.play();
+        } catch (Exception e) {
+            logger.error("Error in showSceneBetweenScenesThenNextScene: " + e.getMessage());
+            logger.info("Redirecting to LoginScreen screen immediately");
+            showScene(LoginScreen.class);
         }
     }
 }

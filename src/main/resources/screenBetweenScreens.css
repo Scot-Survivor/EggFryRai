@@ -1,9 +1,5 @@
 .custom-pane{
     -fx-background-color: #f4f4f4;
-    -fx-border-color: #575dfb;
-    -fx-border-width: 10;
-    -fx-border-radius: 20;
-    -fx-background-radius: 5;
     
     -fx-pref-width: 400;
     -fx-pref-height: 200;
@@ -17,4 +13,22 @@
     -fx-font-size: 50;
     -fx-text-fill: #000000;
     -fx-font-weight: bold;
+
+    -fx-border-color: #575dfb;
+    -fx-border-width: 10;
+    -fx-border-radius: 20;
+    -fx-background-radius: 5;
+
+    -fx-padding: 23;
+}
+
+.message:hover{
+    /* box shadow */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+
+     /* colour change to green */
+    -fx-background-color: #00ff00;
+
+    /* border colour change to animated rainbow */
+    -fx-border-color: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
 }
