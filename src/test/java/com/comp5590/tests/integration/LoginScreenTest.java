@@ -1,16 +1,22 @@
 package com.comp5590.tests.integration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.MFAScreen;
+import com.comp5590.screens.RegisterScreen;
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
+import com.comp5590.utils.EventUtils;
+import com.comp5590.utils.QueryUtils;
 import java.util.Set;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -37,6 +43,13 @@ public class LoginScreenTest extends SetupTests {
 
     private Pane getLoginScreen() {
         return (Pane) app.getScreenManager().getScreens().get(LoginScreen.class).getRoot();
+    }
+
+    // this method will go to the login screen
+    private void goToLogin(FxRobot robot) {
+        robot.interact(() -> {
+            app.getScreenManager().showScene(LoginScreen.class);
+        });
     }
 
     /**
@@ -239,6 +252,43 @@ public class LoginScreenTest extends SetupTests {
             app.getSessionManager().setAuthenticated(false); // Force de-authentication
             app.getScreenManager().showScene(HomeScreen.class);
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
+        });
+    }
+
+    @Test
+    public void testUserSentToRegisterScreenOnBackToRegisterScreenButtonPress(FxRobot robot) {
+        goToLogin(robot);
+        robot.interact(() -> {
+            // Press back to register screen button
+            robot
+                .lookup("#backToRegisterScreenBox")
+                .queryAs(QueryUtils.getHBoxClass())
+                .fireEvent(
+                    EventUtils.createCustomMouseEvent(
+                        MouseEvent.MOUSE_CLICKED,
+                        0,
+                        0,
+                        0,
+                        0,
+                        MouseButton.PRIMARY,
+                        1,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        null
+                    )
+                );
+
+            // Current screen should be Register Screen after back to register screen button
+            // press
+            assertInstanceOf(RegisterScreen.class, app.getScreenManager().getCurrentScreen());
         });
     }
 }

@@ -114,7 +114,8 @@ public class RegisterScreen extends AbstractScreen {
     }
 
     private VBox createRegisterBox() {
-        // create the fields
+        // create the fields (plus assign IDs to them for testing purposes (see
+        // RegisterTest.java))
         this.email = new TextField();
         this.email.setId("email");
         this.password = new PasswordField();
@@ -144,6 +145,7 @@ public class RegisterScreen extends AbstractScreen {
         this.communicationPreference = new ComboBox<CommunicationPreference>();
         this.communicationPreference.setId("communicationPreference");
         this.error = new Label();
+        this.error.setId("error");
         this.error.getStyleClass().add("error-label");
 
         // instantiate & create base fields for all the required patient info
@@ -224,8 +226,9 @@ public class RegisterScreen extends AbstractScreen {
         LineHorizontal line = new LineHorizontal(buttonBox, 20, 3);
 
         // create back to login box button
-        HBox backToRegisterScreenBox = new BackToLoginBox();
-        backToRegisterScreenBox.setOnMouseClicked(event -> this.goToLoginPage());
+        HBox backToLoginScreenBox = new BackToLoginBox();
+        backToLoginScreenBox.setId("backToLoginScreenBox");
+        backToLoginScreenBox.setOnMouseClicked(event -> this.goToLoginPage());
 
         // create paddings
         SpaceVertical padding1 = new SpaceVertical(10);
@@ -272,7 +275,7 @@ public class RegisterScreen extends AbstractScreen {
                 buttonBox,
                 padding3,
                 padding4,
-                backToRegisterScreenBox,
+                backToLoginScreenBox,
                 padding5,
                 error
             );
@@ -517,10 +520,6 @@ public class RegisterScreen extends AbstractScreen {
                 3,
                 LoginScreen.class
             );
-
-        // [cleanup] clear all fields & unset error text
-        clearFields();
-        unsetErrorText();
     }
 
     public void setErrorText(String txt) {
@@ -546,6 +545,12 @@ public class RegisterScreen extends AbstractScreen {
         this.postcode.clear();
         this.role.getSelectionModel().clearSelection();
         this.communicationPreference.getSelectionModel().clearSelection();
+    }
+
+    @Override
+    public void cleanup() {
+        this.unsetErrorText();
+        this.clearFields();
     }
 
     private void generateRandomUser(ActionEvent event) {

@@ -706,6 +706,114 @@ public class AddressUtils {
         "Jordan",
     };
 
+    // random postcodes, each one UK and totally random, 5-8 chars in length
+    private static final String[] POSTCODES = {
+        "AB12 3CD",
+        "DE34 5FG",
+        "HI67 8JK",
+        "LM90 1OP",
+        "QR23 4ST",
+        "UV56 7WX",
+        "YZ89 0AB",
+        "CD23 4EF",
+        "GH56 7IJ",
+        "KL78 9MN",
+        "OP12 3QR",
+        "ST45 6UV",
+        "WX78 9YZ",
+        "AB34 5CD",
+        "EF67 8FG",
+        "IJ90 1HI",
+        "MN23 4OP",
+        "QR56 7ST",
+        "UV78 9WX",
+        "YZ12 3AB",
+        "CD45 6EF",
+        "GH67 8IJ",
+        "KL90 1MN",
+        "OP34 5QR",
+        "ST67 8UV",
+        "WX90 1YZ",
+        "AB45 6CD",
+        "EF67 8FG",
+        "IJ12 3HI",
+        "MN34 5OP",
+        "QR67 8ST",
+        "UV12 3WX",
+        "YZ34 5AB",
+        "CD67 8EF",
+        "GH12 3IJ",
+        "KL56 7MN",
+        "OP78 9QR",
+        "ST12 3UV",
+        "WX56 7YZ",
+        "AB78 9CD",
+        "EF12 3FG",
+        "IJ56 7HI",
+        "MN78 9OP",
+        "QR12 3ST",
+        "UV56 7WX",
+        "YZ78 9AB",
+        "CD12 3EF",
+        "GH56 7IJ",
+        "KL78 9MN",
+        "OP12 3QR",
+        "ST56 7UV",
+        "WX78 9YZ",
+        "AB12 3CD",
+        "EF34 5FG",
+        "IJ67 8HI",
+        "MN90 1OP",
+        "QR23 4ST",
+        "UV67 8WX",
+        "YZ90 1AB",
+        "CD23 4EF",
+        "GH45 6IJ",
+        "KL67 8MN",
+        "OP90 1QR",
+        "ST23 4UV",
+        "WX45 6YZ",
+        "AB67 8CD",
+        "EF90 1FG",
+        "IJ23 4HI",
+        "MN45 6OP",
+        "QR67 8ST",
+        "UV23 4WX",
+        "YZ45 6AB",
+        "CD67 8EF",
+        "GH23 4IJ",
+        "KL45 6MN",
+        "OP67 8QR",
+        "ST23 4UV",
+        "WX45 6YZ",
+        "AB67 8CD",
+        "EF23 4FG",
+        "IJ45 6HI",
+        "MN67 8OP",
+        "QR23 4ST",
+        "UV45 6WX",
+        "YZ67 8AB",
+        "CD23 4EF",
+        "GH67 8IJ",
+        "KL23 4MN",
+        "OP67 8QR",
+        "ST23 4UV",
+        "WX67 8YZ",
+        "AB23 4CD",
+        "EF67 8FG",
+        "IJ23 4HI",
+        "MN67 8OP",
+        "QR23 4ST",
+        "UV67 8WX",
+        "YZ23 4AB",
+        "CD67 8EF",
+        "GH23 4IJ",
+        "KL67 8MN",
+        "OP23 4QR",
+        "ST67 8UV",
+        "WX23 4YZ",
+    };
+
     // get random 1st street name (address line 1)
     public static String getRandomAddress1() {
         int numberIndex = (int) (Math.random() * STREET_NUMBERS.length);
@@ -736,15 +844,7 @@ public class AddressUtils {
     // length (no
     // whitespace)
     public static String getRandomPostalCode() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < NumberUtils.randomInt(5, 8); i++) {
-            int random = (int) (Math.random() * 36);
-            if (random < 10) {
-                sb.append(random);
-            } else {
-                sb.append((char) (random + 87));
-            }
-        }
-        return sb.toString();
+        int index = (int) (Math.random() * POSTCODES.length);
+        return POSTCODES[index];
     }
 }

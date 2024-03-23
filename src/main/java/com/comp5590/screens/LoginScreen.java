@@ -116,10 +116,10 @@ public class LoginScreen extends AbstractScreen {
         Line line = new LineHorizontal(loginButton, 20, 3);
 
         // create button for registering new account
-        HBox backToLoginScreenBox = new RegisterBox();
-
+        HBox backToRegisterScreenBox = new RegisterBox();
+        backToRegisterScreenBox.setId("backToRegisterScreenBox");
         // add event listener to register box
-        backToLoginScreenBox.setOnMouseClicked(event -> this.gotoRegisterPage());
+        backToRegisterScreenBox.setOnMouseClicked(event -> this.gotoRegisterPage());
 
         // create vboxes for margin
         SpaceVertical padding1 = new SpaceVertical(20);
@@ -141,7 +141,7 @@ public class LoginScreen extends AbstractScreen {
                 finalLoginBtn,
                 padding3,
                 padding4,
-                backToLoginScreenBox,
+                backToRegisterScreenBox,
                 padding5,
                 error
             );
@@ -177,8 +177,6 @@ public class LoginScreen extends AbstractScreen {
                 // show the user the home screen (successfully logged in)
                 showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
-                unsetErrorText();
-                clearFields();
             } else {
                 showScene(MFAScreen.class);
             }
@@ -191,9 +189,7 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void gotoRegisterPage() {
-        showScene(RegisterScreen.class); // show the register page
-        unsetErrorText(); // clear the error text when we go to the register page
-        clearFields(); // clear the fields when we go to the register page
+        showScene(RegisterScreen.class); // show the register pagee
     }
 
     public void setErrorText(String txt) {
@@ -207,5 +203,12 @@ public class LoginScreen extends AbstractScreen {
     public void clearFields() {
         this.email.clear();
         this.password.clear();
+    }
+
+    @Override
+    public void cleanup() {
+        this.email.clear();
+        this.password.clear();
+        this.error.setText("");
     }
 }

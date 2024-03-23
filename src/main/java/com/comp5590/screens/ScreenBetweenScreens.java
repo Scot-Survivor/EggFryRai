@@ -49,4 +49,9 @@ public class ScreenBetweenScreens extends AbstractScreen {
         GridPane.setHalignment(title, javafx.geometry.HPos.CENTER);
         GridPane.setValignment(title, javafx.geometry.VPos.CENTER);
     }
+
+    @Override
+    public void cleanup() {
+        // nothing to clean up
+    }
 }

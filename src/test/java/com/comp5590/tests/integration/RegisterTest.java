@@ -8,8 +8,12 @@ import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.RegisterScreen;
 import com.comp5590.tests.basic.SetupTests;
+import com.comp5590.utils.EventUtils;
+import com.comp5590.utils.QueryUtils;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +45,9 @@ public class RegisterTest extends SetupTests {
     }
 
     /**
-     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot parameter
+     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot
+     * parameter
+     *
      * @param robot The robot to interact with the JavaFX thread
      */
     private void goToRegister(FxRobot robot) {
@@ -52,7 +58,9 @@ public class RegisterTest extends SetupTests {
     }
 
     /**
-     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot parameter
+     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot
+     * parameter
+     *
      * @param robot The robot to interact with the JavaFX thread
      */
     private void inputInformation(FxRobot robot) {
@@ -75,7 +83,9 @@ public class RegisterTest extends SetupTests {
     }
 
     /**
-     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot parameter
+     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot
+     * parameter
+     *
      * @param robot The robot to interact with the JavaFX thread
      */
     private void cleanUpUser(FxRobot robot) {
@@ -94,9 +104,47 @@ public class RegisterTest extends SetupTests {
         inputInformation(robot);
         robot.interact(() -> {
             robot.lookup("#registerButton").queryButton().fire(); // Actually register
-            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Login Screen after register
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be
+            // Login Screen after
+            // register
         });
         cleanUpUser(robot);
+    }
+
+    @Test
+    public void testUserSentToLoginScreenOnBackToLoginScreenButtonPress(FxRobot robot) {
+        goToRegister(robot);
+        robot.interact(() -> {
+            // Press back to login screen button
+            robot
+                .lookup("#backToLoginScreenBox")
+                .queryAs(QueryUtils.getHBoxClass())
+                .fireEvent(
+                    EventUtils.createCustomMouseEvent(
+                        MouseEvent.MOUSE_CLICKED,
+                        0,
+                        0,
+                        0,
+                        0,
+                        MouseButton.PRIMARY,
+                        1,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        null
+                    )
+                );
+
+            // Current screen should be Login Screen after back to login screen button press
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+        });
     }
 
     @Test
@@ -104,14 +152,17 @@ public class RegisterTest extends SetupTests {
         goToRegister(robot);
         inputInformation(robot);
         robot.interact(() -> {
-            robot.lookup("#registerButton").queryButton().fire(); // Actually register
-            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Login Screen after register
+            // Actually register
+            robot.lookup("#registerButton").queryButton().fire();
+            // Current screen should be Login Screen after register
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
 
             robot.lookup("#email").queryAs(TextField.class).setText(TEST_EMAIL);
             robot.lookup("#password").queryAs(TextField.class).setText(TEST_PASSWORD);
             robot.lookup("#login").queryButton().fire(); // Actually login
 
-            assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Home Screen after login
+            assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be
+            // Home Screen after login
         });
         cleanUpUser(robot);
     }
@@ -124,8 +175,58 @@ public class RegisterTest extends SetupTests {
         inputInformation(robot);
         robot.interact(() -> {
             robot.lookup("#registerButton").queryButton().fire(); // Actually register
-            assertInstanceOf(RegisterScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Register Screen after invalid email
+            assertInstanceOf(RegisterScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should
+            // be Register Screen
+            // after invalid email
         });
         TEST_EMAIL = oldEmail;
+    }
+
+    @Test
+    public void testGenerateRandomUserButtonFieldsNotEmpty(FxRobot robot) {
+        goToRegister(robot);
+        robot.interact(() -> {
+            robot.lookup("#generateRandomUserButton").queryButton().fire();
+            assertFalse(robot.lookup("#email").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#password").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#firstName").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#surName").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#phone").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#fax").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#addressLine1").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#addressLine2").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#addressLine3").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#country").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#postcode").queryAs(TextField.class).getText().isEmpty());
+        });
+    }
+
+    @Test
+    public void testRegistrationSucceedsWithRandomUserButtonDetails(FxRobot robot) {
+        goToRegister(robot); // go to register screen
+        robot.interact(() -> {
+            robot.lookup("#generateRandomUserButton").queryButton().fire(); // generate random user
+            robot.lookup("#registerButton").queryButton().fire(); // register user
+            // ensure LoginScreen is displayed after registration
+            // NOTE WELL: it will synchronously go from RegisterScreen ->
+            // ScreenBetweenScreens -> LoginScreen, so thankfully we only need to test for
+            // the last screen (LoginScreen)
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+        });
+    }
+
+    @Test
+    public void testErrorLabelClearsOnReturnFromLoginScreen(FxRobot robot) {
+        goToRegister(robot);
+        robot.interact(() -> {
+            // create an error message on register screen programmatically
+            robot.lookup("#error").queryAs(javafx.scene.control.Label.class).setText("Error");
+            // go to login screen from register screen, using scene manager
+            app.getScreenManager().showScene(LoginScreen.class);
+            // go back to register screen from login screen, using scene manager
+            app.getScreenManager().showScene(RegisterScreen.class);
+            // check that the error message is cleared
+            assertEquals("", robot.lookup("#error").queryAs(javafx.scene.control.Label.class).getText());
+        });
     }
 }
