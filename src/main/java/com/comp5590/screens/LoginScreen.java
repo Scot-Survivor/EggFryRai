@@ -175,12 +175,12 @@ public class LoginScreen extends AbstractScreen {
                 // set the user as authenticated in session manager
                 getApp().getSessionManager().setAuthenticated(true);
                 // show the user the home screen (successfully logged in)
-                getApp().getScreenManager().showScene(HomeScreen.class);
+                showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
                 unsetErrorText();
                 clearFields();
             } else {
-                getApp().getScreenManager().showScene(MFAScreen.class);
+                showScene(MFAScreen.class);
             }
             // Set the current user here, but only if the password is valids
             getApp().setCurrentUser(user);
@@ -191,7 +191,7 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void gotoRegisterPage() {
-        getApp().getScreenManager().showScene(RegisterScreen.class); // show the register page
+        showScene(RegisterScreen.class); // show the register page
         unsetErrorText(); // clear the error text when we go to the register page
         clearFields(); // clear the fields when we go to the register page
     }

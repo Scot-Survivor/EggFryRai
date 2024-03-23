@@ -15,7 +15,6 @@ import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.managers.SessionManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -258,7 +257,7 @@ public class RegisterScreen extends AbstractScreen {
     }
 
     private void goToLoginPage() {
-        getApp().getScreenManager().showScene(LoginScreen.class);
+        showScene(LoginScreen.class);
         clearFields();
         unsetErrorText();
     }
@@ -480,21 +479,14 @@ public class RegisterScreen extends AbstractScreen {
         // log creation of new user
         logger.info("New user registered: {}", email);
 
-        // grab session manager to store message in for temporary screen
-        SessionManager sessionManager = SessionManager.getInstance();
-
-        sessionManager.setStateMessage("✅ You have successfully registered. Redirecting to login page...");
         // redirect user to InBetweenScreensScreen after successful registration, with
         // success message
-        this.getApp().getScreenManager().showScene(ScreenBetweenScreens.class);
+        this.showSceneBetweenScenesThenNextScene(
+                "✅ You have successfully registered.\nRedirecting to login page...",
+                3,
+                LoginScreen.class
+            );
 
-        // run the functionality after setup
-        ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
-        screenBetweenScreens.runFunctionalityAfterSetup(
-            "✅ You have successfully registered. Redirecting to login page...",
-            3,
-            LoginScreen.class
-        );
         // [cleanup] clear all fields & unset error text
         clearFields();
 

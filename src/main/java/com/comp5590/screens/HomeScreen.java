@@ -5,7 +5,6 @@ import com.comp5590.components.HomeScreen.HeaderBar;
 import com.comp5590.components.HomeScreen.NavBar;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -44,16 +43,11 @@ public class HomeScreen extends AbstractScreen {
 
         // attach event listener to logoutbox
         logoutBox.setOnMouseClicked(e -> {
-            // log the user out, and redirect to login screen
-            SessionManager.getInstance().setAuthenticated(false);
-            this.getApp().getScreenManager().showScene(ScreenBetweenScreens.class);
-            ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) this.getScreenManager()
-                .getCurrentScreen();
-            screenBetweenScreens.runFunctionalityAfterSetup(
-                "⬅️ You have successfully logged out. Redirecting to login screen...",
-                3,
-                LoginScreen.class
-            );
+            this.showSceneBetweenScenesThenNextScene(
+                    "👋 You have successfully logged out.\nRedirecting to login screen...",
+                    3,
+                    LoginScreen.class
+                );
         });
 
         // Create the header bar with the determined name
@@ -75,27 +69,27 @@ public class HomeScreen extends AbstractScreen {
 
         appointments.setOnAction(e -> {
             logger.info("Appointments button clicked");
-            // getApp().getScreenManager().showScene(AppointmentsScreen.class);
+            // showScene(AppointmentsScreen.class);
         });
 
         prescriptions.setOnAction(e -> {
             logger.info("Prescriptions button clicked");
-            // getApp().getScreenManager().showScene(PrescriptionsScreen.class);
+            // showScene(PrescriptionsScreen.class);
         });
 
         aboutUs.setOnAction(e -> {
             logger.info("About us button clicked");
-            // getApp().getScreenManager().showScene(AboutUsScreen.class);
+            // showScene(AboutUsScreen.class);
         });
 
         contactUs.setOnAction(e -> {
             logger.info("Contact us button clicked");
-            // getApp().getScreenManager().showScene(ContactUsScreen.class);
+            // showScene(ContactUsScreen.class);
         });
 
         doctors.setOnAction(e -> {
             logger.info("Doctors button clicked");
-            getApp().getScreenManager().showScene(DocListScreen.class);
+            showScene(DocListScreen.class);
         });
 
         // create the navbar
@@ -131,9 +125,5 @@ public class HomeScreen extends AbstractScreen {
         rootPane.setTop(pane);
 
         setRootPane(rootPane); // set root pane
-    }
-
-    private void showScene(Class<? extends AbstractScreen> screenClass) {
-        getApp().getScreenManager().showScene(screenClass);
     }
 }
