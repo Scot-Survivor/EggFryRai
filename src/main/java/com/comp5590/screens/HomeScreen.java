@@ -126,4 +126,9 @@ public class HomeScreen extends AbstractScreen {
 
         setRootPane(rootPane); // set root pane
     }
+
+    @Override
+    public void cleanup() {
+        // nothing to clean up
+    }
 }

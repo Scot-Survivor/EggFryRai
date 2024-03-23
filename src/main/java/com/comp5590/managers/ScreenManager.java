@@ -120,7 +120,12 @@ public class ScreenManager {
             if (primaryStage.getScene() == toShow) {
                 logger.warn("Scene {} is already showing", scene.getName());
             } else {
+                // grab the current screen and clean it up
                 this.currentScreen = screenInstances.get(scene);
+                if (this.currentScreen != null) {
+                    this.currentScreen.cleanup();
+                }
+
                 // display the new scene.
                 primaryStage.setScene(toShow);
                 primaryStage.setTitle("PDMS");

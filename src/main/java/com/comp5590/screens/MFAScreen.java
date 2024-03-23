@@ -72,4 +72,10 @@ public class MFAScreen extends AbstractScreen {
         Text text = new Text("Enter your 2FA below");
         return new HBox(text);
     }
+
+    @Override
+    public void cleanup() {
+        this.code.clear();
+        this.error.setText("");
+    }
 }

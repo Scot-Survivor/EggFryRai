@@ -517,10 +517,6 @@ public class RegisterScreen extends AbstractScreen {
                 3,
                 LoginScreen.class
             );
-
-        // [cleanup] clear all fields & unset error text
-        clearFields();
-        unsetErrorText();
     }
 
     public void setErrorText(String txt) {
@@ -546,6 +542,12 @@ public class RegisterScreen extends AbstractScreen {
         this.postcode.clear();
         this.role.getSelectionModel().clearSelection();
         this.communicationPreference.getSelectionModel().clearSelection();
+    }
+
+    @Override
+    public void cleanup() {
+        this.unsetErrorText();
+        this.clearFields();
     }
 
     private void generateRandomUser(ActionEvent event) {

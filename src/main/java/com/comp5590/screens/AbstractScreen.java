@@ -51,6 +51,14 @@ public abstract class AbstractScreen {
     public abstract void setup();
 
     /**
+     * This method is called when the scene is changed, to clean it up
+     * Every screen must implement this method
+     * Examples of cleanup include removing event listeners, clearing text fields,
+     * etc.
+     */
+    public abstract void cleanup();
+
+    /**
      * This method is called when the screen is shown, to ensure that the logged in
      * user has access to the screen
      *

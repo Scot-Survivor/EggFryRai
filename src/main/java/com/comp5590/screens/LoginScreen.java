@@ -177,8 +177,6 @@ public class LoginScreen extends AbstractScreen {
                 // show the user the home screen (successfully logged in)
                 showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
-                unsetErrorText();
-                clearFields();
             } else {
                 showScene(MFAScreen.class);
             }
@@ -191,9 +189,7 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void gotoRegisterPage() {
-        showScene(RegisterScreen.class); // show the register page
-        unsetErrorText(); // clear the error text when we go to the register page
-        clearFields(); // clear the fields when we go to the register page
+        showScene(RegisterScreen.class); // show the register pagee
     }
 
     public void setErrorText(String txt) {
@@ -207,5 +203,12 @@ public class LoginScreen extends AbstractScreen {
     public void clearFields() {
         this.email.clear();
         this.password.clear();
+    }
+
+    @Override
+    public void cleanup() {
+        this.email.clear();
+        this.password.clear();
+        this.error.setText("");
     }
 }
