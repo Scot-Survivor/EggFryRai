@@ -326,7 +326,7 @@ public class RegisterScreen extends AbstractScreen {
         String addressLine2 = this.addressLine2.getText().trim();
         String addressLine3 = this.addressLine3.getText().trim();
         String country = this.country.getText().trim();
-        String postcode = this.postcode.getText().replaceAll("\\s", "");
+        String postcode = this.postcode.getText().replaceAll("\\s", "").toUpperCase();
         String role = this.role.getValue().toString().toUpperCase();
         String communicationPreference = this.communicationPreference.getValue().toString().toUpperCase();
         // check if fields are empty
@@ -376,7 +376,8 @@ public class RegisterScreen extends AbstractScreen {
             return;
         }
 
-        if (!postcode.matches("^[A-Z0-9]{6}$")) {
+        // allow postcode to be any letter / number combo, but 5-8 characters long
+        if (!postcode.matches("^[a-zA-Z0-9]{5,8}$")) {
             logger.error("Invalid postcode: {}", postcode);
             this.error.setText("Invalid postcode.");
             return;
@@ -519,7 +520,6 @@ public class RegisterScreen extends AbstractScreen {
 
         // [cleanup] clear all fields & unset error text
         clearFields();
-
         unsetErrorText();
     }
 
