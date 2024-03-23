@@ -8,8 +8,12 @@ import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.RegisterScreen;
 import com.comp5590.tests.basic.SetupTests;
+import com.comp5590.utils.EventUtils;
+import com.comp5590.utils.QueryUtils;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +45,9 @@ public class RegisterTest extends SetupTests {
     }
 
     /**
-     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot parameter
+     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot
+     * parameter
+     *
      * @param robot The robot to interact with the JavaFX thread
      */
     private void goToRegister(FxRobot robot) {
@@ -52,7 +58,9 @@ public class RegisterTest extends SetupTests {
     }
 
     /**
-     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot parameter
+     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot
+     * parameter
+     *
      * @param robot The robot to interact with the JavaFX thread
      */
     private void inputInformation(FxRobot robot) {
@@ -75,7 +83,9 @@ public class RegisterTest extends SetupTests {
     }
 
     /**
-     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot parameter
+     * It has to run on the JavaFX Thread to avoid race conditions, hence the robot
+     * parameter
+     *
      * @param robot The robot to interact with the JavaFX thread
      */
     private void cleanUpUser(FxRobot robot) {
@@ -94,7 +104,9 @@ public class RegisterTest extends SetupTests {
         inputInformation(robot);
         robot.interact(() -> {
             robot.lookup("#registerButton").queryButton().fire(); // Actually register
-            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Login Screen after register
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be
+            // Login Screen after
+            // register
         });
         cleanUpUser(robot);
     }
@@ -140,14 +152,17 @@ public class RegisterTest extends SetupTests {
         goToRegister(robot);
         inputInformation(robot);
         robot.interact(() -> {
-            robot.lookup("#registerButton").queryButton().fire(); // Actually register
-            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Login Screen after register
+            // Actually register
+            robot.lookup("#registerButton").queryButton().fire();
+            // Current screen should be Login Screen after register
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
 
             robot.lookup("#email").queryAs(TextField.class).setText(TEST_EMAIL);
             robot.lookup("#password").queryAs(TextField.class).setText(TEST_PASSWORD);
             robot.lookup("#login").queryButton().fire(); // Actually login
 
-            assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Home Screen after login
+            assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be
+            // Home Screen after login
         });
         cleanUpUser(robot);
     }
@@ -160,7 +175,9 @@ public class RegisterTest extends SetupTests {
         inputInformation(robot);
         robot.interact(() -> {
             robot.lookup("#registerButton").queryButton().fire(); // Actually register
-            assertInstanceOf(RegisterScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be Register Screen after invalid email
+            assertInstanceOf(RegisterScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should
+            // be Register Screen
+            // after invalid email
         });
         TEST_EMAIL = oldEmail;
     }
