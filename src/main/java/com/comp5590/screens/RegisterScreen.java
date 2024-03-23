@@ -419,9 +419,6 @@ public class RegisterScreen extends AbstractScreen {
         // hash the password
         password = getApp().getPasswordManager().hashPassword(password);
 
-        logger.error("Password hash is: {}", password);
-
-        logger.error("Chars long: {}", password.length());
         // create new auth details
         AuthenticationDetails authDetails = new AuthenticationDetails(email, password, false, null, null);
 
