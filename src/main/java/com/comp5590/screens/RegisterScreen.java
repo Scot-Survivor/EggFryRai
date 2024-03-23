@@ -51,10 +51,10 @@ public class RegisterScreen extends AbstractScreen {
     private TextField postcode;
 
     // * Role (enum of PATIENT,DOCTOR)
-    private ComboBox role;
+    private ComboBox<UserRole> role;
 
     // * CommunicationPreference (enum of NONE,EMAIL,PHONE,FAX)
-    private ComboBox communicationPreference;
+    private ComboBox<CommunicationPreference> communicationPreference;
 
     // * Other
     private Label error;
@@ -134,9 +134,9 @@ public class RegisterScreen extends AbstractScreen {
         this.country.setId("country");
         this.postcode = new TextField();
         this.postcode.setId("postcode");
-        this.role = new ComboBox();
+        this.role = new ComboBox<UserRole>();
         this.role.setId("role");
-        this.communicationPreference = new ComboBox();
+        this.communicationPreference = new ComboBox<CommunicationPreference>();
         this.communicationPreference.setId("communicationPreference");
         this.error = new Label();
         this.error.getStyleClass().add("error-label");
@@ -176,8 +176,9 @@ public class RegisterScreen extends AbstractScreen {
         LoginField postcodeField = new LoginField("Postcode", this.postcode, "E.g. D01AB23", "/address.png");
 
         // create the role and communication preference fields
-        this.role.getItems().addAll("Patient", "Doctor");
-        this.communicationPreference.getItems().addAll("None", "Email", "Phone", "Fax");
+        this.role.getItems().addAll(UserRole.values());
+        this.communicationPreference.getItems().addAll(CommunicationPreference.values());
+
 
         // create the register button
         BigButton registerButton = new BigButton();
