@@ -184,4 +184,18 @@ public class RegisterTest extends SetupTests {
         });
     }
 
+    @Test
+    public void testRegistrationSucceedsWithRandomUserButtonDetails(FxRobot robot) {
+        goToRegister(robot); // go to register screen
+        robot.interact(() -> {
+            robot.lookup("#generateRandomUserButton").queryButton().fire(); // generate random user
+            robot.lookup("#registerButton").queryButton().fire(); // register user
+            // ensure LoginScreen is displayed after registration
+            // NOTE WELL: it will synchronously go from RegisterScreen ->
+            // ScreenBetweenScreens -> LoginScreen, so thankfully we only need to test for
+            // the last screen (LoginScreen)
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+        });
+    }
+
 }
