@@ -7,9 +7,11 @@ import com.comp5590.database.entities.User;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.RegisterScreen;
+import com.comp5590.screens.ScreenBetweenScreens;
 import com.comp5590.tests.basic.SetupTests;
 import com.comp5590.utils.EventUtils;
 import com.comp5590.utils.QueryUtils;
+import com.comp5590.utils.ScreenUtils;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
@@ -104,9 +106,19 @@ public class RegisterTest extends SetupTests {
         inputInformation(robot);
         robot.interact(() -> {
             robot.lookup("#registerButton").queryButton().fire(); // Actually register
-            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be
-            // Login Screen after
-            // register
+
+            // expect screen between screens
+            assertInstanceOf(ScreenBetweenScreens.class, app.getScreenManager().getCurrentScreen());
+
+            // stall for N seconds on SEPARATE thread to allow the user to see the success
+            // message, then
+            // ideally get redirected to login screen
+            ScreenUtils
+                .stall(4)
+                .thenRun(() -> {
+                    // ensure the user is redirected to the login screen
+                    assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+                });
         });
         cleanUpUser(robot);
     }
@@ -154,15 +166,26 @@ public class RegisterTest extends SetupTests {
         robot.interact(() -> {
             // Actually register
             robot.lookup("#registerButton").queryButton().fire();
-            // Current screen should be Login Screen after register
-            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
 
-            robot.lookup("#email").queryAs(TextField.class).setText(TEST_EMAIL);
-            robot.lookup("#password").queryAs(TextField.class).setText(TEST_PASSWORD);
-            robot.lookup("#login").queryButton().fire(); // Actually login
+            // expect screen between screens
+            assertInstanceOf(ScreenBetweenScreens.class, app.getScreenManager().getCurrentScreen());
 
-            assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen()); // Current screen should be
-            // Home Screen after login
+            // stall for N seconds on SEPARATE thread to allow the user to see the success
+            // message, then
+            // ideally get redirected to login screen
+            ScreenUtils
+                .stall(4)
+                .thenRun(() -> {
+                    // ensure the user is redirected to the login screen
+                    assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+
+                    robot.lookup("#email").queryAs(TextField.class).setText(TEST_EMAIL);
+                    robot.lookup("#password").queryAs(TextField.class).setText(TEST_PASSWORD);
+                    robot.lookup("#login").queryButton().fire(); // Actually login
+
+                    // Current screen should be Home Screen after login
+                    assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen());
+                });
         });
         cleanUpUser(robot);
     }
@@ -207,11 +230,18 @@ public class RegisterTest extends SetupTests {
         robot.interact(() -> {
             robot.lookup("#generateRandomUserButton").queryButton().fire(); // generate random user
             robot.lookup("#registerButton").queryButton().fire(); // register user
-            // ensure LoginScreen is displayed after registration
-            // NOTE WELL: it will synchronously go from RegisterScreen ->
-            // ScreenBetweenScreens -> LoginScreen, so thankfully we only need to test for
-            // the last screen (LoginScreen)
-            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+            // ensure ScreenBetweenScreens is displayed after registration
+            assertInstanceOf(ScreenBetweenScreens.class, app.getScreenManager().getCurrentScreen());
+
+            // stall for N seconds on SEPARATE thread to allow the user to see the success
+            // message, then
+            // ideally get redirected to login screen
+            ScreenUtils
+                .stall(4)
+                .thenRun(() -> {
+                    // ensure the user is redirected to the login screen
+                    assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+                });
         });
     }
 
