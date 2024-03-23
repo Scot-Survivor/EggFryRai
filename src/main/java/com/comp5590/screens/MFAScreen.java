@@ -51,12 +51,12 @@ public class MFAScreen extends AbstractScreen {
             // set the user as authenticated in session manager
             getApp().getSessionManager().setAuthenticated(true);
             // show the home screen
-            getApp().getScreenManager().showScene(HomeScreen.class);
+            showScene(HomeScreen.class);
             logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
         } else {
             LoginScreen loginScreen = (LoginScreen) getApp().getScreenManager().getScreenInstance(LoginScreen.class);
             loginScreen.setErrorText("Invalid 2FA code");
-            getApp().getScreenManager().showScene(LoginScreen.class);
+            showScene(LoginScreen.class);
             getApp().setCurrentUser(null); // clear the current user
         }
     }
