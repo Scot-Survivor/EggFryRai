@@ -74,3 +74,17 @@
     /* set hgap, but no vgap because we don't have more than 1 row in our parent hbox */
     -fx-spacing: 20;
 }
+
+.button-box{
+    -fx-alignment: center;
+    -fx-spacing: 20;
+}
+
+.register-field{
+    -fx-font-size: 15;
+    -fx-border-color: #575dfb;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+}
