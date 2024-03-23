@@ -282,21 +282,20 @@ public class RegisterScreen extends AbstractScreen {
         }
 
         // grab all fields
-        String email = this.email.getText().trim();
+        String email = this.email.getText().trim().replaceAll("\\s", "");
         String password = this.password.getText().trim();
         String firstName = this.firstName.getText().trim();
         String surName = this.surName.getText().trim();
-        String phone = this.phone.getText().trim();
-        String fax = this.fax.getText().trim();
+        String phone = this.phone.getText().replaceAll("\\s", "");
+        String fax = this.fax.getText().replaceAll("\\s", "");
         String additionalNotes = this.additionalNotes.getText().trim();
         String addressLine1 = this.addressLine1.getText().trim();
         String addressLine2 = this.addressLine2.getText().trim();
         String addressLine3 = this.addressLine3.getText().trim();
         String country = this.country.getText().trim();
-        String postcode = this.postcode.getText().trim();
+        String postcode = this.postcode.getText().replaceAll("\\s", "");
         String role = this.role.getValue().toString().toUpperCase();
         String communicationPreference = this.communicationPreference.getValue().toString().toUpperCase();
-
         // check if fields are empty
         if (
             email.isEmpty() ||
@@ -416,23 +415,17 @@ public class RegisterScreen extends AbstractScreen {
             return;
         }
 
-        if (postcode.length() > 255) {
-            logger.error("Postcode is too long: {}", postcode);
-            this.error.setText("Postcode is too long.");
-            return;
-        }
-
         // * if all checks above pass, create a new user, with the proper models
         // hash the password
         password = getApp().getPasswordManager().hashPassword(password);
 
         // create new auth details
         AuthenticationDetails authDetails = new AuthenticationDetails(email, password, false, null, null);
+
         // (by default 2FA is disabled, but can be enabled in settings)
 
         // create new address
         Address address = new Address(addressLine1, addressLine2, addressLine3, country, postcode);
-
         // create new user
         user =
         new User(
@@ -447,15 +440,16 @@ public class RegisterScreen extends AbstractScreen {
         );
 
         int savedAddressId = getDatabaseManager().saveGetId(address);
+
         Address savedAddress = getDatabaseManager().get(Address.class, savedAddressId);
         if (savedAddress == null) {
             logger.error("Failed to save address to database.");
             this.error.setText("Failed to save address to database.");
             return;
         }
-
         // save auth entity
         int savedAuthDetailsId = getDatabaseManager().saveGetId(authDetails);
+
         AuthenticationDetails savedAuthDetails = getDatabaseManager()
             .get(AuthenticationDetails.class, savedAuthDetailsId);
         if (savedAuthDetails == null) {
@@ -463,12 +457,11 @@ public class RegisterScreen extends AbstractScreen {
             this.error.setText("Failed to save auth details to database.");
             return;
         }
-
         // set the auth details and address to the user entity (one <-> one
         // relationship)
         user.setAuthenticationDetails(authDetails);
-        user.setAddress(address);
 
+        user.setAddress(address);
         // save the user to the database
         int savedUserId = getDatabaseManager().saveGetId(user);
 
@@ -493,6 +486,7 @@ public class RegisterScreen extends AbstractScreen {
 
         // [cleanup] clear all fields & unset error text
         clearFields();
+
         unsetErrorText();
     }
 
