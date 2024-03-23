@@ -195,16 +195,13 @@ public abstract class AbstractScreen {
         // show the ScreenBetweenScreens screen
         this.showScene(ScreenBetweenScreens.class);
 
-        // after N seconds of forced waiting on main thread (nothing happens), redirect
-        // to whatever screen is specified
-        try {
-            Thread.sleep(waitTimeInSecs * 1000);
-            this.showScene(nextScreenClass);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            logger.error("Thread interrupted: " + e.getMessage());
-            logger.warn("Redirecting to login screen...");
-            this.showScene(LoginScreen.class);
+            // after N seconds of forced waiting on main thread (nothing happens), redirect
+            // to whatever screen is specified
+            PauseTransition pause = new PauseTransition(Duration.seconds(waitTimeInSecs));
+            pause.setOnFinished(event -> {
+                showScene(nextScreenClass);
+            });
+            pause.play();
         }
     }
 }
