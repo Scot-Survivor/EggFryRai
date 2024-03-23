@@ -100,6 +100,42 @@ public class RegisterTest extends SetupTests {
     }
 
     @Test
+    public void testUserSentToLoginScreenOnBackToLoginScreenButtonPress(FxRobot robot) {
+        goToRegister(robot);
+        robot.interact(() -> {
+            // Press back to login screen button
+            robot
+                .lookup("#backToLoginScreenBox")
+                .queryAs(QueryUtils.getHBoxClass())
+                .fireEvent(
+                    EventUtils.createCustomMouseEvent(
+                        MouseEvent.MOUSE_CLICKED,
+                        0,
+                        0,
+                        0,
+                        0,
+                        MouseButton.PRIMARY,
+                        1,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        null
+                    )
+                );
+
+            // Current screen should be Login Screen after back to login screen button press
+            assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
+        });
+    }
+
+    @Test
     public void testThatAUserCanLoginAfterRegister(FxRobot robot) {
         goToRegister(robot);
         inputInformation(robot);
