@@ -168,4 +168,35 @@ public abstract class AbstractScreen {
         img.getStyleClass().add("home-button");
         box.getStyleClass().add("home-button-box");
     }
+
+    protected void showScene(Class<? extends AbstractScreen> screenClass) {
+        getApp().getScreenManager().showScene(screenClass);
+    }
+
+    protected void showSceneBetweenScenesThenNextScene(
+        String msg,
+        int waitTimeInSecs,
+        Class<? extends AbstractScreen> nextScreenClass
+    ) {
+        // grab instance of ScreenBetweenScreens
+        ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager()
+            .getScreenInstance(ScreenBetweenScreens.class);
+        // run functionality after setup
+        screenBetweenScreens.runFunctionalityBeforeDisplayingScene(msg);
+
+        // show the ScreenBetweenScreens screen
+        this.showScene(ScreenBetweenScreens.class);
+
+        // after N seconds of forced waiting on main thread (nothing happens), redirect
+        // to whatever screen is specified
+        try {
+            Thread.sleep(waitTimeInSecs * 1000);
+            this.showScene(nextScreenClass);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            logger.error("Thread interrupted: " + e.getMessage());
+            logger.warn("Redirecting to login screen...");
+            this.showScene(LoginScreen.class);
+        }
+    }
 }
