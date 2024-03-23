@@ -172,4 +172,23 @@ public class ScreenManager {
     public AbstractScreen getScreenInstance(Class<? extends AbstractScreen> screen) {
         return screenInstances.get(screen);
     }
+
+    // is between screens
+    public boolean isBetweenScreens(Class<? extends AbstractScreen> screen) {
+        return screen.getClass().getSimpleName().toLowerCase().startsWith("screenbetweenscreens");
+    }
+
+    // get previous screen
+    public AbstractScreen getPreviousScreen() {
+        // compensate for a potential ScreenBetweenScreens at the previous index. If so,
+        // return the screen before that.
+        if (accessedScreens.size() > 1) {
+            if (isBetweenScreens((accessedScreens.get(accessedScreens.size() - 2)))) {
+                return getScreenInstance(accessedScreens.get(accessedScreens.size() - 3));
+            }
+            return getScreenInstance(accessedScreens.get(accessedScreens.size() - 2));
+        }
+
+        return null;
+    }
 }

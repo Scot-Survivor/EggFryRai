@@ -7,12 +7,14 @@ import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.core.Logger;
@@ -186,25 +188,26 @@ public abstract class AbstractScreen {
         int waitTimeInSecs,
         Class<? extends AbstractScreen> nextScreenClass
     ) {
-        // grab instance of ScreenBetweenScreens
-        ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager()
-            .getScreenInstance(ScreenBetweenScreens.class);
-        // run functionality after setup
-        screenBetweenScreens.runFunctionalityBeforeDisplayingScene(msg);
-
-        // show the ScreenBetweenScreens screen
-        this.showScene(ScreenBetweenScreens.class);
-
-        // after N seconds of forced waiting on main thread (nothing happens), redirect
-        // to whatever screen is specified
         try {
-            Thread.sleep(waitTimeInSecs * 1000);
-            this.showScene(nextScreenClass);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            logger.error("Thread interrupted: " + e.getMessage());
-            logger.warn("Redirecting to login screen...");
-            this.showScene(LoginScreen.class);
+            // show the ScreenBetweenScreens screen
+            this.showScene(ScreenBetweenScreens.class);
+
+            // grab instance of ScreenBetweenScreens
+            ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
+            // run functionality after setup
+            screenBetweenScreens.runFunctionalityAfterDisplayingScene(msg);
+
+            // after N seconds of forced waiting on main thread (nothing happens), redirect
+            // to whatever screen is specified
+            PauseTransition pause = new PauseTransition(Duration.seconds(waitTimeInSecs));
+            pause.setOnFinished(event -> {
+                showScene(nextScreenClass);
+            });
+            pause.play();
+        } catch (Exception e) {
+            logger.error("Error in showSceneBetweenScenesThenNextScene: " + e.getMessage());
+            logger.info("Redirecting to LoginScreen screen immediately");
+            showScene(LoginScreen.class);
         }
     }
 }

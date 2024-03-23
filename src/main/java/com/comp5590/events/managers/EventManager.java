@@ -7,7 +7,8 @@ import java.util.Set;
 
 /**
  * This class acts as a the initiator in the "observable" pattern.
- * It is responsible for managing the listeners and notifying them when an event occurs.
+ * It is responsible for managing the listeners and notifying them when an event
+ * occurs.
  */
 public class EventManager {
 
