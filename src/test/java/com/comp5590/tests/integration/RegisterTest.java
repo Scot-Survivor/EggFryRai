@@ -198,4 +198,18 @@ public class RegisterTest extends SetupTests {
         });
     }
 
+    @Test
+    public void testErrorLabelClearsOnReturnFromLoginScreen(FxRobot robot) {
+        goToRegister(robot);
+        robot.interact(() -> {
+            // create an error message on register screen programmatically
+            robot.lookup("#error").queryAs(javafx.scene.control.Label.class).setText("Error");
+            // go to login screen from register screen, using scene manager
+            app.getScreenManager().showScene(LoginScreen.class);
+            // go back to register screen from login screen, using scene manager
+            app.getScreenManager().showScene(RegisterScreen.class);
+            // check that the error message is cleared
+            assertEquals("", robot.lookup("#error").queryAs(javafx.scene.control.Label.class).getText());
+        });
+    }
 }
