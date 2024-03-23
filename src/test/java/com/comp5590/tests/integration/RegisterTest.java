@@ -164,4 +164,24 @@ public class RegisterTest extends SetupTests {
         });
         TEST_EMAIL = oldEmail;
     }
+
+    @Test
+    public void testGenerateRandomUserButtonFieldsNotEmpty(FxRobot robot) {
+        goToRegister(robot);
+        robot.interact(() -> {
+            robot.lookup("#generateRandomUserButton").queryButton().fire();
+            assertFalse(robot.lookup("#email").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#password").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#firstName").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#surName").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#phone").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#fax").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#addressLine1").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#addressLine2").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#addressLine3").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#country").queryAs(TextField.class).getText().isEmpty());
+            assertFalse(robot.lookup("#postcode").queryAs(TextField.class).getText().isEmpty());
+        });
+    }
+
 }
