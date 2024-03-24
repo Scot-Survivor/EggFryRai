@@ -30,9 +30,6 @@ public class ScreenManager {
     private static final int width = 300;
 
     @Getter
-    private final HashMap<Class<? extends AbstractScreen>, Scene> screens;
-
-    @Getter
     private final HashMap<Class<? extends AbstractScreen>, AbstractScreen> screenInstances;
 
     private final Logger logger = LoggerManager.getInstance().getLogger(ScreenManager.class);
@@ -44,14 +41,13 @@ public class ScreenManager {
     private AbstractScreen currentScreen;
 
     @Getter
-    private EventManager eventManager;
+    private final EventManager eventManager;
 
     @Getter
-    private App app;
+    private final App app;
 
     public ScreenManager(Stage primary) {
         this.primaryStage = primary;
-        this.screens = new HashMap<>();
         this.screenInstances = new HashMap<>();
         this.eventManager = EventManager.getInstance();
         this.app = App.getInstance();
@@ -78,13 +74,12 @@ public class ScreenManager {
             try {
                 AbstractScreen instance = screen.getConstructor(ScreenManager.class).newInstance(this);
                 screenInstances.put(screen, instance);
-                screens.put(screen, createScene(instance));
             } catch (Exception e) {
                 logger.error("Error creating instance of screen: {} | Reason: {}", screen.getName(), e.getMessage());
                 logger.debug(Arrays.toString(e.getStackTrace()));
             }
         }
-        logger.debug("All {} screens have been added to the scene manager", screens.size());
+        logger.debug("All {} screens have been added to the scene manager", screenInstances.size());
     }
 
     /**
@@ -108,24 +103,28 @@ public class ScreenManager {
      * @param scene The scene to show
      */
     public void showScene(Class<? extends AbstractScreen> scene) {
-        if (screens.containsKey(scene)) {
+        if (screenInstances.containsKey(scene)) {
             if (shouldCancel(eventManager.callEvent(new ScreenChangeEvent(screenInstances.get(scene), app)))) {
                 logger.debug("ScreenChangeEvent was cancelled for: " + scene.getName());
                 return;
             }
             addScreenToHistory(scene);
 
-            Scene toShow = screens.get(scene);
             // check scene is not currently showing
-            if (primaryStage.getScene() == toShow) {
+            if (this.currentScreen == screenInstances.get(scene)) {
                 logger.warn("Scene {} is already showing", scene.getName());
             } else {
+                if (this.currentScreen != null) {
+                    // Cleanup the old screen
+                    this.currentScreen.cleanup();
+                }
                 // grab the current screen and clean it up
                 this.currentScreen = screenInstances.get(scene);
                 if (this.currentScreen != null) {
-                    this.currentScreen.cleanup();
+                    // Set up the new one
+                    this.currentScreen.setup();
                 }
-
+                Scene toShow = createScene(screenInstances.get(scene));
                 // display the new scene.
                 primaryStage.setScene(toShow);
                 primaryStage.setTitle("PDMS");
@@ -133,7 +132,7 @@ public class ScreenManager {
             }
         } else {
             logger.error("Scene {} not found", scene.getName());
-            logger.debug("Available scenes: {}", screens.keySet());
+            logger.debug("Available scenes: {}", screenInstances.keySet());
         }
     }
 
