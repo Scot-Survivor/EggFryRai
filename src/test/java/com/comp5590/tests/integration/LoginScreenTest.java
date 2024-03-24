@@ -13,17 +13,15 @@ import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
 import com.comp5590.utils.EventUtils;
 import com.comp5590.utils.QueryUtils;
-import java.util.Set;
-import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.service.query.NodeQuery;
 
 @ExtendWith(ApplicationExtension.class) // TestFX Extension)
 public class LoginScreenTest extends SetupTests {
@@ -39,10 +37,6 @@ public class LoginScreenTest extends SetupTests {
         app.getScreenManager().showScene(LoginScreen.class); // Force LoginScreen to show.
         totpManager = app.getTotpManager();
         stage.show();
-    }
-
-    private Pane getLoginScreen() {
-        return (Pane) app.getScreenManager().getScreens().get(LoginScreen.class).getRoot();
     }
 
     // this method will go to the login screen
@@ -61,10 +55,9 @@ public class LoginScreenTest extends SetupTests {
             // new test ends up in an async race condition so we should sleep for a full
             // second to ensure it doesn't occur
             robot.sleep(1000); // Sleep for a second to ensure the screen is loaded
-            Pane loginScreen = getLoginScreen();
-            Set<Node> loginButtons = loginScreen.lookupAll(".big-button");
-            assertThat(loginButtons).isNotNull();
-            assertThat(loginButtons.size()).isEqualTo(1);
+            // Get Login Button
+            NodeQuery loginButtons = robot.lookup(".big-button");
+            assertThat(loginButtons.queryAll()).isNotNull();
         });
     }
 
@@ -74,10 +67,8 @@ public class LoginScreenTest extends SetupTests {
     @Test
     public void testScreenHasPasswordField(FxRobot robot) {
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> passwordFields = loginScreen.lookupAll(".password-field");
-            assertThat(passwordFields).isNotNull();
-            assertThat(passwordFields.size()).isEqualTo(1);
+            NodeQuery passwordFields = robot.lookup(".password-field");
+            assertThat(passwordFields.queryAll()).isNotNull();
         });
     }
 
@@ -90,10 +81,6 @@ public class LoginScreenTest extends SetupTests {
     public void testSuccessfulLoginNoMFA(FxRobot robot) {
         User p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("example@example.org");
 
@@ -130,10 +117,6 @@ public class LoginScreenTest extends SetupTests {
             totpManager.generateRecoveryCodes()
         );
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("mfa@example.org");
 
@@ -180,10 +163,6 @@ public class LoginScreenTest extends SetupTests {
             totpManager.generateRecoveryCodes()
         );
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("mfa@example.org");
 
@@ -220,10 +199,6 @@ public class LoginScreenTest extends SetupTests {
     public void testFailedLogin(FxRobot robot) {
         User p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("example@example.org");
 

@@ -41,7 +41,7 @@ public class ScreenTests extends SetupTests {
     public void testAllScreensWereRegistered() {
         Reflections reflections = getScreenList();
         long screenCount = reflections.getSubTypesOf(AbstractScreen.class).size();
-        Assertions.assertThat(app.getScreenManager().getScreens().size()).isEqualTo(screenCount);
+        Assertions.assertThat(app.getScreenManager().getScreenInstances().size()).isEqualTo(screenCount);
     }
 
     @Test
