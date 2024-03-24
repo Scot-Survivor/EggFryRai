@@ -19,7 +19,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
-import lombok.Setter;
 
 public class App extends Application {
 
@@ -42,8 +41,6 @@ public class App extends Application {
     @Getter
     private SessionManager sessionManager;
 
-    @Setter
-    @Getter
     private User currentUser;
 
     @Getter
@@ -103,5 +100,15 @@ public class App extends Application {
             instance = new App();
         }
         return instance;
+    }
+
+    @Deprecated
+    public User getCurrentUser() {
+        return SessionManager.getInstance().getCurrentUser();
+    }
+
+    @Deprecated
+    public void setCurrentUser(User user) {
+        SessionManager.getInstance().setCurrentUser(user);
     }
 }
