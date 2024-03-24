@@ -9,6 +9,7 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.security.managers.passwords.PasswordManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
 public class SetupTests {
@@ -17,6 +18,12 @@ public class SetupTests {
     public static void setup() {
         // Set up the logger
         AppConfig.ConfigFile = "src/test/resources/test.properties";
+    }
+
+    @AfterEach
+    public void tearDown() {
+        // Here we want to recreate the entire database, this requires some hackery
+        DatabaseManager.INSTANCE = null; // By setting to null this should force a reload, due to the way singletons are created
     }
 
     // QOL Of Methods

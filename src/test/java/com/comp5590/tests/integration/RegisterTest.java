@@ -179,9 +179,11 @@ public class RegisterTest extends SetupTests {
                     // ensure the user is redirected to the login screen
                     assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
 
-                    robot.lookup("#email").queryAs(TextField.class).setText(TEST_EMAIL);
-                    robot.lookup("#password").queryAs(TextField.class).setText(TEST_PASSWORD);
-                    robot.lookup("#login").queryButton().fire(); // Actually login
+                    robot.interact(() -> {
+                        robot.lookup("#email").queryAs(TextField.class).setText(TEST_EMAIL);
+                        robot.lookup("#password").queryAs(TextField.class).setText(TEST_PASSWORD);
+                        robot.lookup("#login").queryButton().fire(); // Actually login
+                    });
 
                     // Current screen should be Home Screen after login
                     assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen());
