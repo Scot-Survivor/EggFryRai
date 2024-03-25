@@ -10,7 +10,7 @@ import com.comp5590.events.eventtypes.CancellableEvent;
 import com.comp5590.events.eventtypes.screens.ScreenChangeEvent;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.screens.AbstractScreen;
-import com.comp5590.screens.LoginScreen;
+import com.comp5590.screens.WelcomeScreen;
 import java.util.*;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -150,9 +150,15 @@ public class ScreenManager {
      * @param clazz The class of the screen to add
      */
     private void addScreenToHistory(Class<? extends AbstractScreen> clazz) {
+        // if is screenbetweenscreens, do not add to history
+        if (isBetweenScreens(clazz)) {
+            return;
+        }
+        // if the accessed screens is greater than 5, remove the first element
         if (accessedScreens.size() >= 5) {
             accessedScreens.remove(0);
         }
+        // add the screen to the accessed screens
         accessedScreens.add(clazz);
     }
 
@@ -162,9 +168,12 @@ public class ScreenManager {
      */
     public void goBack() {
         if (accessedScreens.size() > 1) {
-            Class<? extends AbstractScreen> lastScreen = accessedScreens.get(accessedScreens.size() - 2);
-            showScene(lastScreen);
+            // remove the current screen
             accessedScreens.remove(accessedScreens.size() - 1);
+            // get the previous screen
+            Class<? extends AbstractScreen> previous = accessedScreens.get(accessedScreens.size() - 1);
+            // show the previous screen
+            showScene(previous);
         }
     }
 
@@ -174,7 +183,9 @@ public class ScreenManager {
 
     // is between screens
     public boolean isBetweenScreens(Class<? extends AbstractScreen> screen) {
-        return screen.getClass().getSimpleName().toLowerCase().startsWith("screenbetweenscreens");
+        // logger.info("Checking if screen is between screens: {}",
+        // screen.getSimpleName());
+        return screen.getSimpleName().toLowerCase().equals("screenbetweenscreens");
     }
 
     // get previous screen
