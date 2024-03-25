@@ -75,6 +75,9 @@ public class LoginScreen extends AbstractScreen {
         rootPane.setCenter(pane);
 
         setRootPane(rootPane); // set root pane
+
+        // add navigation buttons
+        addBackAndHomeButtons(getRootPane());
     }
 
     /**

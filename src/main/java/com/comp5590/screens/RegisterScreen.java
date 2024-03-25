@@ -111,6 +111,9 @@ public class RegisterScreen extends AbstractScreen {
         rootPane.setCenter(pane);
 
         setRootPane(rootPane); // set root pane
+
+        // add navigation buttons
+        addBackAndHomeButtons(getRootPane());
     }
 
     private VBox createRegisterBox() {
