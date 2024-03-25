@@ -13,6 +13,7 @@ import com.comp5590.components.global.SpaceVertical;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -173,15 +174,16 @@ public class LoginScreen extends AbstractScreen {
         if (passwordValid) {
             if (!user.getAuthenticationDetails().isTwoFactorEnabled()) {
                 // set the user as authenticated in session manager
-                getApp().getSessionManager().setAuthenticated(true);
+                SessionManager.getInstance().authenticate(user);
                 // show the user the home screen (successfully logged in)
                 showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
             } else {
+                // set the user in the session manager
+                SessionManager.getInstance().setCurrentUser(user);
+                // show the MFA screen
                 showScene(MFAScreen.class);
             }
-            // Set the current user here, but only if the password is valids
-            getApp().setCurrentUser(user);
         } else {
             logger.error("Invalid Password(*)");
             this.error.setText("Invalid password. Please try again.");

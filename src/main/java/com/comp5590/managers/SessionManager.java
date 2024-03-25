@@ -45,22 +45,39 @@ public class SessionManager {
     }
 
     // Set the authenticated status of the user
-    public void setAuthenticated(boolean authenticated) {
+    public void authenticate(User user) {
+        // set the current user
+        this.currentUser = user;
         // set user as authenticated
-        this.authenticated = authenticated;
+        this.authenticated = true;
         // run the unauthenticateAfter method
         unauthenticateAfter(2);
     }
 
+    // Unauthenticate the user
+    public void unauthenticate() {
+        // unset the current user
+        this.currentUser = null;
+        // set authenticated to false
+        this.authenticated = false;
+    }
+
     // Unauthenticate the user after a certain amount of time
     public void unauthenticateAfter(int hours) {
-        // TODO: Implement this
-        // set sleep, then set authenticated to false
-        // try {
-        // Thread.sleep(hours * 60 * 60 * 1000);
-        // this.authenticated = false;
-        // } catch (InterruptedException e) {
-        // e.printStackTrace();
-        // }
+        // open new thread and run the unauthenticate method
+        new Thread(() -> {
+            try {
+                Thread.sleep(hours * 60 * 60 * 1000);
+                this.unauthenticate();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        })
+            .start();
+    }
+
+    // User data methods cos why not
+    public String getFullName() {
+        return this.currentUser.getFirstName() + " " + this.currentUser.getSurName();
     }
 }
