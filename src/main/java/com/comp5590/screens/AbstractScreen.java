@@ -163,8 +163,15 @@ public abstract class AbstractScreen {
 
         // on click, go back to the home screen
         box.setOnMouseClicked(e -> {
-            getScreenManager().showScene(HomeScreen.class);
             logger.info("Home button clicked");
+            // if user is authenticated, go to home screen
+            if (SessionManager.getInstance().isAuthenticated()) {
+                showScene(HomeScreen.class);
+            }
+            // if user is not authenticated, go to welcome screen
+            else {
+                showScene(WelcomeScreen.class);
+            }
         });
 
         // Add it to the top right of the StackPane with absolute positioning (the
