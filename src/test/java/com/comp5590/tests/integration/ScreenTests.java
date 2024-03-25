@@ -4,6 +4,7 @@ import com.comp5590.App;
 import com.comp5590.screens.AbstractScreen;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
+import com.comp5590.screens.WelcomeScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.stage.Stage;
 import org.assertj.core.api.Assertions;
@@ -33,8 +34,8 @@ public class ScreenTests extends SetupTests {
     }
 
     @Test
-    public void testThatLoginScreenDisplaysFirst() {
-        Assertions.assertThat(app.getScreenManager().getCurrentScreen().getClass()).isEqualTo(LoginScreen.class);
+    public void testThatWelcomeScreenDisplaysFirst() {
+        Assertions.assertThat(app.getScreenManager().getCurrentScreen().getClass()).isEqualTo(WelcomeScreen.class);
     }
 
     @Test
