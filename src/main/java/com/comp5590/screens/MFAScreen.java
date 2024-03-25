@@ -3,6 +3,7 @@ package com.comp5590.screens;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -44,12 +45,11 @@ public class MFAScreen extends AbstractScreen {
 
     private void submitCode(ActionEvent e) {
         String code = this.code.getText();
-        User user = getApp().getCurrentUser();
+        User user = SessionManager.getInstance().getCurrentUser();
         boolean valid = this.verify(code, user);
         if (valid) {
-            getApp().setCurrentUser(user);
             // set the user as authenticated in session manager
-            getApp().getSessionManager().setAuthenticated(true);
+            getApp().getSessionManager().authenticate(user);
             // show the home screen
             showScene(HomeScreen.class);
             logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
@@ -57,7 +57,7 @@ public class MFAScreen extends AbstractScreen {
             LoginScreen loginScreen = (LoginScreen) getApp().getScreenManager().getScreenInstance(LoginScreen.class);
             loginScreen.setErrorText("Invalid 2FA code");
             showScene(LoginScreen.class);
-            getApp().setCurrentUser(null); // clear the current user
+            SessionManager.getInstance().setCurrentUser(null); // clear the current user
         }
     }
 

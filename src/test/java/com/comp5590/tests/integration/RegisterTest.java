@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.RegisterScreen;
@@ -94,8 +95,8 @@ public class RegisterTest extends SetupTests {
         robot.interact(() -> {
             int userId = getDbManager().getByProperty(User.class, "authenticationDetails.email", TEST_EMAIL).getId();
             SetupTests.remove(User.class, userId);
-            app.setCurrentUser(null);
-            app.getSessionManager().setAuthenticated(false);
+            SessionManager.getInstance().setCurrentUser(null);
+            SessionManager.getInstance().unauthenticate();
             assertNull(getDbManager().get(User.class, userId));
         });
     }

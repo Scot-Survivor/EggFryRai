@@ -29,23 +29,13 @@ public class HomeScreen extends AbstractScreen {
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
 
-        // Initialize name to "Guest" by default
-        String name = "Guest";
-
-        // TODO: Fix this shit (lol)
-        // Check if the App instance is available
-        if (getApp() != null && getApp().getCurrentUser() != null) {
-            // Retrieve the user's first name if available
-            name = getApp().getCurrentUser().getFirstName();
-        }
-
         // create hbox for the logout event listener
         HBox logoutBox = new HBox();
         logoutBox.setId("logoutBox");
 
         // attach event listener to logoutbox
         logoutBox.setOnMouseClicked(e -> {
-            SessionManager.getInstance().setAuthenticated(false);
+            SessionManager.getInstance().unauthenticate();
             this.showSceneBetweenScenesThenNextScene(
                     "👋 You have successfully logged out.\nRedirecting to login screen...",
                     LoginScreen.class
@@ -53,7 +43,7 @@ public class HomeScreen extends AbstractScreen {
         });
 
         // Create the header bar with the determined name
-        HeaderBar headerBar = new HeaderBar(name, logoutBox);
+        HeaderBar headerBar = new HeaderBar(SessionManager.getInstance().getFullName(), logoutBox);
 
         // create Buttons for each navbar item
         Button home = new Button("Home");

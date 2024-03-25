@@ -1,7 +1,6 @@
 package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.events.listeners.implementations.EntityValidatorListener;
 import com.comp5590.events.listeners.implementations.SceneKeyboardNavigationListener;
@@ -40,8 +39,6 @@ public class App extends Application {
 
     @Getter
     private SessionManager sessionManager;
-
-    private User currentUser;
 
     @Getter
     private Stage primaryStage;
@@ -100,15 +97,5 @@ public class App extends Application {
             instance = new App();
         }
         return instance;
-    }
-
-    @Deprecated
-    public User getCurrentUser() {
-        return SessionManager.getInstance().getCurrentUser();
-    }
-
-    @Deprecated
-    public void setCurrentUser(User user) {
-        SessionManager.getInstance().setCurrentUser(user);
     }
 }

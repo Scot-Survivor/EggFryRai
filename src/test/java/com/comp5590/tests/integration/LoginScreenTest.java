@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.MFAScreen;
@@ -95,10 +96,10 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
-            assertThat(app.getCurrentUser().getId()).isEqualTo(p.getId());
+            assertThat(SessionManager.getInstance().getCurrentUser().getId()).isEqualTo(p.getId());
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
-            app.setCurrentUser(null);
+            SessionManager.getInstance().setCurrentUser(null);
         });
         SetupTests.remove(p);
     }
@@ -140,11 +141,11 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
-            assertThat(app.getCurrentUser().getId()).isEqualTo(u.getId());
+            assertThat(SessionManager.getInstance().getCurrentUser().getId()).isEqualTo(u.getId());
 
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
-            app.setCurrentUser(null);
+            SessionManager.getInstance().setCurrentUser(null);
         });
         SetupTests.remove(u);
     }
@@ -186,11 +187,11 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
-            assertThat(app.getCurrentUser()).isNull();
+            assertThat(SessionManager.getInstance().getCurrentUser()).isNull();
 
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
-            app.setCurrentUser(null);
+            SessionManager.getInstance().setCurrentUser(null);
         });
         SetupTests.remove(p);
     }
@@ -223,8 +224,8 @@ public class LoginScreenTest extends SetupTests {
     @Test
     public void checkScreenAuthenticationListenerPreventsAccessToHomeWithoutAuth(FxRobot robot) {
         robot.interact(() -> {
-            app.setCurrentUser(null); // Ensure no user is authenticated
-            app.getSessionManager().setAuthenticated(false); // Force de-authentication
+            SessionManager.getInstance().setCurrentUser(null); // Ensure no user is authenticated
+            SessionManager.getInstance().unauthenticate(); // Force de-authentication
             app.getScreenManager().showScene(HomeScreen.class);
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
         });
