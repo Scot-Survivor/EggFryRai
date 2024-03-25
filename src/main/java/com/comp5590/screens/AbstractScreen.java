@@ -45,7 +45,6 @@ public abstract class AbstractScreen {
         this.databaseManager = DatabaseManager.getInstance();
         this.sessionFactory = this.databaseManager.getSessionFactory();
         this.cssPaths = new ArrayList<>();
-        this.setup();
     }
 
     /**

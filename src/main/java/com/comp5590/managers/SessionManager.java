@@ -1,5 +1,6 @@
 package com.comp5590.managers;
 
+import com.comp5590.database.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,10 @@ public class SessionManager {
 
     // Boolean to indicate whether or not the user is authenticated
     private boolean authenticated;
+
+    @Getter
+    @Setter
+    private User currentUser;
 
     // state message for transitory screens, with getter for it automatically
     // generated using Lombok :)

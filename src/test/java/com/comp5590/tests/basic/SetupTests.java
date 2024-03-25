@@ -20,6 +20,7 @@ import com.comp5590.utils.NameUtils;
 import com.comp5590.utils.QueryUtils;
 import com.comp5590.utils.ScreenUtils;
 import com.comp5590.utils.StringUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.testfx.api.FxRobot;
 
@@ -33,6 +34,12 @@ public class SetupTests {
         // Set up the logger
         AppConfig.ConfigFile = "src/test/resources/test.properties";
         AppConfig.getInstance();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        // Here we want to recreate the entire database, this requires some hackery
+        DatabaseManager.INSTANCE = null; // By setting to null this should force a reload, due to the way singletons are created
     }
 
     // QOL Of Methods
