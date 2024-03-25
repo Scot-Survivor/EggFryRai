@@ -6,6 +6,7 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.PauseTransition;
@@ -192,16 +193,15 @@ public abstract class AbstractScreen {
 
     protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
         try {
+            logger.info("Showing ScreenBetweenScreens screen, with message: " + msg);
+
+            // set session manager state message
+            SessionManager.getInstance().setStateMessage(msg);
+
             // show the ScreenBetweenScreens screen
             this.showScene(ScreenBetweenScreens.class);
 
-            // grab instance of ScreenBetweenScreens
-            ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
-            // run functionality after setup
-            screenBetweenScreens.runFunctionalityAfterDisplayingScene(msg);
-
-            // after N seconds of forced waiting on main thread (nothing happens), redirect
-            // to whatever screen is specified
+            // pause transition betfore moving to next screen
             PauseTransition pause = new PauseTransition(Duration.millis(AppConfig.TIMEOUT_MS));
             pause.setOnFinished(event -> {
                 showScene(nextScreenClass);
