@@ -5,6 +5,7 @@ import com.comp5590.components.HomeScreen.HeaderBar;
 import com.comp5590.components.HomeScreen.NavBar;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -40,12 +41,13 @@ public class HomeScreen extends AbstractScreen {
 
         // create hbox for the logout event listener
         HBox logoutBox = new HBox();
+        logoutBox.setId("logoutBox");
 
         // attach event listener to logoutbox
         logoutBox.setOnMouseClicked(e -> {
+            SessionManager.getInstance().setAuthenticated(false);
             this.showSceneBetweenScenesThenNextScene(
                     "👋 You have successfully logged out.\nRedirecting to login screen...",
-                    3,
                     LoginScreen.class
                 );
         });
@@ -60,6 +62,14 @@ public class HomeScreen extends AbstractScreen {
         Button aboutUs = new Button("About us");
         Button contactUs = new Button("Contact us");
         Button doctors = new Button("Doctors");
+
+        // add IDs to buttons for testing purposes
+        home.setId("home");
+        appointments.setId("appointments");
+        prescriptions.setId("prescriptions");
+        aboutUs.setId("aboutUs");
+        contactUs.setId("contactUs");
+        doctors.setId("doctors");
 
         // attach event listeners to each button
         home.setOnAction(e -> {
