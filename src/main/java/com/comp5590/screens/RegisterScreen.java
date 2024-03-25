@@ -199,6 +199,7 @@ public class RegisterScreen extends AbstractScreen {
         // create the register button
         BigButton registerButton = new BigButton();
         registerButton.setText("Register");
+        registerButton.setId("registerButton");
 
         // create generate random user button
         BigButton generateRandomUserButton = new BigButton();
@@ -215,7 +216,6 @@ public class RegisterScreen extends AbstractScreen {
 
         // attach event listener to register button, which runs register method
         registerButton.setOnAction(this::register);
-        registerButton.setId("registerButton");
 
         // attach event listener to generate random user button, which runs
         // generateRandomUser method
@@ -517,7 +517,6 @@ public class RegisterScreen extends AbstractScreen {
         // success message
         this.showSceneBetweenScenesThenNextScene(
                 "✅ You have successfully registered.\nRedirecting to login page...",
-                3,
                 LoginScreen.class
             );
     }
@@ -556,13 +555,7 @@ public class RegisterScreen extends AbstractScreen {
     private void generateRandomUser(ActionEvent event) {
         String firstName = NameUtils.getRandomFirstName();
         String surName = NameUtils.getRandomLastName();
-        String email = String.format(
-            "%s.%s_%s@%s",
-            firstName.toLowerCase(),
-            surName.toLowerCase(),
-            StringUtils.randomString(5, 10),
-            NameUtils.getRandomEmailDomain()
-        );
+        String email = NameUtils.getRandomFullEmail(firstName, surName);
         String password = StringUtils.randomPassword(8, 64);
         String phone = NumberUtils.randomPhoneNumber();
         String fax = NumberUtils.randomFaxNumber();
