@@ -288,4 +288,26 @@ public class NameUtils {
         int index = RANDOM.nextInt(EMAIL_DOMAINS.length);
         return EMAIL_DOMAINS[index];
     }
+
+    // Generate random email
+    public static String getRandomFullEmail() {
+        return String.format(
+            "%s.%s_%s@%s",
+            NameUtils.getRandomFirstName().toLowerCase(),
+            NameUtils.getRandomLastName().toLowerCase(),
+            StringUtils.randomString(5, 10),
+            NameUtils.getRandomEmailDomain()
+        );
+    }
+
+    // Generate random email with custom first and last name
+    public static String getRandomFullEmail(String firstName, String lastName) {
+        return String.format(
+            "%s.%s_%s@%s",
+            firstName.toLowerCase(),
+            lastName.toLowerCase(),
+            StringUtils.randomString(5, 10),
+            NameUtils.getRandomEmailDomain()
+        );
+    }
 }
