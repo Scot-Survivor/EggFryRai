@@ -70,17 +70,15 @@
 }
 
 .continue-with-email-image{
-  -fx-fill: #575dfb;
+    -fx-fill: #575dfb;
 }
 
 .vbox1{
-    -fx-alignment: left;
     -fx-text-alignment: left;
     -fx-spacing: 0;
 }
 
 .vbox2{
-    -fx-alignment: left;
     -fx-text-alignment: left;
     -fx-spacing: 10;
 }
