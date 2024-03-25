@@ -1,0 +1,99 @@
+.custom-pane{
+  /* SET BACKGROUND OPACTIY */
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-background-radius: 5;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-border-radius: 15;
+
+
+    -fx-min-width: 100;
+    -fx-pref-width: 100;
+    -fx-pref-height: 100;
+    -fx-max-width: 1800;
+    -fx-max-height: 1000;
+
+    -fx-padding: 20;
+
+    -fx-alignment: center;
+    -fx-hgap: 20;
+    -fx-vgap: 30;
+
+    -fx-font-size: 16;
+}
+
+.welcome-text-one{
+    -fx-font-size: 24;
+    -fx-fill: #000;
+}
+
+.welcome-text-two{
+    -fx-font-size: 42;
+    -fx-fill: #575dfb;
+    -fx-font-weight: bold;
+}
+
+.welcome-text-three{
+    -fx-font-size: 12;
+    -fx-fill: #000;
+    -fx-padding: 10 0 0 0;
+}
+
+.welcome-text-four{
+    -fx-font-size: 16;
+    -fx-fill: #000;
+}
+
+.continue-with-email-box{
+    -fx-background-color: transparent;
+    -fx-background-radius: 5;
+
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-border-radius: 15;
+
+    -fx-padding: 20;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+
+    -fx-spacing: 5;
+}
+
+.continue-with-email-box:hover{
+    -fx-background-color: #575dfb;
+}
+
+.continue-with-email-box:pressed{
+    -fx-background-color: rgba(87, 93, 251, 0.8);
+}
+
+.continue-with-email-image{
+  -fx-fill: #575dfb;
+}
+
+.vbox1{
+    -fx-alignment: left;
+    -fx-text-alignment: left;
+    -fx-spacing: 0;
+}
+
+.vbox2{
+    -fx-alignment: left;
+    -fx-text-alignment: left;
+    -fx-spacing: 10;
+}
+
+#background-img {
+    -fx-background-image: url("welcomeBackground.jpg");
+    -fx-background-size: cover; /* This property ensures the image covers the entire background */
+    -fx-background-repeat: no-repeat; /* Prevents the image from repeating */
+    -fx-background-position: center; /* Centers the image */
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+
+/* glow on hover */
+#background-img:hover{
+    -fx-effect: dropshadow(three-pass-box, #575dfb, 30, 0.5, 0, 0);
+}
