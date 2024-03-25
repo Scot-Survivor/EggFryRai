@@ -1,6 +1,7 @@
 package com.comp5590.screens;
 
 import com.comp5590.App;
+import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
@@ -183,11 +184,7 @@ public abstract class AbstractScreen {
         getApp().getScreenManager().showScene(screenClass);
     }
 
-    protected void showSceneBetweenScenesThenNextScene(
-        String msg,
-        int waitTimeInSecs,
-        Class<? extends AbstractScreen> nextScreenClass
-    ) {
+    protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
         try {
             // show the ScreenBetweenScreens screen
             this.showScene(ScreenBetweenScreens.class);
@@ -199,7 +196,7 @@ public abstract class AbstractScreen {
 
             // after N seconds of forced waiting on main thread (nothing happens), redirect
             // to whatever screen is specified
-            PauseTransition pause = new PauseTransition(Duration.seconds(waitTimeInSecs));
+            PauseTransition pause = new PauseTransition(Duration.millis(AppConfig.TIMEOUT_MS));
             pause.setOnFinished(event -> {
                 showScene(nextScreenClass);
             });
