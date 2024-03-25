@@ -55,9 +55,9 @@ public class ScreenManager {
 
         // run any setup functions and then display the login scene
         setup();
-        // ! ALWAYS CHANGE BACK TO LOGIN SCREEN BEFORE COMMITS / PRs. Only use other
+        // ! ALWAYS CHANGE BACK TO WELCOME SCREEN BEFORE COMMITS / PRs. Only use other
         // ! screens during testing.
-        showScene(LoginScreen.class);
+        showScene(WelcomeScreen.class);
         fullscreen();
     }
 
