@@ -1,18 +1,26 @@
 package com.comp5590.screens;
 
 // TODO: Make it consistent with the design schema
+// TODO: Add home button and back button
 
+import com.comp5590.database.entities.Address;
+import com.comp5590.database.entities.Booking;
+import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -21,9 +29,11 @@ import javafx.scene.text.Text;
 public class CreateBooking extends AbstractScreen {
 
     private User currentUser;
+    private HashMap<String, Integer> doctorMap;
 
     public CreateBooking(ScreenManager screenManager) {
         super(screenManager);
+        doctorMap = new HashMap<>();
     }
 
     @Override
@@ -148,12 +158,18 @@ public class CreateBooking extends AbstractScreen {
         DatabaseManager db = getDatabaseManager();
 
         // Grab a list of doctors
-        List<?> docList = db.query("FROM User WHERE role = 'DOCTOR");
+        List<?> docList = db.query("FROM User WHERE role = 'DOCTOR'");
 
-        for (Object doc : docList) {
-            doctorChoiceBox
-                .getItems()
-                .add(((User) doc).getFirstName() + " " + ((User) doc).getSurName() + " " + ((User) doc).getId());
+        // Attempt to add all doctors to the drop down. If fails then just print message and don't display and doctors
+        try {
+            for (Object doc : docList) {
+                int docId = ((User) doc).getId();
+                String docName = ((User) doc).getFirstName() + " " + ((User) doc).getSurName();
+                doctorChoiceBox.getItems().add(docName);
+                doctorMap.put(docName, docId);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
 
         // create the VBox to store these items and then return it
@@ -178,11 +194,71 @@ public class CreateBooking extends AbstractScreen {
     }
 
     private void book(ActionEvent event) {
+        // open a db session
+        DatabaseManager db = getDatabaseManager();
+
         System.out.println("Booking appointment");
 
         // Grab the text field
         MFXTextField textField = (MFXTextField) getRootPane().lookup("#apptReasonTextField");
-        // TODO: take details from the fields and book the appointments
+        Pane root = getRootPane();
+
+        // get the id of the doctor
+        ChoiceBox<String> docSelection = (ChoiceBox<String>) root.lookup("#doctorChoiceBox");
+        int docId = doctorMap.get(docSelection.getValue());
+        List<?> doctorResult = db.query("FROM User WHERE id = " + docId);
+        User doctor = (User) doctorResult.get(0);
+        System.out.println(doctor);
+
+        // get the apt reason
+        String apptReason = ((TextField) root.lookup("#apptReasonTextField")).getText();
+        System.out.println(apptReason);
+
+        // Get the appt date
+        LocalDate datePicker = ((DatePicker) root.lookup("#datePicker")).getValue();
+        Date apptDate = java.sql.Date.valueOf(datePicker);
+        System.out.println(apptDate);
+
+        // get the current user
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        System.out.println(currentUser.getFirstName());
+
+        // TODO: Add a Room selector. Need some way to register rooms first
+
+        Room tempApptRoom = makeRoom("10000", createAddress()); // Will fail if more than one room is appt is made
+        System.out.println(tempApptRoom);
+
+        Booking booking = new Booking();
+        booking.setRoom(tempApptRoom);
+        booking.setDoctor(doctor);
+        booking.setPatient(currentUser);
+        booking.setApptTime(apptDate);
+
+        // booking has been saved
+        db.save(booking);
+        // TODO: Remove all of the filled out boxes on the page
+    }
+
+    // TODO: REMOVE makeRoom and createAddress when a way to create rooms has been made
+    private Room makeRoom(String roomNum, Address address) {
+        DatabaseManager db = getDatabaseManager();
+        Room room = new Room();
+        room.setAddress(address);
+        room.setRoomNumber(roomNum);
+        room = db.saveGet(room);
+        return room;
+    }
+
+    private Address createAddress() {
+        DatabaseManager db = getDatabaseManager();
+        Address address = new Address();
+        address.setPostCode("CM22 8BB");
+        address.setCountry("GB");
+        address.setAddressLineOne("1 Test Street");
+        address.setAddressLineTwo("Test Town");
+        address.setAddressLineThree("Test County");
+        address = db.saveGet(address);
+        return address;
     }
 
     @Override
