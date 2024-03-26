@@ -74,13 +74,13 @@
 }
 
 .vbox1{
-    -fx-alignment: left;
+    -fx-alignment: center-left;
     -fx-text-alignment: left;
     -fx-spacing: 0;
 }
 
 .vbox2{
-    -fx-alignment: left;
+    -fx-alignment: center-left;
     -fx-text-alignment: left;
     -fx-spacing: 10;
 }
