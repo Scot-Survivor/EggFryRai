@@ -1,13 +1,12 @@
 package com.comp5590.screens;
 
-import com.comp5590.components.HomeScreen.BackgroundImage;
 import com.comp5590.components.HomeScreen.HeaderBar;
+import com.comp5590.components.HomeScreen.HugeImage;
 import com.comp5590.components.HomeScreen.NavBar;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.core.Logger;
@@ -25,9 +24,19 @@ public class HomeScreen extends AbstractScreen {
     public void setup() {
         // Load CSS
         this.addCss("/home.css");
+        this.addCss("/global.css");
 
-        GridPane pane = new GridPane();
-        pane.getStyleClass().add("custom-pane");
+        GridPane pane = this.attachDefaultPane(); // attach default pane
+
+        // create profileBox for the left side of the header bar
+        HBox profileBox = new HBox();
+        profileBox.setId("profileBox");
+
+        // attach event listener to profileBox
+        profileBox.setOnMouseClicked(e -> {
+            logger.info("Profile button clicked");
+            showScene(ProfileScreen.class);
+        });
 
         // create hbox for the logout event listener
         HBox logoutBox = new HBox();
@@ -35,6 +44,7 @@ public class HomeScreen extends AbstractScreen {
 
         // attach event listener to logoutbox
         logoutBox.setOnMouseClicked(e -> {
+            logger.info("Logout button clicked");
             SessionManager.getInstance().unauthenticate();
             this.showSceneBetweenScenesThenNextScene(
                     "👋 You have successfully logged out.\nRedirecting to login screen...",
@@ -43,7 +53,7 @@ public class HomeScreen extends AbstractScreen {
         });
 
         // Create the header bar with the determined name
-        HeaderBar headerBar = new HeaderBar(SessionManager.getInstance().getFullName(), logoutBox);
+        HeaderBar headerBar = new HeaderBar(profileBox, SessionManager.getInstance().getFullName(), logoutBox);
 
         // create Buttons for each navbar item
         Button home = new Button("Home");
@@ -96,7 +106,7 @@ public class HomeScreen extends AbstractScreen {
         NavBar navBar = new NavBar(home, appointments, prescriptions, aboutUs, contactUs, doctors);
 
         // create the background image
-        BackgroundImage bgImg = new BackgroundImage("/homeBackground.jpg");
+        HugeImage bgImage = new HugeImage("/homeBackground.jpg");
 
         // add the header bar to the 1st row of the pane
         pane.add(headerBar, 0, 0);
@@ -106,25 +116,14 @@ public class HomeScreen extends AbstractScreen {
         pane.add(navBar, 0, 1);
         // span the navbar across the entire width of the pane (infinite)
         GridPane.setColumnSpan(navBar, Integer.MAX_VALUE);
-        // add the background image to the 3rd row of the pane
-        pane.add(bgImg, 0, 2);
-        // span the background image across the entire width & height of the pane
-        // (infinite)
-        GridPane.setColumnSpan(bgImg, Integer.MAX_VALUE);
-        GridPane.setRowSpan(bgImg, Integer.MAX_VALUE);
-
+        // set the background image to the 3rd row of the pane, and span it infinitely
+        // across the width and height of the pane (dynamic sizing)
+        pane.add(bgImage, 0, 2);
         // add column constraints, so its width is always width of the screen
         ColumnConstraints col1 = new ColumnConstraints();
+
         col1.setPercentWidth(100);
         pane.getColumnConstraints().add(col1);
-
-        // create the border pane (which will serve as root pane)
-        // set grid pane as child of border pane
-        BorderPane rootPane = new BorderPane();
-        rootPane.setPadding(new Insets(0, 0, 0, 0));
-        rootPane.setTop(pane);
-
-        setRootPane(rootPane); // set root pane
     }
 
     @Override

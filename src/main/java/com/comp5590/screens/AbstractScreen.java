@@ -6,12 +6,16 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.PauseTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -104,6 +108,24 @@ public abstract class AbstractScreen {
         cssPaths.remove(cssPath);
     }
 
+    // Attach default pane & CSS to screen
+    public GridPane attachDefaultPane() {
+        this.addCss("/global.css");
+
+        GridPane pane = new GridPane();
+        pane.getStyleClass().add("custom-pane");
+
+        // create the border pane (which will serve as root pane)
+        // set grid pane as child of border pane
+        BorderPane rootPane = new BorderPane();
+        rootPane.setPadding(new Insets(0, 0, 0, 0));
+        rootPane.setTop(pane);
+
+        setRootPane(rootPane); // set root pane
+
+        return pane;
+    }
+
     protected void addBackAndHomeButtons(Pane previousRootPane) {
         // Create a StackPane to layer the button on top of the BorderPane
         StackPane stackPane = new StackPane();
@@ -163,8 +185,15 @@ public abstract class AbstractScreen {
 
         // on click, go back to the home screen
         box.setOnMouseClicked(e -> {
-            getScreenManager().showScene(HomeScreen.class);
             logger.info("Home button clicked");
+            // if user is authenticated, go to home screen
+            if (SessionManager.getInstance().isAuthenticated()) {
+                showScene(HomeScreen.class);
+            }
+            // if user is not authenticated, go to welcome screen
+            else {
+                showScene(WelcomeScreen.class);
+            }
         });
 
         // Add it to the top right of the StackPane with absolute positioning (the
@@ -185,16 +214,15 @@ public abstract class AbstractScreen {
 
     protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
         try {
+            logger.info("Showing ScreenBetweenScreens screen, with message: " + msg);
+
+            // set session manager state message
+            SessionManager.getInstance().setStateMessage(msg);
+
             // show the ScreenBetweenScreens screen
             this.showScene(ScreenBetweenScreens.class);
 
-            // grab instance of ScreenBetweenScreens
-            ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
-            // run functionality after setup
-            screenBetweenScreens.runFunctionalityAfterDisplayingScene(msg);
-
-            // after N seconds of forced waiting on main thread (nothing happens), redirect
-            // to whatever screen is specified
+            // pause transition betfore moving to next screen
             PauseTransition pause = new PauseTransition(Duration.millis(AppConfig.TIMEOUT_MS));
             pause.setOnFinished(event -> {
                 showScene(nextScreenClass);

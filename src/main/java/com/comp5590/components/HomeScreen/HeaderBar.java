@@ -8,10 +8,10 @@ import javafx.scene.text.Text;
 
 public class HeaderBar extends HBox {
 
-    public HeaderBar(String firstName, HBox right) {
+    public HeaderBar(HBox left, String firstName, HBox right) {
         // * LEFT
-        // HBox containing the icon and "Welcome, <name>"
-        HBox left = new HBox();
+        // HBox containing the icon and "Welcome, <name>" button (passed into the
+        // constructor, to apply event listener externally)
 
         // text field for the Welcome, <name> text
         Text welcomeText = new Text(String.format("Welcome, %s", firstName));

@@ -2,8 +2,8 @@ package com.comp5590.screens;
 
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.database.entities.User;
+import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -76,26 +76,7 @@ public class DocListScreen extends AbstractScreen {
      * @return list of doctors with parameters: firstName, surName, phone
      */
     private List<User> getDoctors() {
-        List<?> doctorQuery = getDatabaseManager()
-            .query("SELECT Id, firstName, surName, phone, additionalNotes FROM User WHERE role = 'DOCTOR'");
-        List<User> doctors = new ArrayList<>();
-
-        System.out.println("Query: " + doctorQuery);
-
-        // Iterate through query and map to user list
-        for (Object result : doctorQuery) {
-            Object[] doctorFields = (Object[]) result;
-            User doctor = new User();
-            doctor.setId((Integer) doctorFields[0]);
-            doctor.setFirstName(doctorFields[1].toString());
-            doctor.setSurName(doctorFields[2].toString());
-            doctor.setPhone(doctorFields[3].toString());
-            doctor.setAdditionalNotes(doctorFields[4].toString());
-            doctors.add(doctor);
-        }
-
-        System.out.println("query result: " + doctors);
-        return doctors;
+        return getDatabaseManager().getAllByProperty(User.class, "role", UserRole.DOCTOR);
     }
 
     /**

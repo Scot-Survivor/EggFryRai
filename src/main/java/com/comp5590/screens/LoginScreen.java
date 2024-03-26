@@ -70,15 +70,12 @@ public class LoginScreen extends AbstractScreen {
         column1.setHgrow(Priority.ALWAYS); // Allow column 1 to grow to fill the available space
         pane.getColumnConstraints().add(column1);
 
-        // create the border pane (which will serve as root pane)
+        // create the border pane (which will   serve as root pane)
         // set grid pane as child of border pane
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(pane);
 
         setRootPane(rootPane); // set root pane
-
-        // add navigation buttons
-        addBackAndHomeButtons(getRootPane());
     }
 
     /**

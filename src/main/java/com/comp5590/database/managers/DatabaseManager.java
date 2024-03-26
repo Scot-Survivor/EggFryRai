@@ -185,6 +185,25 @@ public class DatabaseManager {
         }
     }
 
+    public <T> List<T> query(final Class<T> T, String query) {
+        if (shouldCancel(eventManager.callEvent(new EntityQueryEvent(query, app)))) {
+            logger.debug("Query event cancelled");
+            return null;
+        }
+        try {
+            logger.debug("Executing query: " + query);
+            Session session = sessionFactory.openSession();
+            TypedQuery<T> q = session.createQuery(query, (Class<T>) T);
+            List<T> results = q.getResultList();
+            session.close();
+            return results;
+        } catch (Exception e) {
+            logger.error("Failed to execute query: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+            return null;
+        }
+    }
+
     public boolean update(Object object) {
         if (shouldCancel(eventManager.callEvent(new EntityUpdateEvent(object.getClass(), object, app)))) {
             logger.debug("Update event cancelled");
@@ -205,6 +224,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Get all objects of a type from the database
+     * @param type The type of object to get
+     * @return A list of objects
+     * @param <T> The type of object to get
+     */
     public <T> List<T> getAll(final Class<T> type) {
         if (shouldCancel(eventManager.callEvent(new EntityQueryAllEvent(type, app)))) {
             logger.debug("Get all event cancelled");
@@ -245,8 +270,9 @@ public class DatabaseManager {
      * @param value The value to search for
      * @return The object
      * @param <T> The type of object to get
+     * @param <V> The type of value object to get
      */
-    public <T> T getByProperty(final Class<T> type, final String property, final Object value) {
+    public <T, V> T getByProperty(final Class<T> type, final String property, final V value) {
         if (shouldCancel(eventManager.callEvent(new EntityQueryByPropertyEvent(type, property, value, app)))) {
             logger.debug("Get by property event cancelled");
             return null;
@@ -260,6 +286,36 @@ public class DatabaseManager {
         session.getTransaction().commit();
         session.close();
         return result;
+    }
+
+    /**
+     * Get all by a property
+     * @param type The type of object to get
+     * @param property The property to search by
+     * @param value The value to search for
+     * @return List of objects
+     * @param <T> The type of object to get
+     */
+    public <T, V> List<T> getAllByProperty(final Class<T> type, final String property, final V value) {
+        if (shouldCancel(eventManager.callEvent(new EntityQueryByPropertyEvent(type, property, value, app)))) {
+            logger.debug("Get by property event cancelled");
+            return null;
+        }
+        try {
+            final Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            final List<T> result = session
+                .createQuery("from " + type.getName() + " where " + property + " = :value")
+                .setParameter("value", value)
+                .getResultList();
+            session.getTransaction().commit();
+            session.close();
+            return result;
+        } catch (Exception e) {
+            logger.error("Failed to get all by property: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+            return null;
+        }
     }
 
     /**
@@ -283,20 +339,5 @@ public class DatabaseManager {
             logger.debug(Arrays.toString(e.getStackTrace()));
             return false;
         }
-    }
-
-    /**
-     * Wipe the database STRICTLY TESTING
-     */
-    public void wipe() {
-        logger.warn("Wiping database this should only happen during tests.");
-        // Use reflections to find every entity
-        getEntityClasses()
-            .forEach(c -> {
-                List<?> entities = getAll(c);
-                if (entities != null) {
-                    entities.forEach(this::delete);
-                }
-            });
     }
 }

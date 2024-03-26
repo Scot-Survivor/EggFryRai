@@ -568,8 +568,8 @@ public class RegisterScreen extends AbstractScreen {
         String addressLine3 = AddressUtils.getRandomCounty();
         String country = AddressUtils.getRandomCountry();
         String postcode = AddressUtils.getRandomPostalCode();
-        String role = UserRole.values()[NumberUtils.randomInt(0, 1)].name();
-        String communicationPreference = CommunicationPreference.values()[NumberUtils.randomInt(0, 3)].name();
+        UserRole role = UserRole.values()[NumberUtils.randomInt(0, 1)];
+        CommunicationPreference communicationPreference = CommunicationPreference.values()[NumberUtils.randomInt(0, 3)];
 
         this.firstName.setText(firstName);
         this.surName.setText(surName);
@@ -583,7 +583,7 @@ public class RegisterScreen extends AbstractScreen {
         this.addressLine3.setText(addressLine3);
         this.country.setText(country);
         this.postcode.setText(postcode);
-        this.role.setValue(UserRole.valueOf(role));
-        this.communicationPreference.setValue(CommunicationPreference.valueOf(communicationPreference));
+        this.role.setValue(role);
+        this.communicationPreference.setValue(communicationPreference);
     }
 }
