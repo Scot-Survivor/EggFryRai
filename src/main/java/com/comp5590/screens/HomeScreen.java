@@ -25,9 +25,19 @@ public class HomeScreen extends AbstractScreen {
     public void setup() {
         // Load CSS
         this.addCss("/home.css");
+        this.addCss("/global.css");
 
-        GridPane pane = new GridPane();
-        pane.getStyleClass().add("custom-pane");
+        GridPane pane = this.attachDefaultPane(); // attach default pane
+
+        // create profileBox for the left side of the header bar
+        HBox profileBox = new HBox();
+        profileBox.setId("profileBox");
+
+        // attach event listener to profileBox
+        profileBox.setOnMouseClicked(e -> {
+            logger.info("Profile button clicked");
+            showScene(ProfileScreen.class);
+        });
 
         // create hbox for the logout event listener
         HBox logoutBox = new HBox();
@@ -43,7 +53,7 @@ public class HomeScreen extends AbstractScreen {
         });
 
         // Create the header bar with the determined name
-        HeaderBar headerBar = new HeaderBar(SessionManager.getInstance().getFullName(), logoutBox);
+        HeaderBar headerBar = new HeaderBar(profileBox, SessionManager.getInstance().getFullName(), logoutBox);
 
         // create Buttons for each navbar item
         Button home = new Button("Home");
