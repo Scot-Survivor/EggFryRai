@@ -78,7 +78,6 @@
     -fx-padding: 5;
 }
 
-.background-image{
-    -fx-background-size: cover;
-    -fx-background-position: center;
+.huge-image{
+    -fx-alignment: center;
 }

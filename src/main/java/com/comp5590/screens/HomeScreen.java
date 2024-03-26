@@ -96,7 +96,7 @@ public class HomeScreen extends AbstractScreen {
         NavBar navBar = new NavBar(home, appointments, prescriptions, aboutUs, contactUs, doctors);
 
         // create the background image
-        BackgroundImage bgImg = new BackgroundImage("/homeBackground.jpg");
+        HugeImage bgImage = new HugeImage("/homeBackground.jpg");
 
         // add the header bar to the 1st row of the pane
         pane.add(headerBar, 0, 0);
