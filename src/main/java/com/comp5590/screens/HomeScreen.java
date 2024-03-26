@@ -1,13 +1,12 @@
 package com.comp5590.screens;
 
-import com.comp5590.components.HomeScreen.BackgroundImage;
 import com.comp5590.components.HomeScreen.HeaderBar;
+import com.comp5590.components.HomeScreen.HugeImage;
 import com.comp5590.components.HomeScreen.NavBar;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.core.Logger;
@@ -45,6 +44,7 @@ public class HomeScreen extends AbstractScreen {
 
         // attach event listener to logoutbox
         logoutBox.setOnMouseClicked(e -> {
+            logger.info("Logout button clicked");
             SessionManager.getInstance().unauthenticate();
             this.showSceneBetweenScenesThenNextScene(
                     "👋 You have successfully logged out.\nRedirecting to login screen...",
@@ -116,25 +116,14 @@ public class HomeScreen extends AbstractScreen {
         pane.add(navBar, 0, 1);
         // span the navbar across the entire width of the pane (infinite)
         GridPane.setColumnSpan(navBar, Integer.MAX_VALUE);
-        // add the background image to the 3rd row of the pane
-        pane.add(bgImg, 0, 2);
-        // span the background image across the entire width & height of the pane
-        // (infinite)
-        GridPane.setColumnSpan(bgImg, Integer.MAX_VALUE);
-        GridPane.setRowSpan(bgImg, Integer.MAX_VALUE);
-
+        // set the background image to the 3rd row of the pane, and span it infinitely
+        // across the width and height of the pane (dynamic sizing)
+        pane.add(bgImage, 0, 2);
         // add column constraints, so its width is always width of the screen
         ColumnConstraints col1 = new ColumnConstraints();
+
         col1.setPercentWidth(100);
         pane.getColumnConstraints().add(col1);
-
-        // create the border pane (which will serve as root pane)
-        // set grid pane as child of border pane
-        BorderPane rootPane = new BorderPane();
-        rootPane.setPadding(new Insets(0, 0, 0, 0));
-        rootPane.setTop(pane);
-
-        setRootPane(rootPane); // set root pane
     }
 
     @Override

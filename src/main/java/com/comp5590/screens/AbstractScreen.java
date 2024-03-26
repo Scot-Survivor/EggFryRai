@@ -10,9 +10,12 @@ import com.comp5590.managers.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.PauseTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -103,6 +106,24 @@ public abstract class AbstractScreen {
      */
     public void removeCss(String cssPath) {
         cssPaths.remove(cssPath);
+    }
+
+    // Attach default pane & CSS to screen
+    public GridPane attachDefaultPane() {
+        this.addCss("/global.css");
+
+        GridPane pane = new GridPane();
+        pane.getStyleClass().add("custom-pane");
+
+        // create the border pane (which will serve as root pane)
+        // set grid pane as child of border pane
+        BorderPane rootPane = new BorderPane();
+        rootPane.setPadding(new Insets(0, 0, 0, 0));
+        rootPane.setTop(pane);
+
+        setRootPane(rootPane); // set root pane
+
+        return pane;
     }
 
     protected void addBackAndHomeButtons(Pane previousRootPane) {
