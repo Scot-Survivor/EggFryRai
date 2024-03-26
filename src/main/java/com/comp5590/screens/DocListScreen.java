@@ -80,8 +80,6 @@ public class DocListScreen extends AbstractScreen {
             .query("SELECT Id, firstName, surName, phone, additionalNotes FROM User WHERE role = 'DOCTOR'");
         List<User> doctors = new ArrayList<>();
 
-        System.out.println("Query: " + doctorQuery);
-
         // Iterate through query and map to user list
         for (Object result : doctorQuery) {
             Object[] doctorFields = (Object[]) result;
@@ -94,7 +92,6 @@ public class DocListScreen extends AbstractScreen {
             doctors.add(doctor);
         }
 
-        System.out.println("query result: " + doctors);
         return doctors;
     }
 
