@@ -76,22 +76,11 @@ public class DocListScreen extends AbstractScreen {
      * @return list of doctors with parameters: firstName, surName, phone
      */
     private List<User> getDoctors() {
-        List<?> doctorQuery = getDatabaseManager()
-            .query("SELECT Id, firstName, surName, phone, additionalNotes FROM User WHERE role = 'DOCTOR'");
+        List<?> doctorQuery = getDatabaseManager().query("SELECT FROM User WHERE role = 'DOCTOR'");
         List<User> doctors = new ArrayList<>();
-
-        // Iterate through query and map to user list
-        for (Object result : doctorQuery) {
-            Object[] doctorFields = (Object[]) result;
-            User doctor = new User();
-            doctor.setId((Integer) doctorFields[0]);
-            doctor.setFirstName(doctorFields[1].toString());
-            doctor.setSurName(doctorFields[2].toString());
-            doctor.setPhone(doctorFields[3].toString());
-            doctor.setAdditionalNotes(doctorFields[4].toString());
-            doctors.add(doctor);
+        for (Object doctor : doctorQuery) {
+            doctors.add((User) doctor);
         }
-
         return doctors;
     }
 
