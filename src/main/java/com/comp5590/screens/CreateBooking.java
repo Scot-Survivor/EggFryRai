@@ -1,18 +1,26 @@
 package com.comp5590.screens;
 
+// TODO: Make it consistent with the design schema
+
+import com.comp5590.database.entities.User;
+import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.time.LocalDate;
+import java.util.List;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-//TODO: Add @AuthRequired
+@AuthRequired
 public class CreateBooking extends AbstractScreen {
+
+    private User currentUser;
 
     public CreateBooking(ScreenManager screenManager) {
         super(screenManager);
@@ -20,6 +28,9 @@ public class CreateBooking extends AbstractScreen {
 
     @Override
     public void setup() {
+        // get the current user for later use
+        // currentUser = App.getInstance().getCurrentUser();
+
         // set the main pane of the screen
         BorderPane rootPane = new BorderPane();
         setRootPane(rootPane);
@@ -31,12 +42,13 @@ public class CreateBooking extends AbstractScreen {
 
     /**
      * Create the title item of the bookings screen
-     * @return
+     * @return A Text Object that will function as the title
      */
     private Text setTitle() {
+        // setting the title of the screen
+
         Text title = new Text("GP Alpha");
         title.setFill(javafx.scene.paint.Color.valueOf("#787efc"));
-        title.setStrokeWidth(0.0);
         title.setFont(Font.font("System Bold", 21));
         BorderPane.setMargin(title, new Insets(10.0));
         BorderPane.setAlignment(title, javafx.geometry.Pos.TOP_CENTER);
@@ -49,37 +61,132 @@ public class CreateBooking extends AbstractScreen {
      * @return A BorderPane containing these items
      */
     private BorderPane createCenter() {
+        // Create the border pane that will store the center items
         BorderPane centerPane = new BorderPane();
         centerPane.setPrefSize(200, 200);
         BorderPane.setAlignment(centerPane, javafx.geometry.Pos.CENTER);
 
+        // Set the head of the border pane to be the title of the specific page
         Text headerText = new Text("Book Appointment");
         headerText.setStrokeWidth(0.0);
         BorderPane.setAlignment(headerText, javafx.geometry.Pos.CENTER);
         centerPane.setTop(headerText);
 
+        // Create the Vbox that will store all the center items of the sub VBox
         VBox vBox = new VBox();
         vBox.setPrefSize(100, 200);
         vBox.setAlignment(javafx.geometry.Pos.TOP_CENTER);
         BorderPane.setAlignment(vBox, javafx.geometry.Pos.CENTER);
 
+        // Add all the sub items to the VBox
+        vBox
+            .getChildren()
+            .addAll(createApptReasonField(), createWholeDatePicker(), createWholeDoctorChoice(), createBookingButton());
+        centerPane.setCenter(vBox);
+
+        // return the central pane of the page
+        return centerPane;
+    }
+
+    /**
+     * Create the text field for the appointment reason
+     * @return A MFXTextField object
+     */
+    private MFXTextField createApptReasonField() {
+        // Create the text field for the appt reason
         MFXTextField reasonTextField = new MFXTextField();
         reasonTextField.setPrefSize(360, 157);
         reasonTextField.setPromptText("Please specify the reason for your appointment");
+        reasonTextField.setId("apptReasonTextField");
         VBox.setMargin(reasonTextField, new Insets(20.0));
+        return reasonTextField;
+    }
 
+    /**
+     * Create the date picker for the appointment
+     * @return A VBox containing a Label and a DatePicker
+     */
+    private VBox createWholeDatePicker() {
+        // Create label for the date picker
         Label dateLabel = new Label("Select a date for your appointment");
         VBox.setMargin(dateLabel, new Insets(10.0));
+
+        // Date picker object
         DatePicker datePicker = new DatePicker();
 
+        // set the minimum time to be in the future
+        datePicker.setDayCellFactory(picker ->
+            new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    setDisable(empty || date.compareTo(LocalDate.now()) < 0);
+                }
+            }
+        );
+        datePicker.setId("datePicker");
+
+        // Create the VBox to store these items and then return it
+        VBox dateBox = new VBox(dateLabel, datePicker);
+        dateBox.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        return dateBox;
+    }
+
+    /**
+     * Create the label and choice box for the doctor choice
+     * @return A VBox containing a label and a Choice Box
+     */
+    private VBox createWholeDoctorChoice() {
+        // Create the label for the doctor choice box
         Label doctorLabel = new Label("Please select a doctor");
         VBox.setMargin(doctorLabel, new Insets(10.0));
         ChoiceBox<String> doctorChoiceBox = new ChoiceBox<>();
         doctorChoiceBox.setPrefWidth(150.0);
+        doctorChoiceBox.setId("doctorChoiceBox"); // give the choice box an id
 
-        vBox.getChildren().addAll(reasonTextField, dateLabel, datePicker, doctorLabel, doctorChoiceBox);
-        centerPane.setCenter(vBox);
+        // Get all the information on the doctor class
+        DatabaseManager db = getDatabaseManager();
 
-        return centerPane;
+        // Grab a list of doctors
+        List<?> docList = db.query("FROM User WHERE role = 'DOCTOR");
+
+        for (Object doc : docList) {
+            doctorChoiceBox
+                .getItems()
+                .add(((User) doc).getFirstName() + " " + ((User) doc).getSurName() + " " + ((User) doc).getId());
+        }
+
+        // create the VBox to store these items and then return it
+        VBox doctorBox = new VBox(doctorLabel, doctorChoiceBox);
+        doctorBox.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        return doctorBox;
+    }
+
+    /**
+     * Create the booking button
+     * @return A Button object that will allow the user to book an appointment
+     */
+    private Button createBookingButton() {
+        // Create booking button and add some padding
+        Button book = new Button("Book Appointment");
+        VBox.setMargin(book, new Insets(10.0));
+
+        // Add some functionality to the button
+        book.setOnAction(this::book);
+
+        return book;
+    }
+
+    private void book(ActionEvent event) {
+        System.out.println("Booking appointment");
+
+        // Grab the text field
+        MFXTextField textField = (MFXTextField) getRootPane().lookup("#apptReasonTextField");
+        // TODO: take details from the fields and book the appointments
+    }
+
+    @Override
+    public void cleanup() {
+        // nothing to clean up
     }
 }
