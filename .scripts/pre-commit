@@ -21,6 +21,8 @@ fi
 status=$?
 
 if [ "$status" = 0 ] ; then
+    exit 0;
+
     echo "Static analysis found no problems."
     # Add staged file changes to git
     for file in $stagedFiles; do

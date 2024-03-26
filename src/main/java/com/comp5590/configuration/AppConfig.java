@@ -23,7 +23,8 @@ import org.apache.logging.log4j.core.Logger;
  * Application configuration
  * This class is a singleton
  * Any field to save must be all uppercase, public, and not final
- * Any field to save must be of type int, boolean, double, float, long, short, byte, char, String
+ * Any field to save must be of type int, boolean, double, float, long, short,
+ * byte, char, String
  * Any field to save must be initialized
  * Any field to save must be static
  */
@@ -40,7 +41,8 @@ public class AppConfig {
     public static String ConfigFile = "config.properties";
     private static AppConfig instance;
 
-    // Hard code a DEBUG logger due to the fact that the configuration level can't load till this is complete.
+    // Hard code a DEBUG logger due to the fact that the configuration level can't
+    // load till this is complete.
     private static final Logger logger = LoggerManager.getInstance().getLogger(AppConfig.class, "DEBUG");
 
     // Configuration
@@ -69,6 +71,9 @@ public class AppConfig {
     public static String DATABASE_PROPERTIES_FILE = "hibernate.properties";
     public static boolean DO_ENTITY_VALIDATION = true;
 
+    // Vanity ScreenBetweenScreens Configuration
+    public static int TIMEOUT_MS = 100;
+
     // Methods
     private AppConfig() {
         setup();
@@ -76,6 +81,7 @@ public class AppConfig {
 
     /**
      * Clean the file of any properties that are not in the AppConfig class
+     *
      * @return list of names of properties removed
      */
     public List<String> cleanConfig() {
@@ -201,6 +207,7 @@ public class AppConfig {
 
     /**
      * Get a value
+     *
      * @param key The key of the field
      */
     public Object getValue(String key) {
@@ -209,7 +216,8 @@ public class AppConfig {
 
     /**
      * Set a value without saving.
-     * @param key The key of the field
+     *
+     * @param key   The key of the field
      * @param value The value to set
      */
     public void setValue(String key, Object value) {
@@ -218,9 +226,10 @@ public class AppConfig {
 
     /**
      * Set a value and optionally save
-     * @param key The key of the field
+     *
+     * @param key   The key of the field
      * @param value The value to set
-     * @param save Whether to save the configuration
+     * @param save  Whether to save the configuration
      */
     public void setValue(String key, Object value, boolean save) {
         try {

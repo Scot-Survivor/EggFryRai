@@ -1,9 +1,9 @@
 package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.events.listeners.implementations.EntityValidatorListener;
+import com.comp5590.events.listeners.implementations.SceneKeyboardNavigationListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
@@ -18,7 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
-import lombok.Setter;
 
 public class App extends Application {
 
@@ -41,10 +40,7 @@ public class App extends Application {
     @Getter
     private SessionManager sessionManager;
 
-    @Setter
     @Getter
-    private User currentUser;
-
     private Stage primaryStage;
 
     // scenes and screen objects
@@ -59,21 +55,25 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        // instantiate managers & everything else programatically
         sessionManager = SessionManager.getInstance();
         databaseManager = DatabaseManager.getInstance();
         passwordManager = new Argon2PasswordManager();
 
+        // instantiate other fields
         instance = this;
         primaryStage = stage;
         stage.getIcons().add(new Image("/healthcare.png"));
         appConfig = AppConfig.getInstance();
         screenManager = new ScreenManager(primaryStage);
         totpManager = TOTPManager.getInstance();
+        // add event listeners to the event manager
         eventManager = EventManager.getInstance();
         if (AppConfig.DO_ENTITY_VALIDATION) {
             eventManager.addListener(new EntityValidatorListener());
         }
         eventManager.addListener(new ScreenAuthValidationListener());
+        eventManager.addListener(new SceneKeyboardNavigationListener(screenManager, primaryStage));
     }
 
     public static void main(String[] args) {

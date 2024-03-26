@@ -5,6 +5,7 @@ import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.Paragraph;
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.components.RegisterScreen.BackToLoginBox;
+import com.comp5590.components.RegisterScreen.ComboBoxField;
 import com.comp5590.components.global.LineHorizontal;
 import com.comp5590.components.global.LoginField;
 import com.comp5590.components.global.SpaceVertical;
@@ -15,7 +16,10 @@ import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.managers.SessionManager;
+import com.comp5590.utils.AddressUtils;
+import com.comp5590.utils.NameUtils;
+import com.comp5590.utils.NumberUtils;
+import com.comp5590.utils.StringUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -52,10 +56,10 @@ public class RegisterScreen extends AbstractScreen {
     private TextField postcode;
 
     // * Role (enum of PATIENT,DOCTOR)
-    private ComboBox role;
+    private ComboBox<UserRole> role;
 
     // * CommunicationPreference (enum of NONE,EMAIL,PHONE,FAX)
-    private ComboBox communicationPreference;
+    private ComboBox<CommunicationPreference> communicationPreference;
 
     // * Other
     private Label error;
@@ -107,10 +111,14 @@ public class RegisterScreen extends AbstractScreen {
         rootPane.setCenter(pane);
 
         setRootPane(rootPane); // set root pane
+
+        // add navigation buttons
+        addBackAndHomeButtons(getRootPane());
     }
 
     private VBox createRegisterBox() {
-        // create the fields
+        // create the fields (plus assign IDs to them for testing purposes (see
+        // RegisterTest.java))
         this.email = new TextField();
         this.email.setId("email");
         this.password = new PasswordField();
@@ -135,11 +143,12 @@ public class RegisterScreen extends AbstractScreen {
         this.country.setId("country");
         this.postcode = new TextField();
         this.postcode.setId("postcode");
-        this.role = new ComboBox();
+        this.role = new ComboBox<UserRole>();
         this.role.setId("role");
-        this.communicationPreference = new ComboBox();
+        this.communicationPreference = new ComboBox<CommunicationPreference>();
         this.communicationPreference.setId("communicationPreference");
         this.error = new Label();
+        this.error.setId("error");
         this.error.getStyleClass().add("error-label");
 
         // instantiate & create base fields for all the required patient info
@@ -177,23 +186,52 @@ public class RegisterScreen extends AbstractScreen {
         LoginField postcodeField = new LoginField("Postcode", this.postcode, "E.g. D01AB23", "/address.png");
 
         // create the role and communication preference fields
-        this.role.getItems().addAll("Patient", "Doctor");
-        this.communicationPreference.getItems().addAll("None", "Email", "Phone", "Fax");
+        this.role.getItems().addAll(UserRole.values());
+        this.communicationPreference.getItems().addAll(CommunicationPreference.values());
+
+        // create more potent roleand communicationPreference variables using reusable
+        // component
+        ComboBoxField role = new ComboBoxField("Role", this.role, "Select Role", "/role.png");
+        ComboBoxField communicationPreference = new ComboBoxField(
+            "Communication Preference",
+            this.communicationPreference,
+            "Select Communication Preference",
+            "/communication.png"
+        );
 
         // create the register button
         BigButton registerButton = new BigButton();
         registerButton.setText("Register");
-
-        // attach event listener to button, which runs register method
-        registerButton.setOnAction(this::register);
         registerButton.setId("registerButton");
 
+        // create generate random user button
+        BigButton generateRandomUserButton = new BigButton();
+        generateRandomUserButton.setText("Generate Random User");
+
+        // create hbox for above buttons, and add them to it
+        HBox buttonBox = new HBox();
+        buttonBox.getChildren().addAll(registerButton, generateRandomUserButton);
+        // apply styling to the button box
+        buttonBox.getStyleClass().add("button-box");
+
+        // set register button length to 75% of parent node
+        registerButton.prefWidthProperty().bind(buttonBox.widthProperty().multiply(0.75));
+
+        // attach event listener to register button, which runs register method
+        registerButton.setOnAction(this::register);
+
+        // attach event listener to generate random user button, which runs
+        // generateRandomUser method
+        generateRandomUserButton.setOnAction(this::generateRandomUser);
+        generateRandomUserButton.setId("generateRandomUserButton");
+
         // create horizontal line
-        LineHorizontal line = new LineHorizontal(registerButton, 20, 3);
+        LineHorizontal line = new LineHorizontal(buttonBox, 20, 3);
 
         // create back to login box button
-        HBox backToRegisterScreenBox = new BackToLoginBox();
-        backToRegisterScreenBox.setOnMouseClicked(event -> this.goToLoginPage());
+        HBox backToLoginScreenBox = new BackToLoginBox();
+        backToLoginScreenBox.setId("backToLoginScreenBox");
+        backToLoginScreenBox.setOnMouseClicked(event -> this.goToLoginPage());
 
         // create paddings
         SpaceVertical padding1 = new SpaceVertical(10);
@@ -237,10 +275,10 @@ public class RegisterScreen extends AbstractScreen {
                 padding1,
                 patientInfoFields,
                 padding2,
-                registerButton,
+                buttonBox,
                 padding3,
                 padding4,
-                backToRegisterScreenBox,
+                backToLoginScreenBox,
                 padding5,
                 error
             );
@@ -258,7 +296,7 @@ public class RegisterScreen extends AbstractScreen {
     }
 
     private void goToLoginPage() {
-        getApp().getScreenManager().showScene(LoginScreen.class);
+        showScene(LoginScreen.class);
         clearFields();
         unsetErrorText();
     }
@@ -283,21 +321,20 @@ public class RegisterScreen extends AbstractScreen {
         }
 
         // grab all fields
-        String email = this.email.getText().trim();
+        String email = this.email.getText().trim().replaceAll("\\s", "");
         String password = this.password.getText().trim();
         String firstName = this.firstName.getText().trim();
         String surName = this.surName.getText().trim();
-        String phone = this.phone.getText().trim();
-        String fax = this.fax.getText().trim();
+        String phone = this.phone.getText().replaceAll("\\s", "");
+        String fax = this.fax.getText().replaceAll("\\s", "");
         String additionalNotes = this.additionalNotes.getText().trim();
         String addressLine1 = this.addressLine1.getText().trim();
         String addressLine2 = this.addressLine2.getText().trim();
         String addressLine3 = this.addressLine3.getText().trim();
         String country = this.country.getText().trim();
-        String postcode = this.postcode.getText().trim();
+        String postcode = this.postcode.getText().replaceAll("\\s", "").toUpperCase();
         String role = this.role.getValue().toString().toUpperCase();
         String communicationPreference = this.communicationPreference.getValue().toString().toUpperCase();
-
         // check if fields are empty
         if (
             email.isEmpty() ||
@@ -345,7 +382,8 @@ public class RegisterScreen extends AbstractScreen {
             return;
         }
 
-        if (!postcode.matches("^[A-Z0-9]{6}$")) {
+        // allow postcode to be any letter / number combo, but 5-8 characters long
+        if (!postcode.matches("^[a-zA-Z0-9]{5,8}$")) {
             logger.error("Invalid postcode: {}", postcode);
             this.error.setText("Invalid postcode.");
             return;
@@ -417,26 +455,17 @@ public class RegisterScreen extends AbstractScreen {
             return;
         }
 
-        if (postcode.length() > 255) {
-            logger.error("Postcode is too long: {}", postcode);
-            this.error.setText("Postcode is too long.");
-            return;
-        }
-
         // * if all checks above pass, create a new user, with the proper models
         // hash the password
         password = getApp().getPasswordManager().hashPassword(password);
 
-        logger.error("Password hash is: {}", password);
-        logger.error("Chars long: {}", password.length());
-
         // create new auth details
         AuthenticationDetails authDetails = new AuthenticationDetails(email, password, false, null, null);
+
         // (by default 2FA is disabled, but can be enabled in settings)
 
         // create new address
         Address address = new Address(addressLine1, addressLine2, addressLine3, country, postcode);
-
         // create new user
         user =
         new User(
@@ -451,15 +480,16 @@ public class RegisterScreen extends AbstractScreen {
         );
 
         int savedAddressId = getDatabaseManager().saveGetId(address);
+
         Address savedAddress = getDatabaseManager().get(Address.class, savedAddressId);
         if (savedAddress == null) {
             logger.error("Failed to save address to database.");
             this.error.setText("Failed to save address to database.");
             return;
         }
-
         // save auth entity
         int savedAuthDetailsId = getDatabaseManager().saveGetId(authDetails);
+
         AuthenticationDetails savedAuthDetails = getDatabaseManager()
             .get(AuthenticationDetails.class, savedAuthDetailsId);
         if (savedAuthDetails == null) {
@@ -467,12 +497,11 @@ public class RegisterScreen extends AbstractScreen {
             this.error.setText("Failed to save auth details to database.");
             return;
         }
-
         // set the auth details and address to the user entity (one <-> one
         // relationship)
         user.setAuthenticationDetails(authDetails);
-        user.setAddress(address);
 
+        user.setAddress(address);
         // save the user to the database
         int savedUserId = getDatabaseManager().saveGetId(user);
 
@@ -487,24 +516,12 @@ public class RegisterScreen extends AbstractScreen {
         // log creation of new user
         logger.info("New user registered: {}", email);
 
-        // grab session manager to store message in for temporary screen
-        SessionManager sessionManager = SessionManager.getInstance();
-        sessionManager.setStateMessage("✅ You have successfully registered. Redirecting to login page...");
-
         // redirect user to InBetweenScreensScreen after successful registration, with
         // success message
-        this.getApp().getScreenManager().showScene(ScreenBetweenScreens.class);
-        // run the functionality after setup
-        ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
-        screenBetweenScreens.runFunctionalityAfterSetup(
-            "✅ You have successfully registered. Redirecting to login page...",
-            3,
-            LoginScreen.class
-        );
-
-        // [cleanup] clear all fields & unset error text
-        clearFields();
-        unsetErrorText();
+        this.showSceneBetweenScenesThenNextScene(
+                "✅ You have successfully registered.\nRedirecting to login page...",
+                LoginScreen.class
+            );
     }
 
     public void setErrorText(String txt) {
@@ -530,5 +547,43 @@ public class RegisterScreen extends AbstractScreen {
         this.postcode.clear();
         this.role.getSelectionModel().clearSelection();
         this.communicationPreference.getSelectionModel().clearSelection();
+    }
+
+    @Override
+    public void cleanup() {
+        this.unsetErrorText();
+        this.clearFields();
+    }
+
+    private void generateRandomUser(ActionEvent event) {
+        String firstName = NameUtils.getRandomFirstName();
+        String surName = NameUtils.getRandomLastName();
+        String email = NameUtils.getRandomFullEmail(firstName, surName);
+        String password = StringUtils.randomPassword(8, 64);
+        String phone = NumberUtils.randomPhoneNumber();
+        String fax = NumberUtils.randomFaxNumber();
+        String additionalNotes = StringUtils.randomHealthCondition(NumberUtils.randomInt(2, 12));
+        String addressLine1 = AddressUtils.getRandomAddress1();
+        String addressLine2 = AddressUtils.getRandomTown();
+        String addressLine3 = AddressUtils.getRandomCounty();
+        String country = AddressUtils.getRandomCountry();
+        String postcode = AddressUtils.getRandomPostalCode();
+        String role = UserRole.values()[NumberUtils.randomInt(0, 1)].name();
+        String communicationPreference = CommunicationPreference.values()[NumberUtils.randomInt(0, 3)].name();
+
+        this.firstName.setText(firstName);
+        this.surName.setText(surName);
+        this.email.setText(email);
+        this.password.setText(password);
+        this.phone.setText(phone);
+        this.fax.setText(fax);
+        this.additionalNotes.setText(additionalNotes);
+        this.addressLine1.setText(addressLine1);
+        this.addressLine2.setText(addressLine2);
+        this.addressLine3.setText(addressLine3);
+        this.country.setText(country);
+        this.postcode.setText(postcode);
+        this.role.setValue(UserRole.valueOf(role));
+        this.communicationPreference.setValue(CommunicationPreference.valueOf(communicationPreference));
     }
 }

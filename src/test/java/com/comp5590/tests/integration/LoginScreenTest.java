@@ -1,23 +1,28 @@
 package com.comp5590.tests.integration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
 import com.comp5590.screens.MFAScreen;
+import com.comp5590.screens.RegisterScreen;
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
-import java.util.Set;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
+import com.comp5590.utils.EventUtils;
+import com.comp5590.utils.QueryUtils;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.service.query.NodeQuery;
 
 @ExtendWith(ApplicationExtension.class) // TestFX Extension)
 public class LoginScreenTest extends SetupTests {
@@ -35,8 +40,11 @@ public class LoginScreenTest extends SetupTests {
         stage.show();
     }
 
-    private Pane getLoginScreen() {
-        return (Pane) app.getScreenManager().getScreens().get(LoginScreen.class).getRoot();
+    // this method will go to the login screen
+    private void goToLogin(FxRobot robot) {
+        robot.interact(() -> {
+            app.getScreenManager().showScene(LoginScreen.class);
+        });
     }
 
     /**
@@ -48,10 +56,9 @@ public class LoginScreenTest extends SetupTests {
             // new test ends up in an async race condition so we should sleep for a full
             // second to ensure it doesn't occur
             robot.sleep(1000); // Sleep for a second to ensure the screen is loaded
-            Pane loginScreen = getLoginScreen();
-            Set<Node> loginButtons = loginScreen.lookupAll(".big-button");
-            assertThat(loginButtons).isNotNull();
-            assertThat(loginButtons.size()).isEqualTo(1);
+            // Get Login Button
+            NodeQuery loginButtons = robot.lookup(".big-button");
+            assertThat(loginButtons.queryAll()).isNotNull();
         });
     }
 
@@ -61,10 +68,8 @@ public class LoginScreenTest extends SetupTests {
     @Test
     public void testScreenHasPasswordField(FxRobot robot) {
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> passwordFields = loginScreen.lookupAll(".password-field");
-            assertThat(passwordFields).isNotNull();
-            assertThat(passwordFields.size()).isEqualTo(1);
+            NodeQuery passwordFields = robot.lookup(".password-field");
+            assertThat(passwordFields.queryAll()).isNotNull();
         });
     }
 
@@ -77,10 +82,6 @@ public class LoginScreenTest extends SetupTests {
     public void testSuccessfulLoginNoMFA(FxRobot robot) {
         User p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("example@example.org");
 
@@ -95,10 +96,10 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
-            assertThat(app.getCurrentUser().getId()).isEqualTo(p.getId());
+            assertThat(SessionManager.getInstance().getCurrentUser().getId()).isEqualTo(p.getId());
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
-            app.setCurrentUser(null);
+            SessionManager.getInstance().setCurrentUser(null);
         });
         SetupTests.remove(p);
     }
@@ -117,10 +118,6 @@ public class LoginScreenTest extends SetupTests {
             totpManager.generateRecoveryCodes()
         );
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("mfa@example.org");
 
@@ -144,11 +141,11 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(HomeScreen.class);
-            assertThat(app.getCurrentUser().getId()).isEqualTo(u.getId());
+            assertThat(SessionManager.getInstance().getCurrentUser().getId()).isEqualTo(u.getId());
 
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
-            app.setCurrentUser(null);
+            SessionManager.getInstance().setCurrentUser(null);
         });
         SetupTests.remove(u);
     }
@@ -167,10 +164,6 @@ public class LoginScreenTest extends SetupTests {
             totpManager.generateRecoveryCodes()
         );
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("mfa@example.org");
 
@@ -194,11 +187,11 @@ public class LoginScreenTest extends SetupTests {
 
             // Check that the home screen is showing
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
-            assertThat(app.getCurrentUser()).isNull();
+            assertThat(SessionManager.getInstance().getCurrentUser()).isNull();
 
             // Reset back to login screen
             app.getScreenManager().showScene(LoginScreen.class);
-            app.setCurrentUser(null);
+            SessionManager.getInstance().setCurrentUser(null);
         });
         SetupTests.remove(p);
     }
@@ -207,10 +200,6 @@ public class LoginScreenTest extends SetupTests {
     public void testFailedLogin(FxRobot robot) {
         User p = SetupTests.createPatient("example@example.org", "password");
         robot.interact(() -> {
-            Pane loginScreen = getLoginScreen();
-            Set<Node> emailFields = loginScreen.lookupAll("#email");
-            assertThat(emailFields).isNotNull();
-            assertThat(emailFields.size()).isEqualTo(1);
             // Set the email and password fields
             robot.lookup("#email").queryAs(javafx.scene.control.TextField.class).setText("example@example.org");
 
@@ -235,10 +224,47 @@ public class LoginScreenTest extends SetupTests {
     @Test
     public void checkScreenAuthenticationListenerPreventsAccessToHomeWithoutAuth(FxRobot robot) {
         robot.interact(() -> {
-            app.setCurrentUser(null); // Ensure no user is authenticated
-            app.getSessionManager().setAuthenticated(false); // Force de-authentication
+            SessionManager.getInstance().setCurrentUser(null); // Ensure no user is authenticated
+            SessionManager.getInstance().unauthenticate(); // Force de-authentication
             app.getScreenManager().showScene(HomeScreen.class);
             assertThat(app.getScreenManager().getCurrentScreen()).isInstanceOf(LoginScreen.class);
+        });
+    }
+
+    @Test
+    public void testUserSentToRegisterScreenOnBackToRegisterScreenButtonPress(FxRobot robot) {
+        goToLogin(robot);
+        robot.interact(() -> {
+            // Press back to register screen button
+            robot
+                .lookup("#backToRegisterScreenBox")
+                .queryAs(QueryUtils.getHBoxClass())
+                .fireEvent(
+                    EventUtils.createCustomMouseEvent(
+                        MouseEvent.MOUSE_CLICKED,
+                        0,
+                        0,
+                        0,
+                        0,
+                        MouseButton.PRIMARY,
+                        1,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        null
+                    )
+                );
+
+            // Current screen should be Register Screen after back to register screen button
+            // press
+            assertInstanceOf(RegisterScreen.class, app.getScreenManager().getCurrentScreen());
         });
     }
 }

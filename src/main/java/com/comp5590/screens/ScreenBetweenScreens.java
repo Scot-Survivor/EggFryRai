@@ -19,55 +19,39 @@ public class ScreenBetweenScreens extends AbstractScreen {
         // load css
         this.addCss("/screenBetweenScreens.css");
 
-        // otherwise, display the message
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
 
-        // create label with the msg
-        Title title = new Title("Boilerplate");
+        Title title = new Title("Boilerplate Message");
         title.getStyleClass().add("message");
 
-        // align the border pane's contents to the center of the screen
-        GridPane.setHalignment(title, javafx.geometry.HPos.CENTER);
-        GridPane.setValignment(title, javafx.geometry.VPos.CENTER);
-
-        // add title to pane
-        pane.getChildren().add(title);
+        // add the title to the pane
+        pane.add(title, 0, 0);
 
         // set root pane
         setRootPane(pane);
     }
 
-    public void runFunctionalityAfterSetup(
-        String msg,
-        int waitTimeInSecs,
-        Class<? extends AbstractScreen> nextScreenClass
-    ) {
+    public void runFunctionalityAfterDisplayingScene(String msg) {
         // log the message
         logger.info(msg);
 
-        // delete all children of pane
-        GridPane pane = (GridPane) getRootPane();
-        pane.getChildren().clear();
+        // load css
+        this.addCss("/screenBetweenScreens.css");
 
-        // delete old title from pane
-        getRootPane().getChildren().clear();
+        // get the title from the root pane
+        Title title = (Title) ((GridPane) getRootPane()).getChildren().get(0);
 
-        // grab title from pane, and set the text to the message
-        Title title = new Title(msg);
-        title.getStyleClass().add("message");
+        // set the new text
+        title.setNewText(msg);
 
-        // add title to pane
-        pane.getChildren().add(title);
+        // align the border pane's contents to the center of the screen
+        GridPane.setHalignment(title, javafx.geometry.HPos.CENTER);
+        GridPane.setValignment(title, javafx.geometry.VPos.CENTER);
+    }
 
-        // after 5 seconds of forced waiting on main thread (nothing happens), redirect
-        // to whatever screen is specified
-        try {
-            Thread.sleep(waitTimeInSecs * 1000);
-            this.getApp().getScreenManager().showScene(nextScreenClass);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            logger.error("Thread interrupted: " + e.getMessage());
-        }
+    @Override
+    public void cleanup() {
+        // nothing to clean up
     }
 }

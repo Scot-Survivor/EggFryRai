@@ -1,18 +1,21 @@
 package com.comp5590.screens;
 
 import com.comp5590.App;
+import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.core.Logger;
@@ -42,13 +45,20 @@ public abstract class AbstractScreen {
         this.databaseManager = DatabaseManager.getInstance();
         this.sessionFactory = this.databaseManager.getSessionFactory();
         this.cssPaths = new ArrayList<>();
-        this.setup();
     }
 
     /**
      * This method is called when the screen is created
      */
     public abstract void setup();
+
+    /**
+     * This method is called when the scene is changed, to clean it up
+     * Every screen must implement this method
+     * Examples of cleanup include removing event listeners, clearing text fields,
+     * etc.
+     */
+    public abstract void cleanup();
 
     /**
      * This method is called when the screen is shown, to ensure that the logged in
@@ -167,5 +177,33 @@ public abstract class AbstractScreen {
         this.addCss("/abstract.css");
         img.getStyleClass().add("home-button");
         box.getStyleClass().add("home-button-box");
+    }
+
+    protected void showScene(Class<? extends AbstractScreen> screenClass) {
+        getApp().getScreenManager().showScene(screenClass);
+    }
+
+    protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
+        try {
+            // show the ScreenBetweenScreens screen
+            this.showScene(ScreenBetweenScreens.class);
+
+            // grab instance of ScreenBetweenScreens
+            ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) getScreenManager().getCurrentScreen();
+            // run functionality after setup
+            screenBetweenScreens.runFunctionalityAfterDisplayingScene(msg);
+
+            // after N seconds of forced waiting on main thread (nothing happens), redirect
+            // to whatever screen is specified
+            PauseTransition pause = new PauseTransition(Duration.millis(AppConfig.TIMEOUT_MS));
+            pause.setOnFinished(event -> {
+                showScene(nextScreenClass);
+            });
+            pause.play();
+        } catch (Exception e) {
+            logger.error("Error in showSceneBetweenScenesThenNextScene: " + e.getMessage());
+            logger.info("Redirecting to LoginScreen screen immediately");
+            showScene(LoginScreen.class);
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.comp5590.components.global.SpaceVertical;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -75,6 +76,9 @@ public class LoginScreen extends AbstractScreen {
         rootPane.setCenter(pane);
 
         setRootPane(rootPane); // set root pane
+
+        // add navigation buttons
+        addBackAndHomeButtons(getRootPane());
     }
 
     /**
@@ -116,10 +120,10 @@ public class LoginScreen extends AbstractScreen {
         Line line = new LineHorizontal(loginButton, 20, 3);
 
         // create button for registering new account
-        HBox backToLoginScreenBox = new RegisterBox();
-
+        HBox backToRegisterScreenBox = new RegisterBox();
+        backToRegisterScreenBox.setId("backToRegisterScreenBox");
         // add event listener to register box
-        backToLoginScreenBox.setOnMouseClicked(event -> this.gotoRegisterPage());
+        backToRegisterScreenBox.setOnMouseClicked(event -> this.gotoRegisterPage());
 
         // create vboxes for margin
         SpaceVertical padding1 = new SpaceVertical(20);
@@ -141,7 +145,7 @@ public class LoginScreen extends AbstractScreen {
                 finalLoginBtn,
                 padding3,
                 padding4,
-                backToLoginScreenBox,
+                backToRegisterScreenBox,
                 padding5,
                 error
             );
@@ -173,17 +177,16 @@ public class LoginScreen extends AbstractScreen {
         if (passwordValid) {
             if (!user.getAuthenticationDetails().isTwoFactorEnabled()) {
                 // set the user as authenticated in session manager
-                getApp().getSessionManager().setAuthenticated(true);
+                SessionManager.getInstance().authenticate(user);
                 // show the user the home screen (successfully logged in)
-                getApp().getScreenManager().showScene(HomeScreen.class);
+                showScene(HomeScreen.class);
                 logger.info("User is logged in successfully. as {}", user.getAuthenticationDetails().getEmail());
-                unsetErrorText();
-                clearFields();
             } else {
-                getApp().getScreenManager().showScene(MFAScreen.class);
+                // set the user in the session manager
+                SessionManager.getInstance().setCurrentUser(user);
+                // show the MFA screen
+                showScene(MFAScreen.class);
             }
-            // Set the current user here, but only if the password is valids
-            getApp().setCurrentUser(user);
         } else {
             logger.error("Invalid Password(*)");
             this.error.setText("Invalid password. Please try again.");
@@ -191,9 +194,7 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void gotoRegisterPage() {
-        getApp().getScreenManager().showScene(RegisterScreen.class); // show the register page
-        unsetErrorText(); // clear the error text when we go to the register page
-        clearFields(); // clear the fields when we go to the register page
+        showScene(RegisterScreen.class); // show the register pagee
     }
 
     public void setErrorText(String txt) {
@@ -207,5 +208,12 @@ public class LoginScreen extends AbstractScreen {
     public void clearFields() {
         this.email.clear();
         this.password.clear();
+    }
+
+    @Override
+    public void cleanup() {
+        this.email.clear();
+        this.password.clear();
+        this.error.setText("");
     }
 }

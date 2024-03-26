@@ -29,35 +29,21 @@ public class HomeScreen extends AbstractScreen {
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
 
-        // Initialize name to "Guest" by default
-        String name = "Guest";
-
-        // TODO: Fix this shit (lol)
-        // Check if the App instance is available
-        if (getApp() != null && getApp().getCurrentUser() != null) {
-            // Retrieve the user's first name if available
-            name = getApp().getCurrentUser().getFirstName();
-        }
-
         // create hbox for the logout event listener
         HBox logoutBox = new HBox();
+        logoutBox.setId("logoutBox");
 
         // attach event listener to logoutbox
         logoutBox.setOnMouseClicked(e -> {
-            // log the user out, and redirect to login screen
-            SessionManager.getInstance().setAuthenticated(false);
-            this.getApp().getScreenManager().showScene(ScreenBetweenScreens.class);
-            ScreenBetweenScreens screenBetweenScreens = (ScreenBetweenScreens) this.getScreenManager()
-                .getCurrentScreen();
-            screenBetweenScreens.runFunctionalityAfterSetup(
-                "⬅️ You have successfully logged out. Redirecting to login screen...",
-                3,
-                LoginScreen.class
-            );
+            SessionManager.getInstance().unauthenticate();
+            this.showSceneBetweenScenesThenNextScene(
+                    "👋 You have successfully logged out.\nRedirecting to login screen...",
+                    LoginScreen.class
+                );
         });
 
         // Create the header bar with the determined name
-        HeaderBar headerBar = new HeaderBar(name, logoutBox);
+        HeaderBar headerBar = new HeaderBar(SessionManager.getInstance().getFullName(), logoutBox);
 
         // create Buttons for each navbar item
         Button home = new Button("Home");
@@ -67,6 +53,14 @@ public class HomeScreen extends AbstractScreen {
         Button contactUs = new Button("Contact us");
         Button doctors = new Button("Doctors");
 
+        // add IDs to buttons for testing purposes
+        home.setId("home");
+        appointments.setId("appointments");
+        prescriptions.setId("prescriptions");
+        aboutUs.setId("aboutUs");
+        contactUs.setId("contactUs");
+        doctors.setId("doctors");
+
         // attach event listeners to each button
         home.setOnAction(e -> {
             logger.info("Home button clicked");
@@ -75,27 +69,27 @@ public class HomeScreen extends AbstractScreen {
 
         appointments.setOnAction(e -> {
             logger.info("Appointments button clicked");
-            // getApp().getScreenManager().showScene(AppointmentsScreen.class);
+            // showScene(AppointmentsScreen.class);
         });
 
         prescriptions.setOnAction(e -> {
             logger.info("Prescriptions button clicked");
-            // getApp().getScreenManager().showScene(PrescriptionsScreen.class);
+            // showScene(PrescriptionsScreen.class);
         });
 
         aboutUs.setOnAction(e -> {
             logger.info("About us button clicked");
-            // getApp().getScreenManager().showScene(AboutUsScreen.class);
+            // showScene(AboutUsScreen.class);
         });
 
         contactUs.setOnAction(e -> {
             logger.info("Contact us button clicked");
-            // getApp().getScreenManager().showScene(ContactUsScreen.class);
+            // showScene(ContactUsScreen.class);
         });
 
         doctors.setOnAction(e -> {
             logger.info("Doctors button clicked");
-            getApp().getScreenManager().showScene(DocListScreen.class);
+            showScene(DocListScreen.class);
         });
 
         // create the navbar
@@ -133,7 +127,8 @@ public class HomeScreen extends AbstractScreen {
         setRootPane(rootPane); // set root pane
     }
 
-    private void showScene(Class<? extends AbstractScreen> screenClass) {
-        getApp().getScreenManager().showScene(screenClass);
+    @Override
+    public void cleanup() {
+        // nothing to clean up
     }
 }

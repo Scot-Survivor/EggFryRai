@@ -169,4 +169,9 @@ public class DocListScreen extends AbstractScreen {
             int doctorId = changedDoctor.getId(); // id of doctor to be used
         }
     }
+
+    @Override
+    public void cleanup() {
+        doctorTable.getItems().clear();
+    }
 }
