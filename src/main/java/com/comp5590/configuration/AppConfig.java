@@ -67,6 +67,8 @@ public class AppConfig {
     // General App Configuration
     public static String LOG_LEVEL = "DEBUG";
 
+    public static boolean DEBUG_MODE = false; // Debug mode, will create testing objects on app launch if this is true
+
     // Database Configuration
     public static String DATABASE_PROPERTIES_FILE = "hibernate.properties";
     public static boolean DO_ENTITY_VALIDATION = true;
