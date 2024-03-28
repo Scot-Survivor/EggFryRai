@@ -5,6 +5,7 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.events.listeners.implementations.EntityValidatorListener;
 import com.comp5590.events.listeners.implementations.SceneKeyboardNavigationListener;
 import com.comp5590.events.managers.EventManager;
+import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.HomeScreen;
@@ -13,11 +14,13 @@ import com.comp5590.security.managers.authentication.listeners.ScreenAuthValidat
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.security.managers.passwords.Argon2PasswordManager;
 import com.comp5590.security.managers.passwords.PasswordManager;
+import com.comp5590.utils.StartupUtils;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.apache.logging.log4j.Logger;
 
 public class App extends Application {
 
@@ -49,12 +52,16 @@ public class App extends Application {
     private Scene loginScene;
     private Scene homeScene;
 
+    private Logger logger;
+
     // default sizes for the screen
     private static final int height = 300;
     private static final int width = 300;
 
     @Override
     public void start(Stage stage) {
+        appConfig = AppConfig.getInstance();
+        logger = LoggerManager.getInstance().getLogger(App.class);
         // instantiate managers & everything else programatically
         sessionManager = SessionManager.getInstance();
         databaseManager = DatabaseManager.getInstance();
@@ -64,7 +71,7 @@ public class App extends Application {
         instance = this;
         primaryStage = stage;
         stage.getIcons().add(new Image("/healthcare.png"));
-        appConfig = AppConfig.getInstance();
+
         screenManager = new ScreenManager(primaryStage);
         totpManager = TOTPManager.getInstance();
         // add event listeners to the event manager
@@ -74,6 +81,15 @@ public class App extends Application {
         }
         eventManager.addListener(new ScreenAuthValidationListener());
         eventManager.addListener(new SceneKeyboardNavigationListener(screenManager, primaryStage));
+
+        if (AppConfig.DEBUG_MODE) {
+            // create testing objects
+            logger.debug("Creating testing objects");
+            if (!StartupUtils.createObjects()) {
+                logger.fatal("Failed to create testing objects");
+                System.exit(1);
+            }
+        }
     }
 
     public static void main(String[] args) {
