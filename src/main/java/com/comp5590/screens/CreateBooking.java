@@ -6,6 +6,7 @@ import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
+import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
@@ -27,8 +28,8 @@ import javafx.scene.text.Text;
 public class CreateBooking extends AbstractScreen {
 
     private User currentUser;
-    private HashMap<String, Integer> doctorMap;
-    private HashMap<String, Integer> roomMap;
+    private HashMap<String, User> doctorMap;
+    private HashMap<String, Room> roomMap;
 
     public CreateBooking(ScreenManager screenManager) {
         super(screenManager);
@@ -48,7 +49,7 @@ public class CreateBooking extends AbstractScreen {
         // set center to be some regular text
         rootPane.setTop(setTitle());
         rootPane.setCenter(createCenter());
-        rootPane.setLeft(createLeft());
+        addBackAndHomeButtons(rootPane); // Add back and home buttons to the page
     }
 
     /**
@@ -103,22 +104,6 @@ public class CreateBooking extends AbstractScreen {
 
         // return the central pane of the page
         return centerPane;
-    }
-
-    /**
-     * Create the left side items of the bookings screen
-     * @return A VBox just containing the buttons
-     */
-    private VBox createLeft() {
-        // Create the button and add functionality
-        Button homeButton = new Button("Home");
-        homeButton.setOnAction(e -> {
-            showScene(HomeScreen.class);
-        });
-
-        // Create and return the VBox to hold these
-        VBox leftSide = new VBox(homeButton);
-        return leftSide;
     }
 
     /**
@@ -181,15 +166,14 @@ public class CreateBooking extends AbstractScreen {
         DatabaseManager db = getDatabaseManager();
 
         // Grab a list of doctors
-        List<?> docList = db.query("FROM User WHERE role = 'DOCTOR'");
+        List<?> docList = db.getAllByProperty(User.class, "role", UserRole.DOCTOR);
 
         // Attempt to add all doctors to the drop down. If fails then just print message and don't display and doctors
         try {
             for (Object doc : docList) {
-                int docId = ((User) doc).getId();
                 String docName = ((User) doc).getFirstName() + " " + ((User) doc).getSurName();
                 doctorChoiceBox.getItems().add(docName);
-                doctorMap.put(docName, docId);
+                doctorMap.put(docName, (User) doc);
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -217,15 +201,14 @@ public class CreateBooking extends AbstractScreen {
         DatabaseManager db = getDatabaseManager();
 
         // Grab a list of doctors
-        List<?> roomList = db.query("FROM Room");
+        List<?> roomList = db.getAll(Room.class);
 
         // Attempt to add all doctors to the drop down. If fails then just print message and don't display and doctors
         try {
             for (Object room : roomList) {
-                int roomId = ((Room) room).getRoomId();
                 String roomName = ((Room) room).getRoomNumber();
                 roomChoiceBox.getItems().add(roomName);
-                roomMap.put(roomName, roomId);
+                roomMap.put(roomName, (Room) room);
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -266,9 +249,8 @@ public class CreateBooking extends AbstractScreen {
 
         // get the id of the doctor
         ChoiceBox<String> docSelection = (ChoiceBox<String>) root.lookup("#doctorChoiceBox");
-        int docId = doctorMap.get(docSelection.getValue());
-        List<?> doctorResult = db.query("FROM User WHERE id = " + docId);
-        User doctor = (User) doctorResult.get(0);
+        User doc = doctorMap.get(docSelection.getValue());
+        User doctor = (User) doc;
 
         // get the apt reason
         String apptReason = ((TextField) root.lookup("#apptReasonTextField")).getText();
@@ -282,9 +264,8 @@ public class CreateBooking extends AbstractScreen {
 
         // get the users current room choice
         ChoiceBox<String> roomChoiceBox = (ChoiceBox<String>) root.lookup("#roomChoiceBox");
-        int roomId = roomMap.get(roomChoiceBox.getValue());
-        List<?> roomResult = db.query("FROM Room WHERE id =" + roomId);
-        Room apptRoom = (Room) roomResult.get(0);
+        Room room = roomMap.get(roomChoiceBox.getValue());
+        Room apptRoom = (Room) room;
 
         // Create the booking entity
         Booking booking = new Booking();
