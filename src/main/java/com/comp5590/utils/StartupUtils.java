@@ -16,9 +16,9 @@ public class StartupUtils {
         DatabaseManager db = DatabaseManager.getInstance();
 
         Address address = createAddress();
-        User user = createUser(address, createAuth("testuser@test.com"));
-        createDoctor(address, createAuth("testdoc1@test.com"));
-        createDoctor(address, createAuth("testdoc2@test.com"));
+        User user = createUser(address, createAuth("testuser@test.com", "password"));
+        createDoctor(address, createAuth("testdoc1@test.com", "password"));
+        createDoctor(address, createAuth("testdoc2@test.com", "password"));
         createRoom(address, "1000");
         createRoom(address, "1001");
 
@@ -55,12 +55,12 @@ public class StartupUtils {
         doctor = db.saveGet(doctor);
     }
 
-    private static AuthenticationDetails createAuth(String email) {
+    private static AuthenticationDetails createAuth(String email, String password) {
         DatabaseManager db = DatabaseManager.getInstance();
 
         AuthenticationDetails auth = new AuthenticationDetails(
             email,
-            PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM).hashPassword("password"),
+            PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM).hashPassword(password),
             false,
             null,
             null

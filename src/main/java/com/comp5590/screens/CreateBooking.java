@@ -166,7 +166,7 @@ public class CreateBooking extends AbstractScreen {
         DatabaseManager db = getDatabaseManager();
 
         // Grab a list of doctors
-        List<?> docList = db.getAllByProperty(User.class, "role", UserRole.DOCTOR);
+        List<User> docList = db.getAllByProperty(User.class, "role", UserRole.DOCTOR);
 
         // Attempt to add all doctors to the drop down. If fails then just print message and don't display and doctors
         try {
@@ -201,7 +201,7 @@ public class CreateBooking extends AbstractScreen {
         DatabaseManager db = getDatabaseManager();
 
         // Grab a list of doctors
-        List<?> roomList = db.getAll(Room.class);
+        List<Room> roomList = db.getAll(Room.class);
 
         // Attempt to add all doctors to the drop down. If fails then just print message and don't display and doctors
         try {
@@ -231,6 +231,7 @@ public class CreateBooking extends AbstractScreen {
 
         // Add some functionality to the button
         book.setOnAction(this::book);
+        book.setId("bookingButton");
 
         return book;
     }
