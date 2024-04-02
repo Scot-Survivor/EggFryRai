@@ -6,6 +6,9 @@ import com.comp5590.enums.UserRole;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+/**
+ * Validator to check if the user has the required role.
+ */
 public class CheckRoleValidator implements ConstraintValidator<RequiredRole, User> {
 
     private UserRole role;

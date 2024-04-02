@@ -4,6 +4,9 @@ import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.validators.annontations.ValidMFA;
 import jakarta.validation.ConstraintValidator;
 
+/**
+ * Validator to check if the user has MFA enabled.
+ */
 public class CheckMFAValidator implements ConstraintValidator<ValidMFA, AuthenticationDetails> {
 
     @Override

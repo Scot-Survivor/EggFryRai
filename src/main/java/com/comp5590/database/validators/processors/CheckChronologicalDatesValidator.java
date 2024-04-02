@@ -4,6 +4,9 @@ import com.comp5590.database.entities.Insurance;
 import com.comp5590.database.validators.annontations.ChronologicalDates;
 import jakarta.validation.ConstraintValidator;
 
+/**
+ * Validator to check if the dates are in chronological order.
+ */
 public class CheckChronologicalDatesValidator implements ConstraintValidator<ChronologicalDates, Insurance> {
 
     @Override

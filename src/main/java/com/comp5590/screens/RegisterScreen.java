@@ -116,6 +116,10 @@ public class RegisterScreen extends AbstractScreen {
         addBackAndHomeButtons(getRootPane());
     }
 
+    /**
+     * Create the register box
+     * @return VBox
+     */
     private VBox createRegisterBox() {
         // create the fields (plus assign IDs to them for testing purposes (see
         // RegisterTest.java))
@@ -295,12 +299,19 @@ public class RegisterScreen extends AbstractScreen {
         return box;
     }
 
+    /**
+     * Go to the login page
+     */
     private void goToLoginPage() {
         showScene(LoginScreen.class);
         clearFields();
         unsetErrorText();
     }
 
+    /**
+     * Register a new user
+     * @param event ActionEvent
+     */
     private void register(ActionEvent event) {
         // check if fields are null
         if (
@@ -524,14 +535,24 @@ public class RegisterScreen extends AbstractScreen {
             );
     }
 
+    /**
+     * Set the error text
+     * @param txt The text to set
+     */
     public void setErrorText(String txt) {
         this.error.setText(txt);
     }
 
+    /**
+     * Unset the error text
+     */
     public void unsetErrorText() {
         this.error.setText("");
     }
 
+    /**
+     * Clear the fields
+     */
     public void clearFields() {
         this.email.clear();
         this.password.clear();
@@ -555,6 +576,10 @@ public class RegisterScreen extends AbstractScreen {
         this.clearFields();
     }
 
+    /**
+     * Generate a random user
+     * @param event ActionEvent
+     */
     private void generateRandomUser(ActionEvent event) {
         String firstName = NameUtils.getRandomFirstName();
         String surName = NameUtils.getRandomLastName();

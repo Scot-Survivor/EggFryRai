@@ -8,6 +8,10 @@ import jakarta.validation.Validator;
 import java.util.Set;
 import org.hibernate.validator.HibernateValidator;
 
+/**
+ * Listener to validate entities before they are saved to the database.
+ * Using hibernate validators.
+ */
 public class EntityValidatorListener implements DatabaseListener {
 
     private Validator validator;
@@ -23,6 +27,7 @@ public class EntityValidatorListener implements DatabaseListener {
             return event;
         }
         if (event.getEntity() == null) {
+            // If entity is null we do not want to commit this.
             event.setCancelled(true);
             return event;
         }

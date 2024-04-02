@@ -11,6 +11,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.core.Logger;
 
+/**
+ * Listener to handle keyboard navigation on screens.
+ */
 public class SceneKeyboardNavigationListener implements KeyboardListener {
 
     private ScreenManager screenManager;
@@ -96,23 +99,45 @@ public class SceneKeyboardNavigationListener implements KeyboardListener {
             );
     }
 
-    // * Helper methods
+    /**
+     * Check if the screen is of a certain type
+     * @param screen The screen to check
+     * @param screenName The screen name to check
+     * @return If the screen is of the type
+     */
     private boolean isScreen(AbstractScreen screen, String screenName) {
         return screen.getClass().getSimpleName().toLowerCase().startsWith(screenName);
     }
 
+    /**
+     * Check if the screen is a ScreenBetweenScreens
+     * @param screen The screen to check
+     * @return If the screen is a ScreenBetweenScreens
+     */
     private boolean isBetweenScreens(AbstractScreen screen) {
         return screen.getClass().getSimpleName().toLowerCase().startsWith("screenbetweenscreens");
     }
 
+    /**
+     * Get the current screen
+     * @return The current screen
+     */
     private AbstractScreen getCurrentScreen() {
         return screenManager.getCurrentScreen();
     }
 
+    /**
+     * Get the root pane of the current screen
+     * @return The root pane
+     */
     private Pane getRootPane() {
         return getCurrentScreen().getRootPane();
     }
 
+    /**
+     * Get the screen name
+     * @return The screen name
+     */
     private String getScreenName() {
         return getCurrentScreen().getClass().getSimpleName().toLowerCase();
     }

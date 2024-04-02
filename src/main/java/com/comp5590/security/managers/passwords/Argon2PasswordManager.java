@@ -31,6 +31,12 @@ public class Argon2PasswordManager extends PasswordManager {
         available = true;
     }
 
+    /**
+     * Check if the password provided by the user matches the stored password.
+     * @param storedPassword The base64 encoded hash from the database.
+     * @param userPassword The password provided from the user.
+     * @return True if the passwords match, false otherwise.
+     */
     @Override
     public boolean passwordMatches(String storedPassword, String userPassword) {
         byte[] arr = userPassword.getBytes();

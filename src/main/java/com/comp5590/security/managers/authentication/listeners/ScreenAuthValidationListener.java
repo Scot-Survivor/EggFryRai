@@ -14,8 +14,15 @@ import lombok.Getter;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
+/**
+ * Listener that checks if a screen requires authentication and if the user is authenticated.
+ * @author Joshua Shiells
+ */
 public class ScreenAuthValidationListener implements ScreenListener {
 
+    /**
+     * Set of screen names that require authentication.
+     */
     @Getter
     private final Set<String> protectedScreens;
 
@@ -33,6 +40,11 @@ public class ScreenAuthValidationListener implements ScreenListener {
         }
     }
 
+    /**
+     * Check if the screen requires authentication and if the user is authenticated.
+     * @param event ScreenChangeEvent
+     * @return ScreenChangeEvent
+     */
     @Override
     public ScreenChangeEvent onScreenChange(ScreenChangeEvent event) {
         if (event.isCancelled()) {

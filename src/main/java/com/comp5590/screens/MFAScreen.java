@@ -29,6 +29,10 @@ public class MFAScreen extends AbstractScreen {
         setRootPane(pane);
     }
 
+    /**
+     * Create the 2FA code input form
+     * @return HBox
+     */
     private HBox create2FA() {
         Label codeLabel = new Label("2FA Code:");
         this.code = new TextField();
@@ -43,6 +47,10 @@ public class MFAScreen extends AbstractScreen {
         return new HBox(codeLabel, this.code, submit, this.error);
     }
 
+    /**
+     * Submit the 2FA code
+     * @param e ActionEvent
+     */
     private void submitCode(ActionEvent e) {
         String code = this.code.getText();
         User user = SessionManager.getInstance().getCurrentUser();
@@ -61,6 +69,12 @@ public class MFAScreen extends AbstractScreen {
         }
     }
 
+    /**
+     * Verify the 2FA code
+     * @param code 2FA code
+     * @param user User object
+     * @return boolean
+     */
     private boolean verify(String code, User user) {
         return (
             getApp().getTotpManager().verifyRecoveryCode(user.getAuthenticationDetails().getRecoveryCodes(), code) ||

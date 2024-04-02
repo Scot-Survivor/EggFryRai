@@ -24,6 +24,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.reflections.Reflections;
 
+/**
+ * Database manager class
+ */
 public class DatabaseManager {
 
     public static DatabaseManager INSTANCE;
@@ -49,6 +52,9 @@ public class DatabaseManager {
         return INSTANCE;
     }
 
+    /**
+     * Load the database configuration
+     */
     private void load() {
         Properties properties = new Properties();
         // Check hibernate.properties is found
@@ -85,11 +91,19 @@ public class DatabaseManager {
         app = App.getInstance();
     }
 
+    /**
+     * Get all entity classes
+     * @return List of entity classes
+     */
     private List<Class<?>> getEntityClasses() {
         Reflections reflections = new Reflections("com.comp5590.database.entities");
         return reflections.getTypesAnnotatedWith(Entity.class).stream().toList();
     }
 
+    /**
+     * Helper method to test database connection
+     * @return if connected
+     */
     public boolean testConnection() {
         try {
             sessionFactory.openSession();
@@ -101,18 +115,40 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Old method to validate objects
+     * @param object Object to validate
+     * @return if valid
+     */
+    @Deprecated
     public boolean validate(Object object) {
         return validatorFactory.getValidator().validate(object).isEmpty();
     }
 
+    /**
+     * Validate an object and return a set of constraint violations
+     * @param object Object to validate
+     * @return Set of constraint violations
+     */
+    @Deprecated
     public Set<ConstraintViolation<Object>> validateWithViolations(Object object) {
         return validatorFactory.getValidator().validate(object);
     }
 
+    /**
+     * Helper method on whether an event is cancelled
+     * @param event Event to check
+     * @return if cancelled
+     */
     private boolean shouldCancel(CancellableEvent event) {
         return event.isCancelled();
     }
 
+    /**
+     * Save an object to the database
+     * @param object Object to save
+     * @return if saved
+     */
     public boolean save(Object object) {
         if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), object, app)))) {
             logger.debug("Save event cancelled");
@@ -133,6 +169,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Save an object to the database and return the ID
+     * @param object Object to save
+     * @return ID of the object
+     */
     public int saveGetId(Object object) {
         if (shouldCancel(eventManager.callEvent(new EntitySaveEvent(object.getClass(), object, app)))) {
             logger.debug("Save event cancelled");
@@ -153,6 +194,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Save an object to the database and return the object
+     * @param object Object to save
+     * @return Object
+     * @param <T> The type of object to save
+     */
     public <T> T saveGet(Object object) {
         int id = this.saveGetId(object);
         if (id == -1) {
@@ -185,6 +232,13 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Execute a query against the database return list of results
+     * @param T The type of object to return
+     * @param query Hibernate Query to execute
+     * @return List of results
+     * @param <T> The type of object to return
+     */
     public <T> List<T> query(final Class<T> T, String query) {
         if (shouldCancel(eventManager.callEvent(new EntityQueryEvent(query, app)))) {
             logger.debug("Query event cancelled");
@@ -204,6 +258,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Execute a query against the database return a single result
+     * @param object Object to return
+     * @return Object
+     */
     public boolean update(Object object) {
         if (shouldCancel(eventManager.callEvent(new EntityUpdateEvent(object.getClass(), object, app)))) {
             logger.debug("Update event cancelled");

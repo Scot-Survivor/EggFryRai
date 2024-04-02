@@ -26,6 +26,10 @@ public class LoggerManager {
         this.loggers = new HashMap<>();
     }
 
+    /**
+     * Get the log level from the config file
+     * @return the log level
+     */
     private String getLogLevel() {
         if (config == null) {
             config = AppConfig.getInstance();
@@ -38,6 +42,11 @@ public class LoggerManager {
         }
     }
 
+    /**
+     * Appender is a Log4J object that defines the output of the logger (I.E Console, File, etc)
+     * @param clazz The class that the logger is for
+     * @return The appender
+     */
     private Appender getAppender(Class<?> clazz) {
         PatternLayout pattern = PatternLayout
             .newBuilder()
@@ -51,10 +60,19 @@ public class LoggerManager {
         return ConsoleAppender.createDefaultAppenderForLayout(pattern);
     }
 
+    /**
+     * Create a logger for a class
+     * @param clazz The class that the logger is for
+     */
     private void createLogger(Class<?> clazz) {
         createLogger(clazz, getLogLevel());
     }
 
+    /**
+     * Create a logger for a class with a specific log level
+     * @param clazz The class that the logger is for
+     * @param log_level The log level
+     */
     private void createLogger(Class<?> clazz, String log_level) {
         if (log_level == null || log_level.isEmpty()) {
             getLogger().error("Invalid log level given to createLogger");
@@ -70,6 +88,10 @@ public class LoggerManager {
         loggers.put(clazz, logger);
     }
 
+    /**
+     * Singleton instance of the LoggerManager
+     * @return The instance
+     */
     public static LoggerManager getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new LoggerManager();
@@ -77,16 +99,31 @@ public class LoggerManager {
         return INSTANCE;
     }
 
+    /**
+     * Get a default logger
+     * @return The logger
+     */
     public Logger getLogger() {
         return getLogger(App.class);
     }
 
+    /**
+     * Get a logger for a specific class
+     * @param clazz The class that the logger is for
+     * @return The logger
+     */
     public Logger getLogger(Class<?> clazz) {
         if (loggers.containsKey(clazz)) return loggers.get(clazz);
         createLogger(clazz);
         return loggers.get(clazz);
     }
 
+    /**
+     * Get a logger for a specific class with a specific log level
+     * @param clazz The class that the logger is for
+     * @param log_level The log level
+     * @return The logger
+     */
     public Logger getLogger(Class<?> clazz, String log_level) {
         if (loggers.containsKey(clazz)) return loggers.get(clazz);
         createLogger(clazz, log_level);
