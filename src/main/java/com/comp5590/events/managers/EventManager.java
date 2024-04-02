@@ -30,6 +30,12 @@ public class EventManager {
         listeners.add(listener);
     }
 
+    /**
+     * Calls the event on all listeners and returns the event.
+     * @param event The event to call
+     * @return The event after all listeners have been called
+     * @param <T> The type of event
+     */
     public <T extends GenericEvent> T callEvent(T event) {
         for (Listener listener : listeners) {
             GenericEvent temp = listener.onEvent(event);

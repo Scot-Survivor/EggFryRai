@@ -61,6 +61,11 @@ public class ScreenManager {
         fullscreen();
     }
 
+    /**
+     * Short hand method to check if the event should be cancelled
+     * @param event The event to check
+     * @return If the event should be cancelled
+     */
     private boolean shouldCancel(CancellableEvent event) {
         return event.isCancelled();
     }
@@ -150,7 +155,7 @@ public class ScreenManager {
      * @param clazz The class of the screen to add
      */
     private void addScreenToHistory(Class<? extends AbstractScreen> clazz) {
-        // if is screenbetweenscreens, do not add to history
+        // if is ScreenBetweenScreens, do not add to history
         if (isBetweenScreens(clazz)) {
             return;
         }
@@ -177,18 +182,30 @@ public class ScreenManager {
         }
     }
 
+    /**
+     * Get the instance of the screen
+     * @param screen The screen to get the instance of
+     * @return The instance of the screen
+     */
     public AbstractScreen getScreenInstance(Class<? extends AbstractScreen> screen) {
         return screenInstances.get(screen);
     }
 
-    // is between screens
+    /**
+     * Check if the screen is a ScreenBetweenScreens
+     * @param screen The screen to check
+     * @return If the screen is a ScreenBetweenScreens
+     */
     public boolean isBetweenScreens(Class<? extends AbstractScreen> screen) {
         // logger.info("Checking if screen is between screens: {}",
         // screen.getSimpleName());
         return screen.getSimpleName().toLowerCase().equals("screenbetweenscreens");
     }
 
-    // get previous screen
+    /**
+     * Get the previous screen
+     * @return The previous screen
+     */
     public AbstractScreen getPreviousScreen() {
         // compensate for a potential ScreenBetweenScreens at the previous index. If so,
         // return the screen before that.

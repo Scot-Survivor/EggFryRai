@@ -20,8 +20,9 @@ public class SessionManager {
     @Setter
     private User currentUser;
 
-    // state message for transitory screens, with getter for it automatically
-    // generated using Lombok :)
+    /**
+     * State message for transitory screens
+     */
     @Getter
     @Setter
     private String stateMessage;
@@ -39,12 +40,18 @@ public class SessionManager {
         return INSTANCE;
     }
 
-    // Get the authenticated status of the user
+    /**
+     * Check if the user is authenticated
+     * @return boolean
+     */
     public boolean isAuthenticated() {
         return this.authenticated;
     }
 
-    // Set the authenticated status of the user
+    /**
+     * Authenticate the user
+     * @param user The user to authenticate
+     */
     public void authenticate(User user) {
         // set the current user
         this.currentUser = user;
@@ -54,7 +61,9 @@ public class SessionManager {
         unauthenticateAfter(2);
     }
 
-    // Unauthenticate the user
+    /**
+     * Unauthenticate the user
+     */
     public void unauthenticate() {
         // unset the current user
         this.currentUser = null;
@@ -62,7 +71,10 @@ public class SessionManager {
         this.authenticated = false;
     }
 
-    // Unauthenticate the user after a certain amount of time
+    /**
+     * Unauthenticate the user after a certain amount of time
+     * @param hours The amount of time to wait before unauthenticating the user
+     */
     public void unauthenticateAfter(int hours) {
         // open new thread and run the unauthenticate method
         new Thread(() -> {
@@ -76,7 +88,10 @@ public class SessionManager {
             .start();
     }
 
-    // User data methods cos why not
+    /**
+     * Get the full name of the current user
+     * @return The full name of the current user
+     */
     public String getFullName() {
         return this.currentUser.getFirstName() + " " + this.currentUser.getSurName();
     }

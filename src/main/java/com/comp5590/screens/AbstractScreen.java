@@ -25,6 +25,20 @@ import lombok.Setter;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.SessionFactory;
 
+/**
+ * AbstractScreen class
+ * <p>
+ *     This class is the base class for all screens in the application.
+ *     It provides the basic functionality for all screens, such as
+ *     setting up the screen, cleaning up the screen, and checking if
+ *     the user has access to the screen.
+ *     It also provides methods for adding and removing CSS files to the screen.
+ *     It also provides methods for adding back and home buttons to the screen.
+ *     It also provides methods for showing the screen and transitioning between screens.
+ *     It also provides the app, database manager, screen manager, session factory, and logger objects.
+ *     It also provides the root pane and CSS paths for the screen.
+ * </p>
+ */
 @Getter
 public abstract class AbstractScreen {
 
@@ -108,7 +122,10 @@ public abstract class AbstractScreen {
         cssPaths.remove(cssPath);
     }
 
-    // Attach default pane & CSS to screen
+    /**
+     * Attach default pane to screen
+     * @return GridPane
+     */
     public GridPane attachDefaultPane() {
         this.addCss("/global.css");
 
@@ -126,6 +143,10 @@ public abstract class AbstractScreen {
         return pane;
     }
 
+    /**
+     * Attach default pane to screen
+     * @param previousRootPane Pane
+     */
     protected void addBackAndHomeButtons(Pane previousRootPane) {
         // Create a StackPane to layer the button on top of the BorderPane
         StackPane stackPane = new StackPane();
@@ -144,7 +165,10 @@ public abstract class AbstractScreen {
         stackPane.getStyleClass().add("stackpane");
     }
 
-    // method that adds a back button to the screen
+    /**
+     * Add back button to screen
+     * @param stackPane StackPane
+     */
     protected void addBackButton(StackPane stackPane) {
         // Make icon button
         ImageView img = new ImageView(new Image("/back.png"));
@@ -172,7 +196,10 @@ public abstract class AbstractScreen {
         box.getStyleClass().add("back-button-box");
     }
 
-    // method that adds a home button to the screen
+    /**
+     * Add home button to screen
+     * @param stackPane StackPane
+     */
     protected void addHomeButton(StackPane stackPane) {
         // Make icon button
         ImageView img = new ImageView(new Image("/home.png"));
@@ -208,10 +235,19 @@ public abstract class AbstractScreen {
         box.getStyleClass().add("home-button-box");
     }
 
+    /**
+     * Shortcut to show a scene
+     * @param screenClass Class
+     */
     protected void showScene(Class<? extends AbstractScreen> screenClass) {
         getApp().getScreenManager().showScene(screenClass);
     }
 
+    /**
+     * Shortcut to show a scene
+     * @param msg String
+     * @param nextScreenClass Class
+     */
     protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
         try {
             logger.info("Showing ScreenBetweenScreens screen, with message: " + msg);

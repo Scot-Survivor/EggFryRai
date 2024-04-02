@@ -6,12 +6,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.core.Logger;
 
+/**
+ * Generic event class that can be extended to create custom events.
+ */
 @Getter
 public class GenericEvent {
 
     @Setter
     private String message;
 
+    /**
+     * Fields likely to be used by many events
+     */
     private final App app;
     private final Logger logger;
 

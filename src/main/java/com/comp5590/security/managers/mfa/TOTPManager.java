@@ -43,6 +43,10 @@ public class TOTPManager {
         return instance;
     }
 
+    /**
+     * Get the hashing algorithm
+     * @return The hashing algorithm
+     */
     private HashingAlgorithm getHashAlgorithm() {
         return HashingAlgorithm.valueOf(AppConfig.TOTP_ALGORITHM.toUpperCase());
     }

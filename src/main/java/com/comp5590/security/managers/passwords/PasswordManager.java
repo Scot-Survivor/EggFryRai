@@ -41,10 +41,17 @@ public abstract class PasswordManager {
         return available;
     }
 
+    /**
+     * Get an instance of a PasswordManager
+     * @param passwordManager The name of the password manager
+     * @return The instance of the password manager
+     */
     public static PasswordManager getInstanceOf(String passwordManager) {
+        // Reflections load all the implemented password managers
         Reflections reflections = new Reflections("com.comp5590.security.managers.passwords", Scanners.SubTypes);
         Set<Class<? extends PasswordManager>> pms = reflections.getSubTypesOf(PasswordManager.class);
         pms.forEach(pm -> {
+            // Debugger to load all the password managers
             logger.debug("Found PasswordManager: " + pm.getSimpleName());
         });
         for (Class<? extends PasswordManager> pm : pms) {
@@ -53,11 +60,13 @@ public abstract class PasswordManager {
                     return pm.getConstructor().newInstance();
                 }
             } catch (Exception e) {
+                // Regular error rather than fatal
                 logger.error("Valid to load PasswordManager instance: " + e.getMessage());
                 logger.debug(Arrays.toString(e.getStackTrace()));
             }
         }
         logger.warn("No password manager found for name: " + passwordManager);
+        // If no hashing algorithm exists throw error
         throw new IllegalArgumentException("No password manager found for name: " + passwordManager);
     }
 
