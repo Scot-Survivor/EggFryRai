@@ -78,6 +78,7 @@ public class CreateBookingTests extends SetupTests {
         robot.interact(() -> {
             robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
             robot.lookup("#roomChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first room
+            robot.lookup("#time").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first time
             robot.lookup("#apptReasonTextField").queryAs(TextField.class).setText(APPOINTMENT_REASON);
             robot.lookup("#datePicker").queryAs(DatePicker.class).setValue(APPOINTMENT_TIME);
         });
