@@ -4,6 +4,9 @@ import com.comp5590.database.validators.annontations.InFuture;
 import jakarta.validation.ConstraintValidator;
 import java.util.Date;
 
+/**
+ * Validator to check if the date is in the future.
+ */
 public class CheckInFutureValidator implements ConstraintValidator<InFuture, Date> {
 
     @Override

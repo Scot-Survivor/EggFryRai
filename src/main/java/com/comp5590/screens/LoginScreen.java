@@ -81,7 +81,7 @@ public class LoginScreen extends AbstractScreen {
     /**
      * A function that creates a button to send us to the POS screen
      * NOTE: must keep this in the LoginScreen file due to certain event listeners
-     * being bound to the textfields, which are themselves fields of this class.
+     * being bound to the TextFields, which are themselves fields of this class.
      *
      * @return The button
      */
@@ -190,18 +190,31 @@ public class LoginScreen extends AbstractScreen {
         }
     }
 
+    /**
+     * Method to go to the register page
+     */
     private void gotoRegisterPage() {
         showScene(RegisterScreen.class); // show the register pagee
     }
 
+    /**
+     * Set the error text
+     * @param txt The text to set
+     */
     public void setErrorText(String txt) {
         this.error.setText(txt);
     }
 
+    /**
+     * Unset the error text
+     */
     public void unsetErrorText() {
         this.error.setText("");
     }
 
+    /**
+     * Clear the fields
+     */
     public void clearFields() {
         this.email.clear();
         this.password.clear();

@@ -117,6 +117,9 @@ public class AppConfig {
         return removed;
     }
 
+    /**
+     * Initial setup of the configuration
+     */
     private void setup() {
         boolean exists = configFile.exists() && !configFile.isDirectory();
         boolean created = false;
@@ -172,6 +175,11 @@ public class AppConfig {
         }
     }
 
+    /**
+     * Check if a field is valid for saving
+     * @param field The field to check
+     * @return Whether the field is valid
+     */
     private boolean isValidField(Field field) {
         return (
             !Modifier.isFinal(field.getModifiers()) &&
@@ -189,15 +197,25 @@ public class AppConfig {
         return instance;
     }
 
+    /**
+     * This forces the configuration to reload from the file, hacky but works.
+     */
     public void reload() {
         logger.warn("Reloading configuration");
         instance = new AppConfig(); // Force reload
     }
 
+    /**
+     * Get a list of all fields in the AppConfig class
+     * @return List of fields
+     */
     public List<Field> getConfigFields() {
         return Arrays.stream(this.getClass().getDeclaredFields()).filter(this::isValidField).toList();
     }
 
+    /**
+     * Force the configuration to save
+     */
     public void save() {
         try {
             builder.save();
