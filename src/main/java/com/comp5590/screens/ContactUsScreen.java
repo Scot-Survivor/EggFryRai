@@ -19,7 +19,7 @@ public class ContactUsScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.addCss("/docList.css");
+        this.addCss("/contactUs.css");
 
         setRootPane(new BorderPane());
         ((BorderPane) getRootPane()).setCenter(center());
@@ -37,7 +37,7 @@ public class ContactUsScreen extends AbstractScreen {
 
         // Create button
         Button submitButton = new Button("Submit");
-        submitButton.setId("switchButton");
+        submitButton.setId("submitButton");
 
         // Create text fields and labels
         Label firstNameLabel = new Label("First name");
@@ -47,7 +47,14 @@ public class ContactUsScreen extends AbstractScreen {
         Label emailLabel = new Label("Email");
         TextField email = new TextField();
         Label messageLabel = new Label("What is it you need assistance with?");
-        TextField message = new TextField();
+        TextArea message = new TextArea(); // Text area so input wraps
+
+        Label bottomNote = new Label("Please note a response may take up to 5 working days.");
+
+        // Set needed ids
+        message.setId("messageTextBox");
+        info.setId("infoLabel");
+        bottomNote.setId("noteLabel");
 
         VBox formBox = new VBox(
             firstNameLabel,
@@ -60,11 +67,11 @@ public class ContactUsScreen extends AbstractScreen {
             message,
             submitButton
         );
-        formBox.setId("center");
+        formBox.setId("form");
         formBox.setAlignment(Pos.CENTER);
 
         // Add elements to VBox
-        VBox center = new VBox(titleBox, info, formBox);
+        VBox center = new VBox(titleBox, info, formBox, bottomNote);
         center.setId("center");
         center.getStyleClass().add("custom-pane");
         center.setPrefSize(600, 400);
