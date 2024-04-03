@@ -7,6 +7,8 @@ import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
+import com.comp5590.enums.UserRole;
+import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
@@ -26,12 +28,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.apache.logging.log4j.core.Logger;
 
 @AuthRequired
 public class CreateBooking extends AbstractScreen {
 
     private final HashMap<String, User> doctorMap;
     private final HashMap<String, Room> roomMap;
+    private final Logger logger = LoggerManager.getInstance().getLogger(CreateBooking.class);
 
     public CreateBooking(ScreenManager screenManager) {
         super(screenManager);
@@ -151,6 +155,10 @@ public class CreateBooking extends AbstractScreen {
 
         // get the current user
         User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser.getRole() != UserRole.PATIENT) {
+            logger.error("User is not a patient");
+            return;
+        }
 
         // get the users current room choice
         ChoiceBox<String> roomChoiceBox = (ChoiceBox<String>) root.lookup("#roomChoiceBox");
@@ -174,17 +182,13 @@ public class CreateBooking extends AbstractScreen {
 
         // Gets all appointments at our given time
         List<Booking> bookings = db.getAllByProperty(Booking.class, "apptTime", dateWithTime);
-        if (bookings.isEmpty()) { // If empty then we know free because no other bookings at that time
-            okToSave = true;
-        } else {
-            for (Booking appt : bookings) { // Check over each booking
-                if (booking.getDoctor().equals(doc)) { // Check if its the same doctor at that time
-                    System.err.println("SAME DOC DONT SAVE");
-                    okToSave = false;
-                } else if (booking.getRoom().equals(room)) {
-                    System.err.println("SAME ROOM DONT SAVE");
-                    okToSave = false;
-                }
+        for (Booking appt : bookings) { // Check over each booking
+            if (appt.getDoctor().equals(doc)) { // Check if it's the same doctor at that time
+                logger.warn("SAME DOCTOR DONT SAVE");
+                okToSave = false;
+            } else if (appt.getRoom().equals(room)) {
+                logger.warn("SAME ROOM DONT SAVE");
+                okToSave = false;
             }
         }
 
@@ -194,11 +198,10 @@ public class CreateBooking extends AbstractScreen {
         // Save if ok
         if (okToSave) {
             // booking has been saved
-            System.err.println("SAVING");
             db.save(booking);
             warningText.setText("Making Appointment");
         } else {
-            System.err.println("NOTSAVING");
+            logger.warn("Cannot make appointment");
             warningText.setText("Cannot make appointment");
         }
 
