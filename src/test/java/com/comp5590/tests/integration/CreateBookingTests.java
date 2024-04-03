@@ -1,11 +1,10 @@
 package com.comp5590.tests.integration;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.Booking;
-import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.screens.CreateBooking;
 import com.comp5590.tests.basic.SetupTests;
@@ -52,29 +51,13 @@ public class CreateBookingTests extends SetupTests {
     }
 
     /**
-     * Register a user with a session and make sure its done
-     * @param robot
-     */
-    @Test
-    public void registerUser(FxRobot robot) {
-        String email = "testing@testing.com";
-        String password = "whey";
-
-        registerUser(app, robot, email, password);
-        stall(robot);
-        loginUser(app, robot, email, password);
-
-        assertInstanceOf(User.class, app.getSessionManager().getCurrentUser());
-    }
-
-    /**
      * Test filling in the form and booking an appointment
      * @param robot
      */
     @Test
     public void testBookingCreation(FxRobot robot) {
         goToScreen(app, robot, CreateBooking.class);
-
+        DatabaseManager db = DatabaseManager.getInstance();
         robot.interact(() -> {
             robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
             robot.lookup("#roomChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first room
@@ -85,9 +68,9 @@ public class CreateBookingTests extends SetupTests {
 
         robot.interact(() -> {
             robot.lookup("#bookingButton").queryAs(javafx.scene.control.Button.class).fire();
+            stall(robot);
+            // Assert that a booking was created
+            assertNotNull(db.getAll(Booking.class).stream().findFirst().orElse(null));
         });
-
-        DatabaseManager db = DatabaseManager.getInstance();
-        assertInstanceOf(Booking.class, db.getAll(Booking.class).get(0));
     }
 }

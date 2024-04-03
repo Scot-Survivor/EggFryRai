@@ -30,9 +30,8 @@ import javafx.scene.text.Text;
 @AuthRequired
 public class CreateBooking extends AbstractScreen {
 
-    private User currentUser;
-    private HashMap<String, User> doctorMap;
-    private HashMap<String, Room> roomMap;
+    private final HashMap<String, User> doctorMap;
+    private final HashMap<String, Room> roomMap;
 
     public CreateBooking(ScreenManager screenManager) {
         super(screenManager);
@@ -112,7 +111,7 @@ public class CreateBooking extends AbstractScreen {
 
     /**
      * The functionality to allow the booking of an event
-     * @param event
+     * @param event The event that triggers the booking
      */
     private void book(ActionEvent event) {
         // open a db session
@@ -156,11 +155,10 @@ public class CreateBooking extends AbstractScreen {
         // get the users current room choice
         ChoiceBox<String> roomChoiceBox = (ChoiceBox<String>) root.lookup("#roomChoiceBox");
         Room room = roomMap.get(roomChoiceBox.getValue());
-        Room apptRoom = (Room) room;
 
         // Create the booking entity
         Booking booking = new Booking();
-        booking.setRoom(apptRoom);
+        booking.setRoom(room);
         booking.setDoctor(doc);
         booking.setPatient(currentUser);
         booking.setApptTime(dateWithTime);
