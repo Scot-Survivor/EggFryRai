@@ -8,6 +8,7 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.HashMap;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -45,7 +46,7 @@ public class ViewDoctorDetailsScreen extends AbstractScreen {
         new DoctorChoice(db, doctorMap, vbox);
 
         Button showDoctor = new Button("Show");
-
+        VBox.setMargin(showDoctor, new Insets(10, 10, 10, 10));
         showDoctor.setOnAction(e -> {
             BorderPane rootPane = (BorderPane) getRootPane();
 
@@ -54,12 +55,12 @@ public class ViewDoctorDetailsScreen extends AbstractScreen {
             User doctor = doctorMap.get(doc.getValue());
 
             // get all of the details and format
-            String fullName = "Name: " + doctor.getFirstName() + " " + doctor.getSurName();
-            String number = "Phone no: " + doctor.getPhone();
-            String email = "Email Address: " + doctor.getAuthenticationDetails().getEmail();
-            String fax = "Fax no: " + doctor.getFax();
-            String contactPreference = "Contact Preference: " + doctor.getCommunicationPreference();
-            String addNotes = "Additional Notes: " + doctor.getAdditionalNotes();
+            String fullName = "Name: " + doctor.getFirstName() + " " + doctor.getSurName() + "\n";
+            String number = "Phone no: " + doctor.getPhone() + "\n";
+            String email = "Email Address: " + doctor.getAuthenticationDetails().getEmail() + "\n";
+            String fax = "Fax no: " + doctor.getFax() + "\n";
+            String contactPreference = "Contact Preference: " + doctor.getCommunicationPreference() + "\n";
+            String addNotes = "Additional Notes: " + doctor.getAdditionalNotes() + "\n";
 
             // find the box to display
             BorderPane root = (BorderPane) getRootPane();
