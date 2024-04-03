@@ -1,11 +1,14 @@
 package com.comp5590.tests.integration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.Booking;
+import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.CreateBooking;
 import com.comp5590.tests.basic.SetupTests;
 import java.time.LocalDate;
@@ -56,9 +59,14 @@ public class CreateBookingTests extends SetupTests {
      */
     @Test
     public void testBookingCreation(FxRobot robot) {
-        goToScreen(app, robot, CreateBooking.class);
+        // goToScreen(app, robot, CreateBooking.class);
+        // We have to ensure we're a patient logged in
+        User user = createPatient("testPatient1@example.com", "testPassword");
+        this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
+        assertEquals(SessionManager.getInstance().getCurrentUser().getId(), user.getId());
         DatabaseManager db = DatabaseManager.getInstance();
         robot.interact(() -> {
+            app.getScreenManager().showScene(CreateBooking.class);
             robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
             robot.lookup("#roomChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first room
             robot.lookup("#time").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first time
