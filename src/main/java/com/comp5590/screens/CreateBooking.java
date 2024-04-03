@@ -84,6 +84,7 @@ public class CreateBooking extends AbstractScreen {
         new DatePickerBox(vBox);
         new DoctorChoice(db, doctorMap, vBox);
         new RoomChoice(db, roomMap, vBox);
+        new WarningMessage(vBox);
 
         // Add all the sub items to the VBox
         vBox.getChildren().add(createBookingButton());
@@ -189,13 +190,18 @@ public class CreateBooking extends AbstractScreen {
             }
         }
 
+        Text warningText = (Text) root.lookup("#warningMessage");
+        warningText.setText("");
+
         // Save if ok
         if (okToSave) {
             // booking has been saved
             System.err.println("SAVING");
             db.save(booking);
+            warningText.setText("Making Appointment");
         } else {
             System.err.println("NOTSAVING");
+            warningText.setText("Cannot make appointment");
         }
 
         // clears all of the users choices on booking
