@@ -128,6 +128,13 @@ public class CreateBooking extends AbstractScreen {
      * @param event The event that triggers the booking
      */
     private void book(ActionEvent event) {
+        // get the current user
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser.getRole() != UserRole.PATIENT) {
+            logger.error("User is not a patient");
+            return;
+        }
+
         // open a db session
         DatabaseManager db = getDatabaseManager();
         Pane root = getRootPane(); // get the root pane
@@ -142,8 +149,30 @@ public class CreateBooking extends AbstractScreen {
         // get the apt reason
         String apptReason = appointmentReason.getText();
 
+        // error handling for if the reason is null
+        if (apptReason == null || apptReason.isEmpty()) {
+            logger.error("Appointment reason is null");
+            warningMessage.setText("Please enter a reason for the appointment");
+            return;
+        }
+
         // Get the appt date
         LocalDate datePicker = datePickerBox.getDatePicker().getValue();
+
+        // error handling for if the date is null
+        if (datePicker == null) {
+            logger.error("Booking date is null");
+            warningMessage.setText("Please select a date");
+            return;
+        }
+
+        // error handling if no time is selected
+        if (datePickerBox.getChoiceBox().getValue() == null) {
+            logger.error("Booking time is null");
+            warningMessage.setText("Please select a time");
+            return;
+        }
+
         java.sql.Date apptDate = java.sql.Date.valueOf(datePicker);
 
         ChoiceBox<String> timeBox = datePickerBox.getChoiceBox();
@@ -155,27 +184,16 @@ public class CreateBooking extends AbstractScreen {
         Date dateWithTime = new Date(timestamp.getTime());
         System.err.println(dateWithTime);
 
-        // Parse the time string "08:00"
-        // String timeString = "08:00";
-        // LocalTime time = LocalTime.parse(timeString,
-        // DateTimeFormatter.ofPattern("HH:mm"));
-        // Combine the date without time and the parsed time to create a LocalDateTime
-        // object
-        // LocalDateTime dateTime =
-        // LocalDateTime.of(LocalDate.from(dateWithoutTime.toInstant()), time);
-        // Convert LocalDateTime to Date
-        // Date dateWithTime =
-        // Date.from(dateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
+        // get the users current room choice
+        ChoiceBox<String> roomChoiceBox = roomChoice.getChoiceBox();
 
-        // get the current user
-        User currentUser = SessionManager.getInstance().getCurrentUser();
-        if (currentUser.getRole() != UserRole.PATIENT) {
-            logger.error("User is not a patient");
+        // if no room is selected
+        if (roomChoiceBox.getValue() == null) {
+            logger.error("Room is null");
+            warningMessage.setText("Please select a room");
             return;
         }
 
-        // get the users current room choice
-        ChoiceBox<String> roomChoiceBox = roomChoice.getChoiceBox();
         Room room = roomMap.get(roomChoiceBox.getValue());
 
         // Create the booking entity
@@ -230,6 +248,9 @@ public class CreateBooking extends AbstractScreen {
 
     @Override
     public void cleanup() {
-        // nothing to clean up
+        // clear the doctor map
+        doctorMap.clear();
+        // clear the room map
+        roomMap.clear();
     }
 }
