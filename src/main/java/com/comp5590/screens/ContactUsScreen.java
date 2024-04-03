@@ -2,6 +2,7 @@ package com.comp5590.screens;
 
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.managers.ScreenManager;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -19,6 +20,7 @@ public class ContactUsScreen extends AbstractScreen {
     private TextField email;
     private TextArea message;
     private VBox formBox;
+    private Label resultLabel;
 
     public ContactUsScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -57,11 +59,16 @@ public class ContactUsScreen extends AbstractScreen {
         email = new TextField();
         Label messageLabel = new Label("What is it you need assistance with?");
         message = new TextArea(); // Text area so input wraps
+        resultLabel = new Label(""); // Set as empty
 
         Label bottomNote = new Label("Please note a response may take up to 5 working days.");
 
         // Set needed ids
+        firstName.setId("firstNameTextBox");
+        lastName.setId("lastNameTextBox");
+        email.setId("emailTextBox");
         message.setId("messageTextBox");
+        resultLabel.setId("resultLabel");
         info.setId("infoLabel");
         bottomNote.setId("noteLabel");
 
@@ -76,7 +83,8 @@ public class ContactUsScreen extends AbstractScreen {
             email,
             messageLabel,
             message,
-            submitButton
+            submitButton,
+            resultLabel
         );
         formBox.setId("form");
         formBox.setAlignment(Pos.CENTER);
@@ -93,27 +101,25 @@ public class ContactUsScreen extends AbstractScreen {
     }
 
     private void submission(ActionEvent event) {
+        // Set result label to nothing
+        resultLabel.setText("");
         // Boolean used to check if any values empty
         boolean filled = true;
         // Check each field, if empty highlight red, else remove highlighting
-        if (firstName.getText().isEmpty()) {
-            firstName.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 10, 0, 0, 0);");
-            filled = false;
-        } else {
-            firstName.setStyle("-fx-effect: '';");
+        ArrayList<TextField> fields = new ArrayList<TextField>();
+        fields.add(firstName);
+        fields.add(lastName);
+        fields.add(email);
+
+        for (TextField field : fields) {
+            if (field.getText().isEmpty()) {
+                field.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 10, 0, 0, 0);");
+                filled = false;
+            } else {
+                field.setStyle("-fx-effect: '';");
+            }
         }
-        if (lastName.getText().isEmpty()) {
-            lastName.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 10, 0, 0, 0);");
-            filled = false;
-        } else {
-            lastName.setStyle("-fx-effect: '';");
-        }
-        if (email.getText().isEmpty()) {
-            email.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 10, 0, 0, 0);");
-            filled = false;
-        } else {
-            email.setStyle("-fx-effect: '';");
-        }
+        // Separate if statement for message as it is textArea
         if (message.getText().isEmpty()) {
             message.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 10, 0, 0, 0);");
             filled = false;
@@ -123,13 +129,12 @@ public class ContactUsScreen extends AbstractScreen {
 
         // Check if filled or not, print result message
         if (!filled) {
-            Label failed = new Label("You are missing details.");
-            failed.setStyle("-fx-text-fill: red");
-            formBox.getChildren().add(failed);
+            resultLabel.setText("You are missing details.");
+            resultLabel.setStyle("-fx-text-fill: red");
         } else {
-            Label success = new Label("Your details have been sent.");
-            success.setStyle("-fx-text-fill: green");
-            formBox.getChildren().add(success);
+            resultLabel.setText("Your details have been sent.");
+            resultLabel.setStyle("-fx-text-fill: green");
+            // Clear fields
             firstName.clear();
             lastName.clear();
             email.clear();
