@@ -66,6 +66,7 @@ public class CreateBooking extends AbstractScreen {
 
     /**
      * Create the center items of the bookings screen
+     *
      * @return A BorderPane containing these items
      */
     private BorderPane createCenter() {
@@ -107,8 +108,14 @@ public class CreateBooking extends AbstractScreen {
         VBox.setMargin(warningMessage, new Insets(20.0));
         vBox.getChildren().add(warningMessage);
 
+        // create booking button
+        BookingButton bookingButton = new BookingButton();
+        // attach event handler to the button
+        bookingButton.setOnAction(this::book);
+        bookingButton.setId("bookingButton");
+
         // Add all the sub items to the VBox
-        vBox.getChildren().add(createBookingButton());
+        vBox.getChildren().add(bookingButton);
         centerPane.setCenter(vBox);
 
         // return the central pane of the page
@@ -116,23 +123,8 @@ public class CreateBooking extends AbstractScreen {
     }
 
     /**
-     * Create the booking button
-     * @return A Button object that will allow the user to book an appointment
-     */
-    private Button createBookingButton() {
-        // Create booking button and add some padding
-        Button book = new Button("Book Appointment");
-        VBox.setMargin(book, new Insets(10.0));
-
-        // Add some functionality to the button
-        book.setOnAction(this::book);
-        book.setId("bookingButton");
-
-        return book;
-    }
-
-    /**
      * The functionality to allow the booking of an event
+     *
      * @param event The event that triggers the booking
      */
     private void book(ActionEvent event) {
@@ -165,11 +157,15 @@ public class CreateBooking extends AbstractScreen {
 
         // Parse the time string "08:00"
         // String timeString = "08:00";
-        // LocalTime time = LocalTime.parse(timeString, DateTimeFormatter.ofPattern("HH:mm"));
-        // Combine the date without time and the parsed time to create a LocalDateTime object
-        // LocalDateTime dateTime = LocalDateTime.of(LocalDate.from(dateWithoutTime.toInstant()), time);
+        // LocalTime time = LocalTime.parse(timeString,
+        // DateTimeFormatter.ofPattern("HH:mm"));
+        // Combine the date without time and the parsed time to create a LocalDateTime
+        // object
+        // LocalDateTime dateTime =
+        // LocalDateTime.of(LocalDate.from(dateWithoutTime.toInstant()), time);
         // Convert LocalDateTime to Date
-        // Date dateWithTime = Date.from(dateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
+        // Date dateWithTime =
+        // Date.from(dateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
 
         // get the current user
         User currentUser = SessionManager.getInstance().getCurrentUser();
@@ -194,8 +190,9 @@ public class CreateBooking extends AbstractScreen {
         boolean okToSave = true; // if this gets set to false then we cant save
 
         /*
-        Logic is if we get all appointments at a given time then if any other thing like doctor or room are the same
-        then we know it is not possible to save as they are duplicates
+         * Logic is if we get all appointments at a given time then if any other thing
+         * like doctor or room are the same
+         * then we know it is not possible to save as they are duplicates
          */
 
         // Gets all appointments at our given time
