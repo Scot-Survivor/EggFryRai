@@ -16,39 +16,55 @@ public class AppointmentsScreen extends AbstractScreen {
 
     @Override
     public void setup() {
-        // Load custom CSS
+        // load css file
         this.addCss("/appointments.css");
 
         setRootPane(new BorderPane());
-        ((BorderPane) getRootPane()).setCenter(center());
+        ((BorderPane) getRootPane()).setTop(title()); // set title at the top
+        ((BorderPane) getRootPane()).setCenter(center()); // set buttons in the center
 
-        // Add navigation buttons
-        addBackAndHomeButtons(getRootPane());
+        addBackAndHomeButtons(getRootPane()); //back and home buttons
     }
 
-    private VBox center() {
-        // Create title
+    private VBox title() {
+        // title
         HBox titleBox = new Title("Appointments");
         titleBox.setId("title");
+        VBox titleVBox = new VBox(titleBox);
+        titleVBox.setAlignment(Pos.TOP_CENTER); // putting it in the center 
+        return titleVBox;
+    }
 
-        // Create button
-        Button someButton = new Button("Some Button");
-        someButton.setId("someButton");
-        someButton.setOnAction(event -> {
-            // Handle button action
+    private HBox center() {
+        // create buttons
+        Button viewAppointmentsButton = new Button("View Appointments");
+        viewAppointmentsButton.setOnAction(event -> {
+            // handle view appointments action
         });
+        viewAppointmentsButton.getStyleClass().add("appointment-button");
 
-        // Add elements to VBox
-        VBox center = new VBox(titleBox, someButton);
-        center.setId("center");
-        center.getStyleClass().add("custom-pane");
-        center.setPrefSize(600, 400);
-        center.setAlignment(Pos.CENTER);
-        return center;
+        Button enterNewAppointmentButton = new Button("Enter New Appointment");
+        enterNewAppointmentButton.setOnAction(event -> {
+            // handle entering new appointment action
+        });
+        enterNewAppointmentButton.getStyleClass().add("appointment-button");
+
+        Button changeAppointmentButton = new Button("Change Appointment");
+        changeAppointmentButton.setOnAction(event -> {
+            // handle changing appointment action
+        });
+        changeAppointmentButton.getStyleClass().add("appointment-button");
+
+        // add buttons to an HBox and style
+        HBox buttonsBox = new HBox(viewAppointmentsButton, enterNewAppointmentButton, changeAppointmentButton);
+        buttonsBox.setId("buttonsBox");
+        buttonsBox.setAlignment(Pos.CENTER);
+        buttonsBox.setSpacing(20); // set spacing between buttons
+
+        return buttonsBox;
     }
 
     @Override
     public void cleanup() {
-        // Cleanup if needed
     }
 }
