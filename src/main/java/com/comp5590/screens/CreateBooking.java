@@ -37,6 +37,12 @@ public class CreateBooking extends AbstractScreen {
     private final HashMap<String, Room> roomMap;
     private final Logger logger = LoggerManager.getInstance().getLogger(CreateBooking.class);
 
+    private AppointmentReason appointmentReason;
+    private DatePickerBox datePickerBox;
+    private DoctorChoice doctorChoice;
+    private RoomChoice roomChoice;
+    private WarningMessage warningMessage;
+
     public CreateBooking(ScreenManager screenManager) {
         super(screenManager);
         doctorMap = new HashMap<>();
@@ -83,11 +89,23 @@ public class CreateBooking extends AbstractScreen {
         DatabaseManager db = getDatabaseManager();
 
         // Add components to the screen
-        new AppointmentReason(vBox);
-        new DatePickerBox(vBox);
-        new DoctorChoice(db, doctorMap, vBox);
-        new RoomChoice(db, roomMap, vBox);
-        new WarningMessage(vBox);
+        appointmentReason = new AppointmentReason();
+        VBox.setMargin(appointmentReason, new Insets(20.0));
+        vBox.getChildren().add(appointmentReason);
+
+        Label dateLabel = new Label("Select a date for your appointment");
+        VBox.setMargin(dateLabel, new Insets(10.0));
+        datePickerBox = new DatePickerBox();
+        vBox.getChildren().add(dateLabel);
+        vBox.getChildren().add(datePickerBox);
+
+        doctorChoice = new DoctorChoice(db, doctorMap);
+        vBox.getChildren().add(doctorChoice);
+        roomChoice = new RoomChoice(db, roomMap);
+        vBox.getChildren().add(roomChoice);
+        warningMessage = new WarningMessage();
+        VBox.setMargin(warningMessage, new Insets(20.0));
+        vBox.getChildren().add(warningMessage);
 
         // Add all the sub items to the VBox
         vBox.getChildren().add(createBookingButton());
@@ -126,20 +144,20 @@ public class CreateBooking extends AbstractScreen {
         MFXTextField textField = (MFXTextField) root.lookup("#apptReasonTextField");
 
         // get the id of the doctor
-        ChoiceBox<String> docSelection = (ChoiceBox<String>) root.lookup("#doctorChoiceBox");
+        ChoiceBox<String> docSelection = doctorChoice.getChoiceBox();
         User doc = doctorMap.get(docSelection.getValue());
 
         // get the apt reason
-        String apptReason = ((TextField) root.lookup("#apptReasonTextField")).getText();
+        String apptReason = appointmentReason.getText();
 
         // Get the appt date
-        LocalDate datePicker = ((DatePicker) root.lookup("#datePicker")).getValue();
-        Date apptDate = java.sql.Date.valueOf(datePicker);
+        LocalDate datePicker = datePickerBox.getDatePicker().getValue();
+        java.sql.Date apptDate = java.sql.Date.valueOf(datePicker);
 
-        ChoiceBox<String> timeBox = (ChoiceBox<String>) root.lookup("#time");
+        ChoiceBox<String> timeBox = datePickerBox.getChoiceBox();
         String time = timeBox.getValue();
         LocalTime localTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
-        LocalDate localDate = ((java.sql.Date) apptDate).toLocalDate();
+        LocalDate localDate = apptDate.toLocalDate();
         LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
         Date dateWithTime = new Date(timestamp.getTime());
@@ -161,7 +179,7 @@ public class CreateBooking extends AbstractScreen {
         }
 
         // get the users current room choice
-        ChoiceBox<String> roomChoiceBox = (ChoiceBox<String>) root.lookup("#roomChoiceBox");
+        ChoiceBox<String> roomChoiceBox = roomChoice.getChoiceBox();
         Room room = roomMap.get(roomChoiceBox.getValue());
 
         // Create the booking entity
@@ -206,7 +224,7 @@ public class CreateBooking extends AbstractScreen {
         }
 
         // clears all of the users choices on booking
-        ((DatePicker) root.lookup("#datePicker")).getEditor().clear();
+        datePickerBox.getDatePicker().getEditor().clear();
         roomChoiceBox.getSelectionModel().clearSelection();
         docSelection.getSelectionModel().clearSelection();
         timeBox.getSelectionModel().clearSelection();
