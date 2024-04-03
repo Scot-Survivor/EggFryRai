@@ -114,6 +114,41 @@ public class DocListScreen extends AbstractScreen {
         // Add data to table
         ObservableList<User> viewingData = FXCollections.observableArrayList(data);
         doctorTable.setItems(viewingData);
+
+        // Create tooltips
+        doctorTable.setRowFactory(TableView -> {
+            TableRow<User> hoveredRow = new TableRow<>();
+            hoveredRow.setOnMouseEntered(event -> {
+                if (hoveredRow.getItem() != null) {
+                    User doctor = hoveredRow.getItem();
+                    Tooltip details = new Tooltip(
+                        "Doctor Details: \n" +
+                        "Name: " +
+                        doctor.getFirstName() +
+                        " " +
+                        doctor.getSurName() +
+                        "\n" +
+                        "Email: " +
+                        doctor.getAuthenticationDetails().getEmail() +
+                        "\n" +
+                        "Phone: " +
+                        doctor.getPhone() +
+                        "\n" +
+                        "Fax: " +
+                        doctor.getFax() +
+                        "\n" +
+                        "Additional Notes: " +
+                        doctor.getAdditionalNotes()
+                    );
+                    Tooltip.install(hoveredRow, details); // Add tooltip
+                }
+            });
+
+            hoveredRow.setOnMouseExited(event -> { // Remove tooltip when mouse leaves
+                Tooltip.uninstall(hoveredRow, hoveredRow.getTooltip());
+            });
+            return hoveredRow;
+        });
     }
 
     /**
