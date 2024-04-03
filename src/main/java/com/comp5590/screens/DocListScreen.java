@@ -115,7 +115,6 @@ public class DocListScreen extends AbstractScreen {
         ObservableList<User> viewingData = FXCollections.observableArrayList(data);
         doctorTable.setItems(viewingData);
 
-        // Tooltips to show doctor details
         doctorTable.setRowFactory(TableView -> {
             TableRow<User> hoveredRow = new TableRow<>();
             hoveredRow.setOnMouseEntered(event -> {
