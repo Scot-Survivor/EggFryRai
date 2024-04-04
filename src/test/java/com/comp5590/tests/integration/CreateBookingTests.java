@@ -43,9 +43,9 @@ public class CreateBookingTests extends SetupTests {
         Address address = createAddress();
 
         // Create some rooms
-        makeRoom("1000", address);
-        makeRoom("1001", address);
-        makeRoom("1002", address);
+        createRoom("1000", address);
+        createRoom("1001", address);
+        createRoom("1002", address);
 
         // Make some doctors
         createDoctor("testEmail1000@test.com", "testPassword");

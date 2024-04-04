@@ -79,7 +79,7 @@ public class HomeScreen extends AbstractScreen {
 
         appointments.setOnAction(e -> {
             logger.info("Appointments button clicked");
-            showScene(CreateBooking.class);
+            showScene(AppointmentsScreen.class);
         });
 
         prescriptions.setOnAction(e -> {
@@ -94,7 +94,7 @@ public class HomeScreen extends AbstractScreen {
 
         contactUs.setOnAction(e -> {
             logger.info("Contact us button clicked");
-            // showScene(ContactUsScreen.class);
+            showScene(ContactUsScreen.class);
         });
 
         doctors.setOnAction(e -> {

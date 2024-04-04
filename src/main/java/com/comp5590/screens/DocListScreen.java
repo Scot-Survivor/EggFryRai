@@ -4,6 +4,7 @@ import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.database.entities.User;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 @Getter
+@AuthRequired
 public class DocListScreen extends AbstractScreen {
 
     private TableView<User> doctorTable;
@@ -114,6 +116,41 @@ public class DocListScreen extends AbstractScreen {
         // Add data to table
         ObservableList<User> viewingData = FXCollections.observableArrayList(data);
         doctorTable.setItems(viewingData);
+
+        // Create tooltips
+        doctorTable.setRowFactory(TableView -> {
+            TableRow<User> hoveredRow = new TableRow<>();
+            hoveredRow.setOnMouseEntered(event -> {
+                if (hoveredRow.getItem() != null) {
+                    User doctor = hoveredRow.getItem();
+                    Tooltip details = new Tooltip(
+                        "Doctor Details: \n" +
+                        "Name: " +
+                        doctor.getFirstName() +
+                        " " +
+                        doctor.getSurName() +
+                        "\n" +
+                        "Email: " +
+                        doctor.getAuthenticationDetails().getEmail() +
+                        "\n" +
+                        "Phone: " +
+                        doctor.getPhone() +
+                        "\n" +
+                        "Fax: " +
+                        doctor.getFax() +
+                        "\n" +
+                        "Additional Notes: " +
+                        doctor.getAdditionalNotes()
+                    );
+                    Tooltip.install(hoveredRow, details); // Add tooltip
+                }
+            });
+
+            hoveredRow.setOnMouseExited(event -> { // Remove tooltip when mouse leaves
+                Tooltip.uninstall(hoveredRow, hoveredRow.getTooltip());
+            });
+            return hoveredRow;
+        });
     }
 
     /**
