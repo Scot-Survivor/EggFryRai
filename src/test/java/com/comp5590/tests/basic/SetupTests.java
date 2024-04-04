@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.database.entities.Address;
-import com.comp5590.database.entities.AuthenticationDetails;
-import com.comp5590.database.entities.Room;
-import com.comp5590.database.entities.User;
+import com.comp5590.database.entities.*;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
@@ -20,6 +17,9 @@ import com.comp5590.utils.NameUtils;
 import com.comp5590.utils.QueryUtils;
 import com.comp5590.utils.ScreenUtils;
 import com.comp5590.utils.StringUtils;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.testfx.api.FxRobot;
@@ -195,6 +195,41 @@ public class SetupTests {
         room.setRoomNumber(roomNum);
         room = getDbManager().saveGet(room);
         return room;
+    }
+
+    /**
+     * Create a date that exists in the future
+     * @param weeksInFuture The number of weeks in the future to make it
+     * @return A Date object containing this new date
+     */
+    public Date createFutureDate(int weeksInFuture) {
+        // Use current time plus two weeks to make test more valid for future
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime futureDateTime = currentTime.plus(weeksInFuture, ChronoUnit.WEEKS);
+
+        return java.sql.Timestamp.valueOf(futureDateTime);
+    }
+
+    /**
+     * Create a booking entity
+     * @param patient The user to be patient
+     * @param doctor The user to be doctor
+     * @param room The room for the appt
+     * @param date The date for the appt
+     * @return A Booking entity
+     */
+    public Booking makeBooking(User patient, User doctor, Room room, Date date) {
+        // create a db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // create booking object
+        Booking booking = new Booking();
+        booking.setDoctor(doctor);
+        booking.setPatient(patient);
+        booking.setApptTime(date);
+        booking.setRoom(room);
+
+        return db.saveGet(booking);
     }
 
     /**
