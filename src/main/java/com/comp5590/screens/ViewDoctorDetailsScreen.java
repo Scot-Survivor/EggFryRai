@@ -18,12 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 // TODO: Make the items look pretty
-// TODO: Write tests for the screen
 
 @AuthRequired
 public class ViewDoctorDetailsScreen extends AbstractScreen {
 
-    private HashMap<String, User> doctorMap;
+    private HashMap<String, User> doctorMap; // Will contain a mapping of doctors names to their object
 
     public ViewDoctorDetailsScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -35,7 +34,7 @@ public class ViewDoctorDetailsScreen extends AbstractScreen {
         BorderPane rootPane = new BorderPane();
         setRootPane(rootPane);
         rootPane.setCenter(createCenter());
-        rootPane.setTop(new Title());
+        rootPane.setTop(new Title()); // Add title to the page
         addBackAndHomeButtons(rootPane); // Add back and home buttons to the page
     }
 
@@ -46,7 +45,7 @@ public class ViewDoctorDetailsScreen extends AbstractScreen {
     private BorderPane createCenter() {
         BorderPane centralPane = new BorderPane();
         DatabaseManager db = DatabaseManager.getInstance();
-        VBox vbox = new VBox();
+        VBox vbox = new VBox(); // To contain all elements
 
         // Create components to add to the screen
         DoctorChoice docChoice = new DoctorChoice(db, doctorMap);

@@ -9,6 +9,7 @@ import com.comp5590.database.entities.User;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.ViewDoctorDetailsScreen;
 import com.comp5590.tests.basic.SetupTests;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -53,16 +54,18 @@ public class ViewDoctorDetailsTest extends SetupTests {
         this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
         assertEquals(SessionManager.getInstance().getCurrentUser().getId(), user.getId());
 
+        // Select a doctor
         robot.interact(() -> {
             app.getScreenManager().showScene(ViewDoctorDetailsScreen.class);
             robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
         });
 
+        // Show the text by clicking button and validate that all is text
         robot.interact(() -> {
-            robot.lookup("#showButton").queryAs(javafx.scene.control.Button.class).fire();
+            robot.lookup("#showButton").queryAs(Button.class).fire();
             stall(robot);
-            // Assert that a booking was created
 
+            // Loop over and check that all of the items are text and not null
             DoctorDisplayBox docDisplay = robot.lookup("#docDisplay").queryAs(DoctorDisplayBox.class);
             for (javafx.scene.Node node : docDisplay.getChildren()) {
                 if (node instanceof Text) {
