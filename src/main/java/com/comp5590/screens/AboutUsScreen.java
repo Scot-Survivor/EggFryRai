@@ -19,7 +19,7 @@ public class AboutUsScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.addCss("/contactUs.css");
+        this.addCss("/aboutUs.css");
 
         setRootPane(new BorderPane());
         ((BorderPane) getRootPane()).setCenter(center());
@@ -32,21 +32,24 @@ public class AboutUsScreen extends AbstractScreen {
         // Create title
         HBox titleBox = new Title("About Us");
         titleBox.setId("title");
+        titleBox.setAlignment(Pos.TOP_CENTER);
 
         // Info paragraphs
-        Label info = new Label(
-            "GP Alpha was a company founded in 2024. Since then we have strived to offer the " +
-            "best healthcare services for our customers, using an intuitive design to help patients of all types " +
+        Label info1 = new Label(
+            "GP Alpha was a company founded in 2024. Since then we have strived to provice the " +
+            "best healthcare services for all our customers, using an intuitive design to help patients of all types " +
             "easily access and set appointments. We have doctors all across the world, that are personally " +
             "vetted by us to give you the best care possible"
         );
-        info.setWrapText(true);
+        info1.setWrapText(true);
         Label info2 = new Label(
             "Our online prescription system makes it effortless to collect any medication from " +
             "supported pharmacies. As of 04/04/2024, we have over 100 doctors working at GP alpha, and we have " +
             "helped over 300 patients with issues ranging from mental health to spinal injuries."
         );
         info2.setWrapText(true);
+        VBox infoBox = new VBox(info1, info2);
+        infoBox.setId("infoBox");
 
         // Customer reviews
         Label review1 = new Label(
@@ -54,13 +57,15 @@ public class AboutUsScreen extends AbstractScreen {
         );
         Label review2 = new Label("\"This program has changed my life.\" - Moe, 20");
         Label review3 = new Label("\"GP Alpha is undoubtedly one of the best programs I've ever used.\" - Dan, 52");
-
-        Label hiring = new Label("We are now hiring! Contact us at apply@GPAlpha.org");
+        VBox reviewBox = new VBox(review1, review2, review3);
+        reviewBox.setId("reviewBox");
+        reviewBox.setAlignment(Pos.CENTER);
 
         Label bottomNote = new Label("\u00A9 2024 GP Alpha."); // Using unicode copyright doesn't work
+        bottomNote.setId("bottomNote");
 
         // Add elements to VBox
-        VBox center = new VBox(titleBox, info, info2, review1, review2, review3, hiring, bottomNote);
+        VBox center = new VBox(titleBox, infoBox, reviewBox, bottomNote);
         center.setId("center");
         center.getStyleClass().add("custom-pane");
         center.setPrefSize(600, 400);
