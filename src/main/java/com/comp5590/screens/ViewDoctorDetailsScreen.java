@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -53,9 +54,10 @@ public class ViewDoctorDetailsScreen extends AbstractScreen {
 
         // Create the button and add the functionality
         Button showDoctor = new Button("Show");
+        showDoctor.setId("showButton");
         VBox.setMargin(showDoctor, new Insets(10, 10, 10, 10));
         showDoctor.setOnAction(e -> {
-            BorderPane rootPane = (BorderPane) getRootPane();
+            Pane rootPane = getRootPane();
 
             // get the choice of doctor to look at
             ChoiceBox<String> doc = (ChoiceBox<String>) rootPane.lookup("#doctorChoiceBox");
@@ -70,7 +72,7 @@ public class ViewDoctorDetailsScreen extends AbstractScreen {
             String addNotes = "Additional Notes: " + doctor.getAdditionalNotes() + "\n";
 
             // find the box to display
-            BorderPane root = (BorderPane) getRootPane();
+            Pane root = getRootPane();
             VBox doctorInfo = (VBox) root.lookup("#docDisplay");
 
             // clear prior contents
