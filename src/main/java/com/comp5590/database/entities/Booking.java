@@ -35,7 +35,7 @@ public class Booking {
 
     // reference the appt time through a DATETIME object
     @Column(name = "apptTime")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @InFuture
     private Date apptTime;
 

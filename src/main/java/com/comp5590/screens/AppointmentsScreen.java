@@ -49,7 +49,7 @@ public class AppointmentsScreen extends AbstractScreen {
         Button enterNewAppointmentButton = new Button("Enter New Appointment");
         enterNewAppointmentButton.setId("enterNewAppointmentButton");
         enterNewAppointmentButton.setOnAction(event -> {
-            showScene(CreateBooking.class); // Link up with create booking screen
+            // handle entering new appointment action
         });
         enterNewAppointmentButton.getStyleClass().add("appointment-button");
 
