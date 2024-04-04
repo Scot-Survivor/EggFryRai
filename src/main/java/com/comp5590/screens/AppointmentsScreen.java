@@ -31,25 +31,28 @@ public class AppointmentsScreen extends AbstractScreen {
         HBox titleBox = new Title("Appointments");
         titleBox.setId("title");
         VBox titleVBox = new VBox(titleBox);
-        titleVBox.setAlignment(Pos.TOP_CENTER); // putting it in the center 
+        titleVBox.setAlignment(Pos.TOP_CENTER); // putting it in the center
         return titleVBox;
     }
 
     private HBox center() {
         // create buttons
         Button viewAppointmentsButton = new Button("View Appointments");
+        viewAppointmentsButton.setId("viewAppointmentsButton");
         viewAppointmentsButton.setOnAction(event -> {
             // handle view appointments action
         });
         viewAppointmentsButton.getStyleClass().add("appointment-button");
 
         Button enterNewAppointmentButton = new Button("Enter New Appointment");
+        enterNewAppointmentButton.setId("enterNewAppointmentButton");
         enterNewAppointmentButton.setOnAction(event -> {
             // handle entering new appointment action
         });
         enterNewAppointmentButton.getStyleClass().add("appointment-button");
 
         Button changeAppointmentButton = new Button("Change Appointment");
+        changeAppointmentButton.setId("changeAppointmentButton");
         changeAppointmentButton.setOnAction(event -> {
             // handle changing appointment action
         });
@@ -65,6 +68,5 @@ public class AppointmentsScreen extends AbstractScreen {
     }
 
     @Override
-    public void cleanup() {
-    }
+    public void cleanup() {}
 }

@@ -94,7 +94,6 @@ public class AppointmentsScreenTest extends SetupTests {
                     )
                 );
         });
-
     }
 
     @Test
