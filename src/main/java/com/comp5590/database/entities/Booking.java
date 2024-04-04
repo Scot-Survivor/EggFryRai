@@ -1,5 +1,6 @@
 package com.comp5590.database.entities;
 
+import com.comp5590.database.validators.annontations.BookingUnique;
 import com.comp5590.database.validators.annontations.InFuture;
 import com.comp5590.database.validators.annontations.RequiredRole;
 import com.comp5590.enums.UserRole;
@@ -14,6 +15,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@BookingUnique
 public class Booking {
 
     @Id
