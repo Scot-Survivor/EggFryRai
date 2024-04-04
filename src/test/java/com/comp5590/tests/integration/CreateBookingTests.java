@@ -1,7 +1,6 @@
 package com.comp5590.tests.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.comp5590.App;
 import com.comp5590.components.CreateBooking.WarningMessage;
@@ -96,11 +95,16 @@ public class CreateBookingTests extends SetupTests {
      */
     @Test
     public void testDoubleBooking(FxRobot robot) {
+        User user = createPatient("testPatient1@example.com", "testPassword");
+        this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
+        assertEquals(SessionManager.getInstance().getCurrentUser().getId(), user.getId());
         DatabaseManager db = DatabaseManager.getInstance();
 
         createBooking(robot, 0);
+        createBooking(robot, 0);
 
         String warningText = robot.lookup("#warningMessage").queryAs(WarningMessage.class).getText();
-        assertEquals(warningText, "Cannot make appointment");
+        assertEquals("Cannot make appointment", warningText); // Test for warning text
+        assertEquals(1, db.getAll(Booking.class).size()); // Test that there is still only one appointment
     }
 }
