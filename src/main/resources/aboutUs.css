@@ -1,5 +1,6 @@
 #title {
     -fx-alignment: center;
+    -fx-padding: 10;
 }
 #center {
     -fx-spacing: 2px;
@@ -9,7 +10,6 @@
     -fx-border-radius: 20;
     -fx-background-radius: 5;
     -fx-padding: 5;
-    -fx-max-height: 200px;
     -fx-alignment: TOP_CENTER;
 }
 .label {
@@ -20,12 +20,12 @@
 }
 #bottomNote {
     -fx-font-weight: normal;
-    -fx-padding: 40px, 0, 0, 0;
+    -fx-padding: 40px 0 0 0;
 }
 #infoBox {
     -fx-spacing: 10px;
-    -fx-min-height: 200px;
+    -fx-min-height: 175px;
 }
 #reviewBox {
-    -fx-spacing: 25px;
+    -fx-spacing: 20px;
 }

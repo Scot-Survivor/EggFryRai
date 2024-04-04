@@ -36,10 +36,10 @@ public class AboutUsScreen extends AbstractScreen {
 
         // Info paragraphs
         Label info1 = new Label(
-            "GP Alpha was a company founded in 2024. Since then we have strived to provice the " +
+            "GP Alpha was a company founded in 2024. Since then we have striven to provide the " +
             "best healthcare services for all our customers, using an intuitive design to help patients of all types " +
             "easily access and set appointments. We have doctors all across the world, that are personally " +
-            "vetted by us to give you the best care possible"
+            "vetted by us to give you the best care possible."
         );
         info1.setWrapText(true);
         Label info2 = new Label(
@@ -70,7 +70,7 @@ public class AboutUsScreen extends AbstractScreen {
         center.getStyleClass().add("custom-pane");
         center.setPrefSize(600, 400);
         // set max width to 250, and max height to fit content
-        center.setMaxSize(600, 600);
+        center.setMaxSize(600, 400);
         center.setAlignment(Pos.CENTER);
         return center;
     }
