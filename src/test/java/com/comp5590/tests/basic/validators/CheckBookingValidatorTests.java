@@ -20,25 +20,13 @@ public class CheckBookingValidatorTests extends SetupTests {
         return Validation.byProvider(HibernateValidator.class).configure().buildValidatorFactory().getValidator();
     }
 
-    private Room createRoom(String roomNumber) {
-        Address address = createAddress();
-        Room room = new Room();
-        room.setRoomNumber(roomNumber);
-        room.setAddress(address);
-        return DatabaseManager.getInstance().saveGet(room);
-    }
-
-    private Date getDateOneDayInFuture() {
-        return new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
-    }
-
     @Test
     public void testBookingFailsSameRoomSameTime() {
         User doc1 = createDoctor("doc1@example.com", "password");
         User doc2 = createDoctor("doc2@example.com", "password");
         User pat = createPatient("pat1@example.com", "password");
-        Room room = createRoom("001");
-        Date timeNow = this.getDateOneDayInFuture();
+        Room room = createRoom("001", createAddress());
+        Date timeNow = createFutureDate(2);
         Booking booking = new Booking();
         booking.setDoctor(doc1);
         booking.setPatient(pat);
@@ -64,9 +52,9 @@ public class CheckBookingValidatorTests extends SetupTests {
     public void testBookingFailsSameDoctorSameTime() {
         User doc1 = createDoctor("doc1@example.com", "password");
         User pat = createPatient("pat1@example.com", "password");
-        Room room1 = createRoom("001");
-        Room room2 = createRoom("002");
-        Date timeNow = this.getDateOneDayInFuture();
+        Room room1 = createRoom("001", createAddress());
+        Room room2 = createRoom("002", createAddress());
+        Date timeNow = createFutureDate(2);
 
         Booking booking = new Booking();
         booking.setDoctor(doc1);
@@ -94,9 +82,9 @@ public class CheckBookingValidatorTests extends SetupTests {
         User doc1 = createDoctor("doc1@example.com", "password");
         User doc2 = createDoctor("doc2@example.com", "password");
         User pat = createPatient("pat1@example.com", "password");
-        Room room1 = createRoom("001");
-        Room room2 = createRoom("002");
-        Date timeNow = this.getDateOneDayInFuture();
+        Room room1 = createRoom("001", createAddress());
+        Room room2 = createRoom("002", createAddress());
+        Date timeNow = createFutureDate(2);
 
         Booking booking = new Booking();
         booking.setDoctor(doc1);
