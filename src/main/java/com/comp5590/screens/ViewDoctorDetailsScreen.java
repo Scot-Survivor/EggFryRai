@@ -35,6 +35,7 @@ public class ViewDoctorDetailsScreen extends AbstractScreen {
         setRootPane(rootPane);
         rootPane.setCenter(createCenter());
         rootPane.setTop(new Title());
+        addBackAndHomeButtons(rootPane); // Add back and home buttons to the page
     }
 
     /**
