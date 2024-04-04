@@ -89,7 +89,7 @@ public class HomeScreen extends AbstractScreen {
 
         aboutUs.setOnAction(e -> {
             logger.info("About us button clicked");
-            // showScene(AboutUsScreen.class);
+            showScene(AboutUsScreen.class);
         });
 
         contactUs.setOnAction(e -> {
