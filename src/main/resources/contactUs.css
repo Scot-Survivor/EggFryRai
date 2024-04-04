@@ -1,0 +1,74 @@
+#title {
+    -fx-alignment: center;
+}
+#submitButton {
+    -fx-background-color: #575dfb;
+    -fx-text-fill: white;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
+    -fx-alignment: center;
+    -fx-padding: 10px, 0, 0, 0;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+#center {
+    -fx-alignment: center top;
+    -fx-spacing: 2px;
+    -fx-border-color: #575dfb;
+    -fx-background-color: #f4f4f4;
+    -fx-border-width: 3;
+    -fx-border-radius: 20;
+    -fx-background-radius: 5;
+    -fx-padding: 20;
+}
+#form {
+    -fx-alignment: center top;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 0);
+    -fx-padding: 10;
+    -fx-spacing: 5px;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+.label {
+    -fx-font-weight: bold;
+    -fx-text-fill: grey;
+}
+#messageTextBox {
+    -fx-max-height: 75px;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-shadow-highlight-color: transparent;
+    -fx-inner-border: transparent;
+    -fx-background-insets: 0;
+}
+#infoLabel {
+    -fx-font-weight: normal;
+    -fx-padding: 0 0 30px 0;
+}
+#noteLabel {
+    -fx-font-weight: normal;
+    -fx-padding: 30px 0 0 0;
+}
+.text-field {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: gainsboro;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+.text-area .content {
+    -fx-max-height: 75px;
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: gainsboro;
+    -fx-text-box-border: transparent;
+}
+.text-area:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+
+
+

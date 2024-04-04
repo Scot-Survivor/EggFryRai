@@ -15,7 +15,7 @@ public class RoomTests extends SetupTests {
         Address address = createAddress();
 
         // Create the room
-        Room room = makeRoom("2", address);
+        Room room = createRoom("2", address);
         assertNotNull(room);
     }
 }

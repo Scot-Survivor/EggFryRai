@@ -94,7 +94,7 @@ public class HomeScreen extends AbstractScreen {
 
         contactUs.setOnAction(e -> {
             logger.info("Contact us button clicked");
-            // showScene(ContactUsScreen.class);
+            showScene(ContactUsScreen.class);
         });
 
         doctors.setOnAction(e -> {
