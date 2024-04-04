@@ -32,7 +32,7 @@ public class BookingNotesTests extends SetupTests {
         Date apptTime = formatDate.parse("2025-01-05 00:00:00");
 
         // Make and save a room
-        Room room = makeRoom("3 ", createAddress());
+        Room room = createRoom("3 ", createAddress());
         db.save(room);
 
         // Create a booking object
@@ -51,7 +51,5 @@ public class BookingNotesTests extends SetupTests {
 
         // Check saving of booking notes was successful
         assertTrue(db.save(bookingNotes));
-        SetupTests.remove(patient);
-        SetupTests.remove(doctor);
     }
 }
