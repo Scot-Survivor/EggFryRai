@@ -1,7 +1,6 @@
 package com.comp5590.tests.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.comp5590.App;
 import com.comp5590.components.DoctorDetailsScreen.DoctorDisplayBox;
@@ -57,6 +56,7 @@ public class ViewDoctorDetailsTest extends SetupTests {
         // Select a doctor
         robot.interact(() -> {
             app.getScreenManager().showScene(ViewDoctorDetailsScreen.class);
+            assertInstanceOf(ViewDoctorDetailsScreen.class, app.getScreenManager().getCurrentScreen()); // Check we are on the right screen
             robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
         });
 
