@@ -189,7 +189,7 @@ public class SetupTests {
      * @param address The address of the room
      * @return The room
      */
-    public Room makeRoom(String roomNum, Address address) {
+    public Room createRoom(String roomNum, Address address) {
         Room room = new Room();
         room.setAddress(address);
         room.setRoomNumber(roomNum);
@@ -218,7 +218,7 @@ public class SetupTests {
      * @param date The date for the appt
      * @return A Booking entity
      */
-    public Booking makeBooking(User patient, User doctor, Room room, Date date) {
+    public Booking createBooking(User patient, User doctor, Room room, Date date) {
         // create a db manager
         DatabaseManager db = DatabaseManager.getInstance();
 
