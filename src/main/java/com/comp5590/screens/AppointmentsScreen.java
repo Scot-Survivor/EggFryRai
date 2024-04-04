@@ -2,12 +2,14 @@ package com.comp5590.screens;
 
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+@AuthRequired
 public class AppointmentsScreen extends AbstractScreen {
 
     public AppointmentsScreen(ScreenManager screenManager) {
