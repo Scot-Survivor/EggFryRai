@@ -200,6 +200,7 @@ public class SetupTests {
     /**
      * Remove an object from the database by id
      */
+    @Deprecated
     public static <T> void remove(final Class<T> type, int id) {
         getDbManager().delete(getDbManager().get(type, id));
     }
@@ -207,6 +208,7 @@ public class SetupTests {
     /**
      * Complete remove a user object
      */
+    @Deprecated
     public static void remove(User user) {
         remove(AuthenticationDetails.class, user.getAuthenticationDetails().getId());
         remove(User.class, user.getId());
