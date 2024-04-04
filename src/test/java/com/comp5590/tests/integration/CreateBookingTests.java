@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.comp5590.App;
+import com.comp5590.components.CreateBooking.WarningMessage;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.User;
@@ -54,6 +55,24 @@ public class CreateBookingTests extends SetupTests {
     }
 
     /**
+     * Create a booking for a given time
+     * @param robot FxRobot object
+     * @param time Index of the time to pick from dropdown
+     */
+    private void createBooking(FxRobot robot, int time) {
+        robot.interact(() -> {
+            app.getScreenManager().showScene(CreateBooking.class);
+            robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
+            robot.lookup("#roomChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first room
+            robot.lookup("#time").queryAs(ChoiceBox.class).getSelectionModel().select(time); // just select first time
+            robot.lookup("#apptReasonTextField").queryAs(TextField.class).setText(APPOINTMENT_REASON);
+            robot.lookup("#datePicker").queryAs(DatePicker.class).setValue(APPOINTMENT_TIME);
+            robot.lookup("#bookingButton").queryAs(javafx.scene.control.Button.class).fire();
+            stall(robot);
+        });
+    }
+
+    /**
      * Test filling in the form and booking an appointment
      * @param robot
      */
@@ -65,20 +84,23 @@ public class CreateBookingTests extends SetupTests {
         this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
         assertEquals(SessionManager.getInstance().getCurrentUser().getId(), user.getId());
         DatabaseManager db = DatabaseManager.getInstance();
-        robot.interact(() -> {
-            app.getScreenManager().showScene(CreateBooking.class);
-            robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
-            robot.lookup("#roomChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first room
-            robot.lookup("#time").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first time
-            robot.lookup("#apptReasonTextField").queryAs(TextField.class).setText(APPOINTMENT_REASON);
-            robot.lookup("#datePicker").queryAs(DatePicker.class).setValue(APPOINTMENT_TIME);
-        });
 
-        robot.interact(() -> {
-            robot.lookup("#bookingButton").queryAs(javafx.scene.control.Button.class).fire();
-            stall(robot);
-            // Assert that a booking was created
-            assertNotNull(db.getAll(Booking.class).stream().findFirst().orElse(null));
-        });
+        createBooking(robot, 0);
+
+        assertNotNull(db.getAll(Booking.class).stream().findFirst().orElse(null));
+    }
+
+    /**
+     * Test that double booking displays an error message
+     * @param robot
+     */
+    @Test
+    public void testDoubleBooking(FxRobot robot) {
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        createBooking(robot, 0);
+
+        String warningText = robot.lookup("#warningMessage").queryAs(WarningMessage.class).getText();
+        assertEquals(warningText, "Cannot make appointment");
     }
 }
