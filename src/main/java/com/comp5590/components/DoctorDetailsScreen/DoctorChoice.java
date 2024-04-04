@@ -10,9 +10,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-public class DoctorChoice {
+public class DoctorChoice extends VBox {
 
-    public DoctorChoice(DatabaseManager db, HashMap<String, User> doctorMap, VBox vbox) {
+    public DoctorChoice(DatabaseManager db, HashMap<String, User> doctorMap) {
         // Create the label for the doctor choice box
         Label doctorLabel = new Label("Please select a doctor");
         VBox.setMargin(doctorLabel, new Insets(10.0));
@@ -35,9 +35,7 @@ public class DoctorChoice {
         }
 
         // create the VBox to store these items and then return it
-        VBox doctorBox = new VBox(doctorLabel, doctorChoiceBox);
-        doctorBox.setAlignment(javafx.geometry.Pos.TOP_CENTER);
-
-        vbox.getChildren().add(doctorBox);
+        this.getChildren().addAll(doctorLabel, doctorChoiceBox);
+        this.setAlignment(javafx.geometry.Pos.TOP_CENTER);
     }
 }
