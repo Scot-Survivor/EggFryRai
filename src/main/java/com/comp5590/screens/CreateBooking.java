@@ -20,7 +20,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -203,35 +202,12 @@ public class CreateBooking extends AbstractScreen {
         booking.setPatient(currentUser);
         booking.setApptTime(dateWithTime);
 
-        // TODO: Make sure the doctor, room and time are not the same
-
-        boolean okToSave = true; // if this gets set to false then we cant save
-
-        /*
-         * Logic is if we get all appointments at a given time then if any other thing
-         * like doctor or room are the same
-         * then we know it is not possible to save as they are duplicates
-         */
-
-        // Gets all appointments at our given time
-        List<Booking> bookings = db.getAllByProperty(Booking.class, "apptTime", dateWithTime);
-        for (Booking appt : bookings) { // Check over each booking
-            if (appt.getDoctor().equals(doc)) { // Check if it's the same doctor at that time
-                logger.warn("SAME DOCTOR DONT SAVE");
-                okToSave = false;
-            } else if (appt.getRoom().equals(room)) {
-                logger.warn("SAME ROOM DONT SAVE");
-                okToSave = false;
-            }
-        }
-
         Text warningText = (Text) root.lookup("#warningMessage");
         warningText.setText("");
 
         // Save if ok
-        if (okToSave) {
+        if (db.saveGet(booking) != null) {
             // booking has been saved
-            db.save(booking);
             warningText.setText("Making Appointment");
         } else {
             logger.warn("Cannot make appointment");
