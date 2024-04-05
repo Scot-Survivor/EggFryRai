@@ -254,7 +254,7 @@ public class StartupUtils {
         for (Room room : rooms) {
             // if room is not in db, save it
             if (EntityUtils.roomExists(room.getRoomNumber())) {
-                EntityUtils.makeRoom(room.getRoomNumber(), gpClinicAddress);
+                EntityUtils.createRoom(room.getRoomNumber(), gpClinicAddress);
             }
         }
 

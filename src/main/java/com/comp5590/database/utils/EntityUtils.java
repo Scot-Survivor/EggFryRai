@@ -2,12 +2,14 @@ package com.comp5590.database.utils;
 
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.AuthenticationDetails;
+import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.security.managers.passwords.PasswordManager;
+import java.util.Date;
 
 public class EntityUtils {
 
@@ -169,6 +171,27 @@ public class EntityUtils {
     }
 
     /**
+     * Create a booking.
+     *
+     * @param patient
+     * @param doctor
+     * @param room
+     * @param date
+     *
+     * @return Booking
+     */
+
+    public static Booking createBooking(User patient, User doctor, Room room, Date date) {
+        Booking booking = new Booking();
+        booking.setDoctor(doctor);
+        booking.setPatient(patient);
+        booking.setApptTime(date);
+        booking.setRoom(room);
+        booking = getDbManager().saveGet(booking);
+        return booking;
+    }
+
+    /**
      * Create a doctor user with all filled values,
      *
      * @return User
@@ -247,7 +270,7 @@ public class EntityUtils {
      * @param address The address of the room
      * @return The room
      */
-    public static Room makeRoom(String roomNum, Address address) {
+    public static Room createRoom(String roomNum, Address address) {
         Room room = new Room();
         room.setAddress(address);
         room.setRoomNumber(roomNum);
