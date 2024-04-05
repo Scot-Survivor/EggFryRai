@@ -1,10 +1,6 @@
 package com.comp5590.database.utils;
 
-import com.comp5590.database.entities.Address;
-import com.comp5590.database.entities.AuthenticationDetails;
-import com.comp5590.database.entities.Booking;
-import com.comp5590.database.entities.Room;
-import com.comp5590.database.entities.User;
+import com.comp5590.database.entities.*;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
@@ -189,6 +185,34 @@ public class EntityUtils {
         booking.setRoom(room);
         booking = getDbManager().saveGet(booking);
         return booking;
+    }
+
+    /**
+     * Create a medicine entity
+     * @param name Name of medicine
+     * @param dose Dose of medicine
+     * @return A medicine object
+     */
+    public static Medicine createMedicine(String name, int dose, Prescription prescription) {
+        Medicine med = new Medicine(name, dose, prescription);
+        med = getDbManager().saveGet(med);
+        return med;
+    }
+
+    /**
+     * Create a new prescription object
+     * @param notes Additional Notes for the prescription
+     * @param patient The patient it applies to
+     * @param doctor Doctor assigning the prescription
+     * @return The prescription object
+     */
+    public static Prescription createPrescription(String notes, User patient, User doctor) {
+        Prescription prescription = new Prescription();
+        prescription.setAdditionalNotes(notes);
+        prescription.setPatient(patient);
+        prescription.setDoctor(doctor);
+        prescription = getDbManager().saveGet(prescription);
+        return prescription;
     }
 
     /**
