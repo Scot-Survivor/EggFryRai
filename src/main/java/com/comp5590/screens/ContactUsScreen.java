@@ -105,11 +105,12 @@ public class ContactUsScreen extends AbstractScreen {
         resultLabel.setText("");
         // Boolean used to check if any values empty
         boolean filled = true;
+        // Boolean used to check if email is valid
+        boolean emailValid = true;
         // Check each field, if empty highlight red, else remove highlighting
         ArrayList<TextField> fields = new ArrayList<TextField>();
         fields.add(firstName);
         fields.add(lastName);
-        fields.add(email);
 
         for (TextField field : fields) {
             if (field.getText().isEmpty()) {
@@ -118,6 +119,17 @@ public class ContactUsScreen extends AbstractScreen {
             } else {
                 field.setStyle("-fx-effect: '';");
             }
+        }
+        // Separate if statement for email to check if valid
+        String emailText = email.getText();
+        if (emailText.isEmpty()) {
+            email.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 10, 0, 0, 0);");
+            filled = false;
+        } else if (!emailText.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            email.setStyle("-fx-effect: dropshadow(gaussian, rgba(255,0,0,0.5), 10, 0, 0, 0);");
+            emailValid = false;
+        } else {
+            email.setStyle("-fx-effect: '';");
         }
         // Separate if statement for message as it is textArea
         if (message.getText().isEmpty()) {
@@ -130,6 +142,9 @@ public class ContactUsScreen extends AbstractScreen {
         // Check if filled or not, print result message
         if (!filled) {
             resultLabel.setText("You are missing details.");
+            resultLabel.setStyle("-fx-text-fill: red");
+        } else if (!emailValid) {
+            resultLabel.setText("Email is invalid.");
             resultLabel.setStyle("-fx-text-fill: red");
         } else {
             resultLabel.setText("Your details have been sent.");
