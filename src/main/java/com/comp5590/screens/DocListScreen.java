@@ -4,6 +4,7 @@ import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.database.entities.User;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 @Getter
+@AuthRequired
 public class DocListScreen extends AbstractScreen {
 
     private TableView<User> doctorTable;

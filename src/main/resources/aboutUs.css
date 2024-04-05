@@ -1,0 +1,31 @@
+#title {
+    -fx-alignment: center;
+    -fx-padding: 10;
+}
+#center {
+    -fx-spacing: 2px;
+    -fx-border-color: #575dfb;
+    -fx-background-color: #f4f4f4;
+    -fx-border-width: 3;
+    -fx-border-radius: 20;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+    -fx-alignment: TOP_CENTER;
+}
+.label {
+    -fx-font-weight: bold;
+    -fx-text-fill: grey;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+#bottomNote {
+    -fx-font-weight: normal;
+    -fx-padding: 40px 0 0 0;
+}
+#infoBox {
+    -fx-spacing: 10px;
+    -fx-min-height: 175px;
+}
+#reviewBox {
+    -fx-spacing: 20px;
+}

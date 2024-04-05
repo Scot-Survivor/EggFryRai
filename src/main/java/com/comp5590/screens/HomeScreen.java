@@ -62,6 +62,7 @@ public class HomeScreen extends AbstractScreen {
         Button aboutUs = new Button("About us");
         Button contactUs = new Button("Contact us");
         Button doctors = new Button("Doctors");
+        Button viewDoctor = new Button("View Doctor");
 
         // add IDs to buttons for testing purposes
         home.setId("home");
@@ -70,6 +71,7 @@ public class HomeScreen extends AbstractScreen {
         aboutUs.setId("aboutUs");
         contactUs.setId("contactUs");
         doctors.setId("doctors");
+        viewDoctor.setId("viewDoctor");
 
         // attach event listeners to each button
         home.setOnAction(e -> {
@@ -79,7 +81,7 @@ public class HomeScreen extends AbstractScreen {
 
         appointments.setOnAction(e -> {
             logger.info("Appointments button clicked");
-            // showScene(AppointmentsScreen.class);
+            showScene(AppointmentsScreen.class);
         });
 
         prescriptions.setOnAction(e -> {
@@ -89,12 +91,12 @@ public class HomeScreen extends AbstractScreen {
 
         aboutUs.setOnAction(e -> {
             logger.info("About us button clicked");
-            // showScene(AboutUsScreen.class);
+            showScene(AboutUsScreen.class);
         });
 
         contactUs.setOnAction(e -> {
             logger.info("Contact us button clicked");
-            // showScene(ContactUsScreen.class);
+            showScene(ContactUsScreen.class);
         });
 
         doctors.setOnAction(e -> {
@@ -102,8 +104,13 @@ public class HomeScreen extends AbstractScreen {
             showScene(DocListScreen.class);
         });
 
+        viewDoctor.setOnAction(e -> {
+            logger.info("ViewDoctor button clicked");
+            showScene(ViewDoctorDetailsScreen.class);
+        });
+
         // create the navbar
-        NavBar navBar = new NavBar(home, appointments, prescriptions, aboutUs, contactUs, doctors);
+        NavBar navBar = new NavBar(home, appointments, prescriptions, aboutUs, contactUs, doctors, viewDoctor);
 
         // create the background image
         HugeImage bgImage = new HugeImage("/homeBackground.jpg");
