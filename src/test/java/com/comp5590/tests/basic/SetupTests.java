@@ -14,7 +14,7 @@ import com.comp5590.utils.NameUtils;
 import com.comp5590.utils.QueryUtils;
 import com.comp5590.utils.ScreenUtils;
 import com.comp5590.utils.StringUtils;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import org.junit.jupiter.api.AfterEach;
@@ -123,5 +123,17 @@ public class SetupTests extends EntityUtils {
         // otherwise, just show the screen without authenticating
         robot.interact(() -> app.getScreenManager().showScene(screenClass));
         assertInstanceOf(screenClass, app.getScreenManager().getCurrentScreen());
+    }
+
+    // QOL methods (consider BST, NO ZONE ID)
+    public Date createFutureDate(int days) {
+        // get current date
+        LocalDate now = LocalDate.now();
+
+        // add days
+        LocalDate future = now.plus(days, ChronoUnit.DAYS);
+
+        // convert to date, and return it
+        return java.sql.Date.valueOf(future);
     }
 }

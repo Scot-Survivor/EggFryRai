@@ -2,7 +2,6 @@ package com.comp5590.tests.basic.validators;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
