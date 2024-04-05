@@ -60,7 +60,8 @@ public class User {
     private List<Booking> bookings;
 
     /**
-     * Constructor for all required fields
+     * Constructor for all required fields (excluding address &
+     * authenticationDetails)
      */
     public User(
         String firstName,
@@ -81,7 +82,7 @@ public class User {
     }
 
     /**
-     * Constructor for all required fields
+     * Constructor for all required fields (including address)
      */
     public User(
         String firstName,
@@ -100,6 +101,31 @@ public class User {
         this.additionalNotes = additionalNotes;
         this.communicationPreference = communicationPreference;
         this.role = role;
+        this.address = address;
+    }
+
+    /**
+     * Constructor for all fields (including address & authenticationDetails)
+     */
+    public User(
+        String firstName,
+        String surName,
+        String phone,
+        String fax,
+        String additionalNotes,
+        CommunicationPreference communicationPreference,
+        UserRole role,
+        AuthenticationDetails authenticationDetails,
+        Address address
+    ) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.phone = phone;
+        this.fax = fax;
+        this.additionalNotes = additionalNotes;
+        this.communicationPreference = communicationPreference;
+        this.role = role;
+        this.authenticationDetails = authenticationDetails;
         this.address = address;
     }
 
