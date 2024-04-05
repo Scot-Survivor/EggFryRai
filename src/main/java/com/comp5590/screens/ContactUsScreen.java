@@ -139,7 +139,7 @@ public class ContactUsScreen extends AbstractScreen {
             message.setStyle("-fx-effect: '';");
         }
 
-        // Check if filled or not, print result message
+        // Check if filled or not, or email invalid, print result message
         if (!filled) {
             resultLabel.setText("You are missing details.");
             resultLabel.setStyle("-fx-text-fill: red");
