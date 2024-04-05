@@ -38,7 +38,8 @@ public class AuthenticationDetails {
     private String authenticationToken;
 
     /**
-     * The recovery codes are used to recover the account if the user loses access to their 2FA device
+     * The recovery codes are used to recover the account if the user loses access
+     * to their 2FA device
      * They're split by a comma
      */
     @Column(name = "recoveryCodes", nullable = true)

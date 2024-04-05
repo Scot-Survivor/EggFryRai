@@ -29,4 +29,10 @@ public class Room {
     // Stored as string for room name "001"
     @Column(name = "roomNumber", length = 25, nullable = false, unique = true)
     private String roomNumber;
+
+    // make new room
+    public Room(Address address, String roomNumber) {
+        this.address = address;
+        this.roomNumber = roomNumber;
+    }
 }

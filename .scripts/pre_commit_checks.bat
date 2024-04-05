@@ -1,5 +1,9 @@
 @echo off
 
+echo Moving one directory up
+cd ..
+echo.
+
 echo Running Spotless formatting...
 call ./gradlew spotlessApply
 

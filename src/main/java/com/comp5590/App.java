@@ -1,6 +1,7 @@
 package com.comp5590;
 
 import com.comp5590.configuration.AppConfig;
+import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.events.listeners.implementations.EntityValidatorListener;
 import com.comp5590.events.listeners.implementations.SceneKeyboardNavigationListener;
@@ -82,13 +83,29 @@ public class App extends Application {
         eventManager.addListener(new ScreenAuthValidationListener());
         eventManager.addListener(new SceneKeyboardNavigationListener(screenManager, primaryStage));
 
+        // if in development mode, create testing objects & authenticate, then redirect
+        // to home screen
         if (AppConfig.DEBUG_MODE) {
             // create testing objects
             logger.debug("Creating testing objects");
-            if (!StartupUtils.createObjects()) {
+
+            User user = StartupUtils.createObjects();
+
+            if (user == null) {
                 logger.fatal("Failed to create testing objects");
                 System.exit(1);
             }
+
+            logger.debug("Testing objects created successfully");
+
+            // set SessionManager.user to the test user defined in StartupUtils
+            sessionManager.authenticate(user);
+
+            // redirect to home screen
+            screenManager.showScene(HomeScreen.class);
+
+            // log
+            logger.info("Successfully authenticated as test user. Redirecting to home screen");
         }
     }
 
