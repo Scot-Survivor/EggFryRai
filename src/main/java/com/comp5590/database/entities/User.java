@@ -59,6 +59,10 @@ public class User {
     @ToString.Exclude
     private List<Booking> bookings;
 
+    @OneToMany(mappedBy = "prescriptionId")
+    @ToString.Exclude
+    private List<Prescription> prescriptions;
+
     /**
      * Constructor for all required fields (excluding address &
      * authenticationDetails)
