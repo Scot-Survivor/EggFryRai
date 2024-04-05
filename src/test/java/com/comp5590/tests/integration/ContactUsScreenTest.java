@@ -38,7 +38,7 @@ public class ContactUsScreenTest extends SetupTests {
         robot.interact(() -> {
             // new test ends up in an async race condition so we should sleep for a full
             // second to ensure it doesn't occur
-            robot.sleep(1000); // Sleep for a second to ensure the screen is loaded
+            robot.sleep(100); // Sleep for a second to ensure the screen is loaded
             // Get submission Button
             NodeQuery submitButton = robot.lookup("#submitButton");
             assertThat(submitButton.queryAll()).isNotNull();
@@ -71,6 +71,35 @@ public class ContactUsScreenTest extends SetupTests {
             // Check correct label is showing
             assertThat(robot.lookup("#resultLabel").queryAs(javafx.scene.control.Label.class).getText())
                 .isEqualTo("You are missing details.");
+        });
+    }
+
+    @Test
+    public void testFailedEmail(FxRobot robot) {
+        robot.interact(() -> {
+            robot.lookup("#firstNameTextBox").queryAs(javafx.scene.control.TextField.class).setText("John");
+            robot.lookup("#lastNameTextBox").queryAs(javafx.scene.control.TextField.class).setText("Doe");
+            robot.lookup("#emailTextBox").queryAs(javafx.scene.control.TextField.class).setText("john4");
+            robot
+                .lookup("#messageTextBox")
+                .queryAs(javafx.scene.control.TextArea.class)
+                .setText("My program is crashing");
+
+            // Check fields actually have data in them
+            assertThat(robot.lookup("#firstNameTextBox").queryAs(javafx.scene.control.TextField.class).getText())
+                .isEqualTo("John");
+            assertThat(robot.lookup("#lastNameTextBox").queryAs(javafx.scene.control.TextField.class).getText())
+                .isEqualTo("Doe");
+            assertThat(robot.lookup("#emailTextBox").queryAs(javafx.scene.control.TextField.class).getText())
+                .isEqualTo("john4");
+            assertThat(robot.lookup("#messageTextBox").queryAs(javafx.scene.control.TextArea.class).getText())
+                .isEqualTo("My program is crashing");
+
+            robot.lookup("#submitButton").queryAs(javafx.scene.control.Button.class).fire();
+
+            // Check correct label is showing
+            assertThat(robot.lookup("#resultLabel").queryAs(javafx.scene.control.Label.class).getText())
+                .isEqualTo("Email is invalid.");
         });
     }
 
