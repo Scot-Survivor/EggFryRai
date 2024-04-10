@@ -121,7 +121,7 @@ test {
     testLogging.showStackTraces = true
     testLogging.showStandardStreams = true
     minHeapSize = "512m"
-    maxHeapSize = "1024m"
+    maxHeapSize = "2048m"
 }
 
 java {
