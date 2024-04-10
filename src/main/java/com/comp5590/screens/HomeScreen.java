@@ -63,6 +63,7 @@ public class HomeScreen extends AbstractScreen {
         Button contactUs = new Button("Contact us");
         Button doctors = new Button("Doctors");
         Button viewDoctor = new Button("View Doctor");
+        Button viewLogs = new Button("View Logs");
 
         // add IDs to buttons for testing purposes
         home.setId("home");
@@ -72,6 +73,7 @@ public class HomeScreen extends AbstractScreen {
         contactUs.setId("contactUs");
         doctors.setId("doctors");
         viewDoctor.setId("viewDoctor");
+        viewLogs.setId("viewLogs");
 
         // attach event listeners to each button
         home.setOnAction(e -> {
@@ -109,8 +111,22 @@ public class HomeScreen extends AbstractScreen {
             showScene(ViewDoctorDetailsScreen.class);
         });
 
+        viewLogs.setOnAction(e -> {
+            logger.info("ViewLogs button clicked");
+            showScene(LoggingScreen.class);
+        });
+
         // create the navbar
-        NavBar navBar = new NavBar(home, appointments, prescriptions, aboutUs, contactUs, doctors, viewDoctor);
+        NavBar navBar = new NavBar(
+            home,
+            appointments,
+            prescriptions,
+            aboutUs,
+            contactUs,
+            doctors,
+            viewDoctor,
+            viewLogs
+        );
 
         // create the background image
         HugeImage bgImage = new HugeImage("/homeBackground.jpg");
