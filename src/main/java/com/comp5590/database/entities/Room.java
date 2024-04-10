@@ -30,9 +30,8 @@ public class Room {
     @Column(name = "roomNumber", length = 25, nullable = false, unique = true)
     private String roomNumber;
 
-    // make new room
-    public Room(Address address, String roomNumber) {
-        this.address = address;
+    public Room(String roomNumber, Address address) {
         this.roomNumber = roomNumber;
+        this.address = address;
     }
 }
