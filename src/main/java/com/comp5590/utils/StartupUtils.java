@@ -17,11 +17,11 @@ public class StartupUtils {
      * TODO(Josh): Move SetupTests static into a dedicated database class.
      * @return true on success
      */
-    public static boolean createObjects() {
+    public static User createObjects() {
         DatabaseManager db = DatabaseManager.getInstance();
         boolean isValid = true;
         if (db == null) {
-            return false;
+            return null;
         }
 
         Address address = new Address("1234 Test St", "Test City", "Test Province", "Test Country", "T3S T1N");
@@ -104,6 +104,6 @@ public class StartupUtils {
         room = new Room("1002", address);
         isValid = null != db.saveGet(room);
 
-        return isValid;
+        return user;
     }
 }
