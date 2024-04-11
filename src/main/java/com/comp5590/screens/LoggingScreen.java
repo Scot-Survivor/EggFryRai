@@ -6,6 +6,7 @@ import com.comp5590.managers.ScreenManager;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Pos;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -16,6 +17,7 @@ import lombok.Getter;
 public class LoggingScreen extends AbstractScreen {
 
     private final List<String> logs;
+    private final ListView<String> logHistory = new ListView<>();
 
     public LoggingScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -46,8 +48,36 @@ public class LoggingScreen extends AbstractScreen {
         logBox.setId("logBox");
         logBox.setAlignment(Pos.TOP_CENTER);
 
-        ListView<String> logHistory = new ListView<>();
         logHistory.setId("logHistory");
+
+        logHistory.setCellFactory(param ->
+            new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item);
+                        // set colour based on log level
+                        // DEBUG : GREEN INFO : BLACK WARN : YELLOW ERROR : RED
+                        // ALL SHOULD BE BOLD
+                        String styleString = "-fx-font-weight: bold;";
+                        if (item.contains("DEBUG")) {
+                            setStyle(styleString + " -fx-text-fill: green;");
+                        } else if (item.contains("INFO")) {
+                            setStyle(styleString + " -fx-text-fill: black;");
+                        } else if (item.contains("WARN")) {
+                            setStyle(styleString + " -fx-text-fill: yellow;");
+                        } else if (item.contains("ERROR") || item.contains("FATAL")) {
+                            setStyle(styleString + " -fx-text-fill: red;");
+                        } else if (item.contains("TRACE")) {
+                            setStyle(styleString + " -fx-text-fill: blue;");
+                        }
+                    }
+                }
+            }
+        );
 
         logHistory.getItems().addAll(logs);
 
