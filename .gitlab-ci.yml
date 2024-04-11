@@ -59,6 +59,7 @@ javadoc:
 pages:
   script:
     - "./gradlew javadoc"
+    - "mkdir public"
     - "mv ./build/docs/javadoc/* ./public"
   artifacts:
     paths:
