@@ -86,7 +86,7 @@ public class HomeScreen extends AbstractScreen {
 
         prescriptions.setOnAction(e -> {
             logger.info("Prescriptions button clicked");
-            // showScene(PrescriptionsScreen.class);
+            showScene(PrescriptionScreen.class);
         });
 
         aboutUs.setOnAction(e -> {
