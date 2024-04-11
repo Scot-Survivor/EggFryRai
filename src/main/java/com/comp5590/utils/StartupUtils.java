@@ -110,14 +110,13 @@ public class StartupUtils {
         prescription.setAdditionalNotes("Prescription details here");
         prescription = db.saveGet(prescription);
         if (prescription == null) {
-            isValid = false;
-        }
-
-        Medicine medicine1 = new Medicine("Medicine 1 Name", 1, prescription);
-        Medicine medicine2 = new Medicine("Medicine 2 Name", 2, prescription);
+        isValid = false;
+    }
+        Medicine medicine1 = new Medicine("medicine 1 Name", 1, prescription);
+        Medicine medicine2 = new Medicine("medicine 2 Name", 2, prescription);
         isValid &= db.saveGet(medicine1) != null;
         isValid &= db.saveGet(medicine2) != null;
-
+      
         return user;
     }
 }
