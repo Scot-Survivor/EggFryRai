@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 
 public class HeaderBar extends HBox {
 
-    public HeaderBar(HBox left, String firstName, HBox right) {
+    public HeaderBar(HBox left, HBox right, String firstName, String title) {
         // * LEFT
         // HBox containing the icon and "Welcome, <name>" button (passed into the
         // constructor, to apply event listener externally)
@@ -29,7 +29,7 @@ public class HeaderBar extends HBox {
         HBox middle = new HBox();
 
         // Text containing GP name
-        Title gpNameText = new Title("GP Alpha");
+        Title gpNameText = new Title(title);
 
         // add the GP name to the middle HBox
         middle.getChildren().add(gpNameText);

@@ -140,7 +140,8 @@ public abstract class AbstractScreen {
 
         setRootPane(rootPane); // set root pane
 
-        return pane;
+        // Create the header bar with the determined name
+        HeaderBar headerBar = new HeaderBar(profileBox, logoutBox, SessionManager.getInstance().getFullName(), title);
     }
 
     /**
