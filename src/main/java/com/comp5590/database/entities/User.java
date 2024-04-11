@@ -64,7 +64,7 @@ public class User {
     private List<Prescription> prescriptions;
 
     /**
-     * Constructor for all required fields (excluding address &
+     * Constructor for all required fields (excluding address and
      * authenticationDetails)
      */
     public User(
@@ -109,7 +109,7 @@ public class User {
     }
 
     /**
-     * Constructor for all fields (including address & authenticationDetails)
+     * Constructor for all fields (including address and authenticationDetails)
      */
     public User(
         String firstName,

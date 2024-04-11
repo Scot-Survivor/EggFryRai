@@ -245,3 +245,7 @@ tasks.named('spotlessDiagnose').configure {
     dependsOn 'addPreCommitGitHookOnBuild'
     dependsOn 'addCommitMsgGitHookOnBuild'
 }
+
+javadoc {
+    destinationDir = file("${buildDir}/docs/javadoc")
+}

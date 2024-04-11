@@ -45,6 +45,16 @@ package:
   only:
     - main
 
+javadoc:
+  stage: distribute
+  script:
+    - "./gradlew javadoc"
+  artifacts:
+    paths:
+      - "./build/docs/javadoc"
+    expire_in: 24 hours
+  only:
+    - main
 
 test:
   stage: test

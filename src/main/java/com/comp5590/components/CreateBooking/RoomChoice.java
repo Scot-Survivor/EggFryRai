@@ -22,7 +22,6 @@ public class RoomChoice extends VBox {
 
     /**
      * Create the doctor choice drop down menu
-     * @return A VBox containing the required fields
      */
     public RoomChoice(DatabaseManager db, HashMap<String, Room> roomMap) {
         logger = LoggerManager.getInstance().getLogger(RoomChoice.class);
