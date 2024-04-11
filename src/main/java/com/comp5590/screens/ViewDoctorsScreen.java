@@ -2,7 +2,6 @@ package com.comp5590.screens;
 
 import com.comp5590.components.DoctorDetailsScreen.DoctorChoice;
 import com.comp5590.components.DoctorDetailsScreen.DoctorDisplayBox;
-import com.comp5590.components.DoctorDetailsScreen.Title;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
@@ -14,33 +13,38 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.core.Logger;
 
 @AuthRequired
-public class ViewDoctorDetailsScreen extends AbstractScreen {
+public class ViewDoctorsScreen extends AbstractScreen {
 
     private HashMap<String, User> doctorMap; // Will contain a mapping of doctors names to their object
-    private final Logger logger = LoggerManager.getInstance().getLogger(ViewDoctorDetailsScreen.class);
+    private final Logger logger = LoggerManager.getInstance().getLogger(ViewDoctorsScreen.class);
 
-    public ViewDoctorDetailsScreen(ScreenManager screenManager) {
+    public ViewDoctorsScreen(ScreenManager screenManager) {
         super(screenManager);
         doctorMap = new HashMap<>();
     }
 
     @Override
     public void setup() {
-        BorderPane rootPane = new BorderPane();
-        setRootPane(rootPane);
-        rootPane.setCenter(createCenter());
-        rootPane.setTop(new Title()); // Add title to the page
-        addBackAndHomeButtons(rootPane); // Add back and home buttons to the page
+        // attach default pane, but grab the reference to the gridpane (set as
+        // center of borderpane) for further customization
+        GridPane pane = this.attachDefaultPane();
+        // attach header and nav bar
+        this.attachHeaderAndNavBar("View Doctors");
+
+        // create the page contents, setting them to center of root pane
+        ((BorderPane) getRootPane()).setCenter(createCenter());
     }
 
     /**
      * Create the central pane of the root pane
+     *
      * @return A BorderPane containing what all what was added
      */
     private BorderPane createCenter() {

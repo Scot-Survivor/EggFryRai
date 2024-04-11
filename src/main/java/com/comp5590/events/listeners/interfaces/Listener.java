@@ -12,7 +12,7 @@ import org.apache.logging.log4j.core.Logger;
 
 // Inspired by: net.dv8tion.jda.api.hooks.ListenerAdapter.java
 public interface Listener {
-    Logger eventLogger = LoggerManager.getInstance().getLogger(Listener.class);
+    Logger eventLogger = LoggerManager.getInstance().getLogger(Listener.class, "DEBUG");
 
     // Store the Event and Listener Class that was found
     HashMap<ImmutablePair<Class<?>, Class<?>>, MethodHandle> methodHandles = new HashMap<>();

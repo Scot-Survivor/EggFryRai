@@ -1,13 +1,9 @@
 package com.comp5590.screens;
 
-import com.comp5590.components.HomeScreen.HeaderBar;
 import com.comp5590.components.HomeScreen.HugeImage;
-import com.comp5590.components.HomeScreen.NavBar;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.core.Logger;
 
@@ -26,103 +22,16 @@ public class HomeScreen extends AbstractScreen {
         this.addCss("/home.css");
         this.addCss("/global.css");
 
-        GridPane pane = this.attachDefaultPane(); // attach default pane
+        // attach default pane, but grab the reference to the gridpane (set as
+        // center of borderpane) for further customization
+        GridPane pane = this.attachDefaultPane();
 
-        // create profileBox for the left side of the header bar
-        HBox profileBox = new HBox();
-        profileBox.setId("profileBox");
-
-        // attach event listener to profileBox
-        profileBox.setOnMouseClicked(e -> {
-            logger.info("Profile button clicked");
-            showScene(ProfileScreen.class);
-        });
-
-        // create hbox for the logout event listener
-        HBox logoutBox = new HBox();
-        logoutBox.setId("logoutBox");
-
-        // attach event listener to logoutbox
-        logoutBox.setOnMouseClicked(e -> {
-            logger.info("Logout button clicked");
-            SessionManager.getInstance().unauthenticate();
-            this.showSceneBetweenScenesThenNextScene(
-                    "👋 You have successfully logged out.\nRedirecting to login screen...",
-                    LoginScreen.class
-                );
-        });
-
-        // Create the header bar with the determined name
-        HeaderBar headerBar = new HeaderBar(profileBox, SessionManager.getInstance().getFullName(), logoutBox);
-
-        // create Buttons for each navbar item
-        Button home = new Button("Home");
-        Button appointments = new Button("Appointments");
-        Button prescriptions = new Button("Prescriptions");
-        Button aboutUs = new Button("About us");
-        Button contactUs = new Button("Contact us");
-        Button doctors = new Button("Doctors");
-        Button viewDoctor = new Button("View Doctor");
-
-        // add IDs to buttons for testing purposes
-        home.setId("home");
-        appointments.setId("appointments");
-        prescriptions.setId("prescriptions");
-        aboutUs.setId("aboutUs");
-        contactUs.setId("contactUs");
-        doctors.setId("doctors");
-        viewDoctor.setId("viewDoctor");
-
-        // attach event listeners to each button
-        home.setOnAction(e -> {
-            logger.info("Home button clicked");
-            showScene(HomeScreen.class);
-        });
-
-        appointments.setOnAction(e -> {
-            logger.info("Appointments button clicked");
-            showScene(AppointmentsScreen.class);
-        });
-
-        prescriptions.setOnAction(e -> {
-            logger.info("Prescriptions button clicked");
-            showScene(PrescriptionScreen.class);
-        });
-
-        aboutUs.setOnAction(e -> {
-            logger.info("About us button clicked");
-            showScene(AboutUsScreen.class);
-        });
-
-        contactUs.setOnAction(e -> {
-            logger.info("Contact us button clicked");
-            showScene(ContactUsScreen.class);
-        });
-
-        doctors.setOnAction(e -> {
-            logger.info("Doctors button clicked");
-            showScene(DocListScreen.class);
-        });
-
-        viewDoctor.setOnAction(e -> {
-            logger.info("ViewDoctor button clicked");
-            showScene(ViewDoctorDetailsScreen.class);
-        });
-
-        // create the navbar
-        NavBar navBar = new NavBar(home, appointments, prescriptions, aboutUs, contactUs, doctors, viewDoctor);
+        // attach the header bar & navbar
+        this.attachHeaderAndNavBar("GP Alpha");
 
         // create the background image
         HugeImage bgImage = new HugeImage("/homeBackground.jpg");
 
-        // add the header bar to the 1st row of the pane
-        pane.add(headerBar, 0, 0);
-        // span the header bar across the entire width of the pane (infinite)
-        GridPane.setColumnSpan(headerBar, Integer.MAX_VALUE);
-        // add the navbar to the 2nd row of the pane
-        pane.add(navBar, 0, 1);
-        // span the navbar across the entire width of the pane (infinite)
-        GridPane.setColumnSpan(navBar, Integer.MAX_VALUE);
         // set the background image to the 3rd row of the pane, and span it infinitely
         // across the width and height of the pane (dynamic sizing)
         pane.add(bgImage, 0, 2);
