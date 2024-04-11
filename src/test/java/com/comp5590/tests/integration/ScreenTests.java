@@ -1,10 +1,7 @@
 package com.comp5590.tests.integration;
 
 import com.comp5590.App;
-import com.comp5590.screens.AbstractScreen;
-import com.comp5590.screens.HomeScreen;
-import com.comp5590.screens.LoginScreen;
-import com.comp5590.screens.WelcomeScreen;
+import com.comp5590.screens.*;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.stage.Stage;
 import org.assertj.core.api.Assertions;
@@ -47,13 +44,12 @@ public class ScreenTests extends SetupTests {
 
     @Test
     public void testScreenGoBack(FxRobot robot) {
-        // Robot is needed to run on JavaFX thread.
+        goToScreen(app, robot, HomeScreen.class);
+        goToScreen(app, robot, DocListScreen.class);
         robot.interact(() -> {
-            app.getScreenManager().showScene(LoginScreen.class);
-            app.getScreenManager().showScene(HomeScreen.class);
+            Assertions.assertThat(app.getScreenManager().getCurrentScreen().getClass()).isEqualTo(DocListScreen.class);
             app.getScreenManager().goBack();
+            Assertions.assertThat(app.getScreenManager().getCurrentScreen().getClass()).isEqualTo(HomeScreen.class);
         });
-
-        Assertions.assertThat(app.getScreenManager().getCurrentScreen().getClass()).isEqualTo(LoginScreen.class);
     }
 }

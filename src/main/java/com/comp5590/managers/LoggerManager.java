@@ -2,12 +2,14 @@ package com.comp5590.managers;
 
 import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
+import com.comp5590.logging.appenders.ScreenAppender;
 import java.util.HashMap;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
 /**
@@ -42,13 +44,8 @@ public class LoggerManager {
         }
     }
 
-    /**
-     * Appender is a Log4J object that defines the output of the logger (I.E Console, File, etc)
-     * @param clazz The class that the logger is for
-     * @return The appender
-     */
-    private Appender getAppender(Class<?> clazz) {
-        PatternLayout pattern = PatternLayout
+    private PatternLayout getLayout(Class<?> clazz) {
+        return PatternLayout
             .newBuilder()
             .withDisableAnsi(false)
             .withPattern(
@@ -57,7 +54,24 @@ public class LoggerManager {
                 "] %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=black, DEBUG=green bold, TRACE=blue}"
             )
             .build();
-        return ConsoleAppender.createDefaultAppenderForLayout(pattern);
+    }
+
+    /**
+     * Create a ScreenAppender object.
+     * @param clazz The class that the logger is for
+     * @return The appender
+     */
+    private Appender getScreenAppender(Class<?> clazz) {
+        return ScreenAppender.createDefaultWithLayout(this.getLayout(clazz));
+    }
+
+    /**
+     * Appender is a Log4J object that defines the output of the logger (I.E Console, File, etc)
+     * @param clazz The class that the logger is for
+     * @return The appender
+     */
+    private Appender getConsoleAppender(Class<?> clazz) {
+        return ConsoleAppender.createDefaultAppenderForLayout(this.getLayout(clazz));
     }
 
     /**
@@ -78,13 +92,17 @@ public class LoggerManager {
             getLogger().error("Invalid log level given to createLogger");
             return;
         }
-
         Logger logger = (Logger) LogManager.getLogger(clazz);
+        logger.setLevel(Level.getLevel(log_level));
         logger.getAppenders().values().forEach(logger::removeAppender); // remove all appender
-        ConsoleAppender appender = (ConsoleAppender) getAppender(clazz);
+        ConsoleAppender appender = (ConsoleAppender) getConsoleAppender(clazz);
         appender.start(); // Since we're creating the appender manually, we need to start it manually
         logger.addAppender(appender);
+        ScreenAppender screenAppender = (ScreenAppender) getScreenAppender(clazz);
+        screenAppender.start();
+        logger.addAppender(screenAppender);
         logger.setLevel(Level.getLevel(log_level));
+        Configurator.setLevel(clazz.getName(), Level.getLevel(log_level));
         loggers.put(clazz, logger);
     }
 
