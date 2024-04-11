@@ -377,7 +377,6 @@ public class DatabaseManager {
         }
     }
 
-
     /**
      * Delete an object from the database
      */
@@ -400,5 +399,4 @@ public class DatabaseManager {
             return false;
         }
     }
-
 }

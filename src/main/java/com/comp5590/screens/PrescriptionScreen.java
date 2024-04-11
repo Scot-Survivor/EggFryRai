@@ -6,12 +6,11 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
-import javafx.beans.property.SimpleStringProperty;
-
-import java.util.List;
 
 @AuthRequired
 public class PrescriptionScreen extends AbstractScreen {
@@ -25,22 +24,21 @@ public class PrescriptionScreen extends AbstractScreen {
     @Override
     public void setup() {
         GridPane gridPane = attachDefaultPane();
-        attachHeaderAndNavBar("Prescription");
+        attachHeaderAndNavBar("Prescriptions");
 
         // create prescription table
         prescriptionTableView = createPrescriptionTableView();
         gridPane.add(prescriptionTableView, 0, 1);
     }
 
-
     private TableView<Prescription> createPrescriptionTableView() {
         TableView<Prescription> tableView = new TableView<>();
-        
+
         // define columns
         TableColumn<Prescription, String> medicineNameColumn = new TableColumn<>("Medicine Name");
         TableColumn<Prescription, String> dosageColumn = new TableColumn<>("Dosage");
         TableColumn<Prescription, String> notesColumn = new TableColumn<>("Additional Notes");
-        
+
         // set cell value
         medicineNameColumn.setCellValueFactory(data -> {
             List<Medicine> medicines = data.getValue().getMedicine();
@@ -59,10 +57,10 @@ public class PrescriptionScreen extends AbstractScreen {
             }
         });
         notesColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAdditionalNotes()));
-        
+
         // add columns to table
         tableView.getColumns().addAll(medicineNameColumn, dosageColumn, notesColumn);
-        
+
         // load data into table
         DatabaseManager db = getDatabaseManager();
         try {
@@ -71,14 +69,12 @@ public class PrescriptionScreen extends AbstractScreen {
         } catch (Exception e) {
             e.printStackTrace(); // log the exception
         }
-        
+
         return tableView;
     }
-    
-    
+
     @Override
-    public void cleanup() {
-    }
+    public void cleanup() {}
 
     @Override
     public boolean canAccess() {
@@ -87,8 +83,6 @@ public class PrescriptionScreen extends AbstractScreen {
 
     @Override
     public boolean canAccess(User user) {
-
         return true;
     }
-    
 }
