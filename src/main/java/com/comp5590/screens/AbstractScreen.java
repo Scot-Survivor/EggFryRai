@@ -198,6 +198,7 @@ public abstract class AbstractScreen {
         Button contactUs = new Button("Contact us");
         Button chooseDoctor = new Button("Choose Doctor");
         Button viewDoctors = new Button("View Doctors");
+        Button logs = new Button("Logs");
 
         // add IDs to buttons for testing purposes
         home.setId("home");
@@ -208,6 +209,7 @@ public abstract class AbstractScreen {
         contactUs.setId("contactUs");
         chooseDoctor.setId("chooseDoctor");
         viewDoctors.setId("viewDoctors");
+        logs.setId("logs");
 
         // attach event listeners to each button
         home.setOnAction(e -> {
@@ -250,6 +252,11 @@ public abstract class AbstractScreen {
             showScene(ViewDoctorsScreen.class);
         });
 
+        logs.setOnAction(e -> {
+            logger.info("Logs button clicked");
+            showScene(LoggingScreen.class);
+        });
+
         // create the navbar
         NavBar navBar = new NavBar(
             home,
@@ -259,7 +266,8 @@ public abstract class AbstractScreen {
             aboutUs,
             contactUs,
             chooseDoctor,
-            viewDoctors
+            viewDoctors,
+            logs
         );
 
         return navBar;
