@@ -35,12 +35,12 @@ public class PrescriptionScreen extends AbstractScreen {
 
     private TableView<Prescription> createPrescriptionTableView() {
         TableView<Prescription> tableView = new TableView<>();
-    
+        
         // define columns
         TableColumn<Prescription, String> medicineNameColumn = new TableColumn<>("Medicine Name");
         TableColumn<Prescription, String> dosageColumn = new TableColumn<>("Dosage");
         TableColumn<Prescription, String> notesColumn = new TableColumn<>("Additional Notes");
-    
+        
         // set cell value
         medicineNameColumn.setCellValueFactory(data -> {
             List<Medicine> medicines = data.getValue().getMedicine();
@@ -59,17 +59,22 @@ public class PrescriptionScreen extends AbstractScreen {
             }
         });
         notesColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAdditionalNotes()));
-    
+        
         // add columns to table
         tableView.getColumns().addAll(medicineNameColumn, dosageColumn, notesColumn);
-    
+        
         // load data into table
         DatabaseManager db = getDatabaseManager();
-        List<Prescription> prescriptions = db.getAll(Prescription.class);
-        tableView.getItems().addAll(prescriptions);
-    
+        try {
+            List<Prescription> prescriptions = db.getAll(Prescription.class);
+            tableView.getItems().addAll(prescriptions);
+        } catch (Exception e) {
+            e.printStackTrace(); // log the exception
+        }
+        
         return tableView;
     }
+    
     
     @Override
     public void cleanup() {
