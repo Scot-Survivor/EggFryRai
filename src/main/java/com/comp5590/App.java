@@ -5,6 +5,7 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.events.listeners.implementations.EntityValidatorListener;
 import com.comp5590.events.listeners.implementations.SceneKeyboardNavigationListener;
+import com.comp5590.events.listeners.implementations.ScreenChangeListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
@@ -72,8 +73,9 @@ public class App extends Application {
         instance = this;
         primaryStage = stage;
         stage.getIcons().add(new Image("/healthcare.png"));
-
+        ScreenChangeListener screenChangeListener = new ScreenChangeListener();
         screenManager = new ScreenManager(primaryStage);
+
         totpManager = TOTPManager.getInstance();
         // add event listeners to the event manager
         eventManager = EventManager.getInstance();
@@ -86,6 +88,8 @@ public class App extends Application {
         // if in development mode, create testing objects & authenticate, then redirect
         // to home screen
         if (AppConfig.DEBUG_MODE) {
+            eventManager.addListener(screenChangeListener);
+
             // create testing objects
             logger.debug("Creating testing objects");
 
