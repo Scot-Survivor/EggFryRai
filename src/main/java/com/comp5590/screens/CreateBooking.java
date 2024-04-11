@@ -25,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -54,14 +55,13 @@ public class CreateBooking extends AbstractScreen {
         // get the current user for later use
         // currentUser = App.getInstance().getCurrentUser();
 
-        // set the main pane of the screen
-        BorderPane rootPane = new BorderPane();
-        setRootPane(rootPane);
+        // attach default pane, but grab the reference to the gridpane (set as
+        // center of borderpane) for further customization
+        GridPane pane = this.attachDefaultPane();
+        // attach header and nav bar
+        this.attachHeaderAndNavBar("Booking Appointment");
 
-        // set center to be some regular text
-        new Title(rootPane);
-        rootPane.setCenter(createCenter());
-        addBackAndHomeButtons(rootPane); // Add back and home buttons to the page
+        ((BorderPane) getRootPane()).setCenter(this.createCenter());
     }
 
     /**

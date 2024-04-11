@@ -219,7 +219,7 @@ public abstract class AbstractScreen {
 
         newAppointment.setOnAction(e -> {
             logger.info("New Appointment button clicked");
-            showScene(NewAppointmentScreen.class);
+            showScene(CreateBooking.class);
         });
 
         viewAppointments.setOnAction(e -> {
