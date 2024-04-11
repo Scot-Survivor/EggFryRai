@@ -67,7 +67,7 @@ public class AppConfig {
     // General App Configuration
     public static String LOG_LEVEL = "DEBUG";
 
-    public static int MAX_LOG_RESULTS = 10; // Number of results that will be kept in ScreenAppender
+    public static int MAX_LOG_RESULTS = 1000; // Number of results that will be kept in ScreenAppender
 
     public static boolean DEBUG_MODE = false; // Debug mode, will create testing objects on app launch if this is true
 
