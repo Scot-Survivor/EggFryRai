@@ -3,6 +3,8 @@ package com.comp5590.utils;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.AuthenticationDetails;
+import com.comp5590.database.entities.Medicine;
+import com.comp5590.database.entities.Prescription;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
@@ -103,6 +105,17 @@ public class StartupUtils {
         isValid = null != db.saveGet(room);
         room = new Room("1002", address);
         isValid = null != db.saveGet(room);
+
+        Prescription prescription = new Prescription();
+        prescription.setAdditionalNotes("Prescription details here");
+        prescription = db.saveGet(prescription);
+        if (prescription == null) {
+            isValid = false;
+        }
+        Medicine medicine1 = new Medicine("medicine 1 Name", 1, prescription);
+        Medicine medicine2 = new Medicine("medicine 2 Name", 2, prescription);
+        isValid &= db.saveGet(medicine1) != null;
+        isValid &= db.saveGet(medicine2) != null;
 
         return user;
     }
