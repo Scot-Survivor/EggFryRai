@@ -1,6 +1,5 @@
 package com.comp5590.screens;
 
-import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.database.entities.User;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
@@ -14,17 +13,17 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 @Getter
 @AuthRequired
-public class DocListScreen extends AbstractScreen {
+public class ChooseDoctorScreen extends AbstractScreen {
 
     private TableView<User> doctorTable;
 
-    public DocListScreen(ScreenManager screenManager) {
+    public ChooseDoctorScreen(ScreenManager screenManager) {
         super(screenManager);
     }
 
@@ -33,20 +32,19 @@ public class DocListScreen extends AbstractScreen {
         // Load custom css
         this.addCss("/docList.css");
 
-        setRootPane(new BorderPane());
+        // attach default pane, but grab the reference to the gridpane (set as
+        // center of borderpane) for further customization
+        GridPane pane = this.attachDefaultPane();
+        // attach header and nav bar
+        this.attachHeaderAndNavBar("Choose Doctor");
+
         doctorTable = new TableView<>(); // Initialize table
         ((BorderPane) getRootPane()).setCenter(center());
         fillTable(); // Fill table with data
-
-        // add navigation buttons
-        addBackAndHomeButtons(getRootPane());
     }
 
     private VBox center() {
         doctorTable.setId("doctorTable");
-        // Create title
-        HBox titleBox = new Title("Select a doctor");
-        titleBox.setId("title");
 
         // Create button
         Button switchButton = new Button("Change doctor");
@@ -54,7 +52,7 @@ public class DocListScreen extends AbstractScreen {
         switchButton.setOnAction(this::docSwitch);
 
         // Add elements to VBox
-        VBox center = new VBox(titleBox, doctorTable, switchButton);
+        VBox center = new VBox(doctorTable, switchButton);
         center.setId("center");
         center.getStyleClass().add("custom-pane");
         center.setPrefSize(600, 400);

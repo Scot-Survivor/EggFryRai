@@ -1,11 +1,10 @@
 package com.comp5590.screens;
 
-import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.managers.ScreenManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
@@ -21,19 +20,17 @@ public class AboutUsScreen extends AbstractScreen {
         // Load custom css
         this.addCss("/aboutUs.css");
 
-        setRootPane(new BorderPane());
-        ((BorderPane) getRootPane()).setCenter(center());
+        // attach default pane, but grab the reference to the gridpane (set as
+        // center of borderpane) for further customization
+        GridPane pane = this.attachDefaultPane();
+        // attach header and nav bar
+        this.attachHeaderAndNavBar("About Us");
 
-        // add navigation buttons
-        addBackAndHomeButtons(getRootPane());
+        // set main content to center
+        ((BorderPane) getRootPane()).setCenter(center());
     }
 
     private VBox center() {
-        // Create title
-        HBox titleBox = new Title("About Us");
-        titleBox.setId("title");
-        titleBox.setAlignment(Pos.TOP_CENTER);
-
         // Info paragraphs
         Label info1 = new Label(
             "GP Alpha was a company founded in 2024. Since then we have striven to provide the " +
@@ -65,7 +62,7 @@ public class AboutUsScreen extends AbstractScreen {
         bottomNote.setId("bottomNote");
 
         // Add elements to VBox
-        VBox center = new VBox(titleBox, infoBox, reviewBox, bottomNote);
+        VBox center = new VBox(infoBox, reviewBox, bottomNote);
         center.setId("center");
         center.getStyleClass().add("custom-pane");
         center.setPrefSize(600, 400);

@@ -1,13 +1,12 @@
 package com.comp5590.screens;
 
-import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.managers.ScreenManager;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
@@ -31,18 +30,17 @@ public class ContactUsScreen extends AbstractScreen {
         // Load custom css
         this.addCss("/contactUs.css");
 
-        setRootPane(new BorderPane());
-        ((BorderPane) getRootPane()).setCenter(center());
+        // attach default pane, but grab the reference to the gridpane (set as
+        // center of borderpane) for further customization
+        GridPane pane = this.attachDefaultPane();
+        // attach header and nav bar
+        this.attachHeaderAndNavBar("Contact Us");
 
-        // add navigation buttons
-        addBackAndHomeButtons(getRootPane());
+        // add content
+        ((BorderPane) getRootPane()).setCenter(center());
     }
 
     private VBox center() {
-        // Create title
-        HBox titleBox = new Title("Contact Us");
-        titleBox.setId("title");
-
         Label info = new Label("Have an issue with our services? Let us know!");
 
         // Create button
@@ -90,7 +88,7 @@ public class ContactUsScreen extends AbstractScreen {
         formBox.setAlignment(Pos.CENTER);
 
         // Add elements to VBox
-        VBox center = new VBox(titleBox, info, formBox, bottomNote);
+        VBox center = new VBox(info, formBox, bottomNote);
         center.setId("center");
         center.getStyleClass().add("custom-pane");
         center.setPrefSize(600, 400);

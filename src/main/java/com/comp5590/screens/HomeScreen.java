@@ -1,13 +1,9 @@
 package com.comp5590.screens;
 
-import com.comp5590.components.HomeScreen.HeaderBar;
 import com.comp5590.components.HomeScreen.HugeImage;
-import com.comp5590.components.HomeScreen.NavBar;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.core.Logger;
 
@@ -26,7 +22,9 @@ public class HomeScreen extends AbstractScreen {
         this.addCss("/home.css");
         this.addCss("/global.css");
 
-        GridPane pane = this.attachDefaultPane(); // attach default pane
+        // attach default pane, but grab the reference to the gridpane (set as
+        // center of borderpane) for further customization
+        GridPane pane = this.attachDefaultPane();
 
         // create profileBox for the left side of the header bar
         HBox profileBox = new HBox();
@@ -131,14 +129,6 @@ public class HomeScreen extends AbstractScreen {
         // create the background image
         HugeImage bgImage = new HugeImage("/homeBackground.jpg");
 
-        // add the header bar to the 1st row of the pane
-        pane.add(headerBar, 0, 0);
-        // span the header bar across the entire width of the pane (infinite)
-        GridPane.setColumnSpan(headerBar, Integer.MAX_VALUE);
-        // add the navbar to the 2nd row of the pane
-        pane.add(navBar, 0, 1);
-        // span the navbar across the entire width of the pane (infinite)
-        GridPane.setColumnSpan(navBar, Integer.MAX_VALUE);
         // set the background image to the 3rd row of the pane, and span it infinitely
         // across the width and height of the pane (dynamic sizing)
         pane.add(bgImage, 0, 2);

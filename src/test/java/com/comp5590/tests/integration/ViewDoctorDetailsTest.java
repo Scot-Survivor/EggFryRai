@@ -6,7 +6,7 @@ import com.comp5590.App;
 import com.comp5590.components.DoctorDetailsScreen.DoctorDisplayBox;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.SessionManager;
-import com.comp5590.screens.ViewDoctorDetailsScreen;
+import com.comp5590.screens.ViewDoctorsScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -43,6 +43,7 @@ public class ViewDoctorDetailsTest extends SetupTests {
 
     /**
      * Test filling in the form and booking an appointment
+     *
      * @param robot
      */
     @Test
@@ -55,9 +56,11 @@ public class ViewDoctorDetailsTest extends SetupTests {
 
         // Select a doctor
         robot.interact(() -> {
-            app.getScreenManager().showScene(ViewDoctorDetailsScreen.class);
-            assertInstanceOf(ViewDoctorDetailsScreen.class, app.getScreenManager().getCurrentScreen()); // Check we are on the right screen
-            robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
+            app.getScreenManager().showScene(ViewDoctorsScreen.class);
+            assertInstanceOf(ViewDoctorsScreen.class, app.getScreenManager().getCurrentScreen()); // Check we are on the
+            // right screen
+            robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select
+            // first doctor
         });
 
         // Show the text by clicking button and validate that all is text
@@ -78,7 +81,9 @@ public class ViewDoctorDetailsTest extends SetupTests {
     }
 
     /**
-     * Test to check if the error message displays correctly for when no doctor is selected
+     * Test to check if the error message displays correctly for when no doctor is
+     * selected
+     *
      * @param robot
      */
     @Test
@@ -91,8 +96,9 @@ public class ViewDoctorDetailsTest extends SetupTests {
 
         // Select a doctor
         robot.interact(() -> {
-            app.getScreenManager().showScene(ViewDoctorDetailsScreen.class);
-            assertInstanceOf(ViewDoctorDetailsScreen.class, app.getScreenManager().getCurrentScreen()); // Check we are on the right screen
+            app.getScreenManager().showScene(ViewDoctorsScreen.class);
+            assertInstanceOf(ViewDoctorsScreen.class, app.getScreenManager().getCurrentScreen()); // Check we are on the
+            // right screen
 
             robot.lookup("#showButton").queryAs(Button.class).fire();
             stall(robot);

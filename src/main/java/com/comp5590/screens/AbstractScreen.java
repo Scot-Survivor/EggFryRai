@@ -1,6 +1,8 @@
 package com.comp5590.screens;
 
 import com.comp5590.App;
+import com.comp5590.components.HomeScreen.HeaderBar;
+import com.comp5590.components.HomeScreen.NavBar;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
@@ -12,6 +14,7 @@ import java.util.List;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -19,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,15 +32,17 @@ import org.hibernate.SessionFactory;
 /**
  * AbstractScreen class
  * <p>
- *     This class is the base class for all screens in the application.
- *     It provides the basic functionality for all screens, such as
- *     setting up the screen, cleaning up the screen, and checking if
- *     the user has access to the screen.
- *     It also provides methods for adding and removing CSS files to the screen.
- *     It also provides methods for adding back and home buttons to the screen.
- *     It also provides methods for showing the screen and transitioning between screens.
- *     It also provides the app, database manager, screen manager, session factory, and logger objects.
- *     It also provides the root pane and CSS paths for the screen.
+ * This class is the base class for all screens in the application.
+ * It provides the basic functionality for all screens, such as
+ * setting up the screen, cleaning up the screen, and checking if
+ * the user has access to the screen.
+ * It also provides methods for adding and removing CSS files to the screen.
+ * It also provides methods for adding back and home buttons to the screen.
+ * It also provides methods for showing the screen and transitioning between
+ * screens.
+ * It also provides the app, database manager, screen manager, session factory,
+ * and logger objects.
+ * It also provides the root pane and CSS paths for the screen.
  * </p>
  */
 @Getter
@@ -124,27 +130,162 @@ public abstract class AbstractScreen {
 
     /**
      * Attach default pane to screen
+     *
      * @return GridPane
      */
     public GridPane attachDefaultPane() {
         this.addCss("/global.css");
 
-        GridPane pane = new GridPane();
-        pane.getStyleClass().add("custom-pane");
+        GridPane gridPane = new GridPane();
+        gridPane.getStyleClass().add("custom-pane");
 
         // create the border pane (which will serve as root pane)
         // set grid pane as child of border pane
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
-        rootPane.setTop(pane);
+        rootPane.setCenter(gridPane);
 
         setRootPane(rootPane); // set root pane
 
-        return pane;
+        return gridPane;
+    }
+
+    protected HeaderBar attachHeaderBar(String title) {
+        // create profileBox for the left side of the header bar
+        HBox profileBox = new HBox();
+        profileBox.setId("profileBox");
+
+        // attach event listener to profileBox
+        profileBox.setOnMouseClicked(e -> {
+            logger.info("Profile button clicked");
+            showScene(ProfileScreen.class);
+        });
+
+        // create hbox for the logout event listener
+        HBox logoutBox = new HBox();
+        logoutBox.setId("logoutBox");
+
+        // attach event listener to logoutbox
+        logoutBox.setOnMouseClicked(e -> {
+            logger.info("Logout button clicked");
+            SessionManager.getInstance().unauthenticate();
+            this.showSceneBetweenScenesThenNextScene(
+                    "👋 You have successfully logged out.\nRedirecting to login screen...",
+                    LoginScreen.class
+                );
+        });
+
+        // grab current user
+        User curUser = SessionManager.getInstance().getCurrentUser();
+        String firstname = "Test";
+        if (curUser != null) {
+            firstname = curUser.getFirstName();
+        }
+
+        // Create the header bar with the determined name
+        HeaderBar headerBar = new HeaderBar(profileBox, logoutBox, firstname, title);
+
+        return headerBar;
+    }
+
+    protected NavBar createNavBar() {
+        // create Buttons for each navbar item
+        Button home = new Button("Home");
+        Button newAppointment = new Button("New Appointment");
+        Button viewAppointments = new Button("View Appointments");
+        Button changeAppointment = new Button("Change Appointment");
+        Button aboutUs = new Button("About us");
+        Button contactUs = new Button("Contact us");
+        Button chooseDoctor = new Button("Choose Doctor");
+        Button viewDoctors = new Button("View Doctors");
+
+        // add IDs to buttons for testing purposes
+        home.setId("home");
+        newAppointment.setId("newAppointment");
+        viewAppointments.setId("viewAppointments");
+        changeAppointment.setId("changeAppointment");
+        aboutUs.setId("aboutUs");
+        contactUs.setId("contactUs");
+        chooseDoctor.setId("chooseDoctor");
+        viewDoctors.setId("viewDoctors");
+
+        // attach event listeners to each button
+        home.setOnAction(e -> {
+            logger.info("Home button clicked");
+            showScene(HomeScreen.class);
+        });
+
+        newAppointment.setOnAction(e -> {
+            logger.info("New Appointment button clicked");
+            showScene(NewAppointmentScreen.class);
+        });
+
+        viewAppointments.setOnAction(e -> {
+            logger.info("View Appointments button clicked");
+            showScene(ViewAppointmentsScreen.class);
+        });
+
+        changeAppointment.setOnAction(e -> {
+            logger.info("Change Appointment button clicked");
+            showScene(ChangeAppointmentScreen.class);
+        });
+
+        aboutUs.setOnAction(e -> {
+            logger.info("About us button clicked");
+            showScene(AboutUsScreen.class);
+        });
+
+        contactUs.setOnAction(e -> {
+            logger.info("Contact us button clicked");
+            showScene(ContactUsScreen.class);
+        });
+
+        chooseDoctor.setOnAction(e -> {
+            logger.info("ChooseDoctor button clicked");
+            showScene(ChooseDoctorScreen.class);
+        });
+
+        viewDoctors.setOnAction(e -> {
+            logger.info("ViewDoctors button clicked");
+            showScene(ViewDoctorsScreen.class);
+        });
+
+        // create the navbar
+        NavBar navBar = new NavBar(
+            home,
+            newAppointment,
+            viewAppointments,
+            changeAppointment,
+            aboutUs,
+            contactUs,
+            chooseDoctor,
+            viewDoctors
+        );
+
+        return navBar;
+    }
+
+    // attach both header bar and nav bar
+    protected void attachHeaderAndNavBar(String title) {
+        // grab border pane
+        BorderPane pane = (BorderPane) getRootPane();
+
+        // create header bar
+        HeaderBar headerBar = attachHeaderBar(title);
+
+        // create nav bar
+        NavBar navBar = createNavBar();
+
+        // make new VBox with header bar and nav bar
+        VBox headerAndNav = new VBox(headerBar, navBar);
+
+        // set header bar AND nav bar to the top of the border pane
+        pane.setTop(headerAndNav);
     }
 
     /**
      * Attach default pane to screen
+     *
      * @param previousRootPane Pane
      */
     protected void addBackAndHomeButtons(Pane previousRootPane) {
@@ -167,6 +308,7 @@ public abstract class AbstractScreen {
 
     /**
      * Add back button to screen
+     *
      * @param stackPane StackPane
      */
     protected void addBackButton(StackPane stackPane) {
@@ -198,6 +340,7 @@ public abstract class AbstractScreen {
 
     /**
      * Add home button to screen
+     *
      * @param stackPane StackPane
      */
     protected void addHomeButton(StackPane stackPane) {
@@ -237,6 +380,7 @@ public abstract class AbstractScreen {
 
     /**
      * Shortcut to show a scene
+     *
      * @param screenClass Class
      */
     protected void showScene(Class<? extends AbstractScreen> screenClass) {
@@ -245,7 +389,8 @@ public abstract class AbstractScreen {
 
     /**
      * Shortcut to show a scene
-     * @param msg String
+     *
+     * @param msg             String
      * @param nextScreenClass Class
      */
     protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
