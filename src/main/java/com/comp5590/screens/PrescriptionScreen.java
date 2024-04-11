@@ -29,23 +29,15 @@ public class PrescriptionScreen extends AbstractScreen {
 
         BorderPane rootPane = new BorderPane();
         setRootPane(rootPane);
-        
+
         VBox centeringContainer = new VBox();
-        centeringContainer.setAlignment(Pos.CENTER_RIGHT);
-        
-        centeringContainer.getChildren().add(createCenter());
-        rootPane.setCenter(centeringContainer);
-
-        addBackAndHomeButtons(rootPane);
-    }
-
-
-    private VBox createCenter() {
-        VBox centerBox = new VBox();
-        centerBox.getStyleClass().add("center-box");
+        centeringContainer.setAlignment(Pos.CENTER);
 
         DatabaseManager dbManager = getDatabaseManager();
         List<Prescription> prescriptions = dbManager.getAll(Prescription.class);
+
+        VBox centerBox = new VBox();
+        centerBox.getStyleClass().add("center-box");
 
         if (prescriptions.isEmpty()) {
             centerBox.getChildren().add(new Label("No prescriptions available."));
@@ -55,23 +47,25 @@ public class PrescriptionScreen extends AbstractScreen {
             }
         }
 
-        return centerBox;
+        centeringContainer.getChildren().add(centerBox);
+        rootPane.setCenter(centeringContainer);
+
+        addBackAndHomeButtons(rootPane);
     }
 
-    private TableView<Medicine> createPrescriptionTable(Prescription prescription) {
+    public TableView<Medicine> createPrescriptionTable(Prescription prescription) {
         TableView<Medicine> tableView = new TableView<>();
-
-        //columns for medicine name and dose
+        // Columns for medicine name and dose
         TableColumn<Medicine, String> medicineNameColumn = new TableColumn<>("Medicine Name");
         medicineNameColumn.setCellValueFactory(new PropertyValueFactory<>("medicineName"));
 
         TableColumn<Medicine, Integer> doseColumn = new TableColumn<>("Dose");
-        doseColumn.setCellValueFactory(new PropertyValueFactory<>("recomendedDose"));
+        doseColumn.setCellValueFactory(new PropertyValueFactory<>("recommendedDose"));
 
-        //columns to the table
+        // Add columns to the table
         tableView.getColumns().addAll(medicineNameColumn, doseColumn);
 
-        //medicines associated with the prescription to the table
+        // Add medicines associated with the prescription to the table
         tableView.getItems().addAll(prescription.getMedicine());
 
         return tableView;
@@ -81,17 +75,38 @@ public class PrescriptionScreen extends AbstractScreen {
         VBox prescriptionCard = new VBox();
         prescriptionCard.getStyleClass().add("prescription-card");
 
-        // display prescription details
-        Label dateLabel = new Label("Date: " + prescription.getDateOfPrescription().toString());
+        // Display prescription details
+        String dateText = prescription.getDateOfPrescription() != null ? prescription.getDateOfPrescription().toString() : "Unknown Date";
+        Label dateLabel = new Label("Date: " + dateText);
 
-        // create and add prescription table
+        // Create prescription table
         TableView<Medicine> prescriptionTable = createPrescriptionTable(prescription);
         prescriptionCard.getChildren().addAll(dateLabel, prescriptionTable);
+
+        // Generate prescription details string
+        StringBuilder prescriptionDetails = new StringBuilder();
+        prescriptionDetails.append("Date: ").append(dateText).append("\n");
+        String additionalNotes = prescription.getAdditionalNotes() != null ? prescription.getAdditionalNotes() : "No additional notes";
+        prescriptionDetails.append("Additional Notes: ").append(additionalNotes).append("\n");
+
+        // Print prescription details for debugging
+        System.out.println("Prescription Details: " + prescriptionDetails.toString());
 
         return prescriptionCard;
     }
 
+    public void displayPrescriptions(List<Prescription> prescriptions) {
+        VBox centerBox = (VBox) ((BorderPane) getRootPane()).getCenter();
+        centerBox.getChildren().clear(); // Clear existing content
+    
+        for (Prescription prescription : prescriptions) {
+            centerBox.getChildren().add(createPrescriptionCard(prescription));
+        }
+    }
+    
+
     @Override
     public void cleanup() {
     }
+
 }

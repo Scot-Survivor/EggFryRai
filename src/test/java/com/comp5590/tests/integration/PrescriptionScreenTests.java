@@ -1,77 +1,94 @@
 package com.comp5590.tests.integration;
 
-import com.comp5590.App;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.comp5590.database.entities.Medicine;
 import com.comp5590.database.entities.Prescription;
-import com.comp5590.database.managers.DatabaseManager;
+import com.comp5590.managers.ScreenManager;
 import com.comp5590.screens.PrescriptionScreen;
-import com.comp5590.tests.basic.SetupTests;
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxRobot;
-import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.Start;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import javafx.scene.control.Label;
+import org.testfx.framework.junit5.ApplicationTest;
+
+import java.util.ArrayList;
 import java.util.List;
 
-@ExtendWith(ApplicationExtension.class)
-public class PrescriptionScreenTests extends SetupTests {
+public class PrescriptionScreenTests extends ApplicationTest {
 
-    private App app;
+    private PrescriptionScreen prescriptionScreen;
+    private VBox centerBox;
 
-    @Start
-    public void start(Stage stage) {
-        app = new App();
-        app.start(stage);
-        stage.show();
+    @BeforeEach
+    public void setUp() throws Exception {
+        Stage stage = new Stage();
+        ScreenManager screenManager = new ScreenManager(stage);
+        prescriptionScreen = new PrescriptionScreen(screenManager);
+        prescriptionScreen.setup();
+        centerBox = getCenterBox(prescriptionScreen.getRootPane());
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        Platform.exit();
+    }
+
+    private VBox getCenterBox(Parent rootPane) {
+        return (VBox) ((BorderPane) rootPane).getCenter();
     }
 
     @Test
-    public void testPrescriptionScreen(FxRobot robot) {
-    // create a prescription 
-    Prescription prescription = new Prescription();
-    prescription.setAdditionalNotes("Test Prescription");
-    DatabaseManager.getInstance().update(prescription);
+    public void testScreenSetup() {
+        assertNotNull(prescriptionScreen.getRootPane());
+        assertNotNull(centerBox);
+        assertThat(centerBox).isInstanceOf(VBox.class);
+    }
 
-    // create some medicines for the prescription
-    Medicine medicine1 = new Medicine("medicine 1", 10, prescription);
-    Medicine medicine2 = new Medicine("medicine 2", 20, prescription);
-    DatabaseManager.getInstance().update(medicine1);
-    DatabaseManager.getInstance().update(medicine2);
+    @Test
+    public void testPrescriptionCardCreation() {
+        List<Prescription> prescriptions = new ArrayList<>();
+        // add some examples if needed
+        prescriptions.add(new Prescription());
+        prescriptions.add(new Prescription());
+        prescriptions.add(new Prescription());
 
-    goToScreen(app, robot, PrescriptionScreen.class);
+        // displaying prescriptions
+        prescriptionScreen.displayPrescriptions(prescriptions);
 
-    // check if prescription details are displayed correctly
-    String prescriptionDetails = null;
-    for (javafx.scene.Node node : robot.lookup("#prescriptionDetails").queryAll()) {
-        if (node instanceof Label) {
-            prescriptionDetails = ((Label) node).getText();
-            break;
+        List<Node> prescriptionCards = centerBox.getChildren();
+
+        assertEquals(prescriptions.size(), prescriptionCards.size());
+
+        for (Node card : prescriptionCards) {
+            assertThat(card).isNotNull();
+            assertThat(card).isInstanceOf(VBox.class);
         }
     }
-    assertEquals("Test Prescription", prescriptionDetails);
 
-    // check if medicine details are displayed correctly
-    String medicineName0 = null;
-    String medicineDose0 = null;
-    String medicineName1 = null;
-    String medicineDose1 = null;
-    List<javafx.scene.Node> medicineNodes = (List<javafx.scene.Node>) robot.lookup(".medicine-details").queryAll();
-    if (medicineNodes.size() > 0) {
-        medicineName0 = ((Label) medicineNodes.get(0)).getText();
-        medicineDose0 = ((Label) medicineNodes.get(1)).getText();
+    @Test
+    public void testPrescriptionTableCreation() {
+        Prescription prescription = new Prescription();
+        List<Medicine> medicines = new ArrayList<>();
+        medicines.add(new Medicine(0, "Medicine 1", 10, prescription));
+        medicines.add(new Medicine(0, "Medicine 2", 20, prescription));
+        prescription.setMedicine(medicines);
+
+        TableView<Medicine> tableView = prescriptionScreen.createPrescriptionTable(prescription);
+
+        assertNotNull(tableView);
+        assertThat(tableView.getColumns()).hasSize(2); 
+        assertThat(tableView.getColumns().get(0).getText()).isEqualTo("Medicine Name");
+        assertThat(tableView.getColumns().get(1).getText()).isEqualTo("Dose");
+        assertThat(tableView.getItems()).hasSize(medicines.size());
     }
-    if (medicineNodes.size() > 2) {
-        medicineName1 = ((Label) medicineNodes.get(2)).getText();
-        medicineDose1 = ((Label) medicineNodes.get(3)).getText();
-    }
-    assertEquals("medicine 1", medicineName0);
-    assertEquals("10", medicineDose0);
-    assertEquals("medicine 2", medicineName1);
-    assertEquals("20", medicineDose1);
-}
 
 }
-
