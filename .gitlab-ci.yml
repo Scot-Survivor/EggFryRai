@@ -42,14 +42,14 @@ package:
   script:
     - "./gradlew jpackage"
   allow_failure: true
+  only:
+    - main
 
 
 test:
   stage: test
   script:
     - "./gradlew test --tests com.comp5590.tests.basic*"
-  only:
-    - main
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
