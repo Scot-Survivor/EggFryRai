@@ -61,7 +61,7 @@ public class SetupTests extends EntityUtils {
         robot.interact(() -> robot.lookup("#registerButton").queryAs(QueryUtils.getButtonClass()).fire());
 
         // expect login screen to appear
-        robot.sleep(SCREEN_DELAY_MS);
+        stall(robot);
         assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
     }
 
@@ -82,7 +82,7 @@ public class SetupTests extends EntityUtils {
         robot.interact(() -> robot.lookup("#registerButton").queryAs(QueryUtils.getButtonClass()).fire());
 
         // wait for screenbetweenscreens to go away
-        robot.sleep(SCREEN_DELAY_MS);
+        stall(robot);
 
         // expect login screen to appear
         assertInstanceOf(LoginScreen.class, app.getScreenManager().getCurrentScreen());
@@ -101,10 +101,21 @@ public class SetupTests extends EntityUtils {
         robot.interact(() -> robot.lookup("#login").queryAs(QueryUtils.getButtonClass()).fire());
 
         // wait for screenbetweenscreens to go away
-        robot.sleep(SCREEN_DELAY_MS);
+        stall(robot);
 
         // expect home screen to appear
         assertInstanceOf(HomeScreen.class, app.getScreenManager().getCurrentScreen());
+    }
+
+    // Set SessionManager.currentUser to a random user
+    public void authenticateAsRandomUser(App app, FxRobot robot) {
+        // generate an email and password
+        String email = NameUtils.getRandomFullEmail();
+        String password = StringUtils.randomPassword(8, 64);
+
+        // register and login user
+        registerUser(app, robot, email, password);
+        loginUser(app, robot, email, password);
     }
 
     // Go to a specific screen (with appropriate authentication if needed)

@@ -38,7 +38,7 @@ public class ContactUsScreenTest extends SetupTests {
         robot.interact(() -> {
             // new test ends up in an async race condition so we should sleep for a full
             // second to ensure it doesn't occur
-            robot.sleep(1000); // Sleep for a second to ensure the screen is loaded
+            this.stall(robot);
             // Get submission Button
             NodeQuery submitButton = robot.lookup("#submitButton");
             assertThat(submitButton.queryAll()).isNotNull();
