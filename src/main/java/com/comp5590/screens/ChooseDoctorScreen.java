@@ -21,7 +21,7 @@ import lombok.Getter;
 @AuthRequired
 public class ChooseDoctorScreen extends AbstractScreen {
 
-    private TableView<User> doctorTable;
+    private TableView<User> doctorTable = new TableView<>();
 
     public ChooseDoctorScreen(ScreenManager screenManager) {
         super(screenManager);
