@@ -25,15 +25,15 @@ public class VisitDetails {
     private boolean followUpRequired;
 
     // notes from the visit, including symptoms
-    @Column(name = "notes", nullable = false)
+    @Column(name = "notes", nullable = false, length = 16384)
     private String notes;
 
     // potential diagnosis (not guaranteed to be made)
-    @Column(name = "diagnosis", nullable = true)
+    @Column(name = "diagnosis", nullable = true, length = 16384)
     private String diagnosis;
 
     // advice given to the patient during their appointment
-    @Column(name = "advice", nullable = false)
+    @Column(name = "advice", nullable = false, length = 16384)
     private String advice;
 
     // the time the details of this visit were added
