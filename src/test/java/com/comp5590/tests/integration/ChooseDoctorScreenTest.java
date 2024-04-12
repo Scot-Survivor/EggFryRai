@@ -1,11 +1,9 @@
 package com.comp5590.tests.integration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
-import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.ChooseDoctorScreen;
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
@@ -98,15 +96,9 @@ public class ChooseDoctorScreenTest extends SetupTests {
      */
     @Test
     public void testChangeDoctorButtonNoSelect(FxRobot robot) {
-        // Login required:
-        User user = createPatient("testPatient1@example.com", "testPassword");
-        this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
-        assertEquals(SessionManager.getInstance().getCurrentUser().getId(), user.getId());
+        goToScreenWithAutoAuthentication(app, robot, ChooseDoctorScreen.class);
 
         robot.interact(() -> {
-            robot.sleep(100); // Sleep before switching screen
-            app.getScreenManager().showScene(ChooseDoctorScreen.class); // Force ChooseDoctorScreen to show.
-
             robot.lookup("#switchButton").queryAs(javafx.scene.control.Button.class).fire();
 
             // Check correct label is showing
@@ -121,26 +113,20 @@ public class ChooseDoctorScreenTest extends SetupTests {
      */
     @Test
     public void testChangeDoctorButtonSelect(FxRobot robot) {
+        goToScreenWithAutoAuthentication(app, robot, ChooseDoctorScreen.class);
+
         // Create row on table
         createDoctor("email1@example.com", "pa321321");
 
+        // Run fillTable on screen
+        ChooseDoctorScreen ChooseDoctorScreenInstance = app
+            .getScreenManager()
+            .getScreenInstance(ChooseDoctorScreen.class);
+        Platform.runLater(ChooseDoctorScreenInstance::fillTable);
+
+        // Select row and click button
+        TableView doctorTable = robot.lookup("#doctorTable").queryAs(TableView.class);
         robot.interact(() -> {
-            // Login required:
-            User user = createPatient("testPatient1@example.com", "testPassword");
-            this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
-            assertEquals(SessionManager.getInstance().getCurrentUser().getId(), user.getId());
-
-            robot.sleep(100); // Sleep before switching screen
-            app.getScreenManager().showScene(ChooseDoctorScreen.class); // Force ChooseDoctorScreen to show.
-
-            // Run fillTable on screen
-            ChooseDoctorScreen ChooseDoctorScreenInstance = app
-                .getScreenManager()
-                .getScreenInstance(ChooseDoctorScreen.class);
-            Platform.runLater(ChooseDoctorScreenInstance::fillTable);
-
-            // Select row and click button
-            TableView doctorTable = robot.lookup("#doctorTable").queryAs(TableView.class);
             doctorTable.getSelectionModel().selectFirst();
             robot.lookup("#switchButton").queryAs(javafx.scene.control.Button.class).fire();
         });
