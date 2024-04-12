@@ -45,7 +45,7 @@ publishing {
             url "https://git.kent.ac.uk/api/v4/projects/3975/packages/maven"
             credentials(HttpHeaderCredentials) {
                 name = "PRIVATE-TOKEN"
-                value = gitLabPrivateToken // the variable resides in $GRADLE_USER_HOME/gradle.properties
+                value = project.findProperty('gitLabPrivateToken') ?: "" // the variable resides in $GRADLE_USER_HOME/gradle.properties
             }
             authentication {
                 header(HttpHeaderAuthentication)
