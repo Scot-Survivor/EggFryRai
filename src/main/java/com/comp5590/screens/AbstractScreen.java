@@ -193,8 +193,7 @@ public abstract class AbstractScreen {
         Button home = new Button("Home");
         Button visitDetails = new Button("View Visit Details");
         Button newAppointment = new Button("New Appointment");
-        Button viewAppointments = new Button("View Appointments");
-        Button changeAppointment = new Button("Change Appointment");
+        Button viewAndChangeAppointments = new Button("View / Change Appointment");
         Button aboutUs = new Button("About us");
         Button contactUs = new Button("Contact us");
         Button chooseDoctor = new Button("Choose Doctor");
@@ -205,8 +204,7 @@ public abstract class AbstractScreen {
         home.setId("home");
         visitDetails.setId("visitDetails");
         newAppointment.setId("newAppointment");
-        viewAppointments.setId("viewAppointments");
-        changeAppointment.setId("changeAppointment");
+        viewAndChangeAppointments.setId("viewAndChangeAppointments");
         aboutUs.setId("aboutUs");
         contactUs.setId("contactUs");
         chooseDoctor.setId("chooseDoctor");
@@ -229,14 +227,9 @@ public abstract class AbstractScreen {
             showScene(CreateBooking.class);
         });
 
-        viewAppointments.setOnAction(e -> {
-            logger.info("View Appointments button clicked");
-            showScene(ViewAppointmentsScreen.class);
-        });
-
-        changeAppointment.setOnAction(e -> {
-            logger.info("Change Appointment button clicked");
-            showScene(ChangeAppointmentScreen.class);
+        viewAndChangeAppointments.setOnAction(e -> {
+            logger.info("View and Change Appointments button clicked");
+            showScene(ViewAndChangeBookingsScreen.class);
         });
 
         aboutUs.setOnAction(e -> {
@@ -269,8 +262,7 @@ public abstract class AbstractScreen {
             home,
             visitDetails,
             newAppointment,
-            viewAppointments,
-            changeAppointment,
+            viewAndChangeAppointments,
             aboutUs,
             contactUs,
             chooseDoctor,
