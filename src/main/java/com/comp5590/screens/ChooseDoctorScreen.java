@@ -3,6 +3,7 @@ package com.comp5590.screens;
 import com.comp5590.database.entities.User;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -17,11 +18,12 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 @Getter
-//@AuthRequired ADD BACK AFTER TESTS
+@AuthRequired
 public class ChooseDoctorScreen extends AbstractScreen {
 
     private TableView<User> doctorTable = new TableView<>();
     private Label resultLabel;
+    private Button switchButton;
 
     public ChooseDoctorScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -30,7 +32,7 @@ public class ChooseDoctorScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.addCss("/docList.css");
+        this.addCss("/chooseDoctor.css");
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization
@@ -47,7 +49,7 @@ public class ChooseDoctorScreen extends AbstractScreen {
         doctorTable.setId("doctorTable");
 
         // Create button
-        Button switchButton = new Button("Change doctor");
+        switchButton = new Button("Change doctor");
         switchButton.setId("switchButton");
         switchButton.setOnAction(this::docSwitch);
 
