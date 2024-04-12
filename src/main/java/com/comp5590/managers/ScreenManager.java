@@ -197,11 +197,11 @@ public class ScreenManager {
     /**
      * Get the instance of the screen
      *
-     * @param screen The screen to get the instance of
+     * @param T The screen to get the instance of
      * @return The instance of the screen
      */
-    public AbstractScreen getScreenInstance(Class<? extends AbstractScreen> screen) {
-        return screenInstances.get(screen);
+    public <T> T getScreenInstance(Class<? extends AbstractScreen> T) {
+        return (T) screenInstances.get(T);
     }
 
     /**
