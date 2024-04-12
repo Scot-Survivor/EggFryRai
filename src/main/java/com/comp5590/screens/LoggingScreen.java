@@ -78,6 +78,9 @@ public class LoggingScreen extends AbstractScreen {
 
         logHistory.getItems().addAll(logs);
 
+        // sort logs in reverse order (so newest logs are at the top)
+        logHistory.getItems().sort((o1, o2) -> o2.compareTo(o1));
+
         // Set preferred width to 40% larger than the longest width of string
         logHistory.setPrefWidth(
             (logHistory.getItems().stream().mapToInt(String::length).max().orElse((int) getRootPane().getWidth())) * 1.4
