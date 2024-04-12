@@ -10,6 +10,7 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.entities.VisitDetails;
 import com.comp5590.screens.ProfileScreen;
 import com.comp5590.tests.basic.SetupTests;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ public class ProfileScreenTests extends SetupTests {
         stage.show();
         setupDB();
     }
+
     private void setupDB() {
         // create user
         User user = createPatient(email, password);
@@ -89,7 +91,7 @@ public class ProfileScreenTests extends SetupTests {
     @Test
     public void testEmailChange(FxRobot robot) {
         // log in with a test user
-        loginUser(app, robot, email,password);
+        loginUser(app, robot, email, password);
 
         // go to the profile screen
         goToScreenWithAutoAuthentication(app, robot, ProfileScreen.class);
@@ -99,7 +101,7 @@ public class ProfileScreenTests extends SetupTests {
         robot.lookup("#newEmailField").queryAs(TextField.class).setText(newEmail);
 
         // click the apply email button
-        robot.clickOn("#applyEmailButton");
+        robot.lookup("#applyEmailButton").queryAs(Button.class).fire();
 
         //  the updated user from the database
         User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.email", newEmail);
@@ -107,6 +109,4 @@ public class ProfileScreenTests extends SetupTests {
         assertNotNull(updatedUser);
         assertEquals(newEmail, updatedUser.getAuthenticationDetails().getEmail());
     }
-
-
 }
