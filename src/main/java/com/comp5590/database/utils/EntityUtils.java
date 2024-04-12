@@ -336,6 +336,13 @@ public class EntityUtils {
         remove(User.class, user.getId());
     }
 
+    /**
+     * Remove a booking object from the database
+     */
+    public static boolean deleteBooking(Booking booking) {
+        return getDbManager().delete(booking);
+    }
+
     // * Methods for grabbing objects from the database
     public static AuthenticationDetails getAuthenticationDetails(String email) {
         return getDbManager().getByProperty(AuthenticationDetails.class, "email", email);
