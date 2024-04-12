@@ -133,6 +133,18 @@ public class StartupUtils {
         Booking booking3 = new Booking(doc1, user, date3, room1);
         isValid = null != db.saveGet(booking3);
 
+        // create booking #4 (extra booking for testing)
+        Date date4 = new Date();
+        date4.setTime(date4.getTime() + 20 * 24 * 60 * 60 * 1000);
+        Booking booking4 = new Booking(doc2, user, date4, room2);
+        isValid = null != db.saveGet(booking4);
+
+        // create booking #5 (extra booking for testing)
+        Date date5 = new Date();
+        date5.setTime(date5.getTime() + 21 * 24 * 60 * 60 * 1000);
+        Booking booking5 = new Booking(doc1, user, date5, room1);
+        isValid = null != db.saveGet(booking5);
+
         // create visitDetails #1, link visit details to booking1
         VisitDetails visitDetails1 = new VisitDetails(
             true,
