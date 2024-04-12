@@ -1,5 +1,6 @@
 package com.comp5590.security.managers.passwords;
 
+import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.LoggerManager;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -68,6 +69,14 @@ public abstract class PasswordManager {
         logger.warn("No password manager found for name: " + passwordManager);
         // If no hashing algorithm exists throw error
         throw new IllegalArgumentException("No password manager found for name: " + passwordManager);
+    }
+
+    /**
+     * Get an instance of a PasswordManager, using the default hashing algorithm
+     * @return The instance of the password manager
+     */
+    public static PasswordManager getInstance() {
+        return PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM);
     }
 
     public String encodeBase64(String data) {
