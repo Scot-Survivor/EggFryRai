@@ -1,8 +1,10 @@
 package com.comp5590.screens;
 
 import com.comp5590.database.entities.User;
+import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -168,6 +170,26 @@ public class ChooseDoctorScreen extends AbstractScreen {
             dialogPane.setId("noSelect"); // Set id for test class
             alert.showAndWait();
         } else {
+            // send notificaton to both user and doctor
+            SessionManager seshManager = SessionManager.getInstance();
+            User currentUser = seshManager.getCurrentUser();
+
+            // send notifications to user
+            EntityUtils.createNotification(
+                "You have switched your doctor to " +
+                changedDoctor.getFirstName() +
+                " " +
+                changedDoctor.getSurName() +
+                ".",
+                currentUser
+            );
+
+            // send notifications to doctor
+            EntityUtils.createNotification(
+                "You have a new patient, " + currentUser.getFirstName() + " " + currentUser.getSurName() + ".",
+                changedDoctor
+            );
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null); // Get rid of header
             alert.setTitle("Doctor changed");

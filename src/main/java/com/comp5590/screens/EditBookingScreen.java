@@ -195,6 +195,43 @@ public class EditBookingScreen extends AbstractScreen {
         // update booking in db
         EntityUtils.updateBooking(newBooking);
 
+        // send notificaton to both user and doctor
+        // for user
+        EntityUtils.createNotification(
+            "Your booking of ID " +
+            oldBookingID +
+            " has updated. New Doctor: " +
+            doctor.getFirstName() +
+            " " +
+            doctor.getSurName() +
+            ". New Room: " +
+            room.getRoomNumber() +
+            ". New Date: " +
+            date +
+            ". New Time: " +
+            time +
+            ".",
+            this.bookingToEdit.getPatient()
+        );
+
+        // for doctor
+        EntityUtils.createNotification(
+            "You have a new booking of ID " +
+            oldBookingID +
+            ". New Patient: " +
+            this.bookingToEdit.getPatient().getFirstName() +
+            " " +
+            this.bookingToEdit.getPatient().getSurName() +
+            ". New Room: " +
+            room.getRoomNumber() +
+            ". New Date: " +
+            date +
+            ". New Time: " +
+            time +
+            ".",
+            doctor
+        );
+
         // return to view and change bookings screen
         this.showSceneBetweenScenesThenNextScene("Booking updated successfully!", ViewAndChangeBookingsScreen.class);
     }
