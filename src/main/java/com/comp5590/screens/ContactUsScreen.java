@@ -1,6 +1,7 @@
 package com.comp5590.screens;
 
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+@AuthRequired
 @Getter
 public class ContactUsScreen extends AbstractScreen {
 
