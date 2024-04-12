@@ -70,6 +70,17 @@ pages:
     # a pages deploy
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 
+publish:
+  stage: deploy
+  script:
+    # Echo the variable $CI_PUBLISH_KEY to gradle.properties in the GRADLE_USER_HOME directory
+    - echo "gitLabPrivateToken=$CI_PUBLISH_KEY" >> $GRADLE_USER_HOME/gradle.properties
+    - "./gradlew publish"
+  rules:
+    # This ensures that only pushes to the default branch will trigger
+    # a pages deploy
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+
 test:
   stage: test
   script:
