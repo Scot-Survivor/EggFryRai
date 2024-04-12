@@ -3,6 +3,7 @@ package com.comp5590.tests.integration;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.comp5590.App;
+import com.comp5590.database.entities.User;
 import com.comp5590.screens.*;
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
@@ -25,6 +26,7 @@ public class ContactUsScreenTest extends SetupTests {
     public void start(Stage stage) {
         app = new App();
         app.start(stage);
+        this.setAuthenticatedUser(app, new User());
         app.getScreenManager().showScene(ContactUsScreen.class); // Force ContactUs to show.
         totpManager = app.getTotpManager();
         stage.show();
