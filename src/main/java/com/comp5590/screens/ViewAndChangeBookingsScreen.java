@@ -10,10 +10,14 @@ import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.core.Logger;
 
 @AuthRequired
@@ -65,8 +69,29 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
         // create new scrollable box
         ScrollPane scrollPane = new ScrollPane();
 
+        // Create a date picker to allow for filtering
+        DatePicker datePicker = new javafx.scene.control.DatePicker();
+        // set the minimum time to be in the future
+        datePicker.setDayCellFactory(picker ->
+            new DateCell() {
+                @Override
+                public void updateItem(LocalDate date, boolean empty) {
+                    super.updateItem(date, empty);
+                    setDisable(empty || date.isBefore(LocalDate.now()));
+                }
+            }
+        );
+        datePicker.setId("datePicker");
+        // functions set below as need the scrollerBox
+        Button search = new Button("Search");
+        Button clear = new Button("Clear");
+
+        HBox filtering = new HBox(datePicker, search, clear);
+
+        gridPane.add(filtering, 0, 1);
+
         // add it to gridpane
-        gridPane.add(scrollPane, 0, 1);
+        gridPane.add(scrollPane, 0, 2);
         // span 100% width and center it
         GridPane.setFillWidth(scrollPane, true);
         GridPane.setHgrow(scrollPane, javafx.scene.layout.Priority.ALWAYS);
@@ -83,6 +108,42 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
         // add scroller box to scroll pane
         scrollPane.setContent(scrollerBox);
 
+        // Set here because its after scrollerBox initialisation
+        search.setOnAction(e -> {
+            onFilterClick(bookings, scrollerBox);
+        });
+        clear.setOnAction(e -> {
+            ((DatePicker) getRootPane().lookup("#datePicker")).getEditor().clear();
+            scrollerBox.getChildren().clear();
+            createDefault(bookings, scrollerBox);
+        });
+
+        createDefault(bookings, scrollerBox);
+    }
+
+    // rescchedule appointment
+    private void onEditButtonClicked(Booking booking) {
+        // put the booking into EditBookingScreen using a setter
+        ((EditBookingScreen) getScreenManager().getScreenInstance(EditBookingScreen.class)).setBookingToEdit(booking);
+
+        // navigate to the edit booking screen
+        this.showScene(EditBookingScreen.class);
+    }
+
+    // cancel appointment
+    private void onDeleteButtonClicked(Booking booking) {
+        // delete booking from the DB
+        boolean worked = EntityUtils.deleteBooking(booking);
+
+        // if deletion worked, refresh the screen
+        if (worked) {
+            this.refreshScene();
+        } else {
+            logger.error("Failed to delete booking: " + booking.getBookingId());
+        }
+    }
+
+    public void createDefault(List<Booking> bookings, ScrollerBox scrollerBox) {
         // create a booking card for each booking
         for (Booking booking : bookings) {
             // create edit and delete buttons
@@ -108,26 +169,31 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
         }
     }
 
-    // rescchedule appointment
-    private void onEditButtonClicked(Booking booking) {
-        // put the booking into EditBookingScreen using a setter
-        ((EditBookingScreen) getScreenManager().getScreenInstance(EditBookingScreen.class)).setBookingToEdit(booking);
+    public void onFilterClick(List<Booking> bookings, ScrollerBox scrollerBox) {
+        // get the date and break down into month and get all details from that month
+        // Date date = Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        YearMonth yearMonth = YearMonth.from(((DatePicker) getRootPane().lookup("#datePicker")).getValue());
 
-        // navigate to the edit booking screen
-        this.showScene(EditBookingScreen.class);
-    }
+        // get day 1
+        LocalDate startOfMonth = yearMonth.atDay(1);
+        Date start = java.sql.Date.valueOf(startOfMonth);
 
-    // cancel appointment
-    private void onDeleteButtonClicked(Booking booking) {
-        // delete booking from the DB
-        boolean worked = EntityUtils.deleteBooking(booking);
+        // get last day
+        LocalDate endOfMonth = yearMonth.atEndOfMonth();
+        Date end = java.sql.Date.valueOf(endOfMonth);
 
-        // if deletion worked, refresh the screen
-        if (worked) {
-            this.refreshScene();
-        } else {
-            logger.error("Failed to delete booking: " + booking.getBookingId());
+        // Add all bookings in a given month here
+        ArrayList<Booking> inMonth = new ArrayList<>();
+        for (Booking booking : bookings) {
+            if (booking.getApptTime().before(end) && booking.getApptTime().after(start)) {
+                inMonth.add(booking);
+            }
         }
+
+        // clear previous selection
+        scrollerBox.getChildren().clear();
+        createDefault(inMonth, scrollerBox);
+        System.err.println(inMonth);
     }
 
     @Override
