@@ -18,11 +18,11 @@ public class Prescription {
     private int prescriptionId;
 
     // name of the prescription
-    @Column(name = "prescriptionName")
+    @Column(name = "prescriptionName", nullable = false)
     private String prescriptionName;
 
     // recommended dose of the prescription (e.g., 1 pill every 4 hours)
-    @Column(name = "recommendedDose")
+    @Column(name = "recommendedDose", nullable = false)
     private String recommendedDose;
 
     // many Prescriptions can be assigned to one VisitDetails object
