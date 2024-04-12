@@ -1,31 +1,20 @@
 package com.comp5590.tests.integration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.comp5590.App;
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
 import com.comp5590.screens.ChooseDoctorScreen;
-import com.comp5590.screens.ChooseDoctorScreen;
 import com.comp5590.security.managers.mfa.TOTPManager;
-import com.comp5590.security.managers.mfa.TOTPManager;
-import com.comp5590.tests.basic.SetupTests;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.stage.Stage;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxRobot;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Start;
 import org.testfx.service.query.NodeQuery;
 import org.testfx.util.WaitForAsyncUtils;
@@ -47,7 +36,7 @@ public class ChooseDoctorScreenTest extends SetupTests {
     }
 
     /**
-     * Test that the doctor list screen has a table
+     * Test that the choose doctor screen has a table
      */
     @Test
     public void testScreenHasDoctorTable(FxRobot robot) {
@@ -61,7 +50,7 @@ public class ChooseDoctorScreenTest extends SetupTests {
     }
 
     /**
-     * Test that the doctor list screen has a button
+     * Test that the choose doctor screen has a button
      */
     @Test
     public void testScreenHasButton(FxRobot robot) {
@@ -88,22 +77,22 @@ public class ChooseDoctorScreenTest extends SetupTests {
         // Create patient 1 (saved to DB in method)
         createPatient("email3@example.com", "pa42131");
 
-        // Create DocListScreen instance and run fillTable on that instance
-        ChooseDoctorScreen docListScreenInstance = (ChooseDoctorScreen) app
+        // Create ChooseDoctorScreen instance and run fillTable on that instance
+        ChooseDoctorScreen ChooseDoctorScreenInstance = app
             .getScreenManager()
             .getScreenInstance(ChooseDoctorScreen.class);
-        Platform.runLater(docListScreenInstance::fillTable);
+        Platform.runLater(ChooseDoctorScreenInstance::fillTable);
 
         WaitForAsyncUtils.waitForFxEvents(); // Wait for fillTable before proceeding
 
         // Check rows of table
-        ObservableList<User> rows = docListScreenInstance.getDoctorTable().getItems();
+        ObservableList<User> rows = ChooseDoctorScreenInstance.getDoctorTable().getItems();
         assertThat(rows).isNotNull();
         assertThat(rows.size()).isEqualTo(2);
     }
 
     /**
-     * Test to check if warning box pops up when trying to select with no table selection
+     * Test to check if warning label pops up when trying to select with no table selection
      * @param robot Will be injected via test runner
      */
     @Test
@@ -118,7 +107,7 @@ public class ChooseDoctorScreenTest extends SetupTests {
     }
 
     /**
-     * Test to check if warning box pops up when trying to select with no table selection
+     * Test to check if success label pops up when trying to select with a table selection
      * @param robot Will be injected via test runner
      */
     @Test
@@ -127,10 +116,10 @@ public class ChooseDoctorScreenTest extends SetupTests {
         createDoctor("email1@example.com", "pa321321");
 
         // Call fillTable
-        ChooseDoctorScreen docListScreenInstance = (ChooseDoctorScreen) app
+        ChooseDoctorScreen ChooseDoctorScreenInstance = app
             .getScreenManager()
             .getScreenInstance(ChooseDoctorScreen.class);
-        Platform.runLater(docListScreenInstance::fillTable);
+        Platform.runLater(ChooseDoctorScreenInstance::fillTable);
 
         // Select row and click button
         TableView doctorTable = robot.lookup("#doctorTable").queryAs(TableView.class);
@@ -139,7 +128,7 @@ public class ChooseDoctorScreenTest extends SetupTests {
             robot.lookup("#switchButton").queryAs(javafx.scene.control.Button.class).fire();
         });
 
-        // See if label is accurate
+        // See if label is accurate (with firstname/surname being Test/User)
         assertThat(robot.lookup("#resultLabel").queryAs(javafx.scene.control.Label.class).getText())
             .isEqualTo("You have switched your doctor to Test User.");
     }
