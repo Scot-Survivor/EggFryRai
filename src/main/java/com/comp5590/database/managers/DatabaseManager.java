@@ -93,6 +93,7 @@ public class DatabaseManager {
 
     /**
      * Get all entity classes
+     *
      * @return List of entity classes
      */
     private List<Class<?>> getEntityClasses() {
@@ -102,6 +103,7 @@ public class DatabaseManager {
 
     /**
      * Helper method to test database connection
+     *
      * @return if connected
      */
     public boolean testConnection() {
@@ -117,6 +119,7 @@ public class DatabaseManager {
 
     /**
      * Old method to validate objects
+     *
      * @param object Object to validate
      * @return if valid
      */
@@ -127,6 +130,7 @@ public class DatabaseManager {
 
     /**
      * Validate an object and return a set of constraint violations
+     *
      * @param object Object to validate
      * @return Set of constraint violations
      */
@@ -137,6 +141,7 @@ public class DatabaseManager {
 
     /**
      * Helper method on whether an event is cancelled
+     *
      * @param event Event to check
      * @return if cancelled
      */
@@ -146,6 +151,7 @@ public class DatabaseManager {
 
     /**
      * Save an object to the database
+     *
      * @param object Object to save
      * @return if saved
      */
@@ -171,6 +177,7 @@ public class DatabaseManager {
 
     /**
      * Save an object to the database and return the ID
+     *
      * @param object Object to save
      * @return ID of the object
      */
@@ -196,6 +203,7 @@ public class DatabaseManager {
 
     /**
      * Save an object to the database and return the object
+     *
      * @param object Object to save
      * @return Object
      * @param <T> The type of object to save
@@ -210,6 +218,7 @@ public class DatabaseManager {
 
     /**
      * Execute a query against the database return list of results
+     *
      * @param query Hibernate Query to execute
      * @return List of results
      */
@@ -234,7 +243,8 @@ public class DatabaseManager {
 
     /**
      * Execute a query against the database return list of results
-     * @param T The type of object to return
+     *
+     * @param T     The type of object to return
      * @param query Hibernate Query to execute
      * @return List of results
      * @param <T> The type of object to return
@@ -260,6 +270,7 @@ public class DatabaseManager {
 
     /**
      * Execute a query against the database return a single result
+     *
      * @param object Object to return
      * @return Object
      */
@@ -285,6 +296,7 @@ public class DatabaseManager {
 
     /**
      * Get all objects of a type from the database
+     *
      * @param type The type of object to get
      * @return A list of objects
      * @param <T> The type of object to get
@@ -304,8 +316,9 @@ public class DatabaseManager {
 
     /**
      * Get an object from the database by its ID
+     *
      * @param type The type of object to get
-     * @param id The ID of the object to get
+     * @param id   The ID of the object to get
      * @return The object
      * @param <T> The type of object to get
      */
@@ -324,9 +337,10 @@ public class DatabaseManager {
 
     /**
      * Get by a property
-     * @param type The type of object to get
+     *
+     * @param type     The type of object to get
      * @param property The property to search by
-     * @param value The value to search for
+     * @param value    The value to search for
      * @return The object
      * @param <T> The type of object to get
      * @param <V> The type of value object to get
@@ -349,9 +363,10 @@ public class DatabaseManager {
 
     /**
      * Get all by a property
-     * @param type The type of object to get
+     *
+     * @param type     The type of object to get
      * @param property The property to search by
-     * @param value The value to search for
+     * @param value    The value to search for
      * @return List of objects
      * @param <T> The type of object to get
      */

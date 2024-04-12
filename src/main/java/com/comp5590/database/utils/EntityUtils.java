@@ -5,7 +5,6 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.security.managers.passwords.PasswordManager;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,11 +35,12 @@ public class EntityUtils {
 
     // Create an address object with the fields specified
     public static Address createAddress(
-            String postCode,
-            String country,
-            String addressLineOne,
-            String addressLineTwo,
-            String addressLineThree) {
+        String postCode,
+        String country,
+        String addressLineOne,
+        String addressLineTwo,
+        String addressLineThree
+    ) {
         Address address = new Address();
         address.setPostCode(postCode);
         address.setCountry(country);
@@ -80,10 +80,11 @@ public class EntityUtils {
      * @return AuthenticationDetails
      */
     public static AuthenticationDetails createAuthenticationDetails(
-            String email,
-            String password,
-            String authenticationToken,
-            String recoveryCodes) {
+        String email,
+        String password,
+        String authenticationToken,
+        String recoveryCodes
+    ) {
         AuthenticationDetails authenticationDetails = createAuthenticationDetails(email, password);
         authenticationDetails.setTwoFactorEnabled(true);
         authenticationDetails.setAuthenticationToken(authenticationToken);
@@ -102,14 +103,15 @@ public class EntityUtils {
     public static User createPatient(AuthenticationDetails authenticationDetails) {
         Address address = createAddress();
         User user = new User(
-                "Test",
-                "User",
-                "0123456789",
-                "0123456789",
-                "Test Notes",
-                CommunicationPreference.EMAIL,
-                UserRole.PATIENT,
-                address);
+            "Test",
+            "User",
+            "0123456789",
+            "0123456789",
+            "Test Notes",
+            CommunicationPreference.EMAIL,
+            UserRole.PATIENT,
+            address
+        );
         user.setRole(UserRole.PATIENT);
         user.setAuthenticationDetails(authenticationDetails);
         user = getDbManager().saveGet(user);
@@ -146,15 +148,16 @@ public class EntityUtils {
      */
     public static User createPatient(AuthenticationDetails authenticationDetails, Address address) {
         User user = new User(
-                "Test",
-                "User",
-                "0123456789",
-                "0123456789",
-                "Test Notes",
-                CommunicationPreference.EMAIL,
-                UserRole.PATIENT,
-                authenticationDetails,
-                address);
+            "Test",
+            "User",
+            "0123456789",
+            "0123456789",
+            "Test Notes",
+            CommunicationPreference.EMAIL,
+            UserRole.PATIENT,
+            authenticationDetails,
+            address
+        );
 
         // set user details
         user.setRole(UserRole.PATIENT);
@@ -188,7 +191,7 @@ public class EntityUtils {
 
     /**
      * Create a prescription entity
-     * 
+     *
      * @param prescriptionName Name of medicine (e.g., Paracetamol 500mg)
      * @param recommendedDose  Dose of medicine (e.g., 1 tablet per day)
      * @param visitDetails     VisitDetails object (e.g., the details of the visit
@@ -196,8 +199,11 @@ public class EntityUtils {
      *                         prescription was given)
      * @return The Prescription object
      */
-    public static Prescription createPrescription(String prescriptionName, String recommendedDose,
-            VisitDetails visitDetails) {
+    public static Prescription createPrescription(
+        String prescriptionName,
+        String recommendedDose,
+        VisitDetails visitDetails
+    ) {
         Prescription prescription = new Prescription(prescriptionName, recommendedDose, visitDetails);
         prescription = getDbManager().saveGet(prescription);
         return prescription;
@@ -205,7 +211,7 @@ public class EntityUtils {
 
     /**
      * Create a new VisitDetails object
-     * 
+     *
      * @param followUpRequired Whether a follow up is required
      * @param notes            Notes from the visit
      * @param diagnosis        Diagnosis of the visit
@@ -215,19 +221,14 @@ public class EntityUtils {
      * @return The VisitDetails object
      */
     public static VisitDetails createVisitDetails(
-            boolean followUpRequired,
-            String notes,
-            String diagnosis,
-            String advice,
-            Date timeAdded,
-            Booking booking) {
-        VisitDetails visitDetails = new VisitDetails(
-                followUpRequired,
-                notes,
-                diagnosis,
-                advice,
-                timeAdded,
-                booking);
+        boolean followUpRequired,
+        String notes,
+        String diagnosis,
+        String advice,
+        Date timeAdded,
+        Booking booking
+    ) {
+        VisitDetails visitDetails = new VisitDetails(followUpRequired, notes, diagnosis, advice, timeAdded, booking);
         visitDetails = getDbManager().saveGet(visitDetails);
         return visitDetails;
     }
@@ -240,14 +241,15 @@ public class EntityUtils {
     public static User createDoctor(AuthenticationDetails authenticationDetails) {
         Address address = createAddress();
         User user = new User(
-                "Test",
-                "User",
-                "0123456789",
-                "0123456789",
-                "Test Notes",
-                CommunicationPreference.EMAIL,
-                UserRole.DOCTOR,
-                address);
+            "Test",
+            "User",
+            "0123456789",
+            "0123456789",
+            "Test Notes",
+            CommunicationPreference.EMAIL,
+            UserRole.DOCTOR,
+            address
+        );
         user.setRole(UserRole.DOCTOR);
         user.setAuthenticationDetails(authenticationDetails);
         int id = getDbManager().saveGetId(user);
@@ -257,23 +259,25 @@ public class EntityUtils {
 
     // Crate a doctor, given all the fields
     public static User createDoctor(
-            String firstname,
-            String surname,
-            String phone,
-            String fax,
-            String additionalNotes,
-            CommunicationPreference communicationPreference,
-            Address address,
-            AuthenticationDetails authenticationDetails) {
+        String firstname,
+        String surname,
+        String phone,
+        String fax,
+        String additionalNotes,
+        CommunicationPreference communicationPreference,
+        Address address,
+        AuthenticationDetails authenticationDetails
+    ) {
         User user = new User(
-                firstname,
-                surname,
-                phone,
-                fax,
-                additionalNotes,
-                communicationPreference,
-                UserRole.DOCTOR,
-                address);
+            firstname,
+            surname,
+            phone,
+            fax,
+            additionalNotes,
+            communicationPreference,
+            UserRole.DOCTOR,
+            address
+        );
         user.setRole(UserRole.DOCTOR);
         user.setAuthenticationDetails(authenticationDetails);
         user.setAddress(address);
@@ -365,7 +369,6 @@ public class EntityUtils {
 
         // grab the visit details for the booking
         return db.getByProperty(VisitDetails.class, "booking", booking);
-
     }
 
     // grab all visit details for a user
