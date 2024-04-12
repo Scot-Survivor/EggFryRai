@@ -46,7 +46,8 @@ public class AuthenticationDetails {
     @ToString.Exclude
     private String recoveryCodes;
 
-    @OneToOne(mappedBy = "authenticationDetails")
+    @OneToOne
+    @JoinColumn(name = "authenticationId", nullable = false)
     @ToString.Exclude
     private User user;
 

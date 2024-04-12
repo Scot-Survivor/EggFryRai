@@ -43,7 +43,7 @@ public class Booking {
     @JoinColumn(name = "roomId", nullable = false)
     private Room room;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "visitDetailsId", nullable = true)
     private VisitDetails visitDetails;
 

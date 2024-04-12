@@ -3,6 +3,7 @@ package com.comp5590.screens;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.ScreenManager;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
@@ -78,6 +79,9 @@ public class LoggingScreen extends AbstractScreen {
 
         logHistory.getItems().addAll(logs);
 
+        // sort logs in reverse order (so newest logs are at the top)
+        logHistory.getItems().sort(Comparator.reverseOrder());
+
         // Set preferred width to 40% larger than the longest width of string
         logHistory.setPrefWidth(
             (logHistory.getItems().stream().mapToInt(String::length).max().orElse((int) getRootPane().getWidth())) * 1.4
@@ -98,6 +102,10 @@ public class LoggingScreen extends AbstractScreen {
     public void addLog(String log) {
         if (logs.size() > AppConfig.MAX_LOG_RESULTS) {
             logs.remove(0);
+        }
+        // Hacky to prevent duplication of logs
+        if (!logs.isEmpty() && logs.get(logs.size() - 1).equals(log)) {
+            return;
         }
         logs.add(log);
     }

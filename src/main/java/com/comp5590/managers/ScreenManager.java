@@ -63,6 +63,7 @@ public class ScreenManager {
 
     /**
      * Short hand method to check if the event should be cancelled
+     *
      * @param event The event to check
      * @return If the event should be cancelled
      */
@@ -141,6 +142,17 @@ public class ScreenManager {
         }
     }
 
+    public void refreshScene() {
+        if (this.currentScreen != null) {
+            this.currentScreen.cleanup();
+            this.currentScreen.setup();
+            Scene toShow = createScene(this.currentScreen);
+            primaryStage.setScene(toShow);
+            primaryStage.setTitle("PDMS");
+            primaryStage.show();
+        }
+    }
+
     private Scene createScene(AbstractScreen screen) {
         Scene scene = new Scene(screen.getRootPane(), width, height);
         for (String path : screen.getCssPaths()) {
@@ -184,15 +196,17 @@ public class ScreenManager {
 
     /**
      * Get the instance of the screen
-     * @param screen The screen to get the instance of
+     *
+     * @param T The screen to get the instance of
      * @return The instance of the screen
      */
-    public AbstractScreen getScreenInstance(Class<? extends AbstractScreen> screen) {
-        return screenInstances.get(screen);
+    public <T> T getScreenInstance(Class<? extends AbstractScreen> T) {
+        return (T) screenInstances.get(T);
     }
 
     /**
      * Check if the screen is a ScreenBetweenScreens
+     *
      * @param screen The screen to check
      * @return If the screen is a ScreenBetweenScreens
      */
@@ -204,6 +218,7 @@ public class ScreenManager {
 
     /**
      * Get the previous screen
+     *
      * @return The previous screen
      */
     public AbstractScreen getPreviousScreen() {

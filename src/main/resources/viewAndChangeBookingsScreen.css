@@ -1,0 +1,45 @@
+.booking-card{
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #000000;
+    -fx-border-width: 3;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+}
+
+.booking-card:hover{
+    -fx-background-color: #d0d0d0;
+}
+
+.data-text{
+    -fx-font-weight: bold;
+}
+
+.data-hbox{
+    -fx-spacing: 5;
+}
+
+.edit-button{
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #000000;
+    -fx-border-width: 3;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+}
+
+.delete-button{
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #000000;
+    -fx-border-width: 3;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+}
+
+.button-hbox{
+    -fx-spacing: 10;
+}

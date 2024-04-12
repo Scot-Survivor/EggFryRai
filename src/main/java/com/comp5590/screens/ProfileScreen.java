@@ -69,9 +69,7 @@ public class ProfileScreen extends AbstractScreen {
         applyPasswordButton.setOnAction(event -> {
             String newPassword = newPasswordField.getText().trim();
             if (!newPassword.isEmpty()) {
-                // hash the new password
-                String hashedPassword = passwordManager.hashPassword(newPassword);
-                authDetails.setPassword(hashedPassword);
+                authDetails.setPassword(newPassword);
                 // save the updated authentication details
                 getDatabaseManager().update(authDetails);
                 // notify user of successful update and add to logs

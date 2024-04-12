@@ -336,6 +336,13 @@ public class EntityUtils {
         remove(User.class, user.getId());
     }
 
+    /**
+     * Remove a booking object from the database
+     */
+    public static boolean deleteBooking(Booking booking) {
+        return getDbManager().delete(booking);
+    }
+
     // * Methods for grabbing objects from the database
     public static AuthenticationDetails getAuthenticationDetails(String email) {
         return getDbManager().getByProperty(AuthenticationDetails.class, "email", email);
@@ -384,6 +391,10 @@ public class EntityUtils {
             allVisitDetails.add(getVisitDetailsForBooking(booking));
         }
 
+        // filter out null visit details (not yet added due to doctor not yet adding
+        // them, or appointment not yet completed)
+        allVisitDetails.removeIf(visitDetails -> visitDetails == null);
+
         // return the list of all visit details
         return allVisitDetails;
     }
@@ -396,6 +407,24 @@ public class EntityUtils {
         // return the list of prescriptions by visit details ID property (one-to-many
         // relationship)
         return db.getAllByProperty(Prescription.class, "visitDetails", visitDetails);
+    }
+
+    // grab all users with doctor role from the database
+    public static List<User> getAllDoctors() {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // return the list of users by role property (many-to-one relationship)
+        return db.getAllByProperty(User.class, "role", UserRole.DOCTOR);
+    }
+
+    // grab all rooms
+    public static List<Room> getAllRooms() {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // return the list of rooms
+        return db.getAll(Room.class);
     }
 
     // * Methods for checking if objects exist in the database
@@ -421,5 +450,10 @@ public class EntityUtils {
 
     public static boolean visitDetailsExists(int visitDetailsId) {
         return getDbManager().get(VisitDetails.class, visitDetailsId) != null;
+    }
+
+    // * Methods for updating objects in the database
+    public static boolean updateBooking(Booking booking) {
+        return getDbManager().update(booking);
     }
 }

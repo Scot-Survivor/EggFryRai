@@ -22,18 +22,18 @@ public class Prescription {
     private String prescriptionName;
 
     // recommended dose of the prescription (e.g., 1 pill every 4 hours)
-    @Column(name = "recomendedDose")
-    private String recomendedDose;
+    @Column(name = "recommendedDose")
+    private String recommendedDose;
 
     // many Prescriptions can be assigned to one VisitDetails object
-    @ManyToOne
-    @JoinColumn(name = "visitDetailsId")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "visitDetailsId", nullable = false)
     private VisitDetails visitDetails;
 
     // create a prescription
-    public Prescription(String prescriptionName, String recomendedDose, VisitDetails visitDetails) {
+    public Prescription(String prescriptionName, String recommendedDose, VisitDetails visitDetails) {
         this.prescriptionName = prescriptionName;
-        this.recomendedDose = recomendedDose;
+        this.recommendedDose = recommendedDose;
         this.visitDetails = visitDetails;
     }
 }

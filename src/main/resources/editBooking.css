@@ -1,0 +1,69 @@
+.edit-booking-card{
+  -fx-background-color: #f5f5f5;
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
+  -fx-border-color: #e0e0e0;
+  -fx-border-width: 1px;
+  -fx-padding: 20px;
+  -fx-margin: 20px;
+
+  -fx-spacing: 5px;
+  -fx-vgap: 5px;
+}
+
+.doctor-choice-box{
+  -fx-background-color: #f5f5f5;
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
+  -fx-border-color: #e0e0e0;
+  -fx-border-width: 1px;
+  -fx-padding: 20px;
+  -fx-margin: 20px;
+
+  -fx-spacing: 5px;
+  -fx-hgap: 10px;
+}
+
+.date-choice-box{
+  -fx-background-color: #f5f5f5;
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
+  -fx-border-color: #e0e0e0;
+  -fx-border-width: 1px;
+  -fx-padding: 20px;
+  -fx-margin: 20px;
+
+  -fx-spacing: 5px;
+  -fx-hgap: 10px;
+}
+
+.time-choice-box{
+  -fx-background-color: #f5f5f5;
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
+  -fx-border-color: #e0e0e0;
+  -fx-border-width: 1px;
+  -fx-padding: 20px;
+  -fx-margin: 20px;
+
+  -fx-spacing: 5px;
+  -fx-hgap: 10px;
+}
+
+.room-choice-box{
+  -fx-background-color: #f5f5f5;
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
+  -fx-border-color: #e0e0e0;
+  -fx-border-width: 1px;
+  -fx-padding: 20px;
+  -fx-margin: 20px;
+
+  -fx-spacing: 5px;
+  -fx-hgap: 10px;
+}
+
+#error-label{
+  -fx-text-fill: red;
+  -fx-font-weight: bold;
+}
