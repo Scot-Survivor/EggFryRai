@@ -409,6 +409,24 @@ public class EntityUtils {
         return db.getAllByProperty(Prescription.class, "visitDetails", visitDetails);
     }
 
+    // grab all users with doctor role from the database
+    public static List<User> getAllDoctors() {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // return the list of users by role property (many-to-one relationship)
+        return db.getAllByProperty(User.class, "role", UserRole.DOCTOR);
+    }
+
+    // grab all rooms
+    public static List<Room> getAllRooms() {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // return the list of rooms
+        return db.getAll(Room.class);
+    }
+
     // * Methods for checking if objects exist in the database
     public static boolean authenticationDetailsExists(String email) {
         return getDbManager().getByProperty(AuthenticationDetails.class, "email", email) != null;
@@ -432,5 +450,10 @@ public class EntityUtils {
 
     public static boolean visitDetailsExists(int visitDetailsId) {
         return getDbManager().get(VisitDetails.class, visitDetailsId) != null;
+    }
+
+    // * Methods for updating objects in the database
+    public static boolean updateBooking(Booking booking) {
+        return getDbManager().update(booking);
     }
 }
