@@ -3,6 +3,7 @@ package com.comp5590.tests.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.comp5590.App;
+import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
@@ -10,6 +11,7 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.entities.VisitDetails;
 import com.comp5590.screens.ProfileScreen;
 import com.comp5590.tests.basic.SetupTests;
+import com.comp5590.security.managers.passwords.PasswordManager;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -20,12 +22,14 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+
 @ExtendWith(ApplicationExtension.class)
 public class ProfileScreenTests extends SetupTests {
 
     App app;
     private final String email = "patient1@gmail.com";
     private final String password = "password";
+    private final PasswordManager passwordManager = PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM);
 
     @Start
     public void start(Stage stage) {
@@ -33,6 +37,7 @@ public class ProfileScreenTests extends SetupTests {
         app.start(stage);
         stage.show();
         setupDB();
+        
     }
 
     private void setupDB() {
@@ -121,15 +126,17 @@ public class ProfileScreenTests extends SetupTests {
 
         // input the new password
         String newPassword = "newpassword";
-        robot.lookup("#newPasswordField").queryAs(PasswordField.class).setText(newPassword);
+        String hashedPassword = passwordManager.hashPassword(newPassword);
+        robot.lookup("#newPasswordField").queryAs(PasswordField.class).setText(hashedPassword);
 
         // click the apply password button
         robot.lookup("#applyPasswordButton").queryAs(Button.class).fire();
 
         // get the updated user from the database
-        User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.password", newPassword);
+        User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.email", email);
 
         assertNotNull(updatedUser);
-        assertEquals(newPassword, updatedUser.getAuthenticationDetails().getPassword());
+        PasswordManager pm = PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM);
+        assertTrue(pm.passwordMatches(newPassword, updatedUser.getAuthenticationDetails().getPassword()));
     }
 }

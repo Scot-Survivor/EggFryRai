@@ -1,9 +1,11 @@
 package com.comp5590.screens;
 
+import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.security.managers.passwords.*;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -15,6 +17,7 @@ import javafx.scene.text.Text;
 public class ProfileScreen extends AbstractScreen {
 
     private final SessionManager sessionManager = SessionManager.getInstance();
+    private final PasswordManager passwordManager = PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM);
 
     public ProfileScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -66,7 +69,9 @@ public class ProfileScreen extends AbstractScreen {
         applyPasswordButton.setOnAction(event -> {
             String newPassword = newPasswordField.getText().trim();
             if (!newPassword.isEmpty()) {
-                authDetails.setPassword(newPassword);
+                // hash the new password
+                String hashedPassword = passwordManager.hashPassword(newPassword);
+                authDetails.setPassword(hashedPassword);
                 // save the updated authentication details
                 getDatabaseManager().update(authDetails);
                 // notify user of successful update and add to logs
