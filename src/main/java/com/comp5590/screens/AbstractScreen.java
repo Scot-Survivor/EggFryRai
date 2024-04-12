@@ -404,6 +404,13 @@ public abstract class AbstractScreen {
     }
 
     /**
+     * Shortcut to refresh the scene
+     */
+    protected void refreshScene() {
+        getApp().getScreenManager().refreshScene();
+    }
+
+    /**
      * Shortcut to show a scene
      *
      * @param msg             String
