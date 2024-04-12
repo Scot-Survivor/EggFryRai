@@ -104,7 +104,7 @@ public class RegisterTest extends SetupTests {
     @Test
     public void testThatAUserCanRegister(FxRobot robot) {
         // go to register screen
-        goToScreen(app, robot, RegisterScreen.class);
+        goToScreenWithAutoAuthentication(app, robot, RegisterScreen.class);
 
         // click random user generate button
         robot.interact(() -> robot.lookup("#generateRandomUserButton").queryButton().fire());

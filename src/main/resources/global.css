@@ -20,3 +20,29 @@
     -fx-min-width: 300;
     -fx-min-height: 300;
 }
+
+.scroller-box {
+    /* ensure it takes up whole screen */
+    -fx-max-width: 10000;
+    -fx-max-height: 10000;
+    -fx-min-width: 300;
+    -fx-min-height: 300;
+
+    -fx-alignment: center;
+    -fx-hgap: 0;
+    -fx-vgap: 5;
+
+    /* set spacing between child nodes */
+    -fx-spacing: 5;
+
+    -fx-font-size: 16;
+
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #000000;
+    -fx-border-width: 5;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    
+    /* all padding to 10 */
+    -fx-padding: 10 10 10 10;
+}

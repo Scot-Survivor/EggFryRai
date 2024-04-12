@@ -1,0 +1,39 @@
+.visit-details-card{
+  fx-background-color: #f4f4f4;
+  -fx-border-color: #000000;
+  -fx-border-width: 3;
+  -fx-border-radius: 5;
+  -fx-background-radius: 5;
+  -fx-padding: 10;
+  -fx-font-size: 16;
+  -fx-min-width: 300;
+  -fx-min-height: 300;
+  -fx-alignment: center;
+  -fx-hgap: 0;
+  -fx-vgap: 10;
+}
+
+.visit-details-header{
+  -fx-font-size: 20;
+  -fx-font-weight: bold;
+  -fx-padding: 10;
+  
+  /* text colour to #575dfb */
+  -fx-fill: #575dfb;
+
+  /* align text to left */
+  -fx-alignment: center-left;
+}
+
+.field-text{
+  -fx-font-size: 16;
+  -fx-font-weight: bold;
+}
+
+.field-data-box{
+  -fx-font-size: 16;
+  -fx-font-weight: normal;
+
+  -fx-hgap: 0;
+  -fx-vgap: 0;
+}

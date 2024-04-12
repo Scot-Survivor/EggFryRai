@@ -39,7 +39,7 @@ public class HomeScreenTest extends SetupTests {
     @Test
     public void testHomeButton(FxRobot robot) {
         // go to home screen
-        goToScreen(app, robot, HomeScreen.class);
+        goToScreenWithAutoAuthentication(app, robot, HomeScreen.class);
 
         robot.interact(() -> {
             robot
@@ -79,7 +79,7 @@ public class HomeScreenTest extends SetupTests {
     @Test
     public void testLogoutButton(FxRobot robot) {
         // go to home screen
-        goToScreen(app, robot, HomeScreen.class);
+        goToScreenWithAutoAuthentication(app, robot, HomeScreen.class);
 
         robot.interact(() -> {
             // fire event on logoutBox (click on it)

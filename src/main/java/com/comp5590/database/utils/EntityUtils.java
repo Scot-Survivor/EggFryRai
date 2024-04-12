@@ -5,7 +5,9 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.security.managers.passwords.PasswordManager;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EntityUtils {
 
@@ -188,31 +190,47 @@ public class EntityUtils {
     }
 
     /**
-     * Create a medicine entity
-     * @param name Name of medicine
-     * @param dose Dose of medicine
-     * @return A medicine object
+     * Create a prescription entity
+     *
+     * @param prescriptionName Name of medicine (e.g., Paracetamol 500mg)
+     * @param recommendedDose  Dose of medicine (e.g., 1 tablet per day)
+     * @param visitDetails     VisitDetails object (e.g., the details of the visit
+     *                         where the
+     *                         prescription was given)
+     * @return The Prescription object
      */
-    public static Medicine createMedicine(String name, int dose, Prescription prescription) {
-        Medicine med = new Medicine(name, dose, prescription);
-        med = getDbManager().saveGet(med);
-        return med;
+    public static Prescription createPrescription(
+        String prescriptionName,
+        String recommendedDose,
+        VisitDetails visitDetails
+    ) {
+        Prescription prescription = new Prescription(prescriptionName, recommendedDose, visitDetails);
+        prescription = getDbManager().saveGet(prescription);
+        return prescription;
     }
 
     /**
-     * Create a new prescription object
-     * @param notes Additional Notes for the prescription
-     * @param patient The patient it applies to
-     * @param doctor Doctor assigning the prescription
-     * @return The prescription object
+     * Create a new VisitDetails object
+     *
+     * @param followUpRequired Whether a follow up is required
+     * @param notes            Notes from the visit
+     * @param diagnosis        Diagnosis of the visit
+     * @param advice           Advice given to the patient
+     * @param timeAdded        Time the details were added
+     * @param booking          The booking object
+     * @return The VisitDetails object
      */
-    public static Prescription createPrescription(String notes, User patient, User doctor) {
-        Prescription prescription = new Prescription();
-        prescription.setAdditionalNotes(notes);
-        prescription.setPatient(patient);
-        prescription.setDoctor(doctor);
-        prescription = getDbManager().saveGet(prescription);
-        return prescription;
+    public static VisitDetails createVisitDetails(
+        boolean followUpRequired,
+        String notes,
+        String diagnosis,
+        String advice,
+        Date timeAdded,
+        Booking booking
+    ) {
+        VisitDetails visitDetails = new VisitDetails(followUpRequired, notes, diagnosis, advice, timeAdded, booking);
+        visitDetails = getDbManager().saveGet(visitDetails);
+        return visitDetails;
     }
 
     /**
@@ -335,6 +353,51 @@ public class EntityUtils {
         return getDbManager().getByProperty(Room.class, "roomNumber", roomNum);
     }
 
+    // grab all user bookings
+    public static List<Booking> getBookingsForUser(User user) {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // return the list of bookings by user ID property (one-to-many relationship)
+        return db.getAllByProperty(Booking.class, "patient", user);
+    }
+
+    // grab visit details for a booking (1-to-1 relationship)
+    public static VisitDetails getVisitDetailsForBooking(Booking booking) {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // grab the visit details for the booking
+        return db.getByProperty(VisitDetails.class, "booking", booking);
+    }
+
+    // grab all visit details for a user
+    public static List<VisitDetails> getAllVisitDetailsForUser(User user) {
+        // grab all bookings for the user
+        List<Booking> bookings = getBookingsForUser(user);
+
+        // create a list of visit details, instantiate it
+        List<VisitDetails> allVisitDetails = new ArrayList<>();
+
+        // for each booking, grab the visit details
+        for (Booking booking : bookings) {
+            allVisitDetails.add(getVisitDetailsForBooking(booking));
+        }
+
+        // return the list of all visit details
+        return allVisitDetails;
+    }
+
+    // grab all prescriptions for a visit details object
+    public static List<Prescription> getAllPrescriptionsForVisitDetails(VisitDetails visitDetails) {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // return the list of prescriptions by visit details ID property (one-to-many
+        // relationship)
+        return db.getAllByProperty(Prescription.class, "visitDetails", visitDetails);
+    }
+
     // * Methods for checking if objects exist in the database
     public static boolean authenticationDetailsExists(String email) {
         return getDbManager().getByProperty(AuthenticationDetails.class, "email", email) != null;
@@ -346,5 +409,17 @@ public class EntityUtils {
 
     public static boolean roomExists(String roomNum) {
         return getDbManager().getByProperty(Room.class, "roomNumber", roomNum) != null;
+    }
+
+    public static boolean bookingExists(int bookingId) {
+        return getDbManager().get(Booking.class, bookingId) != null;
+    }
+
+    public static boolean prescriptionExists(String prescriptionName) {
+        return getDbManager().getByProperty(Prescription.class, "prescriptionName", prescriptionName) != null;
+    }
+
+    public static boolean visitDetailsExists(int visitDetailsId) {
+        return getDbManager().get(VisitDetails.class, visitDetailsId) != null;
     }
 }

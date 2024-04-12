@@ -44,8 +44,8 @@ public class ScreenTests extends SetupTests {
 
     @Test
     public void testScreenGoBack(FxRobot robot) {
-        goToScreen(app, robot, HomeScreen.class);
-        goToScreen(app, robot, ViewDoctorsScreen.class);
+        goToScreenWithAutoAuthentication(app, robot, HomeScreen.class);
+        goToScreenWithAutoAuthentication(app, robot, ViewDoctorsScreen.class);
         robot.interact(() -> {
             Assertions
                 .assertThat(app.getScreenManager().getCurrentScreen().getClass())

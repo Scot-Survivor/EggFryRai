@@ -42,4 +42,16 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "roomId", nullable = false)
     private Room room;
+
+    @OneToOne
+    @JoinColumn(name = "visitDetailsId", nullable = true)
+    private VisitDetails visitDetails;
+
+    // create a booking
+    public Booking(User doctor, User patient, Date apptTime, Room room) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.apptTime = apptTime;
+        this.room = room;
+    }
 }
