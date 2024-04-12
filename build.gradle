@@ -96,6 +96,7 @@ dependencies {
     implementation 'org.mindrot:jbcrypt:0.4'
     // Add H2 Driver
     implementation 'com.h2database:h2:2.2.222'
+    implementation 'org.postgresql:postgresql:42.7.3'
 
     // Config file handler
     implementation 'org.apache.commons:commons-configuration2:2.9.0'
