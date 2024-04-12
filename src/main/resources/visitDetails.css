@@ -13,6 +13,10 @@
   -fx-vgap: 10;
 }
 
+.visit-details-card:hover{
+  -fx-background-color: #d0d0d0;
+}
+
 .visit-details-header{
   -fx-font-size: 20;
   -fx-font-weight: bold;

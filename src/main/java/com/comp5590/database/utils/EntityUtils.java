@@ -336,6 +336,13 @@ public class EntityUtils {
         remove(User.class, user.getId());
     }
 
+    /**
+     * Remove a booking object from the database
+     */
+    public static boolean deleteBooking(Booking booking) {
+        return getDbManager().delete(booking);
+    }
+
     // * Methods for grabbing objects from the database
     public static AuthenticationDetails getAuthenticationDetails(String email) {
         return getDbManager().getByProperty(AuthenticationDetails.class, "email", email);
@@ -383,6 +390,10 @@ public class EntityUtils {
         for (Booking booking : bookings) {
             allVisitDetails.add(getVisitDetailsForBooking(booking));
         }
+
+        // filter out null visit details (not yet added due to doctor not yet adding
+        // them, or appointment not yet completed)
+        allVisitDetails.removeIf(visitDetails -> visitDetails == null);
 
         // return the list of all visit details
         return allVisitDetails;
