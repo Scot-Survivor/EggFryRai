@@ -1,10 +1,6 @@
 package com.comp5590.database.entities;
 
-import com.comp5590.database.validators.annontations.RequiredRole;
-import com.comp5590.enums.UserRole;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.*;
 
 @Entity
@@ -21,34 +17,23 @@ public class Prescription {
     @Column(name = "prescriptionId")
     private int prescriptionId;
 
-    // Additional notes for the prescription
-    @Column(name = "additionalNotes", nullable = false)
-    private String additionalNotes;
+    // name of the prescription
+    @Column(name = "prescriptionName")
+    private String prescriptionName;
 
-    // We have a date its been prescribed on so we know how long its valid for
-    @Column(name = "dateOfPrescription", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime dateOfPrescription;
+    // recommended dose of the prescription (e.g., 1 pill every 4 hours)
+    @Column(name = "recomendedDose")
+    private String recomendedDose;
 
-    // Links to user for things like dob should we want to print off prescription
-    @OneToOne
-    @JoinColumn(name = "patientId", nullable = false)
-    @RequiredRole(UserRole.PATIENT)
-    private User patient;
+    // many Prescriptions can be assigned to one VisitDetails object
+    @ManyToOne
+    @JoinColumn(name = "visitDetailsId")
+    private VisitDetails visitDetails;
 
-    // Links to doctor to prove who wrote the prescription
-    @OneToOne
-    @JoinColumn(name = "doctorId", nullable = false)
-    @RequiredRole(UserRole.DOCTOR)
-    private User doctor;
-
-    // List of medicines that the user uses
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "medicineId")
-    private List<Medicine> medicine;
-
-    @PrePersist
-    protected void onCreate() { // Set the creation time to the creation of the entity
-        dateOfPrescription = LocalDateTime.now();
+    // create a prescription
+    public Prescription(String prescriptionName, String recomendedDose, VisitDetails visitDetails) {
+        this.prescriptionName = prescriptionName;
+        this.recomendedDose = recomendedDose;
+        this.visitDetails = visitDetails;
     }
 }
