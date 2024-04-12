@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.comp5590.App;
 import com.comp5590.configuration.AppConfig;
+import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.screens.AbstractScreen;
@@ -119,7 +120,7 @@ public class SetupTests extends EntityUtils {
     }
 
     // Go to a specific screen (with appropriate authentication if needed)
-    public void goToScreen(App app, FxRobot robot, Class<? extends AbstractScreen> screenClass) {
+    public void goToScreenWithAutoAuthentication(App app, FxRobot robot, Class<? extends AbstractScreen> screenClass) {
         // check if this screen has @AuthRequired annotation
         // if so, we need to login & register methods first before doing anything
         if (ScreenUtils.isAuthRequired(screenClass)) {
@@ -136,6 +137,19 @@ public class SetupTests extends EntityUtils {
         assertInstanceOf(screenClass, app.getScreenManager().getCurrentScreen());
     }
 
+    // Go to screen without any authentication (needed if using a custom user in the
+    // TestFile.setupDB(), e.g., for testing if the correct data is displayed on the
+    // screen associated with that user).
+    public void goToScreen(App app, FxRobot robot, Class<? extends AbstractScreen> screenClass) {
+        robot.interact(() -> app.getScreenManager().showScene(screenClass));
+        assertInstanceOf(screenClass, app.getScreenManager().getCurrentScreen());
+    }
+
+    // Set the current user to a specific user
+    public void setAuthenticatedUser(App app, User user) {
+        app.getSessionManager().authenticate(user);
+    }
+
     // QOL methods (consider BST, NO ZONE ID)
     public Date createFutureDate(int days) {
         // get current date
@@ -146,5 +160,9 @@ public class SetupTests extends EntityUtils {
 
         // convert to date, and return it
         return java.sql.Date.valueOf(future);
+    }
+
+    public void resetDatabase() {
+        DatabaseManager.INSTANCE = null;
     }
 }
