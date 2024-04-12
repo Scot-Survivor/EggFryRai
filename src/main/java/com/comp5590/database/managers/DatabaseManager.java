@@ -414,4 +414,23 @@ public class DatabaseManager {
             return false;
         }
     }
+
+    /**
+     * Delete all objects of an entity type from the database
+     */
+    public boolean deleteAll(Class<?> type) {
+        try {
+            logger.debug("Deleting all objects of type: " + type.getName());
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.createQuery("delete from " + type.getName()).executeUpdate();
+            session.getTransaction().commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            logger.error("Failed to delete all objects: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
+            return false;
+        }
+    }
 }
