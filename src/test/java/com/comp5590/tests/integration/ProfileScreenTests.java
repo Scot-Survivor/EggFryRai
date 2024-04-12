@@ -11,6 +11,7 @@ import com.comp5590.database.entities.VisitDetails;
 import com.comp5590.screens.ProfileScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -103,10 +104,32 @@ public class ProfileScreenTests extends SetupTests {
         // click the apply email button
         robot.lookup("#applyEmailButton").queryAs(Button.class).fire();
 
-        //  the updated user from the database
+        // get the updated user from the database
         User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.email", newEmail);
 
         assertNotNull(updatedUser);
         assertEquals(newEmail, updatedUser.getAuthenticationDetails().getEmail());
+    }
+
+    @Test
+    public void testPasswordChange(FxRobot robot) {
+        // log in with a test user
+        loginUser(app, robot, email, password);
+
+        // go to the profile screen
+        goToScreenWithAutoAuthentication(app, robot, ProfileScreen.class);
+
+        // input the new password
+        String newPassword = "newpassword";
+        robot.lookup("#newPasswordField").queryAs(PasswordField.class).setText(newPassword);
+
+        // click the apply password button
+        robot.lookup("#applyPasswordButton").queryAs(Button.class).fire();
+
+        // get the updated user from the database
+        User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.password", newPassword);
+
+        assertNotNull(updatedUser);
+        assertEquals(newPassword, updatedUser.getAuthenticationDetails().getPassword());
     }
 }
