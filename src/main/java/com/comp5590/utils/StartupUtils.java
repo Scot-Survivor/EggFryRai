@@ -3,29 +3,34 @@ package com.comp5590.utils;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.AuthenticationDetails;
-import com.comp5590.database.entities.Medicine;
+import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Prescription;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
+import com.comp5590.database.entities.VisitDetails;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.security.managers.passwords.PasswordManager;
+import java.util.Date;
 
 public class StartupUtils {
 
     /**
      * This function is horrifically written as of now.
      * TODO(Josh): Move SetupTests static into a dedicated database class.
+     *
      * @return true on success
      */
     public static User createObjects() {
+        // initialize the database
         DatabaseManager db = DatabaseManager.getInstance();
         boolean isValid = true;
         if (db == null) {
             return null;
         }
 
+        // create user #1
         Address address = new Address("1234 Test St", "Test City", "Test Province", "Test Country", "T3S T1N");
         address = db.saveGet(address);
         isValid = null != address;
@@ -52,12 +57,13 @@ public class StartupUtils {
         user.setAuthenticationDetails(auth);
         isValid = null != db.saveGet(user);
 
+        // create doctor #1
         User doc1 = new User(
-            "Test",
-            "Doctor",
+            "Dr Long",
+            "Johnson",
             "0123456789",
             "0123456789",
-            "",
+            "This doctor specializes in chronic balls irritation syndrome.",
             CommunicationPreference.EMAIL,
             UserRole.DOCTOR,
             address
@@ -74,12 +80,14 @@ public class StartupUtils {
         isValid = null != auth;
         doc1.setAuthenticationDetails(auth);
         isValid = null != db.saveGet(doc1);
+
+        // create doctor #2
         User doc2 = new User(
-            "Test",
-            "Doctor2",
+            "Dr Short",
+            "Stack",
             "0123456789",
             "0123456789",
-            "",
+            "This doctor specializes in the art of psychotherapeutic ball juggling.",
             CommunicationPreference.EMAIL,
             UserRole.DOCTOR,
             address
@@ -101,21 +109,78 @@ public class StartupUtils {
         address = db.saveGet(address);
         isValid = null != address;
 
-        Room room = new Room("1001", address);
-        isValid = null != db.saveGet(room);
-        room = new Room("1002", address);
-        isValid = null != db.saveGet(room);
+        // create room #1
+        Room room1 = new Room("1001", address);
+        isValid = null != db.saveGet(room1);
+        Room room2 = new Room("1002", address);
+        isValid = null != db.saveGet(room2);
 
-        Prescription prescription = new Prescription();
-        prescription.setAdditionalNotes("Prescription details here");
-        prescription = db.saveGet(prescription);
-        if (prescription == null) {
-            isValid = false;
-        }
-        Medicine medicine1 = new Medicine("medicine 1 Name", 1, prescription);
-        Medicine medicine2 = new Medicine("medicine 2 Name", 2, prescription);
-        isValid &= db.saveGet(medicine1) != null;
-        isValid &= db.saveGet(medicine2) != null;
+        // create booking #1
+        Date date1 = new Date();
+        date1.setTime(date1.getTime() + 5 * 24 * 60 * 60 * 1000);
+        Booking booking1 = new Booking(doc1, user, date1, room1);
+        isValid = null != db.saveGet(booking1);
+
+        // create booking #2
+        Date date2 = new Date();
+        date2.setTime(date2.getTime() + 10 * 24 * 60 * 60 * 1000);
+        Booking booking2 = new Booking(doc2, user, date2, room2);
+        isValid = null != db.saveGet(booking2);
+
+        // create booking #3
+        Date date3 = new Date();
+        date3.setTime(date3.getTime() + 15 * 24 * 60 * 60 * 1000);
+        Booking booking3 = new Booking(doc1, user, date3, room1);
+        isValid = null != db.saveGet(booking3);
+
+        // create visitDetails #1, link visit details to booking1
+        VisitDetails visitDetails1 = new VisitDetails(
+            true,
+            "Patient had chronic cough, fever, and fatigue.",
+            "Common cold",
+            "Get plenty of rest, drink fluids, and take over-the-counter medications.",
+            new Date(booking1.getApptTime().getTime() + 60 * 60 * 1000), // 1 hour after appt
+            booking1
+        );
+        isValid = null != db.saveGet(visitDetails1);
+
+        // create visitDetails #2, link visit details to booking2
+        VisitDetails visitDetails2 = new VisitDetails(
+            false,
+            "Patient had brain damage from a severe head injury following a car accident.",
+            "Severe internal haemorrhaging and unexpectedly AIDS syndrome stage 8",
+            "Give the patient a lollipop and send them on their way. Patient is dead now. RIP.",
+            new Date(booking2.getApptTime().getTime() + 60 * 60 * 1000), // 1 hour after appt
+            booking2
+        );
+        isValid = null != db.saveGet(visitDetails2);
+
+        // create visitDetails #3, link visit details to booking3
+        VisitDetails visitDetails3 = new VisitDetails(
+            false,
+            "Patient had a severe allergic reaction to peanuts.",
+            "Anaphylaxis",
+            "Administered epinephrine and sent to the hospital.",
+            new Date(booking3.getApptTime().getTime() + 60 * 60 * 1000), // 1 hour after appt
+            booking3
+        );
+        isValid = null != db.saveGet(visitDetails3);
+
+        // create prescription #1, link prescription to visitDetails #1
+        Prescription prescription1 = new Prescription("Tylenol", "3 pill every 28 hours", visitDetails1);
+        isValid = null != db.saveGet(prescription1);
+
+        // create prescription #2, link prescription to visitDetails #1
+        Prescription prescription2 = new Prescription("Advil", "1 pill every 6 hours", visitDetails2);
+        isValid = null != db.saveGet(prescription2);
+
+        // create prescription #3, link prescription to visitDetails #2
+        Prescription prescription3 = new Prescription("Morphine", "2 pills every 8 hours", visitDetails2);
+        isValid = null != db.saveGet(prescription3);
+
+        // create prescription #4, link prescription to visitDetails #3
+        Prescription prescription4 = new Prescription("Epinephrine", "1 shot", visitDetails3);
+        isValid = null != db.saveGet(prescription4);
 
         return user;
     }
