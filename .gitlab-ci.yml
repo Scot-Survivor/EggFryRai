@@ -16,6 +16,8 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x gradlew
   - mv dev-hibernate.properties hibernate.properties
+  # Echo the variable $CI_PUBLISH_KEY to gradle.properties in the GRADLE_USER_HOME directory
+  - echo "gitLabPrivateToken=$CI_PUBLISH_KEY" >> $GRADLE_USER_HOME/gradle.properties
 
 cache:
   paths:
@@ -73,8 +75,6 @@ pages:
 publish:
   stage: deploy
   script:
-    # Echo the variable $CI_PUBLISH_KEY to gradle.properties in the GRADLE_USER_HOME directory
-    - echo "gitLabPrivateToken=$CI_PUBLISH_KEY" >> $GRADLE_USER_HOME/gradle.properties
     - "./gradlew publish"
   rules:
     # This ensures that only pushes to the default branch will trigger
