@@ -191,7 +191,7 @@ public abstract class AbstractScreen {
     protected NavBar createNavBar() {
         // create Buttons for each navbar item
         Button home = new Button("Home");
-        Button prescriptions = new Button("Prescriptions");
+        Button visitDetails = new Button("View Visit Details");
         Button newAppointment = new Button("New Appointment");
         Button viewAppointments = new Button("View Appointments");
         Button changeAppointment = new Button("Change Appointment");
@@ -203,7 +203,7 @@ public abstract class AbstractScreen {
 
         // add IDs to buttons for testing purposes
         home.setId("home");
-        prescriptions.setId("prescriptions");
+        visitDetails.setId("visitDetails");
         newAppointment.setId("newAppointment");
         viewAppointments.setId("viewAppointments");
         changeAppointment.setId("changeAppointment");
@@ -219,9 +219,9 @@ public abstract class AbstractScreen {
             showScene(HomeScreen.class);
         });
 
-        prescriptions.setOnAction(e -> {
-            logger.info("Prescriptions button clicked");
-            showScene(PrescriptionScreen.class);
+        visitDetails.setOnAction(e -> {
+            logger.info("Visit Details button clicked");
+            showScene(VisitDetailsScreen.class);
         });
 
         newAppointment.setOnAction(e -> {
@@ -267,7 +267,7 @@ public abstract class AbstractScreen {
         // create the navbar
         NavBar navBar = new NavBar(
             home,
-            prescriptions,
+            visitDetails,
             newAppointment,
             viewAppointments,
             changeAppointment,
