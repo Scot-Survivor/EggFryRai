@@ -1,20 +1,30 @@
 package com.comp5590.screens;
 
+import com.comp5590.components.global.ScrollerBox;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 
 @Getter
+@AuthRequired
 public class LoggingScreen extends AbstractScreen {
 
     private final List<String> logs;
@@ -35,13 +45,31 @@ public class LoggingScreen extends AbstractScreen {
         // attach header and navbar
         attachHeaderAndNavBar("Logs");
 
-        ((BorderPane) getRootPane()).setCenter(center());
+        // generate log box
+        HBox center = center();
+
+        // generate scrollable log box
+        ScrollPane scrollPane = new ScrollPane();
+
+        ScrollerBox scrollerBox = new ScrollerBox();
+        scrollerBox.getChildren().add(center);
+
+        scrollPane.setContent(scrollerBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
+        center.setAlignment(Pos.CENTER);
+        center.prefWidthProperty().bind(scrollPane.widthProperty());
+        center.prefHeightProperty().bind(scrollPane.heightProperty());
+
+        // set the center of the borderpane to the scrollpane
+        ((BorderPane) getRootPane()).setCenter(scrollPane);
     }
 
     @Override
     public void cleanup() {}
 
-    private VBox center() {
+    private HBox center() {
         HBox logBox = new HBox();
         logBox.setId("logBox");
         logBox.setAlignment(Pos.TOP_CENTER);
@@ -60,18 +88,39 @@ public class LoggingScreen extends AbstractScreen {
                         // set colour based on log level
                         // DEBUG : GREEN INFO : BLACK WARN : YELLOW ERROR : RED
                         // ALL SHOULD BE BOLD
+
+                        // also set background colour for each using a different colour, ensuring good
+                        // contrast against text fill colour
+
                         String styleString = "-fx-font-weight: bold;";
                         if (item.contains("DEBUG")) {
-                            setStyle(styleString + " -fx-text-fill: green;");
+                            setStyle(styleString + " -fx-text-fill: white; -fx-background-color: black;");
                         } else if (item.contains("INFO")) {
-                            setStyle(styleString + " -fx-text-fill: black;");
+                            setStyle(styleString + " -fx-text-fill: white; -fx-background-color: blue;");
                         } else if (item.contains("WARN")) {
-                            setStyle(styleString + " -fx-text-fill: yellow;");
+                            setStyle(styleString + " -fx-text-fill: black; -fx-background-color: yellow;");
                         } else if (item.contains("ERROR") || item.contains("FATAL")) {
-                            setStyle(styleString + " -fx-text-fill: red;");
+                            setStyle(styleString + " -fx-text-fill: black; -fx-background-color: red;");
                         } else if (item.contains("TRACE")) {
-                            setStyle(styleString + " -fx-text-fill: blue;");
+                            setStyle(styleString + " -fx-text-fill: white; -fx-background-color: purple;");
                         }
+
+                        // Add hover effects
+                        setOnMouseEntered(event -> setStyle(getStyle() + "-fx-background-color: #CCCCCC;"));
+                        setOnMouseExited(event -> setStyle(getStyle().replace("-fx-background-color: #CCCCCC;", "")));
+
+                        setBorder(
+                            new Border(
+                                new BorderStroke(
+                                    Color.DARKSLATEGREY,
+                                    BorderStrokeStyle.SOLID,
+                                    CornerRadii.EMPTY,
+                                    new BorderWidths(1)
+                                )
+                            )
+                        );
+
+                        setPadding(new Insets(1, 2, 1, 2));
                     }
                 }
             }
@@ -89,9 +138,7 @@ public class LoggingScreen extends AbstractScreen {
 
         logBox.getChildren().add(logHistory);
 
-        VBox centerBox = new VBox(logBox);
-        centerBox.setAlignment(Pos.TOP_CENTER);
-        return centerBox;
+        return logBox;
     }
 
     /**
