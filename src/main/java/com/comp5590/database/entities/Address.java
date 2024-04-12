@@ -35,11 +35,13 @@ public class Address {
     @Column(name = "addressLineThree", length = 1024)
     private String addressLineThree;
 
-    @OneToMany(mappedBy = "address")
+    @OneToMany
+    @JoinColumn(name = "addressId", updatable = false, insertable = false)
     @ToString.Exclude
     private List<User> users;
 
-    @OneToMany(mappedBy = "roomId")
+    @OneToMany
+    @JoinColumn(name = "addressId", updatable = false, insertable = false)
     @ToString.Exclude
     private List<Room> rooms;
 

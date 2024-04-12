@@ -18,8 +18,8 @@ public class Room {
     @Column(name = "roomId")
     private int roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "address", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "addressId", nullable = false)
     private Address address;
 
     @OneToMany(mappedBy = "bookingId")

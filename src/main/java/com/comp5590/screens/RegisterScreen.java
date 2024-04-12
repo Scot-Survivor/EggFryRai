@@ -118,6 +118,7 @@ public class RegisterScreen extends AbstractScreen {
 
     /**
      * Create the register box
+     *
      * @return VBox
      */
     private VBox createRegisterBox() {
@@ -310,6 +311,7 @@ public class RegisterScreen extends AbstractScreen {
 
     /**
      * Register a new user
+     *
      * @param event ActionEvent
      */
     private void register(ActionEvent event) {
@@ -487,32 +489,10 @@ public class RegisterScreen extends AbstractScreen {
             additionalNotes,
             CommunicationPreference.valueOf(communicationPreference),
             UserRole.valueOf(role),
+            authDetails,
             address
         );
 
-        int savedAddressId = getDatabaseManager().saveGetId(address);
-
-        Address savedAddress = getDatabaseManager().get(Address.class, savedAddressId);
-        if (savedAddress == null) {
-            logger.error("Failed to save address to database.");
-            this.error.setText("Failed to save address to database.");
-            return;
-        }
-        // save auth entity
-        int savedAuthDetailsId = getDatabaseManager().saveGetId(authDetails);
-
-        AuthenticationDetails savedAuthDetails = getDatabaseManager()
-            .get(AuthenticationDetails.class, savedAuthDetailsId);
-        if (savedAuthDetails == null) {
-            logger.error("Failed to save auth details to database.");
-            this.error.setText("Failed to save auth details to database.");
-            return;
-        }
-        // set the auth details and address to the user entity (one <-> one
-        // relationship)
-        user.setAuthenticationDetails(authDetails);
-
-        user.setAddress(address);
         // save the user to the database
         int savedUserId = getDatabaseManager().saveGetId(user);
 
@@ -537,6 +517,7 @@ public class RegisterScreen extends AbstractScreen {
 
     /**
      * Set the error text
+     *
      * @param txt The text to set
      */
     public void setErrorText(String txt) {
@@ -578,6 +559,7 @@ public class RegisterScreen extends AbstractScreen {
 
     /**
      * Generate a random user
+     *
      * @param event ActionEvent
      */
     private void generateRandomUser(ActionEvent event) {

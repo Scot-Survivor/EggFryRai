@@ -49,7 +49,7 @@ public class VisitDetailsCard extends VBox {
         for (Prescription prescription : visitDetails.getPrescriptions()) {
             // grab name & recommended dose of each prescription
             String name = prescription.getPrescriptionName();
-            String dose = prescription.getRecomendedDose();
+            String dose = prescription.getRecommendedDose();
 
             // append to prescriptions text
             prescriptionsData.setText(prescriptionsData.getText() + name + " (" + dose + "), ");

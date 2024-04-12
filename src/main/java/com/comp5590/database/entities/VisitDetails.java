@@ -47,7 +47,8 @@ public class VisitDetails {
     private Booking booking;
 
     // list of prescribed medicines to the patient
-    @OneToMany(mappedBy = "visitDetails")
+    @OneToMany
+    @JoinColumn(name = "visitDetailsId", updatable = false, insertable = false)
     @ToString.Exclude
     private List<Prescription> prescriptions;
 
