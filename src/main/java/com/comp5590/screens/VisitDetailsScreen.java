@@ -1,5 +1,6 @@
 package com.comp5590.screens;
 
+import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.components.VisitDetailsScreen.VisitDetailsCard;
 import com.comp5590.components.global.ScrollerBox;
 import com.comp5590.database.entities.User;
@@ -36,6 +37,23 @@ public class VisitDetailsScreen extends AbstractScreen {
         // grab all visit details for every booking the user has made
         List<VisitDetails> allVisitDetails = EntityUtils.getAllVisitDetailsForUser(user);
 
+        // if no visit details, display message
+        if (allVisitDetails.isEmpty()) {
+            // create new label
+            Title noVisitDetailsLabel = new Title(
+                "No visit details found for user " + user.getFirstName() + " " + user.getSurName()
+            );
+            noVisitDetailsLabel.setId("no-visit-details-label");
+
+            // align it both vertically and horizontally
+            noVisitDetailsLabel.setAlignment(javafx.geometry.Pos.CENTER);
+
+            // add it to gridpane
+            gridPane.add(noVisitDetailsLabel, 0, 1);
+
+            return;
+        }
+
         // sort visit details by time added (latest first)
         allVisitDetails.sort((a, b) -> b.getTimeAdded().compareTo(a.getTimeAdded()));
 
@@ -57,6 +75,7 @@ public class VisitDetailsScreen extends AbstractScreen {
         ScrollerBox scrollerBox = new ScrollerBox();
         // add style class of scroller box
         scrollerBox.getStyleClass().add("scroller-box");
+        scrollerBox.setId("scroller-box");
 
         // bind width of scroller box to scroll pane, -10 to account for scroll bar
         scrollerBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
