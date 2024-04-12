@@ -193,7 +193,6 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
         // clear previous selection
         scrollerBox.getChildren().clear();
         createDefault(inMonth, scrollerBox);
-        System.err.println(inMonth);
     }
 
     @Override
