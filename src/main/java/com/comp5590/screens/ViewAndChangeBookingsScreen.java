@@ -9,12 +9,14 @@ import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.core.Logger;
 
+@AuthRequired
 public class ViewAndChangeBookingsScreen extends AbstractScreen {
 
     private final Logger logger = LoggerManager.getInstance().getLogger(ViewAndChangeBookingsScreen.class);
@@ -97,25 +99,26 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
             scrollerBox.getChildren().add(bookingCard);
 
             // bind the scroller box memory locations to the buttons, for later use
-            rescheduleAppointmentBtn.setUserData(scrollerBox);
-            cancelAppointmentBtn.setUserData(scrollerBox);
+            rescheduleAppointmentBtn.setUserData(booking);
+            cancelAppointmentBtn.setUserData(booking);
 
             // bind event handlers to the buttons
-            rescheduleAppointmentBtn.setOnAction(e -> onEditButtonClicked(scrollerBox));
-            cancelAppointmentBtn.setOnAction(e -> onDeleteButtonClicked(scrollerBox));
+            rescheduleAppointmentBtn.setOnAction(e -> onEditButtonClicked(booking));
+            cancelAppointmentBtn.setOnAction(e -> onDeleteButtonClicked(booking));
         }
     }
 
     // rescchedule appointment
-    private void onEditButtonClicked(ScrollerBox scrollerBox) {
-        // grab the fields
+    private void onEditButtonClicked(Booking booking) {
+        // put the booking into EditBookingScreen using a setter
+        ((EditBookingScreen) getScreenManager().getScreenInstance(EditBookingScreen.class)).setBookingToEdit(booking);
+
+        // navigate to the edit booking screen
+        this.showScene(EditBookingScreen.class);
     }
 
     // cancel appointment
-    private void onDeleteButtonClicked(ScrollerBox scrollerBox) {
-        // grab booking from the scroller box
-        Booking booking = (Booking) scrollerBox.getUserData();
-
+    private void onDeleteButtonClicked(Booking booking) {
         // delete booking from the DB
         boolean worked = EntityUtils.deleteBooking(booking);
 
