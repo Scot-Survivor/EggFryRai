@@ -52,6 +52,7 @@ public class ChooseDoctorScreen extends AbstractScreen {
         switchButton.setOnAction(this::docSwitch);
 
         resultLabel = new Label(""); // Set as empty
+        resultLabel.setId("resultLabel");
 
         // Add elements to VBox
         VBox center = new VBox(doctorTable, switchButton, resultLabel);

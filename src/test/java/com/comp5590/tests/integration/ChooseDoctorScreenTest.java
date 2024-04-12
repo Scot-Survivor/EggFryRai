@@ -15,7 +15,6 @@ import com.comp5590.tests.basic.SetupTests;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -45,10 +44,6 @@ public class ChooseDoctorScreenTest extends SetupTests {
         app.getScreenManager().showScene(ChooseDoctorScreen.class); // Force ChooseDoctorScreen to show.
         totpManager = app.getTotpManager();
         stage.show();
-    }
-
-    private GridPane getDocListScreen() {
-        return (GridPane) app.getScreenManager().getScreenInstance(ChooseDoctorScreen.class);
     }
 
     /**
@@ -105,5 +100,47 @@ public class ChooseDoctorScreenTest extends SetupTests {
         ObservableList<User> rows = docListScreenInstance.getDoctorTable().getItems();
         assertThat(rows).isNotNull();
         assertThat(rows.size()).isEqualTo(2);
+    }
+
+    /**
+     * Test to check if warning box pops up when trying to select with no table selection
+     * @param robot Will be injected via test runner
+     */
+    @Test
+    public void testChangeDoctorButtonNoSelect(FxRobot robot) {
+        robot.interact(() -> {
+            robot.lookup("#switchButton").queryAs(javafx.scene.control.Button.class).fire();
+
+            // Check correct label is showing
+            assertThat(robot.lookup("#resultLabel").queryAs(javafx.scene.control.Label.class).getText())
+                .isEqualTo("You must select a doctor to change to.");
+        });
+    }
+
+    /**
+     * Test to check if warning box pops up when trying to select with no table selection
+     * @param robot Will be injected via test runner
+     */
+    @Test
+    public void testChangeDoctorButtonSelect(FxRobot robot) {
+        // Create row on table
+        createDoctor("email1@example.com", "pa321321");
+
+        // Call fillTable
+        ChooseDoctorScreen docListScreenInstance = (ChooseDoctorScreen) app
+            .getScreenManager()
+            .getScreenInstance(ChooseDoctorScreen.class);
+        Platform.runLater(docListScreenInstance::fillTable);
+
+        // Select row and click button
+        TableView doctorTable = robot.lookup("#doctorTable").queryAs(TableView.class);
+        robot.interact(() -> {
+            doctorTable.getSelectionModel().selectFirst();
+            robot.lookup("#switchButton").queryAs(javafx.scene.control.Button.class).fire();
+        });
+
+        // See if label is accurate
+        assertThat(robot.lookup("#resultLabel").queryAs(javafx.scene.control.Label.class).getText())
+            .isEqualTo("You have switched your doctor to Test User.");
     }
 }
