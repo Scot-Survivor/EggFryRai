@@ -4,6 +4,7 @@ import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.Booking;
+import com.comp5590.database.entities.Notification;
 import com.comp5590.database.entities.Prescription;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
@@ -193,6 +194,22 @@ public class StartupUtils {
         // create prescription #4, link prescription to visitDetails #3
         Prescription prescription4 = new Prescription("Epinephrine", "1 shot", visitDetails3);
         isValid = null != db.saveGet(prescription4);
+
+        // create a bunch of notifications
+        Notification notification1 = new Notification("You have a new booking with Dr Long Johnson.", false, user);
+        isValid = null != db.saveGet(notification1);
+        Notification notification2 = new Notification("You have a new booking with Dr Short Stack.", false, user);
+        isValid = null != db.saveGet(notification2);
+        Notification notification3 = new Notification("You have a new booking with Dr Long Johnson.", false, user);
+        isValid = null != db.saveGet(notification3);
+        Notification notification4 = new Notification("You have a new booking with Dr Short Stack.", false, user);
+        isValid = null != db.saveGet(notification4);
+        Notification notification5 = new Notification("You have a new booking with Dr Long Johnson.", false, user);
+        isValid = null != db.saveGet(notification5);
+        Notification notification6 = new Notification("You have a new booking with Dr Short Stack.", false, user);
+        isValid = null != db.saveGet(notification6);
+        Notification notification7 = new Notification("You have a new booking with Dr Long Johnson.", false, user);
+        isValid = null != db.saveGet(notification7);
 
         return user;
     }

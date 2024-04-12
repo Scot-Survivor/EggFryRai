@@ -320,6 +320,20 @@ public class EntityUtils {
         return room;
     }
 
+    // create notification
+    public static Notification createNotification(String message, boolean read, User user) {
+        Notification notification = new Notification(message, read, user);
+        notification = getDbManager().saveGet(notification);
+        return notification;
+    }
+
+    // create notification
+    public static Notification createNotification(String message, User user) {
+        Notification notification = new Notification(message, user);
+        notification = getDbManager().saveGet(notification);
+        return notification;
+    }
+
     // * Methods for removing objects from the database
     /**
      * Remove an object from the database by id
@@ -341,6 +355,11 @@ public class EntityUtils {
      */
     public static boolean deleteBooking(Booking booking) {
         return getDbManager().delete(booking);
+    }
+
+    // remove a notification object from the database
+    public static boolean deleteNotification(Notification notification) {
+        return getDbManager().delete(notification);
     }
 
     // * Methods for grabbing objects from the database
@@ -427,6 +446,16 @@ public class EntityUtils {
         return db.getAll(Room.class);
     }
 
+    // grab all notifications for a user
+    public static List<Notification> getAllNotificationsForUser(User user) {
+        // grab db manager
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        // return the list of notifications by user ID property (one-to-many
+        // relationship)
+        return db.getAllByProperty(Notification.class, "user", user);
+    }
+
     // * Methods for checking if objects exist in the database
     public static boolean authenticationDetailsExists(String email) {
         return getDbManager().getByProperty(AuthenticationDetails.class, "email", email) != null;
@@ -455,5 +484,9 @@ public class EntityUtils {
     // * Methods for updating objects in the database
     public static boolean updateBooking(Booking booking) {
         return getDbManager().update(booking);
+    }
+
+    public static boolean updateNotification(Notification notification) {
+        return getDbManager().update(notification);
     }
 }
