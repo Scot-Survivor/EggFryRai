@@ -384,6 +384,10 @@ public class EntityUtils {
             allVisitDetails.add(getVisitDetailsForBooking(booking));
         }
 
+        // filter out null visit details (not yet added due to doctor not yet adding
+        // them, or appointment not yet completed)
+        allVisitDetails.removeIf(visitDetails -> visitDetails == null);
+
         // return the list of all visit details
         return allVisitDetails;
     }
