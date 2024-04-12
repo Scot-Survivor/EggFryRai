@@ -51,7 +51,7 @@ public class User {
     private AuthenticationDetails authenticationDetails;
 
     // Address
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId", nullable = false)
     private Address address;
 

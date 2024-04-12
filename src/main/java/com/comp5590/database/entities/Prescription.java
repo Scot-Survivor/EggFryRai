@@ -26,8 +26,8 @@ public class Prescription {
     private String recomendedDose;
 
     // many Prescriptions can be assigned to one VisitDetails object
-    @ManyToOne
-    @JoinColumn(name = "visitDetailsId")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "visitDetailsId", nullable = false)
     private VisitDetails visitDetails;
 
     // create a prescription

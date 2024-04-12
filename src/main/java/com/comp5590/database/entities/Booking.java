@@ -43,7 +43,7 @@ public class Booking {
     @JoinColumn(name = "roomId", nullable = false)
     private Room room;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "visitDetailsId", nullable = true)
     private VisitDetails visitDetails;
 
