@@ -5,8 +5,8 @@ import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
-import com.comp5590.security.managers.passwords.*;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import com.comp5590.security.managers.passwords.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -67,14 +67,16 @@ public class ProfileScreen extends AbstractScreen {
         Button applyPasswordButton = new Button("Apply Password");
         applyPasswordButton.setId("applyPasswordButton");
         applyPasswordButton.setOnAction(event -> {
-            String newPassword = newPasswordField.getText().trim();
+            String newPassword = newPasswordField.getText();
             if (!newPassword.isEmpty()) {
-                authDetails.setPassword(newPassword);
+                authDetails.setPassword(PasswordManager.getInstance().hashPassword(newPassword));
+                currentUser.setAuthenticationDetails(authDetails);
                 // save the updated authentication details
-                getDatabaseManager().update(authDetails);
-                // notify user of successful update and add to logs
-                System.out.println("Password change successful.");
-                getLogger().info("Password change successful.");
+                if (getDatabaseManager().update(authDetails) && getDatabaseManager().update(currentUser)) {
+                    getLogger().info("Password change successful.");
+                } else {
+                    getLogger().error("Password change failed.");
+                }
             }
         });
 

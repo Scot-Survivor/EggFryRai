@@ -10,10 +10,9 @@ import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.entities.VisitDetails;
 import com.comp5590.screens.ProfileScreen;
-import com.comp5590.tests.basic.SetupTests;
 import com.comp5590.security.managers.passwords.PasswordManager;
+import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
-
 
 @ExtendWith(ApplicationExtension.class)
 public class ProfileScreenTests extends SetupTests {
@@ -37,7 +35,6 @@ public class ProfileScreenTests extends SetupTests {
         app.start(stage);
         stage.show();
         setupDB();
-        
     }
 
     private void setupDB() {
@@ -122,21 +119,25 @@ public class ProfileScreenTests extends SetupTests {
         loginUser(app, robot, email, password);
 
         // go to the profile screen
-        goToScreenWithAutoAuthentication(app, robot, ProfileScreen.class);
+        goToScreenWithAuthentication(app, robot, ProfileScreen.class, email, password);
 
-        // input the new password
-        String newPassword = "newpassword";
-        String hashedPassword = passwordManager.hashPassword(newPassword);
-        robot.lookup("#newPasswordField").queryAs(PasswordField.class).setText(hashedPassword);
+        robot.interact(() -> {
+            // input the new password
+            String newPassword = "newpassword";
+            robot.lookup("#newPasswordField").queryAs(TextField.class).setText(newPassword);
 
-        // click the apply password button
-        robot.lookup("#applyPasswordButton").queryAs(Button.class).fire();
+            // click the apply password button
+            robot.lookup("#applyPasswordButton").queryAs(Button.class).fire();
+            stall(robot);
+            // get the updated user from the database
+            User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.email", email);
 
-        // get the updated user from the database
-        User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.email", email);
-
-        assertNotNull(updatedUser);
-        PasswordManager pm = PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM);
-        assertTrue(pm.passwordMatches(newPassword, updatedUser.getAuthenticationDetails().getPassword()));
+            assertNotNull(updatedUser);
+            logout(app, robot);
+            stall(robot);
+            goToScreenWithAuthentication(app, robot, ProfileScreen.class, email, newPassword);
+            stall(robot);
+            assertEquals(app.getSessionManager().getCurrentUser().getId(), updatedUser.getId());
+        });
     }
 }
