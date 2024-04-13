@@ -8,7 +8,7 @@ public class NavBar extends HBox {
     // take infinite node arguments
     public NavBar(Button... buttons) {
         // load css
-        this.getStylesheets().add("/home.css");
+        this.getStylesheets().add("/css/home.css");
 
         // apply css to the navbar
         this.getStyleClass().add("navbar");

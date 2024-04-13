@@ -21,7 +21,7 @@ public class WelcomeScreen extends AbstractScreen {
     @Override
     public void setup() {
         // load custom CSS
-        this.addCss("/welcome.css");
+        this.addCss("/css/welcome.css");
 
         // create the grid pane object, apply styling & properties to it
         GridPane pane = new GridPane();

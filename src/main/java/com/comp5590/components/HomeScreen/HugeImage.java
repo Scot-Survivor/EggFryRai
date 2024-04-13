@@ -8,7 +8,7 @@ public class HugeImage extends HBox {
 
     public HugeImage(String imgLink) {
         // import CSS
-        this.getStylesheets().add("/home.css");
+        this.getStylesheets().add("/css/home.css");
 
         // make image then image view
         Image img = new Image(imgLink);

@@ -7,7 +7,7 @@ public class BackToLoginBox extends HBox {
 
     public BackToLoginBox() {
         // import CSS
-        this.getStylesheets().add("/register.css");
+        this.getStylesheets().add("/css/register.css");
 
         // create new text
         Text text = new Text("Already have an account?");

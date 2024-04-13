@@ -11,7 +11,7 @@ public class NotificationCard extends VBox {
 
     public NotificationCard(Notification notification, Button readButton, Button deleteButton) {
         // setup styles
-        this.getStylesheets().add("/global.css");
+        this.getStylesheets().add("/css/global.css");
 
         // add styles
         this.getStyleClass().add("notification-card");

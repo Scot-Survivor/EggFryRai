@@ -6,7 +6,7 @@ public class ForgotPasswordButton extends Button {
 
     public ForgotPasswordButton(String text) {
         // import css
-        this.getStylesheets().add("/login.css");
+        this.getStylesheets().add("/css/login.css");
 
         // set the text of the button
         this.setText(text);

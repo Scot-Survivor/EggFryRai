@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 public class ScrollerBox extends VBox {
 
     public ScrollerBox(Node... nodes) {
-        this.getStylesheets().add("/global.css");
+        this.getStylesheets().add("/css/global.css");
 
         this.getChildren().addAll(nodes);
     }

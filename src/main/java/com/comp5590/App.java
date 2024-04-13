@@ -73,7 +73,7 @@ public class App extends Application {
         // instantiate other fields
         instance = this;
         primaryStage = stage;
-        stage.getIcons().add(new Image("/healthcare.png"));
+        stage.getIcons().add(new Image("/images/healthcare.png"));
         ScreenChangeListener screenChangeListener = new ScreenChangeListener();
         screenManager = new ScreenManager(primaryStage);
 

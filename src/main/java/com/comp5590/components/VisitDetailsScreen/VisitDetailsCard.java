@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 public class VisitDetailsCard extends VBox {
 
     public VisitDetailsCard(VisitDetails visitDetails) {
-        this.getStylesheets().add("/visitDetails.css");
+        this.getStylesheets().add("/css/visitDetails.css");
 
         this.getStyleClass().add("visit-details-card");
 

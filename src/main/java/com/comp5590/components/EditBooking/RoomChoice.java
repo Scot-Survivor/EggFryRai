@@ -12,7 +12,7 @@ public class RoomChoice extends HBox {
 
     public RoomChoice(ChoiceBox<String> roomChoiceInput, Room defaultRoom, HashMap<String, Room> roomMap) {
         // import styling
-        this.getStylesheets().add("/editBooking.css");
+        this.getStylesheets().add("/css/editBooking.css");
 
         // add styling
         this.getStyleClass().add("room-choice-box");

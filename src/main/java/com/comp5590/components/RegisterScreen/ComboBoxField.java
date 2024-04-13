@@ -11,7 +11,7 @@ public class ComboBoxField<T> extends VBox {
 
     public ComboBoxField(String info, ComboBox<T> field, String placeholderText, String symbolPath) {
         // import css
-        this.getStylesheets().add("/register.css");
+        this.getStylesheets().add("/css/register.css");
 
         // make new hbox
         HBox hBox = new HBox();

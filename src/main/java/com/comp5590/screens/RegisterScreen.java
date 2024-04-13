@@ -73,7 +73,7 @@ public class RegisterScreen extends AbstractScreen {
     @Override
     public void setup() {
         // load css
-        this.addCss("/register.css");
+        this.addCss("/css/register.css");
 
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
@@ -81,7 +81,7 @@ public class RegisterScreen extends AbstractScreen {
         // create child components, imported from the components folder
         HBox titleBox = new Title("Register");
         HBox paragraph = new Paragraph("Create an account today.");
-        VBox icon = new BigIcon("/healthcare.png"); // create the image
+        VBox icon = new BigIcon("/images/healthcare.png"); // create the image
         VBox registerBox = createRegisterBox();
 
         // add child components to our grid pane
@@ -158,38 +158,38 @@ public class RegisterScreen extends AbstractScreen {
         this.error.getStyleClass().add("error-label");
 
         // instantiate & create base fields for all the required patient info
-        LoginField emailField = new LoginField("Email", this.email, "E.g. johndoe@gmail.com", "/at.png");
-        LoginField passwordField = new LoginField("Password", this.password, "***************", "/lock.png");
-        LoginField firstNameField = new LoginField("First Name", this.firstName, "E.g. John", "/user.png");
-        LoginField surNameField = new LoginField("Surname", this.surName, "E.g. Doe", "/user.png");
+        LoginField emailField = new LoginField("Email", this.email, "E.g. johndoe@gmail.com", "/images/at.png");
+        LoginField passwordField = new LoginField("Password", this.password, "***************", "/images/lock.png");
+        LoginField firstNameField = new LoginField("First Name", this.firstName, "E.g. John", "/images/user.png");
+        LoginField surNameField = new LoginField("Surname", this.surName, "E.g. Doe", "/images/user.png");
         LoginField phoneField = new LoginField(
             "Phone (no country code or leading 0s)",
             this.phone,
             "E.g. 123456789",
-            "/phone.png"
+                "/images/phone.png"
         );
-        LoginField faxField = new LoginField("Fax (no dashes)", this.fax, "E.g. 123456789", "/fax.png");
+        LoginField faxField = new LoginField("Fax (no dashes)", this.fax, "E.g. 123456789", "/images/fax.png");
         LoginField additionalNotesField = new LoginField(
             "Additional Notes",
             this.additionalNotes,
             "E.g. Allergies",
-            "/notes.png"
+                "/images/notes.png"
         );
         LoginField addressLine1Field = new LoginField(
             "Address Line 1",
             this.addressLine1,
             "E.g. 123 Fake St",
-            "/address.png"
+                "/images/address.png"
         );
         LoginField addressLine2Field = new LoginField(
             "Address Line 2",
             this.addressLine2,
             "E.g. Canterbury",
-            "/address.png"
+                "/images/address.png"
         );
-        LoginField addressLine3Field = new LoginField("Address Line 3", this.addressLine3, "E.g. Kent", "/address.png");
-        LoginField countryField = new LoginField("Country", this.country, "E.g. UK", "/address.png");
-        LoginField postcodeField = new LoginField("Postcode", this.postcode, "E.g. D01AB23", "/address.png");
+        LoginField addressLine3Field = new LoginField("Address Line 3", this.addressLine3, "E.g. Kent", "/images/address.png");
+        LoginField countryField = new LoginField("Country", this.country, "E.g. UK", "/images/address.png");
+        LoginField postcodeField = new LoginField("Postcode", this.postcode, "E.g. D01AB23", "/images/address.png");
 
         // create the role and communication preference fields
         this.role.getItems().addAll(UserRole.values());
@@ -197,12 +197,12 @@ public class RegisterScreen extends AbstractScreen {
 
         // create more potent roleand communicationPreference variables using reusable
         // component
-        ComboBoxField role = new ComboBoxField("Role", this.role, "Select Role", "/role.png");
+        ComboBoxField role = new ComboBoxField("Role", this.role, "Select Role", "/images/role.png");
         ComboBoxField communicationPreference = new ComboBoxField(
             "Communication Preference",
             this.communicationPreference,
             "Select Communication Preference",
-            "/communication.png"
+                "/images/communication.png"
         );
 
         // create the register button
