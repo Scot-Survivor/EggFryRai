@@ -60,7 +60,7 @@ public class EditBookingScreen extends AbstractScreen {
         this.clearInputFields();
 
         // Load custom css
-        this.addCss("/editBooking.css");
+        this.addCss("/css/editBooking.css");
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization

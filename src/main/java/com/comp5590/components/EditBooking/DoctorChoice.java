@@ -12,7 +12,7 @@ public class DoctorChoice extends HBox {
 
     public DoctorChoice(ChoiceBox<String> doctorChoiceInput, User defaultDoctor, HashMap<String, User> doctorMap) {
         // import styling
-        this.getStylesheets().add("/editBooking.css");
+        this.getStylesheets().add("/css/editBooking.css");
 
         // add styling
         this.getStyleClass().add("doctor-choice-box");

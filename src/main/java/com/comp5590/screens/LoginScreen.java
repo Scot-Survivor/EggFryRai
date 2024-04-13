@@ -41,7 +41,7 @@ public class LoginScreen extends AbstractScreen {
     @Override
     public void setup() {
         // load custom CSS
-        this.addCss("/login.css");
+        this.addCss("/css/login.css");
 
         // create the grid pane object, apply styling & properties to it
         GridPane pane = new GridPane();
@@ -50,7 +50,7 @@ public class LoginScreen extends AbstractScreen {
         // create child components, imported from the components folder
         HBox titleBox = new Title("Login");
         HBox paragraph = new Paragraph("Please login to track your appointments, prescriptions, and more.");
-        VBox icon = new BigIcon("/healthcare.png"); // create the image
+        VBox icon = new BigIcon("/images/healthcare.png"); // create the image
         VBox loginBox = createLoginBox();
 
         // add child components to our grid pane
@@ -96,8 +96,8 @@ public class LoginScreen extends AbstractScreen {
         error.setId("error");
 
         // create login & password field objects, passing in some basic info
-        LoginField emailField = new LoginField("Email", this.email, "E.g. johndoe@gmail.com", "/at.png");
-        LoginField passwordField = new LoginField("Password", this.password, "***************", "/lock.png");
+        LoginField emailField = new LoginField("Email", this.email, "E.g. johndoe@gmail.com", "/images/at.png");
+        LoginField passwordField = new LoginField("Password", this.password, "***************", "/images/lock.png");
 
         // forgot password box
         ForgotPasswordButton forgotPasswordButton = new ForgotPasswordButton("Forgot Password?");

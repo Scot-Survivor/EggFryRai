@@ -27,7 +27,7 @@ public class VisitDetailsScreen extends AbstractScreen {
     @Override
     public void setup() {
         // load css
-        this.addCss("/visitDetails.css");
+        this.addCss("/css/visitDetails.css");
 
         GridPane gridPane = attachDefaultPane();
         attachHeaderAndNavBar("Details of Past Visits");

@@ -34,7 +34,7 @@ public class ChooseDoctorScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.addCss("/chooseDoctor.css");
+        this.addCss("/css/chooseDoctor.css");
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization

@@ -10,7 +10,7 @@ public class BookingCard extends VBox {
 
     public BookingCard(Booking booking, Button editButton, Button deleteButton) {
         // add custom css
-        this.getStylesheets().add("/viewAndChangeBookingsScreen.css");
+        this.getStylesheets().add("/css/viewAndChangeBookingsScreen.css");
 
         this.getStyleClass().add("booking-card");
 

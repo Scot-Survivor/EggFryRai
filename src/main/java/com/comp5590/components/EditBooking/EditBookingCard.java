@@ -15,7 +15,7 @@ public class EditBookingCard extends VBox {
         Label erroLabel
     ) {
         // styling
-        this.getStylesheets().add("/editBooking.css");
+        this.getStylesheets().add("/css/editBooking.css");
 
         // add styling
         this.getStyleClass().add("edit-booking-card");

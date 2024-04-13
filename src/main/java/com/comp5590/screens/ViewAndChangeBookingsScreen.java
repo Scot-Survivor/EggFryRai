@@ -32,7 +32,7 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.addCss("/viewAndChangeBookingsScreen.css");
+        this.addCss("/css/viewAndChangeBookingsScreen.css");
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization

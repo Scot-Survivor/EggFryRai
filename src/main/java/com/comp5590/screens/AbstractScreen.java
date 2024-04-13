@@ -134,7 +134,7 @@ public abstract class AbstractScreen {
      * @return GridPane
      */
     public GridPane attachDefaultPane() {
-        this.addCss("/global.css");
+        this.addCss("/css/global.css");
 
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("custom-pane");
@@ -310,7 +310,7 @@ public abstract class AbstractScreen {
         addHomeButton(stackPane);
 
         // add CSS to stackpane
-        this.addCss("/abstract.css");
+        this.addCss("/css/abstract.css");
         stackPane.getStyleClass().add("stackpane");
     }
 
@@ -321,7 +321,7 @@ public abstract class AbstractScreen {
      */
     protected void addBackButton(StackPane stackPane) {
         // Make icon button
-        ImageView img = new ImageView(new Image("/back.png"));
+        ImageView img = new ImageView(new Image("/images/back.png"));
         img.preserveRatioProperty().set(true);
         img.setFitHeight(100);
         img.setFitWidth(100);
@@ -341,7 +341,7 @@ public abstract class AbstractScreen {
         stackPane.getChildren().add(box);
 
         // Load & Apply CSS
-        this.addCss("/abstract.css");
+        this.addCss("/css/abstract.css");
         img.getStyleClass().add("back-button");
         box.getStyleClass().add("back-button-box");
     }
@@ -353,7 +353,7 @@ public abstract class AbstractScreen {
      */
     protected void addHomeButton(StackPane stackPane) {
         // Make icon button
-        ImageView img = new ImageView(new Image("/home.png"));
+        ImageView img = new ImageView(new Image("/images/home.png"));
         img.preserveRatioProperty().set(true);
         img.setFitHeight(100);
         img.setFitWidth(100);
@@ -381,7 +381,7 @@ public abstract class AbstractScreen {
         stackPane.getChildren().add(box);
 
         // Load & Apply CSS
-        this.addCss("/abstract.css");
+        this.addCss("/css/abstract.css");
         img.getStyleClass().add("home-button");
         box.getStyleClass().add("home-button-box");
     }

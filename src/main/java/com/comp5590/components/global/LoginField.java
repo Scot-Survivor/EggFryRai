@@ -11,7 +11,7 @@ public class LoginField extends VBox {
 
     public LoginField(String info, TextField field, String placeholderText, String symbolPath) {
         // import css
-        this.getStylesheets().add("/login.css");
+        this.getStylesheets().add("/css/login.css");
 
         // make new hbox
         HBox hBox = new HBox();

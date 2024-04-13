@@ -30,7 +30,7 @@ public class ContactUsScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.addCss("/contactUs.css");
+        this.addCss("/css/contactUs.css");
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization

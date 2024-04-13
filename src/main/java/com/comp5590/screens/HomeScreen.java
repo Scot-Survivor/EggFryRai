@@ -29,8 +29,8 @@ public class HomeScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load CSS
-        this.addCss("/home.css");
-        this.addCss("/global.css");
+        this.addCss("/css/home.css");
+        this.addCss("/css/global.css");
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization
@@ -49,7 +49,7 @@ public class HomeScreen extends AbstractScreen {
         if (notifications.isEmpty()) {
             // create new label
             Title noNotificationsLabel = new Title("No Notifications");
-            HugeImage noNotificationsImage = new HugeImage("/homeBackground.jpg");
+            HugeImage noNotificationsImage = new HugeImage("/images/homeBackground.jpg");
 
             // align both nodes vertically and horizontally
             noNotificationsLabel.setAlignment(javafx.geometry.Pos.TOP_CENTER);

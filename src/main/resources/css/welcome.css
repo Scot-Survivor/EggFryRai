@@ -84,7 +84,7 @@
 }
 
 #background-img {
-    -fx-background-image: url("welcomeBackground.jpg");
+    -fx-background-image: url("../images/welcomeBackground.jpg");
     -fx-background-size: cover; /* This property ensures the image covers the entire background */
     -fx-background-repeat: no-repeat; /* Prevents the image from repeating */
     -fx-background-position: center; /* Centers the image */

@@ -16,7 +16,7 @@ public class HeaderBar extends HBox {
         // text field for the Welcome, <name> text
         Text welcomeText = new Text(String.format("Welcome, %s", firstName));
         // icon variable for storing the user image
-        Image iconUser = new Image("/user.png");
+        Image iconUser = new Image("/images/user.png");
         ImageView iconViewUser = new ImageView(iconUser);
         iconViewUser.preserveRatioProperty().set(true);
         iconViewUser.fitHeightProperty().bind(this.prefHeightProperty());
@@ -42,7 +42,7 @@ public class HeaderBar extends HBox {
         Text logoutText = new Text("Logout");
 
         // logout button
-        Image iconLogout = new Image("/logout.png");
+        Image iconLogout = new Image("/images/logout.png");
         ImageView iconViewLogout = new ImageView(iconLogout);
         iconViewLogout.preserveRatioProperty().set(true);
         iconViewLogout.fitHeightProperty().bind(this.prefHeightProperty());
@@ -63,7 +63,7 @@ public class HeaderBar extends HBox {
         this.setMaxWidth(Double.MAX_VALUE);
 
         // import & apply css
-        this.getStylesheets().add("/home.css");
+        this.getStylesheets().add("/css/home.css");
         this.getStyleClass().add("header-bar");
         left.getStyleClass().add("header-bar-left");
         middle.getStyleClass().add("header-bar-middle");

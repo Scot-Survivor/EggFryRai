@@ -7,7 +7,7 @@ public class RegisterBox extends HBox {
 
     public RegisterBox() {
         // import CSS
-        this.getStylesheets().add("/login.css");
+        this.getStylesheets().add("/css/login.css");
 
         // create new text
         Text text = new Text("Don't have an account?");
