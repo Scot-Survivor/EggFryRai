@@ -47,6 +47,8 @@ public class ProfileScreen extends AbstractScreen {
         Text addressCountryText = new Text("Country: " + currentUser.getAddress().getCountry());
         Text addressPCText = new Text("Postcode: " + currentUser.getAddress().getPostCode());
         Text emailText = new Text("Email: " + authDetails.getEmail());
+        Text isMFAEnabledText = new Text("MFA Enabled: " + (authDetails.isTwoFactorEnabled() ? "Yes" : "No"));
+        Button goToMFASettings = new Button("Go to MFA Settings");
         messageLabel = new Label();
 
         TextField newEmailField = new TextField();
@@ -101,6 +103,8 @@ public class ProfileScreen extends AbstractScreen {
             }
         });
 
+        goToMFASettings.setOnAction(event -> showScene(MFASettingsScreen.class));
+
         pane.add(fullNameText, 0, 3);
         pane.add(phoneText, 0, 4);
         pane.add(faxText, 0, 5);
@@ -110,11 +114,13 @@ public class ProfileScreen extends AbstractScreen {
         pane.add(addressCountryText, 0, 9);
         pane.add(addressPCText, 0, 10);
         pane.add(emailText, 0, 11);
-        pane.add(newEmailField, 0, 12);
-        pane.add(applyEmailButton, 1, 12);
-        pane.add(newPasswordField, 0, 13);
-        pane.add(applyPasswordButton, 1, 13);
-        pane.add(messageLabel, 0, 14);
+        pane.add(isMFAEnabledText, 0, 12);
+        pane.add(newEmailField, 0, 13);
+        pane.add(applyEmailButton, 1, 14);
+        pane.add(newPasswordField, 0, 15);
+        pane.add(applyPasswordButton, 1, 16);
+        pane.add(messageLabel, 0, 17);
+        pane.add(goToMFASettings, 0, 18);
     }
 
     @Override
