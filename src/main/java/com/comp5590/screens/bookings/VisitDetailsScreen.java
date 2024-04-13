@@ -1,4 +1,4 @@
-package com.comp5590.screens;
+package com.comp5590.screens.bookings;
 
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.components.VisitDetailsScreen.VisitDetailsCard;
@@ -7,8 +7,9 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.entities.VisitDetails;
 import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.scene.control.ScrollPane;

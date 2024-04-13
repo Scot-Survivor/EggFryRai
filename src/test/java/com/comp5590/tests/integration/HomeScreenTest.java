@@ -3,8 +3,8 @@ package com.comp5590.tests.integration;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.comp5590.App;
-import com.comp5590.screens.HomeScreen;
-import com.comp5590.screens.LoginScreen;
+import com.comp5590.screens.authentication.LoginScreen;
+import com.comp5590.screens.general.HomeScreen;
 import com.comp5590.tests.basic.SetupTests;
 import com.comp5590.utils.EventUtils;
 import com.comp5590.utils.QueryUtils;

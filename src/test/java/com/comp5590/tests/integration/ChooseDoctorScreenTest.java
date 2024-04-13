@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.comp5590.App;
 import com.comp5590.database.entities.User;
-import com.comp5590.screens.ChooseDoctorScreen;
+import com.comp5590.screens.doctors.ChooseDoctorScreen;
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.application.Platform;

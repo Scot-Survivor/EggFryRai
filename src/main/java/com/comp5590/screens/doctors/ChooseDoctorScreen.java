@@ -1,10 +1,11 @@
-package com.comp5590.screens;
+package com.comp5590.screens.doctors;
 
 import com.comp5590.database.entities.User;
 import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.enums.UserRole;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.beans.property.ReadOnlyStringWrapper;

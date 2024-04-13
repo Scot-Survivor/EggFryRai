@@ -1,4 +1,4 @@
-package com.comp5590.screens;
+package com.comp5590.screens.misc;
 
 import com.comp5590.App;
 import com.comp5590.components.HomeScreen.HeaderBar;
@@ -7,8 +7,19 @@ import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.authentication.LoginScreen;
+import com.comp5590.screens.bookings.CreateBookingScreen;
+import com.comp5590.screens.bookings.ViewAndChangeBookingsScreen;
+import com.comp5590.screens.bookings.VisitDetailsScreen;
+import com.comp5590.screens.doctors.ChooseDoctorScreen;
+import com.comp5590.screens.doctors.ViewDoctorsScreen;
+import com.comp5590.screens.general.ContactUsScreen;
+import com.comp5590.screens.general.HomeScreen;
+import com.comp5590.screens.general.WelcomeScreen;
+import com.comp5590.screens.general.settings.ProfileScreen;
+import com.comp5590.screens.loading.ScreenBetweenScreens;
+import com.comp5590.screens.managers.ScreenManager;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.PauseTransition;
@@ -224,7 +235,7 @@ public abstract class AbstractScreen {
 
         newAppointment.setOnAction(e -> {
             logger.info("New Appointment button clicked");
-            showScene(CreateBooking.class);
+            showScene(CreateBookingScreen.class);
         });
 
         viewAndChangeAppointments.setOnAction(e -> {

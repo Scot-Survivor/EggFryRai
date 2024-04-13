@@ -1,7 +1,10 @@
 package com.comp5590.tests.integration;
 
 import com.comp5590.App;
-import com.comp5590.screens.*;
+import com.comp5590.screens.doctors.ViewDoctorsScreen;
+import com.comp5590.screens.general.HomeScreen;
+import com.comp5590.screens.general.WelcomeScreen;
+import com.comp5590.screens.misc.AbstractScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.stage.Stage;
 import org.assertj.core.api.Assertions;

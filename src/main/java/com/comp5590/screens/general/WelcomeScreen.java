@@ -1,9 +1,12 @@
-package com.comp5590.screens;
+package com.comp5590.screens.general;
 
 import com.comp5590.components.RegisterScreen.BackToLoginBox;
 import com.comp5590.components.WelcomeScreen.ContinueWithEmailBox;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
+import com.comp5590.screens.authentication.LoginScreen;
+import com.comp5590.screens.authentication.RegisterScreen;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;

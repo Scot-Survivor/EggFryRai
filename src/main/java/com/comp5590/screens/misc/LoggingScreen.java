@@ -1,8 +1,8 @@
-package com.comp5590.screens;
+package com.comp5590.screens.misc;
 
 import com.comp5590.components.global.ScrollerBox;
 import com.comp5590.configuration.AppConfig;
-import com.comp5590.managers.ScreenManager;
+import com.comp5590.screens.managers.ScreenManager;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.ArrayList;
 import java.util.Comparator;

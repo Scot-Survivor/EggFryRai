@@ -6,7 +6,7 @@ import com.comp5590.App;
 import com.comp5590.components.DoctorDetailsScreen.DoctorDisplayBox;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.SessionManager;
-import com.comp5590.screens.ViewDoctorsScreen;
+import com.comp5590.screens.doctors.ViewDoctorsScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -48,7 +48,7 @@ public class ViewDoctorDetailsTest extends SetupTests {
      */
     @Test
     public void testBookingCreation(FxRobot robot) {
-        // goToScreen(app, robot, CreateBooking.class);
+        // goToScreen(app, robot, CreateBookingScreen.class);
         // We have to ensure we're a patient logged in
         User user = createPatient("testPatient1@example.com", "testPassword");
         this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
@@ -88,7 +88,7 @@ public class ViewDoctorDetailsTest extends SetupTests {
      */
     @Test
     public void testErrorDisplay(FxRobot robot) {
-        // goToScreen(app, robot, CreateBooking.class);
+        // goToScreen(app, robot, CreateBookingScreen.class);
         // We have to ensure we're a patient logged in
         User user = createPatient("testPatient1@example.com", "testPassword");
         this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");

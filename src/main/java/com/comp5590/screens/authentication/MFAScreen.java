@@ -1,9 +1,11 @@
-package com.comp5590.screens;
+package com.comp5590.screens.authentication;
 
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.general.HomeScreen;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;

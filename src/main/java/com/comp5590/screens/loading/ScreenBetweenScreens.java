@@ -1,9 +1,10 @@
-package com.comp5590.screens;
+package com.comp5590.screens.loading;
 
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.core.Logger;
 

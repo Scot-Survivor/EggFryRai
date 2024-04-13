@@ -1,7 +1,7 @@
 package com.comp5590.logging.appenders;
 
 import com.comp5590.App;
-import com.comp5590.screens.LoggingScreen;
+import com.comp5590.screens.misc.LoggingScreen;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

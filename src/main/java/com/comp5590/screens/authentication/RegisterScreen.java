@@ -1,4 +1,4 @@
-package com.comp5590.screens;
+package com.comp5590.screens.authentication;
 
 import com.comp5590.components.LoginScreen.BigButton;
 import com.comp5590.components.LoginScreen.BigIcon;
@@ -16,7 +16,8 @@ import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import com.comp5590.utils.AddressUtils;
 import com.comp5590.utils.NameUtils;
 import com.comp5590.utils.NumberUtils;

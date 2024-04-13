@@ -3,14 +3,15 @@
  * @since 2024-02-28
  */
 
-package com.comp5590.managers;
+package com.comp5590.screens.managers;
 
 import com.comp5590.App;
 import com.comp5590.events.eventtypes.CancellableEvent;
 import com.comp5590.events.eventtypes.screens.ScreenChangeEvent;
 import com.comp5590.events.managers.EventManager;
-import com.comp5590.screens.AbstractScreen;
-import com.comp5590.screens.WelcomeScreen;
+import com.comp5590.managers.LoggerManager;
+import com.comp5590.screens.general.WelcomeScreen;
+import com.comp5590.screens.misc.AbstractScreen;
 import java.util.*;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;

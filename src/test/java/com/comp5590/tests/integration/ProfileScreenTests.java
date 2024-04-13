@@ -13,7 +13,7 @@ import com.comp5590.events.eventtypes.users.UserUpdateEvent;
 import com.comp5590.events.listeners.interfaces.UserListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.screens.ProfileScreen;
+import com.comp5590.screens.general.settings.ProfileScreen;
 import com.comp5590.security.managers.passwords.PasswordManager;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.control.Button;
