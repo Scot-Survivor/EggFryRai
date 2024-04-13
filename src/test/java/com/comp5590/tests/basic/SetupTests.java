@@ -32,6 +32,10 @@ public class SetupTests extends EntityUtils {
         // Set up the logger
         AppConfig.ConfigFile = "src/test/resources/test.properties";
         AppConfig.getInstance();
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
     }
 
     @AfterEach
