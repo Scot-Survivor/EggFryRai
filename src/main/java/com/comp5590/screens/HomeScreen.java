@@ -12,6 +12,8 @@ import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.List;
+
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -92,34 +94,34 @@ public class HomeScreen extends AbstractScreen {
 
         // add all visit details cards to scroller box
         for (Notification notification : notifications) {
-            String markReadOrUnreadTxt = notification.isRead() ? "Mark Unread" : "Mark Read";
-
-            // create 2 new buttons
-            Button markReadOrUnreadButton = new Button(markReadOrUnreadTxt);
-            Button deleteButton = new Button("Delete");
-
-            // attach event handlers to buttons
-            markReadOrUnreadButton.setOnAction(e -> markReadOrUnread(notification));
-            deleteButton.setOnAction(e -> delete(notification));
-
-            // create new visit details card
-            NotificationCard notificationCard = new NotificationCard(
-                notification,
-                markReadOrUnreadButton,
-                deleteButton
-            );
+            NotificationCard notificationCard = getNotificationCard(notification);
 
             // add it to scroller box
             scrollerBox.getChildren().add(notificationCard);
         }
     }
 
+    private NotificationCard getNotificationCard(Notification notification) {
+        String markReadOrUnreadTxt = notification.isRead() ? "Mark Unread" : "Mark Read";
+
+        // create 2 new buttons
+        Button markReadOrUnreadButton = new Button(markReadOrUnreadTxt);
+        Button deleteButton = new Button("Delete");
+
+        // attach event handlers to buttons
+        markReadOrUnreadButton.setOnAction(e -> markReadOrUnread(notification));
+        deleteButton.setOnAction(e -> delete(notification));
+
+        // create new visit details card
+        return new NotificationCard(
+                notification,
+            markReadOrUnreadButton,
+            deleteButton
+        );
+    }
+
     private void markReadOrUnread(Notification notification) {
-        if (notification.isRead()) {
-            notification.setRead(false);
-        } else {
-            notification.setRead(true);
-        }
+        notification.setRead(!notification.isRead());
 
         EntityUtils.updateNotification(notification);
 
