@@ -133,6 +133,7 @@ mainClassName = 'com.comp5590.Launcher'
 jar {
     manifest {
         attributes 'Main-Class': mainClassName
+        attributes "Fw-Version" : version
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
@@ -215,7 +216,7 @@ runtime {
     }
 
     jpackageImage {
-        version = '1.0.0'
+        version = version
     }
 
     jpackage {
