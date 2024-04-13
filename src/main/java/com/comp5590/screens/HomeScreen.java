@@ -12,8 +12,6 @@ import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.List;
-
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -113,11 +111,7 @@ public class HomeScreen extends AbstractScreen {
         deleteButton.setOnAction(e -> delete(notification));
 
         // create new visit details card
-        return new NotificationCard(
-                notification,
-            markReadOrUnreadButton,
-            deleteButton
-        );
+        return new NotificationCard(notification, markReadOrUnreadButton, deleteButton);
     }
 
     private void markReadOrUnread(Notification notification) {

@@ -6,7 +6,7 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.events.listeners.implementations.EntityValidatorListener;
 import com.comp5590.events.listeners.implementations.SceneKeyboardNavigationListener;
 import com.comp5590.events.listeners.implementations.ScreenChangeListener;
-import com.comp5590.events.listeners.implementations.UpdateSessionManagerListener;
+import com.comp5590.events.listeners.implementations.UserUpdatesListener;
 import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
@@ -85,7 +85,7 @@ public class App extends Application {
         }
         eventManager.addListener(new ScreenAuthValidationListener());
         eventManager.addListener(new SceneKeyboardNavigationListener(screenManager, primaryStage));
-        eventManager.addListener(new UpdateSessionManagerListener());
+        eventManager.addListener(new UserUpdatesListener());
 
         // if in development mode, create testing objects & authenticate, then redirect
         // to home screen
