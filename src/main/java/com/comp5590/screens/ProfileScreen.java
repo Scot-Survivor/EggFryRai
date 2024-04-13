@@ -1,13 +1,16 @@
 package com.comp5590.screens;
 
-import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.User;
+import com.comp5590.events.enums.UserAttribute;
+import com.comp5590.events.eventtypes.users.UserUpdateEvent;
+import com.comp5590.events.managers.EventManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import com.comp5590.security.managers.passwords.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -17,7 +20,9 @@ import javafx.scene.text.Text;
 public class ProfileScreen extends AbstractScreen {
 
     private final SessionManager sessionManager = SessionManager.getInstance();
-    private final PasswordManager passwordManager = PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM);
+    private final PasswordManager passwordManager = PasswordManager.getInstance();
+    private final EventManager eventManager = EventManager.getInstance();
+    private Label messageLabel;
 
     public ProfileScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -41,6 +46,7 @@ public class ProfileScreen extends AbstractScreen {
         Text addressCountryText = new Text("Country: " + currentUser.getAddress().getCountry());
         Text addressPCText = new Text("Postcode: " + currentUser.getAddress().getPostCode());
         Text emailText = new Text("Email: " + authDetails.getEmail());
+        messageLabel = new Label();
 
         TextField newEmailField = new TextField();
         newEmailField.setPromptText("New Email");
@@ -57,10 +63,17 @@ public class ProfileScreen extends AbstractScreen {
             if (!newEmail.isEmpty()) {
                 authDetails.setEmail(newEmail);
                 // save the updated authentication details
-                getDatabaseManager().update(authDetails);
-                // notify user of successful update and add to logs
-                System.out.println("Email change successful.");
-                getLogger().info("Email change successful: New email is {}", newEmail);
+                if (getDatabaseManager().update(authDetails)) {
+                    // notify user of successful update and add to logs
+                    getLogger().info("Email change successful");
+                    messageLabel.setText("Email change successful.");
+                    eventManager.callEvent(new UserUpdateEvent(UserAttribute.EMAIL, newEmail, currentUser.getId()));
+                } else {
+                    getLogger().error("Email change failed");
+                    messageLabel.setText("Email change failed.");
+                }
+            } else {
+                messageLabel.setText("Email cannot be empty.");
             }
         });
 
@@ -69,14 +82,21 @@ public class ProfileScreen extends AbstractScreen {
         applyPasswordButton.setOnAction(event -> {
             String newPassword = newPasswordField.getText();
             if (!newPassword.isEmpty()) {
-                authDetails.setPassword(PasswordManager.getInstance().hashPassword(newPassword));
+                authDetails.setPassword(passwordManager.hashPassword(newPassword));
                 currentUser.setAuthenticationDetails(authDetails);
                 // save the updated authentication details
                 if (getDatabaseManager().update(authDetails) && getDatabaseManager().update(currentUser)) {
                     getLogger().info("Password change successful.");
+                    messageLabel.setText("Password change successful.");
+                    eventManager.callEvent(
+                        new UserUpdateEvent(UserAttribute.PASSWORD, "REDACTED", currentUser.getId())
+                    );
                 } else {
                     getLogger().error("Password change failed.");
+                    messageLabel.setText("Password change failed.");
                 }
+            } else {
+                messageLabel.setText("Password cannot be empty.");
             }
         });
 
@@ -93,8 +113,11 @@ public class ProfileScreen extends AbstractScreen {
         pane.add(applyEmailButton, 1, 12);
         pane.add(newPasswordField, 0, 13);
         pane.add(applyPasswordButton, 1, 13);
+        pane.add(messageLabel, 0, 14);
     }
 
     @Override
-    public void cleanup() {}
+    public void cleanup() {
+        messageLabel.setText("");
+    }
 }
