@@ -49,4 +49,7 @@
 .table-view:focused {
     -fx-focus-color: transparent;
 }
+.label {
+    -fx-font-weight: bold;
+}
 

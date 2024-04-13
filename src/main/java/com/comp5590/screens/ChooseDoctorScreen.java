@@ -23,7 +23,9 @@ import lombok.Getter;
 @AuthRequired
 public class ChooseDoctorScreen extends AbstractScreen {
 
-    private TableView<User> doctorTable;
+    private TableView<User> doctorTable = new TableView<>();
+    private Label resultLabel;
+    private Button switchButton;
 
     public ChooseDoctorScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -32,7 +34,7 @@ public class ChooseDoctorScreen extends AbstractScreen {
     @Override
     public void setup() {
         // Load custom css
-        this.addCss("/docList.css");
+        this.addCss("/chooseDoctor.css");
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization
@@ -49,12 +51,15 @@ public class ChooseDoctorScreen extends AbstractScreen {
         doctorTable.setId("doctorTable");
 
         // Create button
-        Button switchButton = new Button("Change doctor");
+        switchButton = new Button("Change doctor");
         switchButton.setId("switchButton");
         switchButton.setOnAction(this::docSwitch);
 
+        resultLabel = new Label(""); // Set as empty
+        resultLabel.setId("resultLabel");
+
         // Add elements to VBox
-        VBox center = new VBox(doctorTable, switchButton);
+        VBox center = new VBox(doctorTable, switchButton, resultLabel);
         center.setId("center");
         center.getStyleClass().add("custom-pane");
         center.setPrefSize(600, 400);
@@ -161,14 +166,9 @@ public class ChooseDoctorScreen extends AbstractScreen {
     private void docSwitch(ActionEvent event) {
         User changedDoctor = doctorTable.getSelectionModel().getSelectedItem();
         if (changedDoctor == null) { // No doctor selected
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText(null); // Get rid of header
-            alert.setTitle("No selected doctor");
-            alert.setContentText("You must select a doctor to change to.");
-
-            DialogPane dialogPane = alert.getDialogPane();
-            dialogPane.setId("noSelect"); // Set id for test class
-            alert.showAndWait();
+            // Set label
+            resultLabel.setText("You must select a doctor to change to.");
+            resultLabel.setStyle("-fx-text-fill: red");
         } else {
             // send notificaton to both user and doctor
             SessionManager seshManager = SessionManager.getInstance();
@@ -190,20 +190,16 @@ public class ChooseDoctorScreen extends AbstractScreen {
                 changedDoctor
             );
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null); // Get rid of header
-            alert.setTitle("Doctor changed");
-            alert.setContentText(
+            // Set label
+            resultLabel.setText(
                 "You have switched your doctor to " +
                 changedDoctor.getFirstName() +
                 " " +
                 changedDoctor.getSurName() +
                 "."
             );
+            resultLabel.setStyle("-fx-text-fill: green");
 
-            DialogPane dialogPane = alert.getDialogPane();
-            dialogPane.setId("doctorSelected"); // Set id for test class
-            alert.showAndWait();
             int doctorId = changedDoctor.getId(); // id of doctor to be used
         }
     }
