@@ -7,7 +7,7 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

@@ -13,7 +13,7 @@ import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.HomeScreen;
 import com.comp5590.screens.LoginScreen;
-import com.comp5590.security.managers.authentication.listeners.ScreenAuthValidationListener;
+import com.comp5590.security.authentication.listeners.ScreenAuthValidationListener;
 import com.comp5590.security.managers.mfa.TOTPManager;
 import com.comp5590.security.managers.passwords.Argon2PasswordManager;
 import com.comp5590.security.managers.passwords.PasswordManager;

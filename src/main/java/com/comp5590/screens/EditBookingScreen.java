@@ -12,7 +12,7 @@ import com.comp5590.database.entities.User;
 import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import com.comp5590.security.authentication.annotations.AuthRequired;
 import io.github.palexdev.mfxcore.controls.Label;
 import java.time.LocalTime;
 import java.util.Date;

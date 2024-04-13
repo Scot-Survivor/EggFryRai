@@ -1,4 +1,4 @@
-package com.comp5590.security.managers.authentication.listeners;
+package com.comp5590.security.authentication.listeners;
 
 import com.comp5590.App;
 import com.comp5590.events.eventtypes.screens.ScreenChangeEvent;
@@ -7,7 +7,7 @@ import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.AbstractScreen;
 import com.comp5590.screens.LoginScreen;
-import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;

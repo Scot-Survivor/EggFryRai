@@ -1,7 +1,7 @@
 package com.comp5590.screens;
 
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;

@@ -1,7 +1,7 @@
 package com.comp5590.screens;
 
 import com.comp5590.managers.ScreenManager;
-import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import com.comp5590.security.authentication.annotations.AuthRequired;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;

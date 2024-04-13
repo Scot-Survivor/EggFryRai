@@ -10,7 +10,7 @@ import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
-import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;

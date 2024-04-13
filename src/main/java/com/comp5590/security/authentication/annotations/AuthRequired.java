@@ -1,4 +1,4 @@
-package com.comp5590.security.managers.authentication.annotations;
+package com.comp5590.security.authentication.annotations;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
