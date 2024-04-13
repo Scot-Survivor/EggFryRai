@@ -17,13 +17,12 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.0'
     id 'org.beryx.runtime' version '1.12.5'  // Allow for runtime package installer
     id 'maven-publish'
-    id 'pl.allegro.tech.build.axion-release' version '1.13.6'
 }
 
 // apply plugin: 'org.openjfx.javafxplugin'
 
 group = 'com.comp5590'
-version = '1.0.1'
+version = '1.25.0'
 
 repositories {
     mavenLocal()
@@ -52,11 +51,6 @@ publishing {
             }
         }
     }
-}
-
-scmVersion {
-    // Not really needed, but I like it:
-    useHighestVersion = true
 }
 
 def currentOS = org.gradle.internal.os.OperatingSystem.current()
@@ -271,7 +265,7 @@ tasks.named('spotlessCheck').configure {
 }
 
 tasks.named('spotlessDiagnose').configure {
-    dependsOn ('nodeSetup', 'npmSetup')
+    dependsOn('nodeSetup', 'npmSetup')
     dependsOn 'addPreCommitGitHookOnBuild'
     dependsOn 'addCommitMsgGitHookOnBuild'
 }
