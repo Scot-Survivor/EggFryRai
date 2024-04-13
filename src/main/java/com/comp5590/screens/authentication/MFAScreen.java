@@ -37,8 +37,8 @@ public class MFAScreen extends AbstractScreen {
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
 
-        HBox titleBox = new Title("Login");
-        HBox paragraph = new Paragraph("Please login to track your appointments, prescriptions, and more.");
+        HBox titleBox = new Title(" Login with 2FA");
+        HBox paragraph = new Paragraph("Please enter your 6-digit 2FA code that can be found on your authenticator app.");
         VBox icon = new BigIcon("/images/healthcare.png"); // create the image
         VBox codeBox = create2FA();
 
