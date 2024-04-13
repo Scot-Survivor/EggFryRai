@@ -48,7 +48,7 @@ public class ViewDoctorDetailsTest extends SetupTests {
      */
     @Test
     public void testBookingCreation(FxRobot robot) {
-        // goToScreen(app, robot, CreateBooking.class);
+        // goToScreen(app, robot, CreateBookingScreen.class);
         // We have to ensure we're a patient logged in
         User user = createPatient("testPatient1@example.com", "testPassword");
         this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
@@ -88,7 +88,7 @@ public class ViewDoctorDetailsTest extends SetupTests {
      */
     @Test
     public void testErrorDisplay(FxRobot robot) {
-        // goToScreen(app, robot, CreateBooking.class);
+        // goToScreen(app, robot, CreateBookingScreen.class);
         // We have to ensure we're a patient logged in
         User user = createPatient("testPatient1@example.com", "testPassword");
         this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");

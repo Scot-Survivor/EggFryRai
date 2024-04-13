@@ -9,7 +9,7 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.SessionManager;
 import com.comp5590.screens.authentication.LoginScreen;
-import com.comp5590.screens.bookings.CreateBooking;
+import com.comp5590.screens.bookings.CreateBookingScreen;
 import com.comp5590.screens.bookings.ViewAndChangeBookingsScreen;
 import com.comp5590.screens.bookings.VisitDetailsScreen;
 import com.comp5590.screens.doctors.ChooseDoctorScreen;
@@ -235,7 +235,7 @@ public abstract class AbstractScreen {
 
         newAppointment.setOnAction(e -> {
             logger.info("New Appointment button clicked");
-            showScene(CreateBooking.class);
+            showScene(CreateBookingScreen.class);
         });
 
         viewAndChangeAppointments.setOnAction(e -> {

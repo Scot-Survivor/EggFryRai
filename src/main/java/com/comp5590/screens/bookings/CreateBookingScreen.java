@@ -34,11 +34,11 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.core.Logger;
 
 @AuthRequired
-public class CreateBooking extends AbstractScreen {
+public class CreateBookingScreen extends AbstractScreen {
 
     private final HashMap<String, User> doctorMap;
     private final HashMap<String, Room> roomMap;
-    private final Logger logger = LoggerManager.getInstance().getLogger(CreateBooking.class);
+    private final Logger logger = LoggerManager.getInstance().getLogger(CreateBookingScreen.class);
 
     private AppointmentReason appointmentReason;
     private DatePickerBox datePickerBox;
@@ -46,7 +46,7 @@ public class CreateBooking extends AbstractScreen {
     private RoomChoice roomChoice;
     private WarningMessage warningMessage;
 
-    public CreateBooking(ScreenManager screenManager) {
+    public CreateBookingScreen(ScreenManager screenManager) {
         super(screenManager);
         doctorMap = new HashMap<>();
         roomMap = new HashMap<>();

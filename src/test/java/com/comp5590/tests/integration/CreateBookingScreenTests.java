@@ -9,7 +9,7 @@ import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.SessionManager;
-import com.comp5590.screens.bookings.CreateBooking;
+import com.comp5590.screens.bookings.CreateBookingScreen;
 import com.comp5590.tests.basic.SetupTests;
 import java.time.LocalDate;
 import javafx.scene.control.*;
@@ -21,7 +21,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class CreateBookingTests extends SetupTests {
+public class CreateBookingScreenTests extends SetupTests {
 
     private final String APPOINTMENT_REASON = "Lumpy Balls";
     private final LocalDate APPOINTMENT_TIME = LocalDate.now().plusWeeks(2);
@@ -60,7 +60,7 @@ public class CreateBookingTests extends SetupTests {
      */
     private void createBooking(FxRobot robot, int time) {
         robot.interact(() -> {
-            app.getScreenManager().showScene(CreateBooking.class);
+            app.getScreenManager().showScene(CreateBookingScreen.class);
             robot.lookup("#doctorChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // Just select first doctor
             robot.lookup("#roomChoiceBox").queryAs(ChoiceBox.class).getSelectionModel().select(0); // just select first room
             robot.lookup("#time").queryAs(ChoiceBox.class).getSelectionModel().select(time); // just select first time
@@ -77,7 +77,7 @@ public class CreateBookingTests extends SetupTests {
      */
     @Test
     public void testBookingCreation(FxRobot robot) {
-        // goToScreen(app, robot, CreateBooking.class);
+        // goToScreen(app, robot, CreateBookingScreen.class);
         // We have to ensure we're a patient logged in
         User user = createPatient("testPatient1@example.com", "testPassword");
         this.loginUser(this.app, robot, "testPatient1@example.com", "testPassword");
