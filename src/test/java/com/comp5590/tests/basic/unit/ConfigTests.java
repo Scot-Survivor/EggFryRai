@@ -29,7 +29,7 @@ public class ConfigTests extends SetupTests {
 
     @BeforeAll
     public static void setup() {
-        AppConfig.ConfigFile = "src/test/resources/tested-config.properties";  // Used a different file to test on
+        AppConfig.ConfigFile = "src/test/resources/tested-config.properties"; // Used a different file to test on
         testConfig = AppConfig.getInstance();
         testConfig.reload(); // Force reload
         // load the properties file ourselves to test against

@@ -166,28 +166,33 @@ public class RegisterScreen extends AbstractScreen {
             "Phone (no country code or leading 0s)",
             this.phone,
             "E.g. 123456789",
-                "/images/phone.png"
+            "/images/phone.png"
         );
         LoginField faxField = new LoginField("Fax (no dashes)", this.fax, "E.g. 123456789", "/images/fax.png");
         LoginField additionalNotesField = new LoginField(
             "Additional Notes",
             this.additionalNotes,
             "E.g. Allergies",
-                "/images/notes.png"
+            "/images/notes.png"
         );
         LoginField addressLine1Field = new LoginField(
             "Address Line 1",
             this.addressLine1,
             "E.g. 123 Fake St",
-                "/images/address.png"
+            "/images/address.png"
         );
         LoginField addressLine2Field = new LoginField(
             "Address Line 2",
             this.addressLine2,
             "E.g. Canterbury",
-                "/images/address.png"
+            "/images/address.png"
         );
-        LoginField addressLine3Field = new LoginField("Address Line 3", this.addressLine3, "E.g. Kent", "/images/address.png");
+        LoginField addressLine3Field = new LoginField(
+            "Address Line 3",
+            this.addressLine3,
+            "E.g. Kent",
+            "/images/address.png"
+        );
         LoginField countryField = new LoginField("Country", this.country, "E.g. UK", "/images/address.png");
         LoginField postcodeField = new LoginField("Postcode", this.postcode, "E.g. D01AB23", "/images/address.png");
 
@@ -202,7 +207,7 @@ public class RegisterScreen extends AbstractScreen {
             "Communication Preference",
             this.communicationPreference,
             "Select Communication Preference",
-                "/images/communication.png"
+            "/images/communication.png"
         );
 
         // create the register button
