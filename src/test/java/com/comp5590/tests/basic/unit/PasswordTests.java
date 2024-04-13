@@ -9,8 +9,11 @@ import com.comp5590.security.managers.passwords.PasswordManager;
 import com.comp5590.tests.basic.SetupTests;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 @Order(3)
+@Execution(ExecutionMode.CONCURRENT)
 public class PasswordTests extends SetupTests {
 
     @Test
