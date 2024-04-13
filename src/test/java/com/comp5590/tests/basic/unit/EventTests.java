@@ -21,9 +21,12 @@ import java.util.Set;
 import lombok.Getter;
 import org.apache.logging.log4j.core.Logger;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class EventTests extends SetupTests {
 
     private final Logger logger = LoggerManager.getInstance().getLogger(EventTests.class, "DEBUG");
