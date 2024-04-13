@@ -59,6 +59,14 @@ public class User {
     @ToString.Exclude
     private List<Booking> bookings;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "visitDetailsId", nullable = true)
+    private VisitDetails visitDetails;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @ToString.Exclude
+    private List<Notification> notifications;
+
     /**
      * Constructor for all required fields (excluding address and
      * authenticationDetails)

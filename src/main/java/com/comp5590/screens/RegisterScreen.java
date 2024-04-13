@@ -12,6 +12,7 @@ import com.comp5590.components.global.SpaceVertical;
 import com.comp5590.database.entities.Address;
 import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.User;
+import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.enums.CommunicationPreference;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.LoggerManager;
@@ -506,6 +507,9 @@ public class RegisterScreen extends AbstractScreen {
 
         // log creation of new user
         logger.info("New user registered: {}", email);
+
+        // send notifications to user
+        EntityUtils.createNotification("Welcome to GP Alpha! Thanks for registering with us!", user);
 
         // redirect user to InBetweenScreensScreen after successful registration, with
         // success message

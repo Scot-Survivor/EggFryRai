@@ -1,8 +1,10 @@
 package com.comp5590.screens;
 
 import com.comp5590.database.entities.User;
+import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
 import java.util.List;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -164,9 +166,31 @@ public class ChooseDoctorScreen extends AbstractScreen {
     private void docSwitch(ActionEvent event) {
         User changedDoctor = doctorTable.getSelectionModel().getSelectedItem();
         if (changedDoctor == null) { // No doctor selected
+            // Set label
             resultLabel.setText("You must select a doctor to change to.");
             resultLabel.setStyle("-fx-text-fill: red");
         } else {
+            // send notificaton to both user and doctor
+            SessionManager seshManager = SessionManager.getInstance();
+            User currentUser = seshManager.getCurrentUser();
+
+            // send notifications to user
+            EntityUtils.createNotification(
+                "You have switched your doctor to " +
+                changedDoctor.getFirstName() +
+                " " +
+                changedDoctor.getSurName() +
+                ".",
+                currentUser
+            );
+
+            // send notifications to doctor
+            EntityUtils.createNotification(
+                "You have a new patient, " + currentUser.getFirstName() + " " + currentUser.getSurName() + ".",
+                changedDoctor
+            );
+
+            // Set label
             resultLabel.setText(
                 "You have switched your doctor to " +
                 changedDoctor.getFirstName() +
@@ -175,6 +199,7 @@ public class ChooseDoctorScreen extends AbstractScreen {
                 "."
             );
             resultLabel.setStyle("-fx-text-fill: green");
+
             int doctorId = changedDoctor.getId(); // id of doctor to be used
         }
     }

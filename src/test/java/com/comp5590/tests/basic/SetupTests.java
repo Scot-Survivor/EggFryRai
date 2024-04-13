@@ -32,6 +32,10 @@ public class SetupTests extends EntityUtils {
         // Set up the logger
         AppConfig.ConfigFile = "src/test/resources/test.properties";
         AppConfig.getInstance();
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
     }
 
     @AfterEach
@@ -129,6 +133,40 @@ public class SetupTests extends EntityUtils {
             String password = StringUtils.randomPassword(8, 64);
 
             registerUser(app, robot, email, password);
+            loginUser(app, robot, email, password);
+        }
+
+        // otherwise, just show the screen without authenticating
+        robot.interact(() -> app.getScreenManager().showScene(screenClass));
+        assertInstanceOf(screenClass, app.getScreenManager().getCurrentScreen());
+    }
+
+    public void logout(App app, FxRobot robot) {
+        robot.interact(() -> {
+            app.getSessionManager().unauthenticate();
+            app.getScreenManager().showScene(LoginScreen.class);
+        });
+    }
+
+    /**
+     * Go to a specific screen (with appropriate authentication if needed)
+     * @param app App instance
+     * @param robot FxRobot instance
+     * @param screenClass Screen class to go to
+     * @param email Email to use for authentication
+     * @param password Password to use for authentication
+     */
+    public void goToScreenWithAuthentication(
+        App app,
+        FxRobot robot,
+        Class<? extends AbstractScreen> screenClass,
+        String email,
+        String password
+    ) {
+        // check if this screen has @AuthRequired annotation
+        // if so, we need to login & register methods first before doing anything
+        if (ScreenUtils.isAuthRequired(screenClass)) {
+            // registerUser(app, robot, email, password);
             loginUser(app, robot, email, password);
         }
 

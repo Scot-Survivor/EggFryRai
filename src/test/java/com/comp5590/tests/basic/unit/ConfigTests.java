@@ -17,8 +17,11 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 @Order(1) // Run this test first
+@Execution(ExecutionMode.CONCURRENT) // Run tests concurrently
 public class ConfigTests extends SetupTests {
 
     private static AppConfig testConfig;
@@ -26,6 +29,7 @@ public class ConfigTests extends SetupTests {
 
     @BeforeAll
     public static void setup() {
+        AppConfig.ConfigFile = "src/test/resources/tested-config.properties";  // Used a different file to test on
         testConfig = AppConfig.getInstance();
         testConfig.reload(); // Force reload
         // load the properties file ourselves to test against

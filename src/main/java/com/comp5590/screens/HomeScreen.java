@@ -1,9 +1,19 @@
 package com.comp5590.screens;
 
 import com.comp5590.components.HomeScreen.HugeImage;
+import com.comp5590.components.LoginScreen.Title;
+import com.comp5590.components.global.NotificationCard;
+import com.comp5590.components.global.ScrollerBox;
+import com.comp5590.database.entities.Notification;
+import com.comp5590.database.entities.User;
+import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
+import com.comp5590.managers.SessionManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import java.util.List;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.core.Logger;
 
@@ -24,22 +34,105 @@ public class HomeScreen extends AbstractScreen {
 
         // attach default pane, but grab the reference to the gridpane (set as
         // center of borderpane) for further customization
-        GridPane pane = this.attachDefaultPane();
+        GridPane gridPane = this.attachDefaultPane();
 
         // attach the header bar & navbar
         this.attachHeaderAndNavBar("GP Alpha");
 
-        // create the background image
-        HugeImage bgImage = new HugeImage("/homeBackground.jpg");
+        // grab user from session
+        User user = SessionManager.getInstance().getCurrentUser();
 
-        // set the background image to the 3rd row of the pane, and span it infinitely
-        // across the width and height of the pane (dynamic sizing)
-        pane.add(bgImage, 0, 2);
-        // add column constraints, so its width is always width of the screen
-        ColumnConstraints col1 = new ColumnConstraints();
+        // get all notifications from DB for user
+        List<Notification> notifications = EntityUtils.getAllNotificationsForUser(user);
 
-        col1.setPercentWidth(100);
-        pane.getColumnConstraints().add(col1);
+        // if no notifications, display message
+        if (notifications.isEmpty()) {
+            // create new label
+            Title noNotificationsLabel = new Title("No Notifications");
+            HugeImage noNotificationsImage = new HugeImage("/homeBackground.jpg");
+
+            // align both nodes vertically and horizontally
+            noNotificationsLabel.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+            noNotificationsImage.setAlignment(javafx.geometry.Pos.CENTER);
+
+            // add both nodes to gridpane
+            gridPane.add(noNotificationsLabel, 0, 1);
+            gridPane.add(noNotificationsImage, 0, 0);
+
+            // set gap between nodes
+            gridPane.setVgap(10);
+
+            return;
+        }
+
+        // sort bookings in place, by time added (latest first)
+        notifications.sort((a, b) -> b.getTimestamp().compareTo(a.getTimestamp()));
+
+        // create new scrollable box
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.getStyleClass().add("scroll-pane");
+
+        // add it to gridpane
+        gridPane.add(scrollPane, 0, 1);
+        // span 100% width and center it
+        GridPane.setFillWidth(scrollPane, true);
+        GridPane.setHgrow(scrollPane, javafx.scene.layout.Priority.ALWAYS);
+
+        // create box for all visit details cards
+        ScrollerBox scrollerBox = new ScrollerBox();
+        // add style class of scroller box
+        scrollerBox.getStyleClass().add("scroller-box");
+        scrollerBox.setId("scroller-box");
+
+        // bind width of scroller box to scroll pane, -10 to account for scroll bar
+        scrollerBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
+
+        // add scroller box to scroll pane
+        scrollPane.setContent(scrollerBox);
+
+        // add all visit details cards to scroller box
+        for (Notification notification : notifications) {
+            String markReadOrUnreadTxt = notification.isRead() ? "Mark Unread" : "Mark Read";
+
+            // create 2 new buttons
+            Button markReadOrUnreadButton = new Button(markReadOrUnreadTxt);
+            Button deleteButton = new Button("Delete");
+
+            // attach event handlers to buttons
+            markReadOrUnreadButton.setOnAction(e -> markReadOrUnread(notification));
+            deleteButton.setOnAction(e -> delete(notification));
+
+            // create new visit details card
+            NotificationCard notificationCard = new NotificationCard(
+                notification,
+                markReadOrUnreadButton,
+                deleteButton
+            );
+
+            // add it to scroller box
+            scrollerBox.getChildren().add(notificationCard);
+        }
+    }
+
+    private void markReadOrUnread(Notification notification) {
+        if (notification.isRead()) {
+            notification.setRead(false);
+        } else {
+            notification.setRead(true);
+        }
+
+        EntityUtils.updateNotification(notification);
+
+        // refresh scene
+        this.refreshScene();
+    }
+
+    private void delete(Notification notification) {
+        // delete notification
+        EntityUtils.deleteNotification(notification);
+
+        // refresh scene
+        this.refreshScene();
     }
 
     @Override

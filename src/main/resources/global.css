@@ -21,12 +21,14 @@
     -fx-min-height: 300;
 }
 
+.scroll-pane{
+    -fx-min-height: 500;
+}
+
 .scroller-box {
     /* ensure it takes up whole screen */
     -fx-max-width: 10000;
     -fx-max-height: 10000;
-    -fx-min-width: 300;
-    -fx-min-height: 300;
 
     -fx-alignment: center;
     -fx-hgap: 0;
@@ -61,4 +63,38 @@
 /* for all nodes of class button when hovered over */
 .button:hover {
     -fx-background-color: #d0d0d0;
+}
+
+/* for messages (notificactions) sent to doctors / users */
+.notification-card{
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #000000;
+    -fx-border-width: 3;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+}
+
+.notification-card-value{
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.notification-card-row{
+    -fx-spacing: 2;
+}
+
+.notification-card-button-box{
+    -fx-spacing: 5;
+}
+
+.notification-card-button{
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #000000;
+    -fx-border-width: 3;
+    -fx-padding: 10;
+    -fx-spacing: 5;
 }

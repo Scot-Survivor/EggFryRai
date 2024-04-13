@@ -2,12 +2,17 @@ package com.comp5590.screens;
 
 import com.comp5590.components.DoctorDetailsScreen.DoctorChoice;
 import com.comp5590.components.DoctorDetailsScreen.DoctorDisplayBox;
+import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.ScreenManager;
 import com.comp5590.security.managers.authentication.annotations.AuthRequired;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -79,6 +84,32 @@ public class ViewDoctorsScreen extends AbstractScreen {
                 String contactPreference = "Contact Preference: " + doctor.getCommunicationPreference() + "\n";
                 String addNotes = "Additional Notes: " + doctor.getAdditionalNotes() + "\n";
 
+                // Check to see if the doctor has any availability
+                // in a month there are a max of 31 days clinic runs from
+                // 31*12 "if there are 12 hour days" = 372
+                // if we do 30 min appts 372*2=744 doctor could have 744 appts in a month
+
+                List<Booking> bookings = db.getAllByProperty(Booking.class, "doctor", doctor);
+
+                // get a start and end date for the current month
+                Date firstDate = new Date();
+                // Create a calendar instance and add 31 days
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(firstDate);
+                calendar.add(Calendar.DATE, 31);
+                Date secondDate = calendar.getTime();
+
+                // Add all bookings in a given month here
+                ArrayList<Booking> inMonth = new ArrayList<>();
+                for (Booking booking : bookings) {
+                    if (booking.getApptTime().before(secondDate) && booking.getApptTime().after(firstDate)) {
+                        inMonth.add(booking);
+                    }
+                }
+
+                String apptAvailability =
+                    "The doctor has " + (742 - inMonth.size()) + " appointments available in the current month";
+
                 // add to the box
                 doctorInfo
                     .getChildren()
@@ -88,7 +119,8 @@ public class ViewDoctorsScreen extends AbstractScreen {
                         new Text(email),
                         new Text(fax),
                         new Text(contactPreference),
-                        new Text(addNotes)
+                        new Text(addNotes),
+                        new Text(apptAvailability)
                     );
             } catch (Exception error) {
                 logger.error("No doctor selected | " + error);
