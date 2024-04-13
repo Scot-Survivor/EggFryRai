@@ -9,7 +9,7 @@ import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.SessionManager;
-import com.comp5590.screens.CreateBooking;
+import com.comp5590.screens.bookings.CreateBooking;
 import com.comp5590.tests.basic.SetupTests;
 import java.time.LocalDate;
 import javafx.scene.control.*;

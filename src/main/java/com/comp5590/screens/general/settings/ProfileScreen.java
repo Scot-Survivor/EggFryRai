@@ -1,12 +1,13 @@
-package com.comp5590.screens;
+package com.comp5590.screens.general.settings;
 
 import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.User;
 import com.comp5590.events.enums.UserAttribute;
 import com.comp5590.events.eventtypes.users.UserUpdateEvent;
 import com.comp5590.events.managers.EventManager;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import com.comp5590.security.managers.passwords.*;
 import javafx.scene.control.Button;

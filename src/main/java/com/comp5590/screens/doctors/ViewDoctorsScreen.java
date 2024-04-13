@@ -1,4 +1,4 @@
-package com.comp5590.screens;
+package com.comp5590.screens.doctors;
 
 import com.comp5590.components.DoctorDetailsScreen.DoctorChoice;
 import com.comp5590.components.DoctorDetailsScreen.DoctorDisplayBox;
@@ -6,7 +6,8 @@ import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import java.util.ArrayList;
 import java.util.Calendar;

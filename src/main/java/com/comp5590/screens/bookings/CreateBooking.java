@@ -1,4 +1,4 @@
-package com.comp5590.screens;
+package com.comp5590.screens.bookings;
 
 // TODO: Make it consistent with the design schema
 
@@ -10,8 +10,9 @@ import com.comp5590.database.managers.DatabaseManager;
 import com.comp5590.database.utils.EntityUtils;
 import com.comp5590.enums.UserRole;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.sql.Timestamp;

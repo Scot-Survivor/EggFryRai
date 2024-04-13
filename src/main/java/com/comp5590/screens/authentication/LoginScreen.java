@@ -1,4 +1,4 @@
-package com.comp5590.screens;
+package com.comp5590.screens.authentication;
 
 import com.comp5590.components.LoginScreen.BigButton;
 import com.comp5590.components.LoginScreen.BigIcon;
@@ -12,8 +12,10 @@ import com.comp5590.components.global.LoginField;
 import com.comp5590.components.global.SpaceVertical;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
-import com.comp5590.managers.ScreenManager;
 import com.comp5590.managers.SessionManager;
+import com.comp5590.screens.general.HomeScreen;
+import com.comp5590.screens.managers.ScreenManager;
+import com.comp5590.screens.misc.AbstractScreen;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;

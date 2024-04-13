@@ -8,7 +8,7 @@ import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.entities.VisitDetails;
-import com.comp5590.screens.VisitDetailsScreen;
+import com.comp5590.screens.bookings.VisitDetailsScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;

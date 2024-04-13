@@ -2,7 +2,7 @@ package com.comp5590.events.eventtypes.screens;
 
 import com.comp5590.App;
 import com.comp5590.events.eventtypes.CancellableEvent;
-import com.comp5590.screens.AbstractScreen;
+import com.comp5590.screens.misc.AbstractScreen;
 import lombok.Getter;
 import lombok.Setter;
 

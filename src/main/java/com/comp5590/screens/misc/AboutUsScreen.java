@@ -1,6 +1,6 @@
-package com.comp5590.screens;
+package com.comp5590.screens.misc;
 
-import com.comp5590.managers.ScreenManager;
+import com.comp5590.screens.managers.ScreenManager;
 import com.comp5590.security.authentication.annotations.AuthRequired;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

@@ -6,7 +6,7 @@ import com.comp5590.App;
 import com.comp5590.components.DoctorDetailsScreen.DoctorDisplayBox;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.SessionManager;
-import com.comp5590.screens.ViewDoctorsScreen;
+import com.comp5590.screens.doctors.ViewDoctorsScreen;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
