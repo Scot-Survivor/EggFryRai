@@ -9,12 +9,18 @@ import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
 import com.comp5590.database.entities.VisitDetails;
+import com.comp5590.events.eventtypes.users.UserUpdateEvent;
+import com.comp5590.events.listeners.interfaces.UserListener;
+import com.comp5590.events.managers.EventManager;
+import com.comp5590.managers.LoggerManager;
 import com.comp5590.screens.ProfileScreen;
 import com.comp5590.security.managers.passwords.PasswordManager;
 import com.comp5590.tests.basic.SetupTests;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.Getter;
+import org.apache.logging.log4j.core.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -35,6 +41,26 @@ public class ProfileScreenTests extends SetupTests {
         app.start(stage);
         stage.show();
         setupDB();
+    }
+
+    @Getter
+    public static class TestListener implements UserListener {
+
+        private boolean isCalled = false;
+        private final Logger logger = LoggerManager.getInstance().getLogger(TestListener.class, "DEBUG");
+
+        @Override
+        public UserUpdateEvent onUserUpdate(UserUpdateEvent event) {
+            isCalled = true;
+            logger.debug("User update event called");
+            return event;
+        }
+    }
+
+    private TestListener setUpListeners() {
+        TestListener listener = new TestListener();
+        EventManager.getInstance().addListener(listener);
+        return listener;
     }
 
     private void setupDB() {
@@ -99,18 +125,23 @@ public class ProfileScreenTests extends SetupTests {
         // go to the profile screen
         goToScreenWithAutoAuthentication(app, robot, ProfileScreen.class);
 
-        // input the new email
-        String newEmail = "newemail@example.com";
-        robot.lookup("#newEmailField").queryAs(TextField.class).setText(newEmail);
+        robot.interact(() -> {
+            TestListener listener = setUpListeners();
 
-        // click the apply email button
-        robot.lookup("#applyEmailButton").queryAs(Button.class).fire();
+            // input the new email
+            String newEmail = "newemail@example.com";
+            robot.lookup("#newEmailField").queryAs(TextField.class).setText(newEmail);
 
-        // get the updated user from the database
-        User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.email", newEmail);
+            // click the apply email button
+            robot.lookup("#applyEmailButton").queryAs(Button.class).fire();
 
-        assertNotNull(updatedUser);
-        assertEquals(newEmail, updatedUser.getAuthenticationDetails().getEmail());
+            // get the updated user from the database
+            User updatedUser = getDbManager().getByProperty(User.class, "authenticationDetails.email", newEmail);
+
+            assertNotNull(updatedUser);
+            assertEquals(newEmail, updatedUser.getAuthenticationDetails().getEmail());
+            assertTrue(listener.isCalled);
+        });
     }
 
     @Test
@@ -122,6 +153,7 @@ public class ProfileScreenTests extends SetupTests {
         goToScreenWithAuthentication(app, robot, ProfileScreen.class, email, password);
 
         robot.interact(() -> {
+            TestListener listener = setUpListeners();
             // input the new password
             String newPassword = "newpassword";
             robot.lookup("#newPasswordField").queryAs(TextField.class).setText(newPassword);
@@ -138,6 +170,7 @@ public class ProfileScreenTests extends SetupTests {
             goToScreenWithAuthentication(app, robot, ProfileScreen.class, email, newPassword);
             stall(robot);
             assertEquals(app.getSessionManager().getCurrentUser().getId(), updatedUser.getId());
+            assertTrue(listener.isCalled);
         });
     }
 }
