@@ -32,31 +32,6 @@ distribute:
     paths:
       - "./build/libs/*.jar"
     expire_in: 7 days
-  only:
-    - main
-
-package:
-  stage: distribute
-  artifacts:
-    paths:
-      - "./build/jpackage/*"
-    expire_in: 24 hours
-  script:
-    - "./gradlew jpackage"
-  allow_failure: true
-  only:
-    - main
-
-javadoc:
-  stage: distribute
-  script:
-    - "./gradlew javadoc"
-  artifacts:
-    paths:
-      - "./build/docs/javadoc"
-    expire_in: 24 hours
-  only:
-    - main
 
 pages:
   script:
