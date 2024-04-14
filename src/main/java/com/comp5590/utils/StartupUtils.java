@@ -49,9 +49,9 @@ public class StartupUtils {
         AuthenticationDetails auth = new AuthenticationDetails(
             "testuser@example.com",
             PasswordManager.getInstanceOf(AppConfig.HASH_ALGORITHM).hashPassword("password"),
-            false,
-            null,
-            null
+            true,
+            "SIFUZ3556HK6RK3FCO3HOMDQ6OTGBG4N",
+            "1234,12345,123456"
         );
         auth = db.saveGet(auth);
         isValid = null != auth;

@@ -1,5 +1,11 @@
 package com.comp5590.screens.authentication;
 
+import com.comp5590.components.LoginScreen.BigButton;
+import com.comp5590.components.LoginScreen.BigIcon;
+import com.comp5590.components.LoginScreen.Paragraph;
+import com.comp5590.components.LoginScreen.Title;
+import com.comp5590.components.global.LoginField;
+import com.comp5590.components.global.SpaceVertical;
 import com.comp5590.database.entities.User;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.managers.SessionManager;
@@ -7,6 +13,7 @@ import com.comp5590.screens.general.HomeScreen;
 import com.comp5590.screens.managers.ScreenManager;
 import com.comp5590.screens.misc.AbstractScreen;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -25,28 +32,75 @@ public class MFAScreen extends AbstractScreen {
 
     @Override
     public void setup() {
-        BorderPane pane = new BorderPane();
-        pane.setCenter(create2FA());
-        pane.setTop(createTitle());
-        setRootPane(pane);
+        this.addCss("/css/login.css");
+
+        GridPane pane = new GridPane();
+        pane.getStyleClass().add("custom-pane");
+
+        HBox titleBox = new Title(" Login with 2FA");
+        HBox paragraph = new Paragraph(
+            "Please enter your 6-digit 2FA code that can be found on your authenticator app."
+        );
+        VBox icon = new BigIcon("/images/healthcare.png"); // create the image
+        VBox codeBox = create2FA();
+
+        pane.add(titleBox, 0, 0);
+        pane.add(paragraph, 0, 1);
+        pane.add(icon, 1, 0);
+        GridPane.setRowSpan(icon, 2);
+        pane.add(codeBox, 0, 2);
+        GridPane.setColumnSpan(codeBox, 2);
+
+        // align the grid pane's contents to the center of the screen
+        GridPane.setHalignment(titleBox, javafx.geometry.HPos.LEFT);
+        GridPane.setHalignment(codeBox, javafx.geometry.HPos.CENTER);
+
+        // add the column constraints, so icon will always be fixed to right of screen
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setHgrow(Priority.ALWAYS); // Allow column 1 to grow to fill the available space
+        pane.getColumnConstraints().add(column1);
+
+        // create the border pane (which will   serve as root pane)
+        // set grid pane as child of border pane
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(pane);
+
+        setRootPane(rootPane); // set root pane
     }
 
     /**
      * Create the 2FA code input form
      * @return HBox
      */
-    private HBox create2FA() {
-        Label codeLabel = new Label("2FA Code:");
+    private VBox create2FA() {
         this.code = new TextField();
         this.code.setId("code");
 
-        this.error = new Label();
+        LoginField codeField = new LoginField("2FA Code", this.code, "", "/images/lock.png");
 
-        Button submit = new Button("Submit");
+        this.error = new Label();
+        this.error.setId("error");
+        this.error.getStyleClass().add("error-label");
+
+        BigButton submit = new BigButton();
         submit.setId("submit");
         submit.setOnAction(this::submitCode);
 
-        return new HBox(codeLabel, this.code, submit, this.error);
+        VBox finalCodeButton = new VBox();
+        finalCodeButton.getChildren().add(submit);
+
+        // create vboxes for margin
+        SpaceVertical padding1 = new SpaceVertical(20);
+        SpaceVertical padding2 = new SpaceVertical(10);
+        SpaceVertical padding3 = new SpaceVertical(10);
+
+        VBox box = new VBox();
+        box.getChildren().addAll(padding1, codeField, padding2, finalCodeButton, padding3, error);
+
+        // set box properties cos why not
+        box.setAlignment(Pos.CENTER);
+        box.setSpacing(10);
+        return box;
     }
 
     /**
