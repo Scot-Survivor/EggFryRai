@@ -43,15 +43,28 @@ public class SetupTests extends EntityUtils {
         // Here we want to recreate the entire database, this requires some hackery
         DatabaseManager.INSTANCE = null; // By setting to null this should force a reload, due to the way singletons are
         // created
+        System.gc();
     }
 
     // TODO: Method for running robot.interact(), then looking up by ID, checking
     // what type it is (and getting appropriate type from QueryUtils), then firing
     // the event
 
-    // Stall method for waiting for the screen to change
+    /**
+     * Stall method for waiting for the screen to change
+     */
+
     public void stall(FxRobot robot) {
-        robot.sleep(SCREEN_DELAY_MS);
+        this.stall(robot, SCREEN_DELAY_MS);
+    }
+
+    /**
+     * Stall method for waiting for the screen to change
+     * @param robot FxRobot instance
+     * @param delay Delay in milliseconds
+     */
+    public void stall(FxRobot robot, int delay) {
+        robot.sleep(delay);
     }
 
     // Register user without login

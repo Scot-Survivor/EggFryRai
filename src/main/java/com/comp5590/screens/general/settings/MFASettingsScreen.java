@@ -27,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 import org.apache.logging.log4j.core.Logger;
 
 @AuthRequired
@@ -39,8 +40,11 @@ public class MFASettingsScreen extends AbstractScreen {
     private TextField codeInput;
     private String secret;
     private String recoveryCodes;
+
+    @Getter
     private Label resultLabel;
 
+    @Getter
     private boolean showRecoveryCodes = false;
 
     public MFASettingsScreen(ScreenManager screenManager) {
@@ -63,13 +67,14 @@ public class MFASettingsScreen extends AbstractScreen {
 
     private VBox center() {
         VBox content = new VBox();
-        if (!sessionManager.has2FAEnabled()) {
+        if (!sessionManager.has2FAEnabled() || showRecoveryCodes) {
             if (!showRecoveryCodes) {
                 VBox mfaForm = enable2FAForm();
                 mfaForm.setAlignment(Pos.TOP_CENTER);
                 content.getChildren().add(mfaForm);
             } else {
                 VBox recoveryCodesForm = getRecoveryCodesForm();
+                recoveryCodesForm.setId("recoveryCodesForm");
                 recoveryCodesForm.setAlignment(Pos.TOP_CENTER);
                 content.getChildren().add(recoveryCodesForm);
             }
@@ -86,6 +91,7 @@ public class MFASettingsScreen extends AbstractScreen {
         }
 
         resultLabel = new Label();
+        resultLabel.setId("resultLabel");
         resultLabel.setAlignment(Pos.TOP_CENTER);
         content.getChildren().add(resultLabel);
         content.setAlignment(Pos.TOP_CENTER);
@@ -104,6 +110,7 @@ public class MFASettingsScreen extends AbstractScreen {
             formBox.getChildren().add(codeLabel);
         }
         Button confirm = new Button("I have saved my recovery codes");
+        confirm.setId("confirm");
         confirm.setOnAction(e -> {
             showRecoveryCodes = false;
 
@@ -135,6 +142,7 @@ public class MFASettingsScreen extends AbstractScreen {
 
     private VBox enable2FAForm() {
         VBox formBox = new VBox();
+        formBox.setId("mfa-form");
 
         byte[] pngImageData = totpManager.generatePngImageData(secret);
 
@@ -149,9 +157,6 @@ public class MFASettingsScreen extends AbstractScreen {
         TextField secretLabel;
         if (AppConfig.TOTP_ALGORITHM.equals("SHA1")) {
             secretLabel = new TextField("Secret: " + secret);
-            secretLabel.setEditable(false);
-            secretLabel.getStyleClass().add("copyable-label");
-            secretLabel.setAlignment(Pos.TOP_CENTER);
         } else {
             secretLabel =
             new TextField(
@@ -159,10 +164,10 @@ public class MFASettingsScreen extends AbstractScreen {
                 AppConfig.TOTP_ALGORITHM +
                 " please ask your administrator to change the algorithm to SHA1"
             );
-            secretLabel.setEditable(false);
-            secretLabel.getStyleClass().add("copyable-label");
-            secretLabel.setAlignment(Pos.TOP_CENTER);
         }
+        secretLabel.setEditable(false);
+        secretLabel.getStyleClass().add("copyable-label");
+        secretLabel.setAlignment(Pos.TOP_CENTER);
 
         formBox.getChildren().addAll(imageView, secretLabel);
 
@@ -171,12 +176,14 @@ public class MFASettingsScreen extends AbstractScreen {
         Label confirmLabel = new Label("Enter the code from your 2FA app:");
         confirmationComponents.getChildren().add(confirmLabel);
         codeInput = new TextField();
+        codeInput.setId("codeInput");
         confirmationComponents.getChildren().add(codeInput);
         confirmationComponents.setAlignment(Pos.TOP_CENTER);
 
         formBox.getChildren().add(confirmationComponents);
 
         Button confirm = new Button("Submit");
+        confirm.setId("confirm");
         confirm.setOnAction(this::approve2FA);
         formBox.getChildren().add(confirm);
 
