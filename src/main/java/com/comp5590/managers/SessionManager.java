@@ -95,4 +95,12 @@ public class SessionManager {
     public String getFullName() {
         return this.currentUser.getFirstName() + " " + this.currentUser.getSurName();
     }
+
+    /**
+     * Get whether the current user has 2fa enabled
+     * @return boolean
+     */
+    public boolean has2FAEnabled() {
+        return this.currentUser.getAuthenticationDetails().isTwoFactorEnabled();
+    }
 }

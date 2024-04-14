@@ -63,14 +63,26 @@ public class MFASettingsScreen extends AbstractScreen {
 
     private VBox center() {
         VBox content = new VBox();
-        if (!showRecoveryCodes) {
-            VBox mfaForm = enable2FAForm();
-            mfaForm.setAlignment(Pos.TOP_CENTER);
-            content.getChildren().add(mfaForm);
+        if (!sessionManager.has2FAEnabled()) {
+            if (!showRecoveryCodes) {
+                VBox mfaForm = enable2FAForm();
+                mfaForm.setAlignment(Pos.TOP_CENTER);
+                content.getChildren().add(mfaForm);
+            } else {
+                VBox recoveryCodesForm = getRecoveryCodesForm();
+                recoveryCodesForm.setAlignment(Pos.TOP_CENTER);
+                content.getChildren().add(recoveryCodesForm);
+            }
         } else {
-            VBox recoveryCodesForm = getRecoveryCodesForm();
-            recoveryCodesForm.setAlignment(Pos.TOP_CENTER);
-            content.getChildren().add(recoveryCodesForm);
+            VBox disable2fa = new VBox();
+            Label disableLabel = new Label("Are you sure you want to disable 2FA?");
+            disable2fa.getChildren().add(disableLabel);
+
+            Button disableButton = new Button("Disable 2FA");
+            disableButton.setOnAction(this::disable2FA);
+            disable2fa.getChildren().add(disableButton);
+            disable2fa.setAlignment(Pos.TOP_CENTER);
+            content.getChildren().add(disable2fa);
         }
 
         resultLabel = new Label();
@@ -109,7 +121,7 @@ public class MFASettingsScreen extends AbstractScreen {
                     .callEvent(new UserUpdateEvent(UserAttribute.MFAs, "REDACTED", currentUser.getId()));
                 secret = null;
                 recoveryCodes = null;
-                getScreenManager().goBack();
+                this.showSceneBetweenScenesThenNextScene("Successfully enabled 2FA.", ProfileScreen.class, 1000);
             } else {
                 resultLabel.setText("Failed to save recovery codes. Please regenerate your 2FA settings");
                 resultLabel.setStyle("-fx-text-fill: red;");
@@ -197,6 +209,27 @@ public class MFASettingsScreen extends AbstractScreen {
             resultLabel.setText("Invalid 2FA code");
             resultLabel.setStyle("-fx-text-fill: red;");
             logger.warn(this.sessionManager.getFullName() + " failed to enable 2FA");
+        }
+    }
+
+    public void disable2FA(ActionEvent e) {
+        User currentUser = sessionManager.getCurrentUser();
+        AuthenticationDetails authDetails = currentUser.getAuthenticationDetails();
+        authDetails.setTwoFactorEnabled(false);
+        authDetails.setAuthenticationToken(null);
+        authDetails.setRecoveryCodes(null);
+        currentUser.setAuthenticationDetails(authDetails);
+
+        if (databaseManager.update(authDetails) && databaseManager.update(currentUser)) {
+            resultLabel.setText("2FA disabled successfully");
+            resultLabel.setStyle("-fx-text-fill: green;");
+            logger.info(this.sessionManager.getFullName() + " disabled 2FA");
+            showRecoveryCodes = false;
+            this.showSceneBetweenScenesThenNextScene("Successfully disabled 2FA", ProfileScreen.class, 1000);
+        } else {
+            resultLabel.setText("Failed to disable 2FA");
+            resultLabel.setStyle("-fx-text-fill: red;");
+            logger.warn(this.sessionManager.getFullName() + " failed to disable 2FA");
         }
     }
 

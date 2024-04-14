@@ -414,12 +414,17 @@ public abstract class AbstractScreen {
     }
 
     /**
-     * Shortcut to show a scene
+     * Shortcut to show screen between screens with a specific delay
      *
-     * @param msg             String
-     * @param nextScreenClass Class
+     * @param msg The message to display
+     * @param nextScreenClass The next screen to show
+     * @param delay The delay (in ms) to wait before showing the next screen
      */
-    protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
+    protected void showSceneBetweenScenesThenNextScene(
+        String msg,
+        Class<? extends AbstractScreen> nextScreenClass,
+        int delay
+    ) {
         try {
             logger.info("Showing ScreenBetweenScreens screen, with message: " + msg);
 
@@ -430,7 +435,7 @@ public abstract class AbstractScreen {
             this.showScene(ScreenBetweenScreens.class);
 
             // pause transition betfore moving to next screen
-            PauseTransition pause = new PauseTransition(Duration.millis(AppConfig.TIMEOUT_MS));
+            PauseTransition pause = new PauseTransition(Duration.millis(delay));
             pause.setOnFinished(event -> {
                 showScene(nextScreenClass);
             });
@@ -440,5 +445,15 @@ public abstract class AbstractScreen {
             logger.info("Redirecting to LoginScreen screen immediately");
             showScene(LoginScreen.class);
         }
+    }
+
+    /**
+     * Shortcut to show a scene
+     *
+     * @param msg             String
+     * @param nextScreenClass Class
+     */
+    protected void showSceneBetweenScenesThenNextScene(String msg, Class<? extends AbstractScreen> nextScreenClass) {
+        this.showSceneBetweenScenesThenNextScene(msg, nextScreenClass, AppConfig.TIMEOUT_MS);
     }
 }

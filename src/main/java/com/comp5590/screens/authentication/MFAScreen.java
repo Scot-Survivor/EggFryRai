@@ -38,7 +38,9 @@ public class MFAScreen extends AbstractScreen {
         pane.getStyleClass().add("custom-pane");
 
         HBox titleBox = new Title(" Login with 2FA");
-        HBox paragraph = new Paragraph("Please enter your 6-digit 2FA code that can be found on your authenticator app.");
+        HBox paragraph = new Paragraph(
+            "Please enter your 6-digit 2FA code that can be found on your authenticator app."
+        );
         VBox icon = new BigIcon("/images/healthcare.png"); // create the image
         VBox codeBox = create2FA();
 
