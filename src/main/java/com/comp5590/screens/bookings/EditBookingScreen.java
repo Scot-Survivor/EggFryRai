@@ -88,8 +88,7 @@ public class EditBookingScreen extends AbstractScreen {
         TimeChoice timeChoice = new TimeChoice(this.timeChoiceInput);
 
         // create button with ID
-        BigButton confirmEditBookingBtn = new BigButton();
-        confirmEditBookingBtn.setText("Confirm Edit Booking");
+        BigButton confirmEditBookingBtn = new BigButton("Confirm Edit Booking");
         confirmEditBookingBtn.setId("confirm-edit-booking-btn");
         // on button click, edit booking
         confirmEditBookingBtn.setOnAction(e -> updateBooking());

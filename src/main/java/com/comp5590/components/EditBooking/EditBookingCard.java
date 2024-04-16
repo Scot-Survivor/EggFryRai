@@ -1,6 +1,6 @@
 package com.comp5590.components.EditBooking;
 
-import com.comp5590.components.LoginScreen.BigButton;
+import com.comp5590.components.global.BigButton;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 

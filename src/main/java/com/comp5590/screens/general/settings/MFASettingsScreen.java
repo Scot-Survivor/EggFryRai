@@ -81,9 +81,7 @@ public class MFASettingsScreen extends AbstractScreen {
         } else {
             VBox disable2fa = new VBox();
             Label disableLabel = new Label("Are you sure you want to disable 2FA?");
-            disable2fa.getChildren().add(disableLabel);
-
-            Button disableButton = new Button("Disable 2FA");
+            BigButton disableButton = new BigButton("Disable 2FA");
             disableButton.setOnAction(this::disable2FA);
             disable2fa.getChildren().add(disableButton);
             disable2fa.setAlignment(Pos.TOP_CENTER);
@@ -182,7 +180,7 @@ public class MFASettingsScreen extends AbstractScreen {
 
         formBox.getChildren().add(confirmationComponents);
 
-        Button confirm = new Button("Submit");
+        BigButton confirm = new BigButton("Submit");
         confirm.setId("confirm");
         confirm.setOnAction(this::approve2FA);
         formBox.getChildren().add(confirm);

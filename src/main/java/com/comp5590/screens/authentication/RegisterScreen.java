@@ -1,11 +1,11 @@
 package com.comp5590.screens.authentication;
 
-import com.comp5590.components.LoginScreen.BigButton;
 import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.Paragraph;
 import com.comp5590.components.LoginScreen.Title;
 import com.comp5590.components.RegisterScreen.BackToLoginBox;
 import com.comp5590.components.RegisterScreen.ComboBoxField;
+import com.comp5590.components.global.BigButton;
 import com.comp5590.components.global.LineHorizontal;
 import com.comp5590.components.global.LoginField;
 import com.comp5590.components.global.SpaceVertical;
@@ -75,6 +75,8 @@ public class RegisterScreen extends AbstractScreen {
     public void setup() {
         // load css
         this.addCss("/css/register.css");
+        // import css
+        this.addCss("/css/global.css");
 
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
@@ -212,13 +214,11 @@ public class RegisterScreen extends AbstractScreen {
         );
 
         // create the register button
-        BigButton registerButton = new BigButton();
-        registerButton.setText("Register");
+        BigButton registerButton = new BigButton("Register");
         registerButton.setId("registerButton");
 
         // create generate random user button
-        BigButton generateRandomUserButton = new BigButton();
-        generateRandomUserButton.setText("Generate Random User");
+        BigButton generateRandomUserButton = new BigButton("Generate Random User");
 
         // create hbox for above buttons, and add them to it
         HBox buttonBox = new HBox();

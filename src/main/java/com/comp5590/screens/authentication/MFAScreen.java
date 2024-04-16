@@ -1,9 +1,9 @@
 package com.comp5590.screens.authentication;
 
-import com.comp5590.components.LoginScreen.BigButton;
 import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.Paragraph;
 import com.comp5590.components.LoginScreen.Title;
+import com.comp5590.components.global.BigButton;
 import com.comp5590.components.global.LoginField;
 import com.comp5590.components.global.SpaceVertical;
 import com.comp5590.database.entities.User;
@@ -32,8 +32,6 @@ public class MFAScreen extends AbstractScreen {
 
     @Override
     public void setup() {
-        this.addCss("/css/login.css");
-
         GridPane pane = new GridPane();
         pane.getStyleClass().add("custom-pane");
 
@@ -60,7 +58,7 @@ public class MFAScreen extends AbstractScreen {
         column1.setHgrow(Priority.ALWAYS); // Allow column 1 to grow to fill the available space
         pane.getColumnConstraints().add(column1);
 
-        // create the border pane (which will   serve as root pane)
+        // create the border pane (which will serve as root pane)
         // set grid pane as child of border pane
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(pane);
@@ -70,6 +68,7 @@ public class MFAScreen extends AbstractScreen {
 
     /**
      * Create the 2FA code input form
+     *
      * @return HBox
      */
     private VBox create2FA() {
@@ -82,7 +81,7 @@ public class MFAScreen extends AbstractScreen {
         this.error.setId("error");
         this.error.getStyleClass().add("error-label");
 
-        BigButton submit = new BigButton();
+        BigButton submit = new BigButton("Submit");
         submit.setId("submit");
         submit.setOnAction(this::submitCode);
 
@@ -105,6 +104,7 @@ public class MFAScreen extends AbstractScreen {
 
     /**
      * Submit the 2FA code
+     *
      * @param e ActionEvent
      */
     private void submitCode(ActionEvent e) {
@@ -127,6 +127,7 @@ public class MFAScreen extends AbstractScreen {
 
     /**
      * Verify the 2FA code
+     *
      * @param code 2FA code
      * @param user User object
      * @return boolean
