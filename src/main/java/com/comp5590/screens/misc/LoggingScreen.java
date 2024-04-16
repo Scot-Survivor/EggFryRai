@@ -43,7 +43,7 @@ public class LoggingScreen extends AbstractScreen {
         GridPane pane = attachDefaultPane();
 
         // attach header and navbar
-        attachHeaderAndNavBar("Logs");
+        attachHeaderAndNavBar(1, "Logs");
 
         // generate log box
         HBox center = center();

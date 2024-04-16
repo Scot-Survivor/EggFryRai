@@ -37,7 +37,7 @@ public class ContactUsScreen extends AbstractScreen {
         // center of borderpane) for further customization
         GridPane pane = this.attachDefaultPane();
         // attach header and nav bar
-        this.attachHeaderAndNavBar("Contact Us");
+        this.attachHeaderAndNavBar(1, "Contact Us");
 
         // add content
         ((BorderPane) getRootPane()).setCenter(center());

@@ -39,7 +39,7 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
         // center of borderpane) for further customization
         GridPane gridPane = this.attachDefaultPane();
         // attach header and nav bar
-        this.attachHeaderAndNavBar("View / Change Appointments");
+        this.attachHeaderAndNavBar(1, "View / Change Appointments");
 
         // grab user from session
         User user = SessionManager.getInstance().getCurrentUser();
@@ -172,7 +172,8 @@ public class ViewAndChangeBookingsScreen extends AbstractScreen {
 
     public void onFilterClick(List<Booking> bookings, ScrollerBox scrollerBox) {
         // get the date and break down into month and get all details from that month
-        // Date date = Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        // Date date =
+        // Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         YearMonth yearMonth = YearMonth.from(((DatePicker) getRootPane().lookup("#datePicker")).getValue());
 
         // get day 1

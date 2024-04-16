@@ -42,7 +42,7 @@ public class ViewDoctorsScreen extends AbstractScreen {
         // center of borderpane) for further customization
         GridPane pane = this.attachDefaultPane();
         // attach header and nav bar
-        this.attachHeaderAndNavBar("View Doctors");
+        this.attachHeaderAndNavBar(1, "View Doctors");
 
         // create the page contents, setting them to center of root pane
         ((BorderPane) getRootPane()).setCenter(createCenter());

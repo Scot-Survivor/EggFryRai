@@ -26,7 +26,7 @@ public class AboutUsScreen extends AbstractScreen {
         // center of borderpane) for further customization
         GridPane pane = this.attachDefaultPane();
         // attach header and nav bar
-        this.attachHeaderAndNavBar("About Us");
+        this.attachHeaderAndNavBar(1, "About Us");
 
         // set main content to center
         ((BorderPane) getRootPane()).setCenter(center());

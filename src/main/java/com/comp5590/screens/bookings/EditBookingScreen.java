@@ -5,7 +5,7 @@ import com.comp5590.components.EditBooking.DoctorChoice;
 import com.comp5590.components.EditBooking.EditBookingCard;
 import com.comp5590.components.EditBooking.RoomChoice;
 import com.comp5590.components.EditBooking.TimeChoice;
-import com.comp5590.components.LoginScreen.BigButton;
+import com.comp5590.components.global.BigButton;
 import com.comp5590.database.entities.Booking;
 import com.comp5590.database.entities.Room;
 import com.comp5590.database.entities.User;
@@ -68,7 +68,7 @@ public class EditBookingScreen extends AbstractScreen {
         // center of borderpane) for further customization
         GridPane gridPane = this.attachDefaultPane();
         // attach header and nav bar
-        this.attachHeaderAndNavBar("Edit Booking");
+        this.attachHeaderAndNavBar(1, "Edit Booking");
 
         // get booking
         Booking oldBooking = this.getBookingToEdit();

@@ -61,7 +61,7 @@ public class CreateBookingScreen extends AbstractScreen {
         // center of borderpane) for further customization
         GridPane pane = this.attachDefaultPane();
         // attach header and nav bar
-        this.attachHeaderAndNavBar("Booking Appointment");
+        this.attachHeaderAndNavBar(1, "Booking Appointment");
 
         ((BorderPane) getRootPane()).setCenter(this.createCenter());
     }
