@@ -65,6 +65,29 @@
     -fx-background-color: #d0d0d0;
 }
 
+
+.big-button{
+    -fx-background-color: #2f35f4;
+    -fx-text-fill: white;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 20 10;
+
+    /* SET WIDTH TO MAX, and item to center */
+    -fx-max-width: Infinity;
+    -fx-alignment: center;
+}
+
+.big-button:hover{
+    -fx-background-color: #3f45f4;
+}
+
+.big-button:pressed{
+    -fx-opacity: 0.8;
+}
+
 /* for messages (notificactions) sent to doctors / users */
 .notification-card{
     -fx-background-color: #f0f0f0;
