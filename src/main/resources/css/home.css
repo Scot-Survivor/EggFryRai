@@ -19,8 +19,8 @@
 
 .header-bar-left{
     -fx-alignment: center-left;
-    -fx-spacing: 10;
     -fx-font-size: 24;
+    -fx-spacing: 10;
 }
 
 .header-bar-middle{
@@ -29,8 +29,25 @@
 
 .header-bar-right{
     -fx-alignment: center-right;
-    -fx-spacing: 10;
     -fx-font-size: 24;
+    -fx-spacing: 10;
+}
+
+/* styles for both left and right */
+.header-bar-left, .header-bar-right{
+    -fx-text-fill: #575dfb;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #575dfb;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+}
+
+/* animation */
+.header-bar-left:hover , .header-bar-right:hover{
+    -fx-background-color: #575dfb;
+    -fx-text-fill: #ffffff;
 }
 
 .navbar{
