@@ -17,6 +17,8 @@ import com.comp5590.screens.doctors.ViewDoctorsScreen;
 import com.comp5590.screens.general.ContactUsScreen;
 import com.comp5590.screens.general.HomeScreen;
 import com.comp5590.screens.general.WelcomeScreen;
+import com.comp5590.screens.general.settings.ChangeUserInfoScreen;
+import com.comp5590.screens.general.settings.MFASettingsScreen;
 import com.comp5590.screens.general.settings.ProfileScreen;
 import com.comp5590.screens.loading.ScreenBetweenScreens;
 import com.comp5590.screens.managers.ScreenManager;
@@ -161,16 +163,26 @@ public abstract class AbstractScreen {
         return gridPane;
     }
 
-    protected HeaderBar attachHeaderBar(String title) {
-        // create profileBox for the left side of the header bar
-        HBox profileBox = new HBox();
-        profileBox.setId("profileBox");
+    protected HeaderBar createHeaderBar(int type, String leftText, String leftIconURL, String title) {
+        // create leftBox for the left side of the header bar
+        HBox leftBox = new HBox();
+        if (type == 1) {
+            leftBox.setId("profileBox");
 
-        // attach event listener to profileBox
-        profileBox.setOnMouseClicked(e -> {
-            logger.info("Profile button clicked");
-            showScene(ProfileScreen.class);
-        });
+            // attach event listener to leftBox
+            leftBox.setOnMouseClicked(e -> {
+                logger.info("Profile button clicked");
+                showScene(ProfileScreen.class);
+            });
+        } else if (type == 2) {
+            leftBox.setId("backToHomeBox");
+
+            // attach event listener to leftBox
+            leftBox.setOnMouseClicked(e -> {
+                logger.info("Home button clicked");
+                showScene(HomeScreen.class);
+            });
+        }
 
         // create hbox for the logout event listener
         HBox logoutBox = new HBox();
@@ -194,106 +206,160 @@ public abstract class AbstractScreen {
         }
 
         // Create the header bar with the determined name
-        HeaderBar headerBar = new HeaderBar(profileBox, logoutBox, firstname, title);
-
-        return headerBar;
+        return new HeaderBar(leftBox, leftText, leftIconURL, logoutBox, firstname, title);
     }
 
-    protected NavBar createNavBar() {
-        // create Buttons for each navbar item
-        Button home = new Button("Home");
-        Button visitDetails = new Button("View Visit Details");
-        Button newAppointment = new Button("New Appointment");
-        Button viewAndChangeAppointments = new Button("View / Change Appointment");
-        Button aboutUs = new Button("About us");
-        Button contactUs = new Button("Contact us");
-        Button chooseDoctor = new Button("Choose Doctor");
-        Button viewDoctors = new Button("View Doctors");
-        Button logs = new Button("Logs");
+    protected NavBar createNavBar(int type) {
+        NavBar navbar = null;
 
-        // add IDs to buttons for testing purposes
-        home.setId("home");
-        visitDetails.setId("visitDetails");
-        newAppointment.setId("newAppointment");
-        viewAndChangeAppointments.setId("viewAndChangeAppointments");
-        aboutUs.setId("aboutUs");
-        contactUs.setId("contactUs");
-        chooseDoctor.setId("chooseDoctor");
-        viewDoctors.setId("viewDoctors");
-        logs.setId("logs");
+        if (type == 1) {
+            // create Buttons for each navbar item
+            Button home = new Button("Home");
+            Button visitDetails = new Button("View Visit Details");
+            Button newAppointment = new Button("New Appointment");
+            Button viewAndChangeAppointments = new Button("View / Change Appointment");
+            Button aboutUs = new Button("About us");
+            Button contactUs = new Button("Contact us");
+            Button chooseDoctor = new Button("Choose Doctor");
+            Button viewDoctors = new Button("View Doctors");
+            Button logs = new Button("Logs");
 
-        // attach event listeners to each button
-        home.setOnAction(e -> {
-            logger.info("Home button clicked");
-            showScene(HomeScreen.class);
-        });
+            // add IDs to buttons for testing purposes
+            home.setId("home");
+            visitDetails.setId("visitDetails");
+            newAppointment.setId("newAppointment");
+            viewAndChangeAppointments.setId("viewAndChangeAppointments");
+            aboutUs.setId("aboutUs");
+            contactUs.setId("contactUs");
+            chooseDoctor.setId("chooseDoctor");
+            viewDoctors.setId("viewDoctors");
+            logs.setId("logs");
 
-        visitDetails.setOnAction(e -> {
-            logger.info("Visit Details button clicked");
-            showScene(VisitDetailsScreen.class);
-        });
+            // attach event listeners to each button
+            home.setOnAction(e -> {
+                logger.info("Home button clicked");
+                showScene(HomeScreen.class);
+            });
 
-        newAppointment.setOnAction(e -> {
-            logger.info("New Appointment button clicked");
-            showScene(CreateBookingScreen.class);
-        });
+            visitDetails.setOnAction(e -> {
+                logger.info("Visit Details button clicked");
+                showScene(VisitDetailsScreen.class);
+            });
 
-        viewAndChangeAppointments.setOnAction(e -> {
-            logger.info("View and Change Appointments button clicked");
-            showScene(ViewAndChangeBookingsScreen.class);
-        });
+            newAppointment.setOnAction(e -> {
+                logger.info("New Appointment button clicked");
+                showScene(CreateBookingScreen.class);
+            });
 
-        aboutUs.setOnAction(e -> {
-            logger.info("About us button clicked");
-            showScene(AboutUsScreen.class);
-        });
+            viewAndChangeAppointments.setOnAction(e -> {
+                logger.info("View and Change Appointments button clicked");
+                showScene(ViewAndChangeBookingsScreen.class);
+            });
 
-        contactUs.setOnAction(e -> {
-            logger.info("Contact us button clicked");
-            showScene(ContactUsScreen.class);
-        });
+            aboutUs.setOnAction(e -> {
+                logger.info("About us button clicked");
+                showScene(AboutUsScreen.class);
+            });
 
-        chooseDoctor.setOnAction(e -> {
-            logger.info("ChooseDoctor button clicked");
-            showScene(ChooseDoctorScreen.class);
-        });
+            contactUs.setOnAction(e -> {
+                logger.info("Contact us button clicked");
+                showScene(ContactUsScreen.class);
+            });
 
-        viewDoctors.setOnAction(e -> {
-            logger.info("ViewDoctors button clicked");
-            showScene(ViewDoctorsScreen.class);
-        });
+            chooseDoctor.setOnAction(e -> {
+                logger.info("ChooseDoctor button clicked");
+                showScene(ChooseDoctorScreen.class);
+            });
 
-        logs.setOnAction(e -> {
-            logger.info("Logs button clicked");
-            showScene(LoggingScreen.class);
-        });
+            viewDoctors.setOnAction(e -> {
+                logger.info("ViewDoctors button clicked");
+                showScene(ViewDoctorsScreen.class);
+            });
 
-        // create the navbar
-        NavBar navBar = new NavBar(
-            home,
-            visitDetails,
-            newAppointment,
-            viewAndChangeAppointments,
-            aboutUs,
-            contactUs,
-            chooseDoctor,
-            viewDoctors,
-            logs
-        );
+            logs.setOnAction(e -> {
+                logger.info("Logs button clicked");
+                showScene(LoggingScreen.class);
+            });
 
-        return navBar;
+            // create the navbar
+            navbar =
+            new NavBar(
+                home,
+                visitDetails,
+                newAppointment,
+                viewAndChangeAppointments,
+                aboutUs,
+                contactUs,
+                chooseDoctor,
+                viewDoctors,
+                logs
+            );
+        } else if (type == 2) {
+            // create Buttons for each navbar item
+            Button profile = new Button("Profile");
+            Button mfaSettings = new Button("MFA Settings");
+            Button editProfile = new Button("Edit your profile");
+
+            // add IDs to buttons for testing purposes
+            profile.setId("profile");
+            mfaSettings.setId("mfaSettings");
+            editProfile.setId("editProfile");
+
+            // attach event listeners to each button
+            profile.setOnAction(e -> {
+                logger.info("Profile button clicked");
+                showScene(ProfileScreen.class);
+            });
+
+            mfaSettings.setOnAction(e -> {
+                logger.info("MFA Settings button clicked");
+                showScene(MFASettingsScreen.class);
+            });
+
+            editProfile.setOnAction(e -> {
+                logger.info("Edit Profile button clicked");
+                showScene(ChangeUserInfoScreen.class);
+            });
+
+            // create the navbar
+            navbar = new NavBar(profile, mfaSettings, editProfile);
+        }
+
+        return navbar;
     }
 
     // attach both header bar and nav bar
-    protected void attachHeaderAndNavBar(String title) {
+    protected void attachHeaderAndNavBar(int type, String title) {
         // grab border pane
         BorderPane pane = (BorderPane) getRootPane();
 
-        // create header bar
-        HeaderBar headerBar = attachHeaderBar(title);
+        // define headerbar & navbar
+        HeaderBar headerBar = null;
+        NavBar navBar = null;
 
-        // create nav bar
-        NavBar navBar = createNavBar();
+        // if type = 1
+        if (type == 1) {
+            // create header bar
+            headerBar = createHeaderBar(1, "Profile", "/images/user.png", title);
+
+            // create nav bar
+            navBar = createNavBar(1);
+        }
+        // if type = 2
+        else if (type == 2) {
+            // create header bar
+            headerBar = createHeaderBar(2, "Home", "/images/home.png", title);
+
+            // create nav bar
+            navBar = createNavBar(2);
+        }
+        // otherwise, invalid type
+        else {
+            logger.error("Invalid type: " + type + " passed into method, when attaching header and nav bar.");
+            throw new IllegalArgumentException(
+                "Invalid type: " + type + " passed into method, when attaching header and nav bar."
+            );
+        }
 
         // make new VBox with header bar and nav bar
         VBox headerAndNav = new VBox(headerBar, navBar);
@@ -416,9 +482,10 @@ public abstract class AbstractScreen {
     /**
      * Shortcut to show screen between screens with a specific delay
      *
-     * @param msg The message to display
+     * @param msg             The message to display
      * @param nextScreenClass The next screen to show
-     * @param delay The delay (in ms) to wait before showing the next screen
+     * @param delay           The delay (in ms) to wait before showing the next
+     *                        screen
      */
     protected void showSceneBetweenScenesThenNextScene(
         String msg,
