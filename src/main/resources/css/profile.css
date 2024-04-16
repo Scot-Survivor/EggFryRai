@@ -1,0 +1,35 @@
+.user-info-card{
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+
+    -fx-spacing: 10px;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+
+    -fx-max-height: 5000px;
+    -fx-max-width: 800px;
+}
+
+.user-info-box{
+    -fx-font-size: 36px;
+    -fx-text-fill: #333;
+
+    -fx-padding: 5px;
+
+    -fx-border-color: #4716cf;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: #f5f5f5;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+}
+
+.user-info-text{
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
