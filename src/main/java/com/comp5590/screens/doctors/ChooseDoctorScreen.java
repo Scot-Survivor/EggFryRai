@@ -41,7 +41,7 @@ public class ChooseDoctorScreen extends AbstractScreen {
         // center of borderpane) for further customization
         GridPane pane = this.attachDefaultPane();
         // attach header and nav bar
-        this.attachHeaderAndNavBar("Choose Doctor");
+        this.attachHeaderAndNavBar(1, "Choose Doctor");
 
         doctorTable = new TableView<>(); // Initialize table
         ((BorderPane) getRootPane()).setCenter(center());

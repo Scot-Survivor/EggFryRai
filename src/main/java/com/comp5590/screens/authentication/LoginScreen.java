@@ -1,12 +1,12 @@
 package com.comp5590.screens.authentication;
 
-import com.comp5590.components.LoginScreen.BigButton;
 import com.comp5590.components.LoginScreen.BigIcon;
 import com.comp5590.components.LoginScreen.ForgotPasswordButton;
 import com.comp5590.components.LoginScreen.Paragraph;
 import com.comp5590.components.LoginScreen.RegisterBox;
 // import title component
 import com.comp5590.components.LoginScreen.Title;
+import com.comp5590.components.global.BigButton;
 import com.comp5590.components.global.LineHorizontal;
 import com.comp5590.components.global.LoginField;
 import com.comp5590.components.global.SpaceVertical;
@@ -72,7 +72,7 @@ public class LoginScreen extends AbstractScreen {
         column1.setHgrow(Priority.ALWAYS); // Allow column 1 to grow to fill the available space
         pane.getColumnConstraints().add(column1);
 
-        // create the border pane (which will   serve as root pane)
+        // create the border pane (which will serve as root pane)
         // set grid pane as child of border pane
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(pane);
@@ -108,7 +108,7 @@ public class LoginScreen extends AbstractScreen {
         forgotPasswordBtn.getChildren().add(forgotPasswordButton);
 
         // create a login button
-        BigButton loginButton = new BigButton();
+        BigButton loginButton = new BigButton("Login");
         loginButton.setId("login");
         loginButton.setOnAction(this::login);
         // add the login button to a vbox
@@ -201,6 +201,7 @@ public class LoginScreen extends AbstractScreen {
 
     /**
      * Set the error text
+     *
      * @param txt The text to set
      */
     public void setErrorText(String txt) {

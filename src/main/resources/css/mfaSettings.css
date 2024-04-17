@@ -1,4 +1,53 @@
 .copyable-label, .copyable-label:focused {
     -fx-background-color: transparent ;
     -fx-background-insets: 0px ;
+    -fx-alignment: left;
+}
+
+#disable2faBox{
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #4608aa;
+    -fx-border-width: 3px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+
+    -fx-max-width: 500px;
+    -fx-alignment: center;
+    -fx-font-size: 16;
+}
+
+#disableLabel{
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+
+    -fx-alignment: center;
+}
+
+#mfa-form{
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #4608aa;
+    -fx-border-width: 3px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+
+    -fx-alignment: center;
+    -fx-font-size: 20;
+
+    -fx-min-width: 400px;
+    -fx-pref-width: 550px;
+    -fx-max-width: 800px;
+}
+
+#qr-code{
+    /* chunky border */
+    -fx-border-color: #643900;
+    -fx-border-width: 5px;
+    -fx-border-radius: 5px;
+
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 10px;
+
+    -fx-alignment: center;
 }

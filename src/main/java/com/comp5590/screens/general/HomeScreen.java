@@ -38,7 +38,7 @@ public class HomeScreen extends AbstractScreen {
         GridPane gridPane = this.attachDefaultPane();
 
         // attach the header bar & navbar
-        this.attachHeaderAndNavBar("GP Alpha");
+        this.attachHeaderAndNavBar(1, "Home - GP Alpha");
 
         // grab user from session
         User user = SessionManager.getInstance().getCurrentUser();

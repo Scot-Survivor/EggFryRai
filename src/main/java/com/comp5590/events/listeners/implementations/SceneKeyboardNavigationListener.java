@@ -1,6 +1,6 @@
 package com.comp5590.events.listeners.implementations;
 
-import com.comp5590.components.LoginScreen.BigButton;
+import com.comp5590.components.global.BigButton;
 import com.comp5590.events.listeners.interfaces.KeyboardListener;
 import com.comp5590.managers.LoggerManager;
 import com.comp5590.screens.managers.ScreenManager;
@@ -101,7 +101,8 @@ public class SceneKeyboardNavigationListener implements KeyboardListener {
 
     /**
      * Check if the screen is of a certain type
-     * @param screen The screen to check
+     *
+     * @param screen     The screen to check
      * @param screenName The screen name to check
      * @return If the screen is of the type
      */
@@ -111,6 +112,7 @@ public class SceneKeyboardNavigationListener implements KeyboardListener {
 
     /**
      * Check if the screen is a ScreenBetweenScreens
+     *
      * @param screen The screen to check
      * @return If the screen is a ScreenBetweenScreens
      */
@@ -120,6 +122,7 @@ public class SceneKeyboardNavigationListener implements KeyboardListener {
 
     /**
      * Get the current screen
+     *
      * @return The current screen
      */
     private AbstractScreen getCurrentScreen() {
@@ -128,6 +131,7 @@ public class SceneKeyboardNavigationListener implements KeyboardListener {
 
     /**
      * Get the root pane of the current screen
+     *
      * @return The root pane
      */
     private Pane getRootPane() {
@@ -136,6 +140,7 @@ public class SceneKeyboardNavigationListener implements KeyboardListener {
 
     /**
      * Get the screen name
+     *
      * @return The screen name
      */
     private String getScreenName() {

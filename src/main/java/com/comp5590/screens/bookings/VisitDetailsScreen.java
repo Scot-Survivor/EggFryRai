@@ -31,7 +31,7 @@ public class VisitDetailsScreen extends AbstractScreen {
         this.addCss("/css/visitDetails.css");
 
         GridPane gridPane = attachDefaultPane();
-        attachHeaderAndNavBar("Details of Past Visits");
+        attachHeaderAndNavBar(1, "Details of Past Visits");
 
         User user = SessionManager.getInstance().getCurrentUser();
 

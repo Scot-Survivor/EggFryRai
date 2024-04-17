@@ -1,5 +1,7 @@
 package com.comp5590.screens.general.settings;
 
+import com.comp5590.components.global.BigButton;
+import com.comp5590.components.global.LoginField;
 import com.comp5590.configuration.AppConfig;
 import com.comp5590.database.entities.AuthenticationDetails;
 import com.comp5590.database.entities.User;
@@ -23,7 +25,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -58,11 +59,18 @@ public class MFASettingsScreen extends AbstractScreen {
     @Override
     public void setup() {
         this.addCss("/css/mfaSettings.css");
+
         secret = totpManager.generateSecret();
         GridPane pane = attachDefaultPane();
-        attachHeaderAndNavBar("Your Profile - 2FA");
+        attachHeaderAndNavBar(2, "Your Profile - 2FA");
 
-        ((BorderPane) getRootPane()).setCenter(center());
+        // make content
+        VBox center = center();
+
+        // add content to center of screen
+        pane.add(center, 0, 1);
+        center.setId("center");
+        pane.setAlignment(Pos.CENTER);
     }
 
     private VBox center() {
@@ -79,15 +87,25 @@ public class MFASettingsScreen extends AbstractScreen {
                 content.getChildren().add(recoveryCodesForm);
             }
         } else {
-            VBox disable2fa = new VBox();
-            Label disableLabel = new Label("Are you sure you want to disable 2FA?");
-            disable2fa.getChildren().add(disableLabel);
+            // create a VBox for storing children
+            VBox disable2faBox = new VBox();
 
-            Button disableButton = new Button("Disable 2FA");
+            // create components
+            Label disableLabel = new Label("Are you sure you want to disable 2FA?");
+            BigButton disableButton = new BigButton("Disable 2FA");
+            // set listener for button
             disableButton.setOnAction(this::disable2FA);
-            disable2fa.getChildren().add(disableButton);
-            disable2fa.setAlignment(Pos.TOP_CENTER);
-            content.getChildren().add(disable2fa);
+
+            // add components to disable2fa
+            disable2faBox.getChildren().addAll(disableLabel, disableButton);
+
+            // set styles for all components
+            disable2faBox.setId("disable2faBox");
+            disableLabel.setId("disableLabel");
+            disableButton.getStyleClass().add("big-button");
+
+            // add disable2fa component to main screen content box
+            content.getChildren().add(disable2faBox);
         }
 
         resultLabel = new Label();
@@ -152,6 +170,7 @@ public class MFASettingsScreen extends AbstractScreen {
 
         // Create a new image view
         ImageView imageView = new ImageView(image);
+        imageView.setId("qr-code");
 
         // Create a new label
         TextField secretLabel;
@@ -159,11 +178,7 @@ public class MFASettingsScreen extends AbstractScreen {
             secretLabel = new TextField("Secret: " + secret);
         } else {
             secretLabel =
-            new TextField(
-                "This App doesn't not support raw secret for " +
-                AppConfig.TOTP_ALGORITHM +
-                " please ask your administrator to change the algorithm to SHA1"
-            );
+            new TextField("This App doesn't not support raw secret for " + AppConfig.TOTP_ALGORITHM + ".");
         }
         secretLabel.setEditable(false);
         secretLabel.getStyleClass().add("copyable-label");
@@ -171,18 +186,26 @@ public class MFASettingsScreen extends AbstractScreen {
 
         formBox.getChildren().addAll(imageView, secretLabel);
 
-        HBox confirmationComponents = new HBox();
         // We also need to confirm that they've done it correctly so create input box
-        Label confirmLabel = new Label("Enter the code from your 2FA app:");
-        confirmationComponents.getChildren().add(confirmLabel);
+        HBox confirmationComponents = new HBox();
+
         codeInput = new TextField();
         codeInput.setId("codeInput");
-        confirmationComponents.getChildren().add(codeInput);
+
+        LoginField enterCodeField = new LoginField(
+            "Enter the code from your 2FA app:",
+            codeInput,
+            "e.g., 739123",
+            "/images/lock.png"
+        );
+
+        // add the field to the confirmation components & center it
+        confirmationComponents.getChildren().add(enterCodeField);
         confirmationComponents.setAlignment(Pos.TOP_CENTER);
 
         formBox.getChildren().add(confirmationComponents);
 
-        Button confirm = new Button("Submit");
+        BigButton confirm = new BigButton("Submit");
         confirm.setId("confirm");
         confirm.setOnAction(this::approve2FA);
         formBox.getChildren().add(confirm);
