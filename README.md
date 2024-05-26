@@ -25,6 +25,6 @@ Patient Management Interface for a Fictional Hospital, as Per the Requirements o
 
 ## Gallery
 Here you can find some screenshots of our project
-<img src="example1" alt="Screenshot 1">
-<img src="example2" alt="Screenshot 2">
-<img src="example3" alt="Screenshot 3">
+![Login](https://github.com/Scot-Survivor/EggFryRai/blob/main/images/login.png?raw=true)
+![Home Page](https://github.com/Scot-Survivor/EggFryRai/blob/main/images/home.png?raw=true)
+![Profile](https://github.com/Scot-Survivor/EggFryRai/blob/main/images/profile.png?raw=true)
